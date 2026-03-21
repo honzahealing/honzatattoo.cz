@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Honza Tattoo — black &amp; grey realistické tetování v Praze na Žižkově. Zvířata, abstrakt, barevné práce, unikátní návrhy.">
+<meta name="robots" content="index, follow">
+<meta name="keywords" content="tetování Praha, tattoo Praha, black and grey tetování, realistické tetování Praha, tattoo Žižkov, tetování zvířata, abstrakt tetování, tatér Praha, barevné tetování Praha">
+<meta name="author" content="Honza Tattoo">
+<link rel="canonical" href="https://honzatattoo.cz/">
+<meta property="og:title" content="Honza Tattoo | Black &amp; Grey Realism · Praha">
+<meta property="og:description" content="Realistické tetování v černošedé. Zvířata, abstrakt, barevné práce. Praha — Žižkov.">
+<meta property="og:image" content="https://honzatattoo.cz/img/tattoo_main.jpg">
+<meta property="og:url" content="https://honzatattoo.cz/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="cs_CZ">
+<meta name="geo.region" content="CZ-10">
+<meta name="geo.placename" content="Praha, Žižkov">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='16' fill='%231A1A1A'/><text x='50%25' y='54%25' font-size='16' text-anchor='middle' dominant-baseline='middle'>&#x1F58B;</text></svg>">
+<title>Honza Tattoo | Black &amp; Grey Realism · Praha</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TattooParlor","name":"Honza Tattoo","url":"https://honzatattoo.cz","image":"https://honzatattoo.cz/img/tattoo_main.jpg","address":{"@type":"PostalAddress","addressLocality":"Praha","addressRegion":"Žižkov","addressCountry":"CZ"},"priceRange":"1500-7000 Kč"}</script>
+<style>
+:root{--gold:#C8A45C;--gold-light:#E8D5A3;--gold-dark:#9A7B3A;--bg:#FFFDF9;--bg-alt:#F5F3EE;--bg-dark:#0C0F14;--charcoal:#1A1A1A;--text:#2A2A2A;--text-light:#6B7280;--text-muted:#9CA3AF;--white:#fff;--border:#E8E4DC;--font-display:'Cormorant Garamond',Georgia,serif;--font-body:'DM Sans',sans-serif;--font-logo:'Bebas Neue',sans-serif;--section-pad:clamp(100px,14vw,180px);--ease:cubic-bezier(.22,1,.36,1)}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{font-family:var(--font-body);color:var(--text);background:var(--bg);overflow-x:hidden;line-height:1.7;font-weight:300}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}@keyframes slideUp{from{opacity:0;transform:translateY(80px)}to{opacity:1;transform:translateY(0)}}@keyframes slideDown{from{opacity:0;transform:translateY(-40px)}to{opacity:1;transform:translateY(0)}}@keyframes lineGrow{from{width:0}to{width:60px}}@keyframes scrollPulse{0%,100%{opacity:.3;transform:scaleY(1)}50%{opacity:.8;transform:scaleY(1.3)}}@keyframes drawLine{from{stroke-dashoffset:1000}to{stroke-dashoffset:0}}
+body{animation:fadeIn 1s ease both}
+.reveal{opacity:0;transform:translateY(60px);transition:opacity 1s var(--ease),transform 1s var(--ease)}.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-80px);transition:opacity 1s var(--ease),transform 1s var(--ease)}.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(80px);transition:opacity 1s var(--ease),transform 1s var(--ease)}.reveal-right.visible{opacity:1;transform:translateX(0)}
+.reveal-depth{opacity:0;transform:perspective(1200px) translateZ(-150px) translateY(50px) rotateX(4deg);transition:opacity 1.2s var(--ease),transform 1.2s var(--ease)}.reveal-depth.visible{opacity:1;transform:perspective(1200px) translateZ(0) translateY(0) rotateX(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}.d5{transition-delay:.5s}.d6{transition-delay:.6s}
+.scroll-progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(to right,var(--gold-dark),var(--gold-light));z-index:1002;width:0}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:28px 60px;display:flex;justify-content:space-between;align-items:center;transition:all .5s var(--ease);background:transparent}
+nav.scrolled{background:rgba(255,253,249,.94);backdrop-filter:blur(24px);padding:16px 60px;box-shadow:0 1px 30px rgba(0,0,0,.05)}
+.nav-logo{font-family:var(--font-logo);font-size:1.85rem;color:var(--white);text-decoration:none;letter-spacing:.12em;text-transform:uppercase;transition:color .5s;line-height:1}
+nav.scrolled .nav-logo{color:var(--charcoal)}.nav-logo span{color:var(--gold-light);transition:color .5s}nav.scrolled .nav-logo span{color:var(--gold)}
+.nav-links{display:flex;gap:36px;list-style:none}.nav-links a{font-size:.75rem;font-weight:400;color:rgba(255,255,255,.6);text-decoration:none;letter-spacing:.14em;text-transform:uppercase;position:relative;padding-bottom:4px;transition:color .4s}
+nav.scrolled .nav-links a{color:var(--text-light)}.nav-links a::after{content:'';position:absolute;bottom:0;left:50%;width:0;height:1.5px;background:var(--gold);transition:width .4s var(--ease),left .4s var(--ease)}
+.nav-links a:hover{color:var(--white)}nav.scrolled .nav-links a:hover{color:var(--gold-dark)}.nav-links a:hover::after,.nav-links a.active::after{width:100%;left:0}
+.hamburger{display:none;flex-direction:column;gap:6px;cursor:pointer;background:none;border:none;padding:4px;z-index:1001}.hamburger span{width:28px;height:1.5px;background:var(--white);transition:all .4s var(--ease);transform-origin:center}
+nav.scrolled .hamburger span{background:var(--gold)}.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px);background:var(--charcoal)}.hamburger.active span:nth-child(2){opacity:0;transform:scaleX(0)}.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);background:var(--charcoal)}
+.mobile-menu{display:none;position:fixed;inset:0;background:rgba(255,253,249,.98);backdrop-filter:blur(24px);z-index:999;flex-direction:column;justify-content:center;align-items:center;gap:32px}
+.mobile-menu.active{display:flex}.mobile-menu a{font-family:var(--font-display);font-size:2.2rem;color:var(--charcoal);text-decoration:none;transition:color .3s,transform .3s;opacity:0;animation:slideUp .5s var(--ease) forwards}
+.mobile-menu.active a:nth-child(1){animation-delay:.1s}.mobile-menu.active a:nth-child(2){animation-delay:.16s}.mobile-menu.active a:nth-child(3){animation-delay:.22s}.mobile-menu.active a:nth-child(4){animation-delay:.28s}.mobile-menu.active a:nth-child(5){animation-delay:.34s}.mobile-menu.active a:nth-child(6){animation-delay:.4s}.mobile-menu.active a:nth-child(7){animation-delay:.46s}.mobile-menu.active a:nth-child(8){animation-delay:.52s}
+.mobile-menu a:hover{color:var(--gold);transform:translateX(10px)}
+
+/* HERO */
+.hero{position:relative;height:100vh;min-height:700px;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;z-index:2}
+.hero-bg-img{position:absolute;inset:0;z-index:0;background:url('img/tattoo3.jpg') center 30%/cover no-repeat;transform:scale(1.1)}
+.hero-bg-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(12,15,20,.6) 0%,rgba(12,15,20,.4) 40%,rgba(12,15,20,.82) 100%)}
+.hero-ink{position:absolute;inset:0;overflow:hidden;opacity:.1;z-index:1}.hero-ink svg{width:100%;height:100%}
+.hero-content{position:relative;z-index:2;max-width:800px;padding:0 40px}
+.hero-tag{font-size:.72rem;font-weight:500;letter-spacing:.4em;text-transform:uppercase;color:var(--gold-light);margin-bottom:28px;animation:slideDown .8s var(--ease) .3s both}
+.hero-title{font-family:var(--font-display);font-size:clamp(3rem,7vw,5.8rem);font-weight:300;line-height:1.05;color:var(--white);animation:slideUp 1s var(--ease) .5s both}
+.hero-title em{font-style:italic;color:var(--gold)}
+.hero-line{width:60px;height:1.5px;background:var(--gold);margin:32px auto;animation:lineGrow .8s var(--ease) .9s both}
+.hero-sub{font-size:1.05rem;font-weight:300;color:rgba(255,255,255,.45);line-height:1.85;max-width:520px;margin:0 auto 44px;animation:slideUp .8s var(--ease) 1.1s both}
+.hero-cta{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;animation:slideUp .8s var(--ease) 1.3s both}
+.hero-scroll{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);z-index:2;color:rgba(255,255,255,.25);font-size:.68rem;letter-spacing:.25em;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:10px;animation:slideUp .8s var(--ease) 1.6s both}
+.hero-scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scrollPulse 2.5s ease-in-out infinite}
+.hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:200px;background:linear-gradient(to bottom,transparent,var(--bg));z-index:3;pointer-events:none}
+.divider-diagonal{position:relative;height:80px;margin-top:-1px;z-index:3}.divider-diagonal svg{position:absolute;width:100%;height:100%;display:block}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:10px;padding:16px 40px;font-family:var(--font-body);font-size:.78rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;border:none;cursor:pointer;transition:all .4s var(--ease);position:relative;overflow:hidden}
+.btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);transition:left .6s ease}.btn:hover::before{left:100%}
+.btn-primary{background:var(--gold);color:var(--white);border:1.5px solid var(--gold)}.btn-primary:hover{background:var(--gold-dark);transform:translateY(-2px);box-shadow:0 12px 40px rgba(200,164,92,.3)}
+.btn-outline{background:transparent;color:var(--white);border:1.5px solid rgba(255,255,255,.2)}.btn-outline:hover{border-color:var(--gold-light);color:var(--gold-light);transform:translateY(-2px)}
+.btn-dark{background:var(--gold);color:var(--white);border:1.5px solid var(--gold)}.btn-dark:hover{background:var(--gold-dark);transform:translateY(-2px);box-shadow:0 8px 30px rgba(200,164,92,.25)}
+
+/* SECTION HEADERS */
+.section-tag{font-size:.7rem;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.section-title{font-family:var(--font-display);font-size:clamp(2.2rem,4vw,3.4rem);font-weight:300;line-height:1.15;color:var(--charcoal);margin-bottom:16px}.section-title em{font-style:italic;color:var(--gold)}
+.section-line{width:50px;height:1.5px;background:var(--gold);margin-bottom:24px}
+.section-desc{font-size:.95rem;font-weight:300;color:var(--text-light);max-width:560px;line-height:1.85}
+
+/* ABOUT STICKY */
+.about-wrap{position:relative;z-index:2;height:200vh}.about-sticky{position:sticky;top:0;height:100vh;display:flex;align-items:center;overflow:hidden;background:var(--bg)}
+.about-inner{max-width:1100px;margin:0 auto;padding:0 60px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;width:100%}
+.about-img-wrap{position:relative;aspect-ratio:3/4;overflow:hidden;border-radius:2px;opacity:0;transform:translateX(-60px) scale(.95)}
+.about-img-wrap img{width:100%;height:100%;object-fit:cover;object-position:center 20%}
+.about-img-wrap::after{content:'';position:absolute;inset:0;border:1px solid var(--gold);transform:translate(12px,12px);pointer-events:none;opacity:.2}
+.about-text-wrap{opacity:0;transform:translateX(60px)}
+.about-quote{font-family:var(--font-display);font-size:1.3rem;font-weight:300;font-style:italic;color:var(--gold);line-height:1.65;border-left:2px solid var(--gold);padding-left:24px;margin-top:32px}
+.about-tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.about-tag{padding:8px 18px;background:var(--bg-alt);border:1px solid var(--border);font-size:.78rem;font-weight:400;color:var(--text-light);letter-spacing:.04em;transition:all .3s var(--ease)}
+.about-tag:hover{border-color:var(--gold);color:var(--gold-dark);background:var(--white)}
+
+/* STYLE CARDS */
+.style-section{padding:var(--section-pad) 60px;background:var(--bg-alt);position:relative;z-index:2;overflow:hidden}
+.style-parallax-bg{position:absolute;inset:0;opacity:.03;background:url('img/tattoo_main.jpg') center/cover no-repeat;will-change:transform}
+.style-header{text-align:center;margin-bottom:80px;position:relative}.style-header .section-line{margin:0 auto 24px}.style-header .section-desc{margin:0 auto}
+.style-grid{max-width:1200px;margin:0 auto;position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.style-card{position:relative;overflow:hidden;background:var(--white);border-radius:3px;transition:transform .6s var(--ease),box-shadow .6s var(--ease)}
+.style-card:hover{transform:translateY(-10px);box-shadow:0 30px 60px rgba(200,164,92,.1)}
+.style-card-img{position:relative;overflow:hidden;aspect-ratio:3/4}.style-card-img img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}.style-card:hover .style-card-img img{transform:scale(1.06)}
+.style-card-body{padding:22px 20px}.style-card-title{font-family:var(--font-display);font-size:1.25rem;font-weight:400;color:var(--charcoal);margin-bottom:8px}
+.style-card-text{font-size:.82rem;font-weight:300;color:var(--text-light);line-height:1.7}
+
+/* GALLERY */
+.gallery{padding:var(--section-pad) 60px;position:relative;z-index:2}.gallery-header{text-align:center;margin-bottom:60px}.gallery-header .section-line{margin:0 auto 24px}
+.gallery-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.gallery-item{position:relative;overflow:hidden;aspect-ratio:3/4;cursor:pointer;border-radius:2px;background:var(--bg-alt)}
+.gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}.gallery-item:hover img{transform:scale(1.05)}
+.gallery-item::after{content:'\2922';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2rem;color:white;background:rgba(26,26,26,.35);opacity:0;transition:opacity .4s var(--ease)}.gallery-item:hover::after{opacity:1}
+.gallery-note{text-align:center;margin-top:40px;font-size:.85rem;color:var(--text-muted)}.gallery-note a{color:var(--gold);text-decoration:none}
+
+/* LIGHTBOX */
+.lightbox{position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.94);backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all .4s var(--ease)}.lightbox.active{opacity:1;visibility:visible}
+.lightbox-inner{position:relative;max-width:90vw;max-height:85vh}
+.lightbox-img{max-width:90vw;max-height:85vh;object-fit:contain;border-radius:2px}
+.lightbox-close{position:absolute;top:20px;right:24px;font-size:2rem;color:rgba(255,255,255,.6);background:none;border:none;cursor:pointer;z-index:2001;transition:color .3s;line-height:1}.lightbox-close:hover{color:white}
+.lightbox-arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:white;width:50px;height:50px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;cursor:pointer;transition:all .3s;border-radius:50%;z-index:2001}.lightbox-arrow:hover{background:rgba(255,255,255,.15)}
+.lightbox-prev{left:20px}.lightbox-next{right:20px}
+.lightbox-counter{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.35);font-size:.78rem;letter-spacing:.1em}
+.lightbox-caption{position:absolute;bottom:50px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.45);font-size:.82rem;display:none}
+
+/* PROCESS */
+.process{padding:var(--section-pad) 60px;background:var(--bg-dark);position:relative;z-index:2;overflow:hidden}
+.process-parallax-bg{position:absolute;inset:0;opacity:.04;background:url('img/about.jpg') center/cover no-repeat;will-change:transform}
+.process-header{text-align:center;margin-bottom:80px;position:relative}.process-header .section-tag{color:var(--gold-light)}.process-header .section-title{color:var(--white)}.process-header .section-line{margin:0 auto 24px}.process-header .section-desc{color:rgba(255,255,255,.35);margin:0 auto}
+.process-timeline{max-width:900px;margin:0 auto;position:relative}
+.process-timeline::before{content:'';position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(200,164,92,.25);transform:translateX(-50%)}
+.process-step{display:grid;grid-template-columns:1fr 60px 1fr;align-items:center;margin-bottom:60px;position:relative}.process-step:last-child{margin-bottom:0}
+.process-step-num{width:50px;height:50px;border-radius:50%;background:var(--gold);color:var(--white);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.1rem;font-weight:500;justify-self:center;position:relative;z-index:1;box-shadow:0 0 0 8px rgba(200,164,92,.15),0 0 30px rgba(200,164,92,.1)}
+.process-step-content{padding:0 40px}.process-step:nth-child(odd) .process-step-content{text-align:right}
+.process-step:nth-child(even) .process-step-content{grid-column:3}.process-step:nth-child(even) .process-step-empty{grid-column:1}
+.process-step-title{font-family:var(--font-display);font-size:1.35rem;font-weight:400;color:var(--white);margin-bottom:8px}
+.process-step-text{font-size:.86rem;color:rgba(255,255,255,.4);line-height:1.7}
+
+/* PRICING — elegant table style */
+.pricing{padding:var(--section-pad) 60px;position:relative;z-index:2;background:var(--bg-alt)}
+.pricing-inner{max-width:700px;margin:0 auto;background:var(--white);border-radius:4px;padding:48px 50px;box-shadow:0 4px 30px rgba(0,0,0,.04);border:1px solid var(--border)}
+.pricing-inner h3{font-family:var(--font-display);font-size:1.8rem;font-weight:300;color:var(--charcoal);margin-bottom:8px}
+.pricing-inner .section-line{margin-bottom:32px}
+.pricing-row{display:flex;justify-content:space-between;align-items:center;padding:18px 0;border-bottom:1px solid var(--border)}
+.pricing-row:last-child{border-bottom:none}
+.pricing-name{font-size:.92rem;font-weight:400;color:var(--text)}
+.pricing-price{font-family:var(--font-display);font-size:1.15rem;font-weight:500;color:var(--gold)}
+.pricing-footer{text-align:center;margin-top:32px;font-size:.82rem;color:var(--text-light);line-height:1.8}
+
+/* REVIEWS */
+.reviews{padding:var(--section-pad) 60px;position:relative;z-index:2;background:var(--bg)}
+.reviews-header{text-align:center;margin-bottom:60px}.reviews-header .section-line{margin:0 auto 24px}
+.reviews-track-wrap{position:relative;max-width:1200px;margin:0 auto;overflow:hidden}
+.reviews-track{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:10px 0 20px;scrollbar-width:none}
+.reviews-track::-webkit-scrollbar{display:none}
+.rev-card{flex:0 0 320px;scroll-snap-align:start;background:var(--white);border:1px solid var(--border);border-radius:4px;padding:28px 24px;cursor:pointer;transition:all .4s var(--ease)}
+.rev-card:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(200,164,92,.08);border-color:var(--gold-light)}
+.rev-stars{color:var(--gold);font-size:.9rem;letter-spacing:2px;margin-bottom:12px}
+.rev-text{font-size:.86rem;color:var(--text-light);line-height:1.7;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.rev-meta{margin-top:16px;display:flex;align-items:center;gap:12px}
+.rev-avatar{width:36px;height:36px;border-radius:50%;background:var(--bg-alt);display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.rev-name{font-size:.82rem;font-weight:500;color:var(--charcoal)}.rev-service{font-size:.72rem;color:var(--text-muted)}
+.reviews-nav{display:flex;justify-content:center;gap:12px;margin-top:28px}
+.reviews-nav button{width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:var(--white);color:var(--gold);font-size:1rem;cursor:pointer;transition:all .3s var(--ease)}.reviews-nav button:hover{border-color:var(--gold);background:var(--gold);color:var(--white)}
+
+/* Review overlay */
+.rev-overlay{position:fixed;inset:0;z-index:2500;background:rgba(0,0,0,.6);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all .4s}.rev-overlay.active{opacity:1;visibility:visible}
+.rev-overlay-card{background:var(--white);padding:44px 36px;max-width:500px;width:90%;border-radius:6px;box-shadow:0 30px 80px rgba(0,0,0,.2);position:relative;text-align:center}
+.rev-overlay-close{position:absolute;top:14px;right:18px;font-size:1.4rem;color:var(--text-muted);background:none;border:none;cursor:pointer;transition:color .3s}.rev-overlay-close:hover{color:var(--charcoal)}
+.ro-stars{color:var(--gold);font-size:1.1rem;letter-spacing:3px;margin-bottom:16px}
+.ro-text{font-family:var(--font-display);font-size:1.2rem;font-weight:300;font-style:italic;color:var(--text);line-height:1.7;margin-bottom:20px}
+.ro-name{font-size:.88rem;font-weight:500;color:var(--charcoal)}.ro-service{font-size:.76rem;color:var(--text-muted);margin-top:2px}
+.rev-overlay-nav{display:flex;justify-content:center;gap:12px;margin-top:20px}
+.rev-overlay-nav button{width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:var(--white);color:var(--gold);font-size:.9rem;cursor:pointer;transition:all .3s}.rev-overlay-nav button:hover{border-color:var(--gold);background:var(--gold);color:var(--white)}
+.ro-counter{font-size:.72rem;color:var(--text-muted);margin-top:12px}
+
+/* FAQ */
+.faq{padding:var(--section-pad) 60px;background:var(--bg-alt);position:relative;z-index:2}
+.faq-header{text-align:center;margin-bottom:60px}.faq-header .section-line{margin:0 auto 24px}
+.faq-list{max-width:760px;margin:0 auto}.faq-item{border-bottom:1px solid var(--border);overflow:hidden}
+.faq-question{display:flex;justify-content:space-between;align-items:center;width:100%;padding:24px 0;background:none;border:none;cursor:pointer;text-align:left;font-family:var(--font-body);font-size:.92rem;font-weight:400;color:var(--charcoal);transition:color .3s}
+.faq-question:hover{color:var(--gold)}.faq-icon{font-size:1.4rem;color:var(--gold);transition:transform .4s var(--ease);flex-shrink:0;margin-left:16px}
+.faq-item.active .faq-icon{transform:rotate(45deg)}.faq-answer{max-height:0;overflow:hidden;transition:max-height .5s var(--ease)}.faq-item.active .faq-answer{max-height:300px}
+.faq-answer p{padding:0 0 24px;font-size:.86rem;color:var(--text-light);line-height:1.8}
+
+/* CONTACT */
+.contact{padding:var(--section-pad) 60px;position:relative;z-index:2;background:var(--bg)}
+.contact-grid{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.contact-form .fg{margin-bottom:20px}.contact-form label{display:block;font-size:.73rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text-light);margin-bottom:8px}
+.contact-form input,.contact-form select,.contact-form textarea{width:100%;padding:14px 16px;font-family:var(--font-body);font-size:.88rem;font-weight:300;color:var(--charcoal);background:var(--white);border:1px solid var(--border);border-radius:2px;transition:border-color .3s,box-shadow .3s;outline:none}
+.contact-form input:focus,.contact-form select:focus,.contact-form textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,164,92,.1)}
+.contact-form textarea{resize:vertical;min-height:120px}.contact-form .fg-counter{text-align:right;font-size:.7rem;color:var(--text-muted);margin-top:4px}
+.contact-info{padding-top:20px}.contact-item{display:flex;gap:16px;align-items:flex-start;margin-bottom:32px}
+.contact-item-icon{font-size:1.2rem;width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:var(--bg-alt);border-radius:50%;flex-shrink:0}
+.contact-item h4{font-family:var(--font-display);font-size:1.05rem;font-weight:400;color:var(--charcoal);margin-bottom:2px}
+.contact-item p{font-size:.86rem;color:var(--text-light);line-height:1.6}.contact-item a{color:var(--gold);text-decoration:none;transition:color .3s}.contact-item a:hover{color:var(--gold-dark)}
+.form-notice{margin-top:18px;padding:14px 18px;background:rgba(200,164,92,.08);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;font-size:.82rem;line-height:1.6;color:var(--gold-dark)}
+.form-overlay{position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,.6);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all .4s}.form-overlay.active{opacity:1;visibility:visible}
+.form-overlay-card{background:var(--white);padding:48px 40px;text-align:center;max-width:420px;width:90%;border-radius:4px;box-shadow:0 30px 80px rgba(0,0,0,.25);position:relative}
+.form-overlay-close{position:absolute;top:16px;right:20px;font-size:1.5rem;color:var(--text-muted);background:none;border:none;cursor:pointer}.form-overlay-close:hover{color:var(--charcoal)}
+.fo-icon{font-size:3rem;display:block;margin-bottom:16px}.fo-title{font-family:var(--font-display);font-size:1.6rem;font-weight:300;color:var(--charcoal);margin-bottom:12px}.fo-title em{font-style:italic;color:var(--gold)}
+.fo-line{width:40px;height:1.5px;background:var(--gold);margin:0 auto 16px}.fo-text{font-size:.9rem;color:var(--text-light);line-height:1.7}
+footer{background:var(--bg-dark);padding:40px 60px;text-align:center;color:rgba(255,255,255,.3);font-size:.78rem;position:relative;z-index:2}
+.footer-logo{font-family:var(--font-logo);font-size:1.4rem;letter-spacing:.12em;text-transform:uppercase;color:var(--white);margin-bottom:12px}.footer-logo span{color:var(--gold)}
+.footer-links{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:16px;font-size:.76rem}.footer-links a{color:rgba(255,255,255,.35);text-decoration:none;transition:color .3s}.footer-links a:hover{color:var(--gold)}
+.back-to-top{position:fixed;bottom:30px;right:30px;width:44px;height:44px;background:var(--gold);color:var(--white);display:flex;align-items:center;justify-content:center;border-radius:50%;font-size:1.1rem;text-decoration:none;opacity:0;visibility:hidden;transition:all .4s var(--ease);z-index:100;box-shadow:0 4px 20px rgba(200,164,92,.3)}.back-to-top.visible{opacity:1;visibility:visible}.back-to-top:hover{transform:translateY(-3px)}
+.sticky-cta{position:fixed;bottom:30px;left:30px;z-index:100;opacity:0;visibility:hidden;transition:all .4s var(--ease)}.sticky-cta.visible{opacity:1;visibility:visible}
+.sticky-cta a{display:inline-flex;align-items:center;gap:6px;padding:12px 24px;background:var(--gold);color:var(--white);text-decoration:none;font-size:.76rem;font-weight:500;letter-spacing:.08em;border-radius:30px;box-shadow:0 6px 24px rgba(200,164,92,.3);transition:all .3s var(--ease)}.sticky-cta a:hover{background:var(--gold-dark);transform:translateY(-2px)}
+.sticky-dot{width:8px;height:8px;background:#4CAF50;border-radius:50%;box-shadow:0 0 6px #4CAF50;display:inline-block}
+
+@media(max-width:1024px){nav{padding:20px 30px}nav.scrolled{padding:14px 30px}.about-inner{grid-template-columns:1fr;gap:40px;padding:0 30px}.about-img-wrap{max-width:420px;margin:0 auto}.about-wrap{height:160vh}.style-grid{grid-template-columns:1fr 1fr}.process-step{grid-template-columns:1fr;gap:12px}.process-timeline::before{display:none}.process-step-num{justify-self:start}.process-step-content{text-align:left!important;padding:0}.process-step:nth-child(even) .process-step-content{grid-column:auto}.process-step-empty{display:none}.contact-grid{grid-template-columns:1fr;gap:40px}}
+@media(max-width:768px){nav{padding:18px 24px}.nav-links{display:none}.hamburger{display:flex}.about-wrap{height:auto}.about-sticky{position:relative;height:auto;padding:80px 24px}.about-img-wrap,.about-text-wrap{opacity:1!important;transform:none!important}.style-section{padding:80px 24px}.style-grid{grid-template-columns:1fr 1fr}.gallery{padding:80px 24px}.gallery-grid{grid-template-columns:1fr 1fr}.process{padding:80px 24px}.pricing{padding:80px 24px}.pricing-inner{padding:32px 24px}.reviews{padding:80px 24px}.rev-card{flex:0 0 280px}.faq{padding:80px 24px}.contact{padding:80px 24px}.divider-diagonal{height:50px}.footer-links{flex-direction:column;gap:6px}.sticky-cta{left:50%;transform:translateX(-50%);bottom:20px}.sticky-cta.visible{transform:translateX(-50%)}.back-to-top{bottom:20px;right:20px}}
+@media(max-width:480px){.gallery-grid{grid-template-columns:1fr;max-width:360px;margin:0 auto}.hero{min-height:600px}.hero-content{padding:0 20px}.hero-scroll{display:none}.style-grid{grid-template-columns:1fr;max-width:360px}}
+</style>
+</head>
+<body>
+<div class="scroll-progress" id="scroll-progress"></div>
+<nav id="nav"><a href="#hero" class="nav-logo">HONZA <span>TATTOO</span></a><ul class="nav-links"><li><a href="#about">O mně</a></li><li><a href="#style">Styl</a></li><li><a href="#gallery">Galerie</a></li><li><a href="#process">Proces</a></li><li><a href="#pricing">Ceník</a></li><li><a href="#reviews">Reference</a></li><li><a href="#faq">FAQ</a></li><li><a href="#contact">Kontakt</a></li></ul><button class="hamburger" id="hamburger"><span></span><span></span><span></span></button></nav>
+<div class="mobile-menu" id="mobile-menu"><a href="#about" onclick="closeMenu()">O mně</a><a href="#style" onclick="closeMenu()">Styl</a><a href="#gallery" onclick="closeMenu()">Galerie</a><a href="#process" onclick="closeMenu()">Proces</a><a href="#pricing" onclick="closeMenu()">Ceník</a><a href="#reviews" onclick="closeMenu()">Reference</a><a href="#faq" onclick="closeMenu()">FAQ</a><a href="#contact" onclick="closeMenu()">Kontakt</a></div>
+
+<section class="hero" id="hero"><div class="hero-bg-img" id="hero-bg"></div><div class="hero-bg-overlay"></div>
+<div class="hero-ink"><svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"><g stroke="rgba(200,164,92,.5)" fill="none" stroke-width="1" stroke-linecap="round"><path d="M100 400Q300 200 500 400Q700 600 900 350Q1050 200 1150 300" stroke-dasharray="1000" stroke-dashoffset="1000" style="animation:drawLine 3s ease forwards .5s"/><path d="M50 600Q250 450 450 550Q650 650 850 500Q1000 400 1180 450" stroke-dasharray="1000" stroke-dashoffset="1000" style="animation:drawLine 3s ease forwards 1s"/><path d="M150 200Q350 350 550 250Q750 150 950 280" stroke-dasharray="1000" stroke-dashoffset="1000" style="animation:drawLine 3s ease forwards 1.5s" opacity=".5"/></g></svg></div>
+<div class="hero-content" id="hero-content"><div class="hero-tag">Black &amp; Grey · Colour · Praha</div><h1 class="hero-title">Umění, které nosíte<br><em>s sebou</em></h1><div class="hero-line"></div><p class="hero-sub">Každé tetování je originál. Tetuji výhradně pozitivní motivy — estetika a pozitivní energie v každém detailu.</p><div class="hero-cta"><a href="#contact" class="btn btn-primary">Rezervovat termín</a><a href="#gallery" class="btn btn-outline">Prohlédnout práce</a></div></div>
+<div class="hero-scroll"><span>Scrollujte</span><div class="hero-scroll-line"></div></div></section>
+
+<div class="divider-diagonal" style="background:var(--bg-dark)"><svg viewBox="0 0 1200 80" preserveAspectRatio="none"><polygon points="0,0 1200,80 0,80" fill="var(--bg)"/></svg></div>
+
+<div class="about-wrap" id="about-wrap"><section class="about-sticky" id="about"><div class="about-inner">
+<div class="about-img-wrap" id="about-img"><img src="img/about.jpg" alt="Honza při tetování" loading="lazy"></div>
+<div class="about-text-wrap" id="about-text"><div class="section-tag">O mně</div><h2 class="section-title">Umění, které nosíte <em>s sebou</em></h2><div class="section-line"></div>
+<p class="section-desc">Tetuji výhradně pozitivní motivy. Každé tetování je pro mě forma umění a výraz krásy — ne agrese. Chci, aby z každé práce vyzařovalo něco, co vás posiluje a těší, kdykoli se na to podíváte.</p>
+<p class="section-desc" style="margin-top:16px">Specializuji se na širokou škálu stylů, ale vždy s jedním společným jmenovatelem: estetika a pozitivní energie.</p>
+<div class="about-tags"><span class="about-tag">Černobílý realismus</span><span class="about-tag">Zvířata</span><span class="about-tag">Antické motivy</span><span class="about-tag">Portréty</span><span class="about-tag">Design</span><span class="about-tag">Nápisy</span><span class="about-tag">Květinové motivy</span><span class="about-tag">Barevné práce</span></div>
+</div></div></section></div>
+
+<div class="divider-diagonal" style="background:var(--bg)"><svg viewBox="0 0 1200 80" preserveAspectRatio="none"><polygon points="1200,0 0,80 1200,80" fill="var(--bg-alt)"/></svg></div>
+
+<section class="style-section" id="style"><div class="style-parallax-bg" id="style-parallax"></div>
+<div class="style-header"><div class="section-tag reveal">Specializace</div><h2 class="section-title reveal d1">Čtyři směry, jeden <em>rukopis</em></h2><div class="section-line reveal d2"></div><p class="section-desc reveal d3">Každý styl má své kouzlo. Společné mají preciznost, čisté linie a důraz na detail.</p></div>
+<div class="style-grid">
+<div class="style-card reveal-depth d1"><div class="style-card-img"><img src="img/tattoo3.jpg" alt="Black and grey realismus" loading="lazy"></div><div class="style-card-body"><h3 class="style-card-title">Black &amp; Grey</h3><p class="style-card-text">Fotorealistické motivy v černošedé škále. Jemné přechody a hloubka.</p></div></div>
+<div class="style-card reveal-depth d2"><div class="style-card-img"><img src="img/tattoo1.jpg" alt="Zvířecí motiv" loading="lazy"></div><div class="style-card-body"><h3 class="style-card-title">Zvířata</h3><p class="style-card-text">Zvířata plná výrazu a síly. Každé zachycuji s respektem k jeho charakteru.</p></div></div>
+<div class="style-card reveal-depth d3"><div class="style-card-img"><img src="img/tattoo7.jpg" alt="Abstraktní kompozice" loading="lazy"></div><div class="style-card-body"><h3 class="style-card-title">Abstrakt</h3><p class="style-card-text">Geometrie, flow a organické tvary. Příběh vyprávěný formou a energií.</p></div></div>
+<div class="style-card reveal-depth d4"><div class="style-card-img"><img src="img/tattoo_main.jpg" alt="Barevné tetování" loading="lazy"></div><div class="style-card-body"><h3 class="style-card-title">Colour</h3><p class="style-card-text">Výrazné barvy, živé kompozice. Když chcete, aby vaše tetování zářilo.</p></div></div>
+</div></section>
+
+<div class="divider-diagonal" style="background:var(--bg-alt)"><svg viewBox="0 0 1200 80" preserveAspectRatio="none"><polygon points="0,0 1200,80 0,80" fill="var(--bg)"/></svg></div>
+
+<section class="gallery" id="gallery"><div class="gallery-header"><div class="section-tag reveal">Portfolio</div><h2 class="section-title reveal d1">Vybrané <em>práce</em></h2><div class="section-line reveal d2"></div></div>
+<div class="gallery-grid">
+<div class="gallery-item reveal-depth d1" data-lightbox data-caption="Black &amp; grey — anděl"><img src="img/tattoo3.jpg" alt="Tetování anděl" loading="lazy"></div>
+<div class="gallery-item reveal-depth d2" data-lightbox data-caption="Lev &amp; kočka"><img src="img/tattoo2.jpg" alt="Tetování lev a kočka" loading="lazy"></div>
+<div class="gallery-item reveal-depth d3" data-lightbox data-caption="Drak — barevný backpiece"><img src="img/tattoo_main.jpg" alt="Tetování drak" loading="lazy"></div>
+<div class="gallery-item reveal-depth d1" data-lightbox data-caption="Hroch"><img src="img/tattoo1.jpg" alt="Tetování hroch" loading="lazy"></div>
+<div class="gallery-item reveal-depth d2" data-lightbox data-caption="Poseidón"><img src="img/tattoo7.jpg" alt="Tetování Poseidón" loading="lazy"></div>
+<div class="gallery-item reveal-depth d3" data-lightbox data-caption="Poseidón s modrou"><img src="img/tattoo6.jpg" alt="Tetování Poseidón modrý" loading="lazy"></div>
+<div class="gallery-item reveal-depth d1" data-lightbox data-caption="Postavička"><img src="img/tattoo4.jpg" alt="Tetování postavička" loading="lazy"></div>
+<div class="gallery-item reveal-depth d2" data-lightbox data-caption="Abstraktní erby"><img src="img/tattoo5.jpg" alt="Tetování erby" loading="lazy"></div>
+<div class="gallery-item reveal-depth d3" data-lightbox data-caption="Při práci"><img src="img/tattoo_work.jpg" alt="Honza při tetování" loading="lazy"></div>
+</div><p class="gallery-note reveal">Další práce na <a href="https://instagram.com/honza.healing" target="_blank">Instagramu</a></p></section>
+
+<div class="lightbox" id="lightbox"><button class="lightbox-close" id="lightbox-close">&times;</button><button class="lightbox-arrow lightbox-prev" id="lightbox-prev">&#8249;</button><div class="lightbox-inner"><img class="lightbox-img" id="lightbox-img" src="" alt=""></div><button class="lightbox-arrow lightbox-next" id="lightbox-next">&#8250;</button><div class="lightbox-counter" id="lightbox-counter"></div><div class="lightbox-caption" id="lightbox-caption"></div></div>
+
+<div class="divider-diagonal" style="background:var(--bg)"><svg viewBox="0 0 1200 80" preserveAspectRatio="none"><polygon points="1200,0 0,80 1200,80" fill="var(--bg-dark)"/></svg></div>
+
+<section class="process" id="process"><div class="process-parallax-bg" id="process-parallax"></div>
+<div class="process-header"><div class="section-tag reveal">Jak to funguje</div><h2 class="section-title reveal d1">Od nápadu k <em>realitě</em></h2><div class="section-line reveal d2"></div><p class="section-desc reveal d3">Čtyři kroky, na jejichž konci je tetování přesně podle vašich představ.</p></div>
+<div class="process-timeline">
+<div class="process-step reveal-depth d1"><div class="process-step-content"><h3 class="process-step-title">Konzultace</h3><p class="process-step-text">Napíšete mi svou představu — motiv, velikost, umístění. Probereme vše a doladíme detaily.</p></div><div class="process-step-num">1</div><div class="process-step-empty"></div></div>
+<div class="process-step reveal-depth d2"><div class="process-step-empty"></div><div class="process-step-num">2</div><div class="process-step-content"><h3 class="process-step-title">Návrh</h3><p class="process-step-text">Připravím unikátní design na míru. Pošlu vám náhled a společně doladíme každý detail.</p></div></div>
+<div class="process-step reveal-depth d3"><div class="process-step-content"><h3 class="process-step-title">Tetování</h3><p class="process-step-text">V klidu a pohodě v mém studiu na Žižkově. Pracuji pečlivě, aby výsledek předčil očekávání.</p></div><div class="process-step-num">3</div><div class="process-step-empty"></div></div>
+<div class="process-step reveal-depth d4"><div class="process-step-empty"></div><div class="process-step-num">4</div><div class="process-step-content"><h3 class="process-step-title">Péče</h3><p class="process-step-text">Dostanete podrobný návod k hojení. Jsem k dispozici pro jakékoliv dotazy po celou dobu.</p></div></div>
+</div></section>
+
+<div class="divider-diagonal" style="background:var(--bg-dark)"><svg viewBox="0 0 1200 80" preserveAspectRatio="none"><polygon points="0,0 1200,80 0,80" fill="var(--bg-alt)"/></svg></div>
+
+<section class="pricing" id="pricing"><div class="pricing-inner reveal-depth">
+<h3>Ceník</h3><div class="section-line"></div>
+<div class="pricing-row"><span class="pricing-name">Malé tetování (od)</span><span class="pricing-price">1 500 Kč</span></div>
+<div class="pricing-row"><span class="pricing-name">Malé střední (od)</span><span class="pricing-price">3 000 Kč</span></div>
+<div class="pricing-row"><span class="pricing-name">Střední větší (od)</span><span class="pricing-price">5 000 Kč</span></div>
+<div class="pricing-row"><span class="pricing-name">Full day session (od)</span><span class="pricing-price">7 000 Kč</span></div>
+<div class="pricing-footer">Platba v hotovosti nebo převodem. Přesná cena vždy po konzultaci.<br><span style="color:var(--gold)">Záloha 500 Kč</span> pro potvrzení termínu.</div>
+</div></section>
+
+<section class="reviews" id="reviews">
+<div class="reviews-header"><div class="section-tag reveal">Reference</div><h2 class="section-title reveal d1">Co říkají <em>klienti</em></h2><div class="section-line reveal d2"></div></div>
+<div class="reviews-track-wrap">
+<div class="reviews-track" id="rev-track">
+<div class="rev-card" data-name="Tomáš K." data-text="Absolutně profesionální přístup. Honza vyslechl mou představu a výsledek předčil očekávání. Tetování vypadá neskutečně, detaily jsou dokonalé." data-service="Black &amp; Grey"><div class="rev-stars">★★★★★</div><p class="rev-text">Absolutně profesionální přístup. Honza vyslechl mou představu a výsledek předčil očekávání. Tetování vypadá neskutečně, detaily jsou dokonalé.</p><div class="rev-meta"><div class="rev-avatar">🧔</div><div><div class="rev-name">Tomáš K.</div><div class="rev-service">Black &amp; Grey</div></div></div></div>
+<div class="rev-card" data-name="Petra M." data-text="Měla jsem jasnou představu a Honza ji dotáhl k naprosté dokonalosti. Přátelská atmosféra, čisté studio a hlavně úžasný výsledek. Určitě se vrátím!" data-service="Zvířecí motiv"><div class="rev-stars">★★★★★</div><p class="rev-text">Měla jsem jasnou představu a Honza ji dotáhl k naprosté dokonalosti. Přátelská atmosféra, čisté studio a hlavně úžasný výsledek. Určitě se vrátím!</p><div class="rev-meta"><div class="rev-avatar">👩</div><div><div class="rev-name">Petra M.</div><div class="rev-service">Zvířecí motiv</div></div></div></div>
+<div class="rev-card" data-name="Martin D." data-text="Už třetí tetování od Honzy a pokaždé je to lepší. Cení si mého času, vždy na čas, skvělá komunikace. Doporučuji všem, kdo hledají kvalitu v Praze." data-service="Abstrakt"><div class="rev-stars">★★★★★</div><p class="rev-text">Už třetí tetování od Honzy a pokaždé je to lepší. Cení si mého času, vždy na čas, skvělá komunikace. Doporučuji všem, kdo hledají kvalitu v Praze.</p><div class="rev-meta"><div class="rev-avatar">👨‍🦱</div><div><div class="rev-name">Martin D.</div><div class="rev-service">Abstrakt</div></div></div></div>
+<div class="rev-card" data-name="Lucie S." data-text="Honza je nejen skvělý tatér, ale i milý člověk. Celé sezení probíhalo v pohodě, žádný stres. Výsledek? Všichni se ptají, kde jsem to nechala udělat." data-service="Colour"><div class="rev-stars">★★★★★</div><p class="rev-text">Honza je nejen skvělý tatér, ale i milý člověk. Celé sezení probíhalo v pohodě, žádný stres. Výsledek? Všichni se ptají, kde jsem to nechala udělat.</p><div class="rev-meta"><div class="rev-avatar">👩‍🦰</div><div><div class="rev-name">Lucie S.</div><div class="rev-service">Colour</div></div></div></div>
+<div class="rev-card" data-name="Jakub V." data-text="Full day session a stálo to za to. Honza pracoval precizně celý den, výsledek je galeriový kousek. Profesionál na svém místě." data-service="Full day session"><div class="rev-stars">★★★★★</div><p class="rev-text">Full day session a stálo to za to. Honza pracoval precizně celý den, výsledek je galeriový kousek. Profesionál na svém místě.</p><div class="rev-meta"><div class="rev-avatar">👱‍♂️</div><div><div class="rev-name">Jakub V.</div><div class="rev-service">Full day session</div></div></div></div>
+</div>
+</div>
+<div class="reviews-nav"><button id="rev-prev">&#8249;</button><button id="rev-next">&#8250;</button></div>
+</section>
+
+<!-- Review overlay -->
+<div class="rev-overlay" id="rev-overlay"><div class="rev-overlay-card"><button class="rev-overlay-close" id="rev-overlay-close">&times;</button><div class="ro-stars">★★★★★</div><p class="ro-text" id="ro-text"></p><div class="ro-name" id="ro-name"></div><div class="ro-service" id="ro-service"></div><div class="rev-overlay-nav"><button id="ro-prev">&#8249;</button><button id="ro-next">&#8250;</button></div><div class="ro-counter" id="ro-counter"></div></div></div>
+
+<section class="faq" id="faq"><div class="faq-header"><div class="section-tag reveal">Časté otázky</div><h2 class="section-title reveal d1">Vše, co potřebujete <em>vědět</em></h2><div class="section-line reveal d2"></div></div>
+<div class="faq-list">
+<div class="faq-item reveal d1"><button class="faq-question"><span>Jak probíhá objednání tetování?</span><span class="faq-icon">+</span></button><div class="faq-answer"><p>Napište mi přes kontaktní formulář s popisem motivu, ideálním umístěním a přibližnou velikostí. Ozvu se s dostupnými termíny a připravím cenovou nabídku.</p></div></div>
+<div class="faq-item reveal d2"><button class="faq-question"><span>Bolí tetování?</span><span class="faq-icon">+</span></button><div class="faq-answer"><p>Záleží na místě a individuální citlivosti. Většina klientů to popisuje jako snesitelné. Během sezení si povídáme a čas rychle utíká.</p></div></div>
+<div class="faq-item reveal d3"><button class="faq-question"><span>Jak se připravit na tetování?</span><span class="faq-icon">+</span></button><div class="faq-answer"><p>Den předem se vyspěte, přijďte najedení a hydratovaní. Nekonzumujte alkohol minimálně 24 hodin předem. Oblečte si pohodlné oblečení.</p></div></div>
+<div class="faq-item reveal d4"><button class="faq-question"><span>Jak dlouho trvá jedno sezení?</span><span class="faq-icon">+</span></button><div class="faq-answer"><p>Malé tetování zvládneme za 1–2 hodiny. Větší projekty mohou trvat 3–5 hodin, případně se rozdělí do více sezení.</p></div></div>
+<div class="faq-item reveal d5"><button class="faq-question"><span>Jak pečovat o čerstvé tetování?</span><span class="faq-icon">+</span></button><div class="faq-answer"><p>Po sezení dostanete podrobný návod. Základem je: udržovat čistotu, nanášet hojivou mast, vyhnout se slunci, bazénům a lázním po dobu 2–3 týdnů.</p></div></div>
+<div class="faq-item reveal d6"><button class="faq-question"><span>Mohu přijít s vlastním návrhem?</span><span class="faq-icon">+</span></button><div class="faq-answer"><p>Určitě — většina klientů přichází s vlastní představou a já ji dotáhnu do finální podoby. Tetuji výhradně pozitivní motivy.</p></div></div>
+<div class="faq-item reveal"><button class="faq-question"><span>Jaké platební metody přijímáte?</span><span class="faq-icon">+</span></button><div class="faq-answer"><p>Hotovost nebo převod na účet. Záloha 500 Kč pro potvrzení termínu — odečítá se z finální ceny.</p></div></div>
+</div></section>
+
+<section class="contact" id="contact"><div class="contact-grid">
+<div class="reveal-left"><div class="section-tag">Kontakt</div><h2 class="section-title">Pojďme to <em>rozjet</em></h2><div class="section-line"></div><p class="section-desc" style="margin-bottom:32px">Máte představu o tetování? Napište mi — popište motiv, velikost a ideální umístění.</p>
+<form class="contact-form" id="contact-form" action="https://formspree.io/f/NOVY_ENDPOINT" method="POST">
+<div class="fg"><label for="name">Jméno</label><input type="text" id="name" name="name" placeholder="Vaše jméno" required></div>
+<div class="fg"><label for="email">E-mail</label><input type="email" id="email" name="email" placeholder="vas@email.cz" required></div>
+<div class="fg"><label for="tattoo-type">Typ tetování</label><select id="tattoo-type" name="tattoo-type"><option value="">Vyberte...</option><option value="blackgrey">Black &amp; Grey</option><option value="zvirata">Zvířecí motiv</option><option value="abstrakt">Abstrakt</option><option value="colour">Colour</option><option value="jine">Jiné / nevím</option></select></div>
+<div class="fg"><label for="source">Jak jste se o mně dozvěděli?</label><select id="source" name="source"><option value="">Vyberte...</option><option value="instagram">Instagram</option><option value="google">Google vyhledávání</option><option value="doporuceni">Doporučení</option><option value="honzahealing">honzahealing.cz</option><option value="jine">Jiné</option></select></div>
+<div class="fg"><label for="message">Popište svou představu</label><textarea id="message" name="message" placeholder="Motiv, velikost, umístění, případně reference..." required maxlength="500"></textarea><div class="fg-counter"><span id="msg-count">0</span>/500</div></div>
+<button type="submit" class="btn btn-dark" id="submit-btn">Odeslat zprávu</button>
+<div class="form-notice">⚠️ <strong>Důležité:</strong> Odpovím vám e-mailem. Pokud odpověď dlouho nepřichází, zkontrolujte prosím složky <strong>Hromadné zprávy</strong> a <strong>Spam</strong>.</div>
+</form></div>
+<div class="contact-info reveal-right">
+<div class="contact-item"><div class="contact-item-icon">✉</div><div><h4>E-mail</h4><p><a href="mailto:honza@honzatattoo.cz">honza@honzatattoo.cz</a></p></div></div>
+<div class="contact-item"><div class="contact-item-icon">📍</div><div><h4>Lokalita</h4><p>Praha — Žižkov<br><span style="font-size:.8rem;font-style:italic;color:var(--text-muted)">Přesnou adresu sdělím po rezervaci</span></p></div></div>
+<div class="contact-item"><div class="contact-item-icon">📷</div><div><h4>Instagram</h4><p><a href="https://instagram.com/honza.healing" target="_blank">@honza.healing</a></p></div></div>
+<div class="contact-item"><div class="contact-item-icon">🕐</div><div><h4>Termíny</h4><p>Dle objednání<br><span style="color:var(--gold);font-weight:400">Včetně víkendů</span></p></div></div>
+</div></div></section>
+
+<div class="form-overlay" id="form-overlay"><div class="form-overlay-card"><button class="form-overlay-close" id="form-overlay-close">&times;</button><span class="fo-icon">🖋</span><div class="fo-title">Děkuji za <em>zprávu</em></div><div class="fo-line"></div><div class="fo-text">Vaše zpráva dorazila. Ozvu se vám co nejdříve — většinou do 24 hodin.</div><div style="margin:18px auto 0;padding:14px 18px;background:rgba(200,164,92,.08);border:1.5px solid var(--gold);border-radius:10px;font-size:.85rem;line-height:1.6;color:var(--gold-dark);font-weight:500;max-width:340px;text-align:center">⚠️ Odpovím vám <strong>e-mailem</strong>.<br>Zkontrolujte prosím i složky<br><strong>Hromadné zprávy</strong> a <strong>Spam</strong>!</div></div></div>
+
+<footer><div class="footer-logo">HONZA <span>TATTOO</span></div><div class="footer-links"><a href="mailto:honza@honzatattoo.cz">honza@honzatattoo.cz</a><span>·</span><span>Praha — Žižkov</span><span>·</span><a href="https://instagram.com/honza.healing" target="_blank">📷 @honza.healing</a></div><div>&copy; <script>document.write(new Date().getFullYear())</script> Honza Tattoo</div></footer>
+
+<a href="#hero" class="back-to-top" id="back-to-top" title="Nahoru">↑</a>
+<div class="sticky-cta" id="sticky-cta"><a href="#contact"><span class="sticky-dot"></span> Chci tetování</a></div>
+
+<script>
+(function(){
+var nav=document.getElementById('nav'),btt=document.getElementById('back-to-top'),stickyCta=document.getElementById('sticky-cta'),scrollProg=document.getElementById('scroll-progress');
+var heroBg=document.getElementById('hero-bg'),heroContent=document.getElementById('hero-content');
+var styleParallax=document.getElementById('style-parallax'),processParallax=document.getElementById('process-parallax');
+var aboutWrap=document.getElementById('about-wrap'),aboutImg=document.getElementById('about-img'),aboutText=document.getElementById('about-text');
+var isMobile=window.innerWidth<=768;
+function lerp(a,b,t){return a+(b-a)*Math.max(0,Math.min(1,t))}
+function onScroll(){
+var sy=window.scrollY,wh=window.innerHeight;
+nav.classList.toggle('scrolled',sy>60);btt.classList.toggle('visible',sy>600);if(stickyCta)stickyCta.classList.toggle('visible',sy>600);
+if(scrollProg){var dH=document.documentElement.scrollHeight-wh;scrollProg.style.width=(dH>0?(sy/dH)*100:0)+'%'}
+if(sy<wh*1.2){var hp=sy/wh;if(heroBg){heroBg.style.transform='scale('+(1.1+hp*.15)+')';heroBg.style.opacity=1-hp*.4}if(heroContent){heroContent.style.opacity=Math.max(0,1-hp*1.2);heroContent.style.transform='translateY('+(sy*.3)+'px) scale('+(1-hp*.08)+')'}}
+if(!isMobile&&aboutWrap&&aboutImg&&aboutText){var wr=aboutWrap.getBoundingClientRect();var sr=aboutWrap.offsetHeight-wh;if(sr>0){var p=Math.max(0,Math.min(1,-wr.top/sr));aboutImg.style.transform='translateX('+lerp(-60,0,p*2)+'px) scale('+lerp(.95,1,p*2)+')';aboutImg.style.opacity=lerp(0,1,p*2.5);var tp=Math.max(0,p-.2)/.8;aboutText.style.transform='translateX('+lerp(60,0,tp*2)+'px)';aboutText.style.opacity=lerp(0,1,tp*2.5)}}
+if(styleParallax){var ss=document.getElementById('style');if(ss){var r=ss.getBoundingClientRect();if(r.top<wh&&r.bottom>0){styleParallax.style.transform='translateY('+((wh-r.top)/(wh+r.height)*-50)+'px) scale(1.1)'}}}
+if(processParallax){var ps=document.getElementById('process');if(ps){var r=ps.getBoundingClientRect();if(r.top<wh&&r.bottom>0){processParallax.style.transform='translateY('+((wh-r.top)/(wh+r.height)*-40)+'px) scale(1.1)'}}}
+var secs=document.querySelectorAll('section[id]'),nls=document.querySelectorAll('.nav-links a'),cur='';
+secs.forEach(function(s){if(sy>=s.offsetTop-140)cur=s.getAttribute('id')});nls.forEach(function(l){l.classList.remove('active');if(l.getAttribute('href')==='#'+cur)l.classList.add('active')});}
+var ticking=false;window.addEventListener('scroll',function(){if(!ticking){requestAnimationFrame(function(){onScroll();ticking=false});ticking=true}});onScroll();
+window.addEventListener('resize',function(){isMobile=window.innerWidth<=768});
+var hb=document.getElementById('hamburger'),mm=document.getElementById('mobile-menu');
+hb.addEventListener('click',function(){hb.classList.toggle('active');mm.classList.toggle('active');document.body.style.overflow=mm.classList.contains('active')?'hidden':''});
+window.closeMenu=function(){hb.classList.remove('active');mm.classList.remove('active');document.body.style.overflow=''};
+var rObs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');rObs.unobserve(e.target)}})},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-depth').forEach(function(e){rObs.observe(e)});
+document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();var t=document.querySelector(this.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'})})});
+document.querySelectorAll('.faq-question').forEach(function(b){b.addEventListener('click',function(){var i=b.parentElement,w=i.classList.contains('active');document.querySelectorAll('.faq-item').forEach(function(x){x.classList.remove('active')});if(!w)i.classList.add('active')})});
+
+/* LIGHTBOX */
+var lb=document.getElementById('lightbox'),li=document.getElementById('lightbox-img'),lc=document.getElementById('lightbox-close'),lcap=document.getElementById('lightbox-caption'),lp=document.getElementById('lightbox-prev'),ln=document.getElementById('lightbox-next'),lcnt=document.getElementById('lightbox-counter');
+var lG=[],lC=0;
+function showLB(idx){if(idx<0||idx>=lG.length)return;lC=idx;var el=lG[idx],img=el.querySelector('img'),cap=el.getAttribute('data-caption')||'';if(img){li.src=img.src;li.alt=img.alt||''}lcap.textContent=cap;lcap.style.display=cap?'block':'none';lcnt.textContent=(idx+1)+' / '+lG.length;lb.classList.add('active');document.body.style.overflow='hidden'}
+document.querySelectorAll('[data-lightbox]').forEach(function(el){el.addEventListener('click',function(){var pr=el.closest('section')||el.parentElement;lG=Array.from(pr.querySelectorAll('[data-lightbox]'));var idx=lG.indexOf(el);showLB(idx>=0?idx:0)})});
+lp.addEventListener('click',function(e){e.stopPropagation();showLB((lC-1+lG.length)%lG.length)});
+ln.addEventListener('click',function(e){e.stopPropagation();showLB((lC+1)%lG.length)});
+function closeLB(){lb.classList.remove('active');document.body.style.overflow=''}
+lc.addEventListener('click',function(e){e.stopPropagation();closeLB()});lb.addEventListener('click',function(e){if(e.target===lb)closeLB()});
+var ltx=0,lsw=false;lb.addEventListener('touchstart',function(e){if(e.target.closest('.lightbox-close,.lightbox-arrow'))return;ltx=e.changedTouches[0].clientX;lsw=true},{passive:true});
+lb.addEventListener('touchend',function(e){if(!lsw)return;lsw=false;var d=e.changedTouches[0].clientX-ltx;if(Math.abs(d)>50)showLB(d<0?(lC+1)%lG.length:(lC-1+lG.length)%lG.length)},{passive:true});
+
+/* REVIEWS */
+var revTrack=document.getElementById('rev-track'),revPrev=document.getElementById('rev-prev'),revNext=document.getElementById('rev-next');
+if(revTrack&&revPrev&&revNext){revNext.addEventListener('click',function(){revTrack.scrollBy({left:340,behavior:'smooth'})});revPrev.addEventListener('click',function(){revTrack.scrollBy({left:-340,behavior:'smooth'})})}
+var revCards=Array.from(document.querySelectorAll('.rev-card')),revOverlay=document.getElementById('rev-overlay'),roText=document.getElementById('ro-text'),roName=document.getElementById('ro-name'),roService=document.getElementById('ro-service'),roClose=document.getElementById('rev-overlay-close'),roPrev=document.getElementById('ro-prev'),roNext=document.getElementById('ro-next'),roCounter=document.getElementById('ro-counter');
+var rCur=0;
+function showRev(idx){if(idx<0||idx>=revCards.length)return;rCur=idx;var c=revCards[idx];roText.textContent='\u201E'+c.getAttribute('data-text')+'\u201C';roName.textContent=c.getAttribute('data-name');roService.textContent=c.getAttribute('data-service');roCounter.textContent=(idx+1)+' / '+revCards.length;revOverlay.classList.add('active');document.body.style.overflow='hidden'}
+revCards.forEach(function(c,i){c.addEventListener('click',function(){showRev(i)})});
+function closeRev(){revOverlay.classList.remove('active');document.body.style.overflow=''}
+roClose.addEventListener('click',function(e){e.stopPropagation();closeRev()});revOverlay.addEventListener('click',function(e){if(e.target===revOverlay)closeRev()});
+roPrev.addEventListener('click',function(e){e.stopPropagation();showRev((rCur-1+revCards.length)%revCards.length)});
+roNext.addEventListener('click',function(e){e.stopPropagation();showRev((rCur+1)%revCards.length)});
+
+/* KEYBOARD */
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeLB();closeRev();var fo=document.getElementById('form-overlay');if(fo&&fo.classList.contains('active')){fo.classList.remove('active');document.body.style.overflow=''}}
+if(lb.classList.contains('active')){if(e.key==='ArrowRight')showLB((lC+1)%lG.length);if(e.key==='ArrowLeft')showLB((lC-1+lG.length)%lG.length)}
+if(revOverlay.classList.contains('active')){if(e.key==='ArrowRight')showRev((rCur+1)%revCards.length);if(e.key==='ArrowLeft')showRev((rCur-1+revCards.length)%revCards.length)}});
+
+/* CHAR COUNTER */
+var ma=document.getElementById('message'),mc=document.getElementById('msg-count');if(ma&&mc)ma.addEventListener('input',function(){mc.textContent=ma.value.length});
+
+/* FORM */
+var cf=document.getElementById('contact-form'),fo=document.getElementById('form-overlay'),foc=document.getElementById('form-overlay-close');
+if(cf&&fo){var sb=document.getElementById('submit-btn'),oh=sb?sb.innerHTML:'';
+cf.addEventListener('submit',function(e){e.preventDefault();if(sb){sb.innerHTML='\u23F3 Odesílám...';sb.disabled=true}
+fetch(cf.action,{method:'POST',body:new FormData(cf),headers:{'Accept':'application/json'}}).then(function(r){if(sb){sb.innerHTML=oh;sb.disabled=false}if(r.ok){cf.reset();if(mc)mc.textContent='0';fo.classList.add('active');document.body.style.overflow='hidden'}else alert('Něco se nepovedlo.')}).catch(function(){if(sb){sb.innerHTML=oh;sb.disabled=false}alert('Chyba připojení.')})});
+function closeFO(){fo.classList.remove('active');document.body.style.overflow=''}foc.addEventListener('click',function(e){e.stopPropagation();closeFO()});fo.addEventListener('click',function(e){if(e.target===fo)closeFO()})}
+})();
+</script>
+</body>
+</html>
