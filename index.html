@@ -104,12 +104,7 @@ nav.sc .hb span{background:var(--gold-light)}
 .hero-cta{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;animation:fadeUp .8s var(--ease) 1.2s both}
 .hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:160px;background:linear-gradient(to bottom,transparent,var(--charcoal));z-index:3;pointer-events:none}
 
-/* 3D CANVAS & TILT STYLES */
-#hero-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
-.style-card, .gallery-item{transform-style:preserve-3d;will-change:transform}
-.glare-effect{position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:radial-gradient(circle at 50% 50%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0) 65%);opacity:0;transition:opacity .3s var(--ease);mix-blend-mode:overlay;z-index:10}
-
-/* BUTTONS */
+/* BUTTONS - with shimmer animation like healing */
 .btn{display:inline-flex;align-items:center;gap:10px;padding:15px 36px;font-family:var(--font-body);font-size:.82rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;border:none;cursor:pointer;transition:all .4s var(--ease);position:relative;overflow:hidden}
 .btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);transition:left .6s ease}
 .btn:hover::before{left:100%}
@@ -120,20 +115,17 @@ nav.sc .hb span{background:var(--gold-light)}
 .btn-dark{background:var(--charcoal);color:var(--white);border:1.5px solid var(--charcoal)}
 .btn-dark:hover{background:#333;transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.2)}
 
-/* SEPARATOR */
-.sep{position:relative;overflow:hidden;background:var(--charcoal);line-height:0;--ink:#9A7B3A;--drop:#C8A45C}
-.sep-white{background:var(--bg);--ink:#B08F49}
-.sep-light{background:var(--bg-alt);--ink:#B08F49}
-.sep-dark{background:var(--bg-dark);--ink:#9A7B3A}
-.sep svg{display:block;width:100%;height:88px}
-.sep .ink{fill:var(--ink);transform-box:view-box;transform-origin:50% 50%;transform:scaleX(0);opacity:0}
+/* SEPARATOR - inkoustova smouha + plynuly prechod barev mezi sekcemi */
+.sep{position:relative;overflow:hidden;line-height:0;height:104px;--ink:#B08F49;--drop:#C8A45C;background:linear-gradient(180deg,var(--from,#1A1A1A) 0%,var(--to,#fff) 100%)}
+.sep svg{display:block;width:100%;height:100%}
+.sep .ink{fill:var(--ink);transform-box:view-box;transform-origin:50% 50%;transform:scaleX(.04);opacity:0}
 .sep.in .ink{animation:inkSpread 1.15s cubic-bezier(.22,1,.36,1) forwards}
-@keyframes inkSpread{0%{transform:scaleX(.04);opacity:0}22%{opacity:.88}100%{transform:scaleX(1);opacity:.88}}
+@keyframes inkSpread{0%{transform:scaleX(.04);opacity:0}22%{opacity:.85}100%{transform:scaleX(1);opacity:.85}}
 .sep .drop{fill:var(--drop);opacity:0}
 .sep.in .drop{animation:dropIn .5s ease var(--dd,0s) forwards}
-@keyframes dropIn{from{opacity:0;transform:scale(.4)}to{opacity:.75;transform:scale(1)}}
-@media(prefers-reduced-motion:reduce){.sep .ink{transform:none;opacity:.88}.sep .drop{opacity:.75}.sep.in .ink,.sep.in .drop{animation:none}}
-@media(max-width:768px){.sep svg{height:58px}}
+@keyframes dropIn{from{opacity:0;transform:scale(.4)}to{opacity:.7;transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){.sep .ink{transform:none;opacity:.85}.sep .drop{opacity:.7}.sep.in .ink,.sep.in .drop{animation:none}}
+@media(max-width:768px){.sep{height:68px}}
 
 /* SECTION HELPERS */
 .stg{font-size:.72rem;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
@@ -202,9 +194,10 @@ nav.sc .hb span{background:var(--gold-light)}
 .lb-counter{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.35);font-size:.78rem;letter-spacing:.1em}
 .lb-caption{position:absolute;bottom:50px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.45);font-size:.82rem;display:none}
 
-/* PROCESS */
+/* PROCESS - 7 steps */
 .process{padding:var(--section-pad) 60px;background:var(--bg-dark);position:relative;overflow:hidden}
 .process-bg{position:absolute;inset:0;opacity:.04;background:url('img/about.jpg') center/cover no-repeat}
+
 .process-header{text-align:center;margin-bottom:70px;position:relative}
 .process-header .stg{color:var(--gold-light)}
 .process-header .stt{color:var(--white)}
@@ -217,18 +210,19 @@ nav.sc .hb span{background:var(--gold-light)}
 @media(prefers-reduced-motion:reduce){.twg{animation:none}}
 .p-step{display:grid;grid-template-columns:1fr 60px 1fr;align-items:center;margin-bottom:68px;position:relative}
 .p-step:last-child{margin-bottom:0}
-.p-num{width:42px;height:42px;border-radius:50%;background:var(--gold);color:var(--white);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1rem;font-weight:500;justify-self:center;position:relative;z-index:1;box-shadow:0 0 0 6px rgba(200,164,92,.12),0 0 25px rgba(200,164,92,.08);opacity:0;transition:opacity .55s var(--ease)}
-.p-step.on .p-num{opacity:1}
+.p-num{width:42px;height:42px;border-radius:50%;background:var(--gold);color:var(--white);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1rem;font-weight:500;justify-self:center;position:relative;z-index:1;box-shadow:0 0 0 6px rgba(200,164,92,.12),0 0 25px rgba(200,164,92,.08)}
 .p-content{padding:0 36px}
 .p-step:nth-child(odd) .p-content{text-align:right}
 .p-step:nth-child(even) .p-content{grid-column:3}
 .p-step:nth-child(even) .p-empty{grid-column:1}
 .p-content .ch{opacity:0;transition:opacity .14s linear}
 .p-step.on .p-content .ch{opacity:1;transition-delay:var(--d,0ms)}
+.p-num{opacity:0;transition:opacity .55s var(--ease)}
+.p-step.on .p-num{opacity:1}
 .p-title{font-family:var(--font-display);font-size:1.2rem;font-weight:400;color:var(--white);margin-bottom:4px}
 .p-text{font-size:.84rem;color:rgba(255,255,255,.4);line-height:1.7}
 
-/* PRICING */
+/* PRICING - interactive */
 .pricing{padding:var(--section-pad) 60px;background:var(--bg-alt);position:relative}
 .pricing-header{text-align:center;margin-bottom:50px}
 .pricing-header .stl{margin:0 auto 20px}
@@ -406,7 +400,6 @@ nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
 <section class="hero" id="hero">
 <div class="hero-bg" id="hero-bg"></div>
 <div class="hero-ov"></div>
-<canvas id="hero-canvas"></canvas>
 <div class="hero-content" id="hero-content">
 <div class="hero-tag">Black &amp; Grey · Colour · Praha</div>
 <h1>Umění, které nosíte<br><em>s sebou</em></h1>
@@ -419,7 +412,9 @@ nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
 </div>
 </section>
 
-<div class="sep"></div>
+<!-- MARQUEE -->
+<!-- text z puvodni marquee (nepouziva se): Black & Grey Realismus ✦ Zvířecí motivy ✦ Abstraktní kompozice ✦ Barevné práce ✦ Pozitivní energie ✦ Praha — Žižkov ✦ 12+ let zkušeností ✦ Unikátní návrhy ✦ -->
+<div class="sep" style="--from:#1A1A1A;--to:#fff"></div>
 
 <!-- ABOUT -->
 <section class="about" id="about">
@@ -440,7 +435,8 @@ nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
 </div>
 </section>
 
-<div class="sep sep-white"></div>
+<!-- text z puvodni marquee (nepouziva se): Černobílý realismus ✦ Zvířata ✦ Antické motivy ✦ Portréty ✦ Nápisy ✦ Květinové motivy ✦ Design ✦ Barevné práce ✦ -->
+<div class="sep" style="--from:#fff;--to:#F7F8FA"></div>
 
 <!-- STYLES -->
 <section class="styles" id="styles">
@@ -459,7 +455,8 @@ nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
 <p class="styles-note rv d5">Toto jsou mé čtyři hlavní směry — ale zdaleka ne vše. Dělám i <strong>nápisy, květinové motivy, portréty, design</strong> a mnohé další. Jediné, co netetuji, jsou negativní a agresivní motivy. <strong>Jen pozitivní energie.</strong></p>
 </section>
 
-<div class="sep sep-light"></div>
+<!-- text z puvodni marquee (nepouziva se): Preciznost v každém detailu ✦ Výhradně pozitivní motivy ✦ Unikátní návrhy na míru ✦ 12+ let zkušeností ✦ -->
+<div class="sep" style="--from:#F7F8FA;--to:#fff"></div>
 
 <!-- GALLERY -->
 <section class="gallery" id="gallery">
@@ -481,18 +478,21 @@ nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
 </div>
 </section>
 
-<div class="sep sep-white"></div>
+<!-- text z puvodni marquee (nepouziva se): Více prací na Instagramu ✦ @honza.tattoo ✦ Sledujte mě ✦ Nové práce každý týden ✦ -->
+<div class="sep" style="--from:#fff;--to:#1A1A1A"></div>
 
 <!-- INSTAGRAM -->
 <div class="ig-section">
 <p>Sledujte mě na Instagramu</p>
 <a href="https://instagram.com/honza.tattoo" target="_blank">@honza.tattoo</a>
 <div class="ig-embed" id="ig-embed">
+<!-- Curator.io embed code paste here -->
 <p style="font-size:.75rem;color:rgba(255,255,255,.3);margin-top:20px">Instagram feed se načítá... <a href="https://instagram.com/honza.tattoo" target="_blank" style="color:var(--gold-light)">Otevřít na Instagramu →</a></p>
 </div>
 </div>
 
-<div class="sep sep-dark"></div>
+<!-- text z puvodni marquee (nepouziva se): Konzultace zdarma ✦ Návrh na míru ✦ Záloha od 1 000 Kč ✦ Studio Praha — Žižkov ✦ Včetně víkendů ✦ -->
+<div class="sep" style="--from:#1A1A1A;--to:#0C0F14"></div>
 
 <!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox">
@@ -504,7 +504,7 @@ nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
 <div class="lb-caption" id="lb-caption"></div>
 </div>
 
-<!-- PROCESS -->
+<!-- PROCESS - 7 steps -->
 <section class="process" id="process">
 <div class="process-bg"></div>
 <div class="process-header">
@@ -524,7 +524,8 @@ nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
 </div>
 </section>
 
-<div class="sep sep-light"></div>
+<!-- text z puvodni marquee (nepouziva se): Od 1 500 Kč ✦ Malé tetování od 1 hodiny ✦ Celodenní sezení od 7 000 Kč ✦ Transparentní ceny ✦ Žádné skryté poplatky ✦ -->
+<div class="sep" style="--from:#0C0F14;--to:#F7F8FA"></div>
 
 <!-- PRICING -->
 <section class="pricing" id="pricing">
@@ -543,7 +544,8 @@ nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
 <div class="pricing-footer rv">Platba v hotovosti nebo převodem. Přesná cena vždy po konzultaci.<br><span style="color:var(--gold)">Záloha 1 000 — 2 500 Kč</span> podle velikosti projektu pro potvrzení termínu.</div>
 </section>
 
-<div class="sep sep-light"></div>
+<!-- text z puvodni marquee (nepouziva se): 100% spokojených klientů ✦ Individuální přístup ✦ Profesionální péče ✦ Přátelská atmosféra ✦ -->
+<div class="sep" style="--from:#F7F8FA;--to:#fff"></div>
 
 <!-- REVIEWS -->
 <section class="reviews" id="reviews">
@@ -567,9 +569,10 @@ nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
 <!-- REVIEW OVERLAY -->
 <div class="rev-overlay" id="rev-overlay"><div class="rev-overlay-card"><button class="ro-close" id="ro-close">&times;</button><div class="ro-stars">★★★★★</div><p class="ro-text" id="ro-text"></p><div class="ro-name" id="ro-name"></div><div class="ro-service" id="ro-service"></div><div class="ro-nav"><button id="ro-prev">&#8249;</button><button id="ro-next">&#8250;</button></div><div class="ro-counter" id="ro-counter"></div></div></div>
 
-<div class="sep sep-white"></div>
+<!-- text z puvodni marquee (nepouziva se): Odpovědi na vaše otázky ✦ Péče o tetování ✦ Příprava na sezení ✦ Platba & záloha ✦ Konzultace zdarma ✦ -->
+<div class="sep" style="--from:#fff;--to:#F7F8FA"></div>
 
-<!-- FAQ -->
+<!-- FAQ - 9 items -->
 <section class="faq" id="faq">
 <div class="faq-header">
 <div class="stg rv">Časté otázky</div>
@@ -589,7 +592,8 @@ nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
 </div>
 </section>
 
-<div class="sep sep-light"></div>
+<!-- text z puvodni marquee (nepouziva se): Napište mi ✦ honza@honzatattoo.cz ✦ Praha — Žižkov ✦ Termíny včetně víkendů ✦ Těším se na spolupráci ✦ -->
+<div class="sep" style="--from:#F7F8FA;--to:#fff"></div>
 
 <!-- CONTACT -->
 <section class="contact" id="contact">
@@ -631,9 +635,6 @@ nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
 <a href="#hero" class="btt" id="btt" title="Nahoru">↑</a>
 <div class="sticky-cta" id="sticky-cta"><a href="#contact"><span style="display:inline-block;width:8px;height:8px;background:#4CAF50;border-radius:50%;margin-right:6px;box-shadow:0 0 6px #4CAF50"></span>✉ Chci tetování</a></div>
 
-<!-- THREE.JS CDN -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
 <script>
 (function(){
 /* ANNOUNCE BAR positioning */
@@ -670,12 +671,13 @@ document.querySelectorAll('.rv,.rl,.rr,.rd').forEach(function(e){obs.observe(e)}
 /* SMOOTH SCROLL */
 document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();var t=document.querySelector(this.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'})})});
 
-/* SEPARATOR */
+/* SEPARATOR - inkoustova smouha, generovana podle skutecne sirky */
 (function(){
 var seps=document.querySelectorAll('.sep');
 if(!seps.length)return;
 var NS='http://www.w3.org/2000/svg';
 
+/* jeden sdileny filtr pro roztrepany okraj inkoustu */
 var defsSvg=document.createElementNS(NS,'svg');
 defsSvg.setAttribute('width','0');
 defsSvg.setAttribute('height','0');
@@ -698,6 +700,7 @@ function draw(sep,idx){
   svg.setAttribute('aria-hidden','true');
   sep.appendChild(svg);
 
+  /* smouha: horni a dolni okraj s obalkou, ktera se ke koncum zuzuje */
   var span=W*0.78,x0=(W-span)/2,cy=H/2,N=34,top='',bot='',i,t,x,env,a;
   for(i=0;i<=N;i++){
     t=i/N;x=x0+t*span;env=Math.pow(Math.sin(Math.PI*t),0.75);
@@ -717,6 +720,7 @@ function draw(sep,idx){
   g.appendChild(blob);
   svg.appendChild(g);
 
+  /* kapky - razene od stredu ven, aby odletavaly postupne */
   var drops=[],nd=Math.round(W/95)+6;
   for(i=0;i<nd;i++){
     var side=(i%2)?1:-1,dist=0.1+rnd()*0.36;
@@ -757,7 +761,7 @@ window.addEventListener('resize',function(){
 });
 })();
 
-/* PROCESS TREE */
+/* PROCESS TREE - timeline je strom: kmen uprostred, z kazdeho kroku vetev do prazdne strany */
 (function(){
 var sec=document.getElementById('process');
 var steps=sec?sec.querySelector('.process-steps'):null;
@@ -765,6 +769,7 @@ if(!sec||!steps)return;
 var stepEls=steps.querySelectorAll('.p-step');
 if(!stepEls.length)return;
 
+/* rozsekani textu na znaky - psani jako rukou, nepravidelny rytmus + pauzy po interpunkci */
 (function(){
   var ws=97531;
   function wr(){ws=(ws*1664525+1013904223)%4294967296;return ws/4294967296}
@@ -801,10 +806,11 @@ var svg=document.createElementNS(NS,'svg');
 svg.setAttribute('class','ptree');
 svg.setAttribute('aria-hidden','true');
 svg.setAttribute('preserveAspectRatio','none');
+/* POZOR: svg patri do .process, NE do .process-steps - jinak rozhodi :nth-child */
 sec.insertBefore(svg,steps);
 
 var TRUNK='#B08F49',TWIG=['#B89550','#C8A45C','#D8B876','#E4CB94'];
-var items=[],stepO=[],WIN=0.13,SPAN=1-WIN;
+var items=[],stepO=[];
 function f(v){return Math.round(v*10)/10}
 
 function build(){
@@ -832,37 +838,47 @@ function build(){
   var seed=13579;
   function rnd(){seed=(seed*1664525+1013904223)%4294967296;return seed/4294967296}
   var avail=(W-60)/2,L0=avail*0.32,AMIN=-0.40,AMAX=0.42;
-  var seq=[],startIdx=[];
+  var TRUNK_SPD=0.55,LEAF_DUR=26;
+  var seq=[],stepT=[],t=0;
 
-  function twig(cx,cy,dir,lx,ly,ang,len,w,d,maxd,gi){
+  /* Cas plyne stromem: potomek zacina presne tam, kde rodic skonci.
+     Sourozenci rostou soucasne. Vraci konec nejdelsi vetve podstromu. */
+  function twig(cx,cy,dir,lx,ly,ang,len,w,d,maxd,gi,t0){
     var x2=lx+Math.cos(ang)*len,y2=ly+Math.sin(ang)*len;
     var pp=ang+Math.PI/2,bow=(rnd()-0.5)*len*0.38;
     var mx=(lx+x2)/2+Math.cos(pp)*bow,my=(ly+y2)/2+Math.sin(pp)*bow;
-    seq.push({g:gi,p:'M'+f(cx+dir*lx)+' '+f(cy+ly)+' Q'+f(cx+dir*mx)+' '+f(cy+my)+' '+f(cx+dir*x2)+' '+f(cy+y2),w:w,c:TWIG[d<TWIG.length?d:TWIG.length-1],o:d===0?0.82:0.7});
+    var dur=len*(1-d*0.15),tEnd=t0+dur;
+    seq.push({g:gi,p:'M'+f(cx+dir*lx)+' '+f(cy+ly)+' Q'+f(cx+dir*mx)+' '+f(cy+my)+' '+f(cx+dir*x2)+' '+f(cy+y2),w:w,c:TWIG[d<TWIG.length?d:TWIG.length-1],o:d===0?0.82:0.7,t0:t0,dur:dur});
     if(d>=maxd){
       var nl=1+(rnd()<0.55?1:0);
-      for(var q=0;q<nl;q++)seq.push({g:gi,leaf:1,x:cx+dir*(x2+(rnd()-0.5)*10),y:cy+y2+(rnd()-0.5)*10,r:2.3+rnd()*1.9,c:rnd()<0.35?'#E8D5A3':'#C8A45C'});
-      return;
+      for(var q=0;q<nl;q++)seq.push({g:gi,leaf:1,x:cx+dir*(x2+(rnd()-0.5)*10),y:cy+y2+(rnd()-0.5)*10,r:2.3+rnd()*1.9,c:rnd()<0.35?'#E8D5A3':'#C8A45C',t0:tEnd,dur:LEAF_DUR});
+      return tEnd+LEAF_DUR;
     }
-    var n=rnd()<0.35?3:2;
+    var n=rnd()<0.35?3:2,maxEnd=tEnd;
     for(var k=0;k<n;k++){
       var a=ang+(k-(n-1)/2)*(0.44+rnd()*0.3)+(rnd()-0.5)*0.18;
       if(a<AMIN)a=AMIN;
       if(a>AMAX)a=AMAX;
-      twig(cx,cy,dir,x2,y2,a,len*(0.68+rnd()*0.12),w*0.62,d+1,maxd,gi);
+      var e=twig(cx,cy,dir,x2,y2,a,len*(0.68+rnd()*0.12),w*0.62,d+1,maxd,gi,tEnd);
+      if(e>maxEnd)maxEnd=e;
     }
+    return maxEnd;
   }
 
   for(i=0;i<pts.length;i++){
-    startIdx.push(seq.length);
+    stepT.push(t);
+    /* liche kroky maji text vlevo -> vetev doprava, sude naopak */
     var dir=(i%2===0)?1:-1;
-    twig(pts[i].x,pts[i].y,dir,pts[i].r,0,0.12,L0,3.4,0,3,i);
+    t=twig(pts[i].x,pts[i].y,dir,pts[i].r,0,0.12,L0,3.4,0,3,i,t);
     if(i<pts.length-1){
       var A=pts[i],B=pts[i+1],wob=(i%2?1:-1)*7;
-      seq.push({g:-1,p:'M'+f(A.x)+' '+f(A.y)+' Q'+f((A.x+B.x)/2+wob)+' '+f((A.y+B.y)/2)+' '+f(B.x)+' '+f(B.y),w:Math.max(2.2,5.2-i*0.5),c:TRUNK,o:0.66});
+      var tl=Math.sqrt((B.x-A.x)*(B.x-A.x)+(B.y-A.y)*(B.y-A.y))*TRUNK_SPD;
+      seq.push({g:-1,p:'M'+f(A.x)+' '+f(A.y)+' Q'+f((A.x+B.x)/2+wob)+' '+f((A.y+B.y)/2)+' '+f(B.x)+' '+f(B.y),w:Math.max(2.2,5.2-i*0.5),c:TRUNK,o:0.66,t0:t,dur:tl});
+      t+=tl;
     }
   }
-  for(i=0;i<startIdx.length;i++)stepO.push((startIdx[i]/seq.length)*SPAN);
+  var TOTAL=t||1;
+  for(i=0;i<stepT.length;i++)stepO.push(stepT[i]/TOTAL);
 
   var groups={};
   function grp(gi){
@@ -881,7 +897,7 @@ function build(){
   grp(-1);
 
   for(i=0;i<seq.length;i++){
-    var it=seq[i],o=(i/seq.length)*SPAN,el;
+    var it=seq[i],o=it.t0/TOTAL,wd=it.dur/TOTAL,el;
     if(it.leaf){
       el=document.createElementNS(NS,'ellipse');
       el.setAttribute('cx',f(it.x));el.setAttribute('cy',f(it.y));
@@ -889,7 +905,7 @@ function build(){
       el.setAttribute('fill',it.c);
       el.setAttribute('opacity','0');
       grp(it.g).appendChild(el);
-      items.push({el:el,leaf:1,o:o,v:-1});
+      items.push({el:el,leaf:1,o:o,w:wd,v:-1});
     }else{
       el=document.createElementNS(NS,'path');
       el.setAttribute('d',it.p);
@@ -902,7 +918,7 @@ function build(){
       var L=el.getTotalLength();
       el.style.strokeDasharray=L;
       el.style.strokeDashoffset=L;
-      items.push({el:el,L:L,o:o,v:-1});
+      items.push({el:el,L:L,o:o,w:wd,v:-1});
     }
   }
   onScroll();
@@ -911,19 +927,21 @@ function build(){
 function update(p){
   var n;
   for(n=0;n<items.length;n++){
-    var it=items[n],lp=(p-it.o)/WIN;
+    var it=items[n],lp=it.w>0?(p-it.o)/it.w:(p>=it.o?1:0);
     lp=lp<0?0:lp>1?1:lp;
     if(lp===it.v)continue;
     it.v=lp;
     if(it.leaf)it.el.setAttribute('opacity',(lp*0.9).toFixed(2));
     else it.el.style.strokeDashoffset=(it.L*(1-lp)).toFixed(1);
   }
+  /* text se zjevi presne kdyz k nemu dorazi kmen */
   for(n=0;n<stepO.length;n++){
-    if(p>=stepO[n]-0.012)stepEls[n].classList.add('on');
+    if(p>=stepO[n]-0.005)stepEls[n].classList.add('on');
     else stepEls[n].classList.remove('on');
   }
 }
 
+/* mobil: strom skryty, kroky se odhaluji podle viewportu */
 function revealFallback(){
   var vh=window.innerHeight;
   for(var i=0;i<stepEls.length;i++){
@@ -956,6 +974,7 @@ window.addEventListener('load',build);
 setTimeout(build,600);
 setTimeout(build,1600);
 })();
+
 
 /* FAQ */
 document.querySelectorAll('.faq-q').forEach(function(b){b.addEventListener('click',function(){var i=b.parentElement,w=i.classList.contains('active');document.querySelectorAll('.faq-item').forEach(function(x){x.classList.remove('active')});if(!w)i.classList.add('active')})});
@@ -1006,111 +1025,6 @@ fetch(cf.action,{method:'POST',body:new FormData(cf),headers:{'Accept':'applicat
 function closeFO(){fo.classList.remove('active');document.body.style.overflow=''}
 foc.addEventListener('click',function(e){e.stopPropagation();closeFO()});
 fo.addEventListener('click',function(e){if(e.target===fo)closeFO()})}
-
-/* ==========================================================================
-   THREE.JS 3D ZLATÉ ČÁSTICE V HERO SEKCI
-   ========================================================================== */
-var canvas = document.getElementById('hero-canvas');
-if (canvas && typeof THREE !== 'undefined') {
-  var scene = new THREE.Scene();
-  var camera = new THREE.PerspectiveCamera(60, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
-  camera.position.z = 45;
-
-  var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-  renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-  var count = window.innerWidth < 768 ? 220 : 500;
-  var geometry = new THREE.BufferGeometry();
-  var positions = new Float32Array(count * 3);
-  var scales = new Float32Array(count);
-
-  for (var i = 0; i < count; i++) {
-    positions[i * 3] = (Math.random() - 0.5) * 85;
-    positions[i * 3 + 1] = (Math.random() - 0.5) * 55;
-    positions[i * 3 + 2] = (Math.random() - 0.5) * 50;
-    scales[i] = Math.random() * 0.8 + 0.3;
-  }
-
-  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-
-  var material = new THREE.PointsMaterial({
-    color: 0xC8A45C,
-    size: 1.4,
-    transparent: true,
-    opacity: 0.75,
-    blending: THREE.AdditiveBlending
-  });
-
-  var particleSystem = new THREE.Points(geometry, material);
-  scene.add(particleSystem);
-
-  var mouseX = 0, mouseY = 0;
-  var targetX = 0, targetY = 0;
-
-  window.addEventListener('mousemove', function(e) {
-    mouseX = (e.clientX - window.innerWidth / 2) * 0.015;
-    mouseY = (e.clientY - window.innerHeight / 2) * 0.015;
-  }, { passive: true });
-
-  function resize() {
-    if (!canvas) return;
-    var w = canvas.parentElement.clientWidth;
-    var h = canvas.parentElement.clientHeight;
-    camera.aspect = w / h;
-    camera.updateProjectionMatrix();
-    renderer.setSize(w, h);
-  }
-  window.addEventListener('resize', resize);
-
-  var clock = new THREE.Clock();
-  function animate() {
-    requestAnimationFrame(animate);
-    var elapsedTime = clock.getElapsedTime();
-
-    targetX += (mouseX - targetX) * 0.05;
-    targetY += (mouseY - targetY) * 0.05;
-
-    particleSystem.rotation.y = elapsedTime * 0.03 + targetX * 0.4;
-    particleSystem.rotation.x = Math.sin(elapsedTime * 0.02) * 0.1 - targetY * 0.4;
-
-    renderer.render(scene, camera);
-  }
-  animate();
-}
-
-/* ==========================================================================
-   3D TILT & LIGHT GLARE PRO KARTY A GALERII
-   ========================================================================== */
-if (window.matchMedia('(pointer: fine)').matches) {
-  var tiltElements = document.querySelectorAll('.style-card, .gallery-item');
-  
-  tiltElements.forEach(function(el) {
-    var glare = document.createElement('div');
-    glare.className = 'glare-effect';
-    el.appendChild(glare);
-
-    el.addEventListener('mousemove', function(e) {
-      var rect = el.getBoundingClientRect();
-      var x = e.clientX - rect.left;
-      var y = e.clientY - rect.top;
-      var centerX = rect.width / 2;
-      var centerY = rect.height / 2;
-
-      var rotateX = ((y - centerY) / centerY) * -9;
-      var rotateY = ((x - centerX) / centerX) * 9;
-
-      el.style.transform = 'perspective(900px) rotateX(' + rotateX.toFixed(2) + 'deg) rotateY(' + rotateY.toFixed(2) + 'deg) scale3d(1.02, 1.02, 1.02)';
-      glare.style.opacity = '1';
-      glare.style.background = 'radial-gradient(circle at ' + x + 'px ' + y + 'px, rgba(200, 164, 92, 0.35) 0%, rgba(255,255,255,0) 70%)';
-    });
-
-    el.addEventListener('mouseleave', function() {
-      el.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
-      glare.style.opacity = '0';
-    });
-  });
-}
 })();
 </script>
 </body>
