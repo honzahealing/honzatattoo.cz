@@ -115,17 +115,12 @@ nav.sc .hb span{background:var(--gold-light)}
 .btn-dark{background:var(--charcoal);color:var(--white);border:1.5px solid var(--charcoal)}
 .btn-dark:hover{background:#333;transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.2)}
 
-/* SEPARATOR - inkoustova smouha + plynuly prechod barev mezi sekcemi */
-.sep{position:relative;overflow:hidden;line-height:0;height:104px;--ink:#B08F49;--drop:#C8A45C;background:linear-gradient(180deg,var(--from,#1A1A1A) 0%,var(--to,#fff) 100%)}
-.sep svg{display:block;width:100%;height:100%}
-.sep .ink{fill:var(--ink);transform-box:view-box;transform-origin:50% 50%;transform:scaleX(.04);opacity:0}
-.sep.in .ink{animation:inkSpread 1.15s cubic-bezier(.22,1,.36,1) forwards}
-@keyframes inkSpread{0%{transform:scaleX(.04);opacity:0}22%{opacity:.85}100%{transform:scaleX(1);opacity:.85}}
-.sep .drop{fill:var(--drop);opacity:0}
-.sep.in .drop{animation:dropIn .5s ease var(--dd,0s) forwards}
-@keyframes dropIn{from{opacity:0;transform:scale(.4)}to{opacity:.7;transform:scale(1)}}
-@media(prefers-reduced-motion:reduce){.sep .ink{transform:none;opacity:.85}.sep .drop{opacity:.7}.sep.in .ink,.sep.in .drop{animation:none}}
-@media(max-width:768px){.sep{height:68px}}
+/* SEPARATOR - plynuly gradientovy prechod barev mezi sekcemi + jemna zlata linka */
+.sep{position:relative;overflow:hidden;line-height:0;height:88px;background:linear-gradient(180deg,var(--from,#1A1A1A) 0%,var(--to,#fff) 100%)}
+.sep::before{content:'';position:absolute;top:50%;left:50%;width:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold-light) 15%,var(--gold) 50%,var(--gold-light) 85%,transparent);transform:translate(-50%,-50%);opacity:0;transition:width 1.3s cubic-bezier(.22,1,.36,1),opacity .8s ease}
+.sep.in::before{width:60%;opacity:.55}
+@media(prefers-reduced-motion:reduce){.sep::before{transition:none;width:60%;opacity:.55}}
+@media(max-width:768px){.sep{height:56px}.sep.in::before{width:78%}}
 
 /* SECTION HELPERS */
 .stg{font-size:.72rem;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
@@ -680,94 +675,16 @@ document.querySelectorAll('.rv,.rl,.rr,.rd').forEach(function(e){obs.observe(e)}
 /* SMOOTH SCROLL */
 document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();var t=document.querySelector(this.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'})})});
 
-/* SEPARATOR - inkoustova smouha, generovana podle skutecne sirky */
+/* SEPARATOR - jemna zlata linka se rozestre pri prijezdu do zorneho pole */
 (function(){
 var seps=document.querySelectorAll('.sep');
 if(!seps.length)return;
-var NS='http://www.w3.org/2000/svg';
-
-/* jeden sdileny filtr pro roztrepany okraj inkoustu */
-var defsSvg=document.createElementNS(NS,'svg');
-defsSvg.setAttribute('width','0');
-defsSvg.setAttribute('height','0');
-defsSvg.setAttribute('aria-hidden','true');
-defsSvg.style.position='absolute';
-defsSvg.innerHTML='<defs><filter id="sepInk" x="-12%" y="-45%" width="124%" height="190%"><feTurbulence type="fractalNoise" baseFrequency="0.02 0.055" numOctaves="2" seed="5" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="7" xChannelSelector="R" yChannelSelector="G"/></filter></defs>';
-document.body.appendChild(defsSvg);
-
-function f(v){return Math.round(v*10)/10}
-
-function draw(sep,idx){
-  var W=sep.offsetWidth,H=sep.offsetHeight;
-  if(!W||!H)return;
-  var seed=9176+idx*7919;
-  function rnd(){seed=(seed*1664525+1013904223)%4294967296;return seed/4294967296}
-
-  while(sep.firstChild)sep.removeChild(sep.firstChild);
-  var svg=document.createElementNS(NS,'svg');
-  svg.setAttribute('viewBox','0 0 '+f(W)+' '+f(H));
-  svg.setAttribute('aria-hidden','true');
-  sep.appendChild(svg);
-
-  /* smouha: horni a dolni okraj s obalkou, ktera se ke koncum zuzuje */
-  var span=W*0.78,x0=(W-span)/2,cy=H/2,N=34,top='',bot='',i,t,x,env,a;
-  for(i=0;i<=N;i++){
-    t=i/N;x=x0+t*span;env=Math.pow(Math.sin(Math.PI*t),0.75);
-    a=(0.035+rnd()*0.105)*H*env;
-    top+=(i?' L ':'M ')+f(x)+' '+f(cy-a);
-  }
-  for(i=N;i>=0;i--){
-    t=i/N;x=x0+t*span;env=Math.pow(Math.sin(Math.PI*t),0.75);
-    a=(0.035+rnd()*0.105)*H*env;
-    bot+=' L '+f(x)+' '+f(cy+a);
-  }
-  var g=document.createElementNS(NS,'g');
-  g.setAttribute('class','ink');
-  g.setAttribute('filter','url(#sepInk)');
-  var blob=document.createElementNS(NS,'path');
-  blob.setAttribute('d',top+bot+' Z');
-  g.appendChild(blob);
-  svg.appendChild(g);
-
-  /* kapky - razene od stredu ven, aby odletavaly postupne */
-  var drops=[],nd=Math.round(W/95)+6;
-  for(i=0;i<nd;i++){
-    var side=(i%2)?1:-1,dist=0.1+rnd()*0.36;
-    drops.push({x:W/2+side*dist*W,y:cy+(rnd()-0.5)*H*0.72,r:0.9+rnd()*2.3,k:dist});
-  }
-  drops.sort(function(p,q){return p.k-q.k});
-  for(i=0;i<drops.length;i++){
-    var d=drops[i],e=document.createElementNS(NS,'ellipse');
-    e.setAttribute('class','drop');
-    e.setAttribute('cx',f(d.x));e.setAttribute('cy',f(d.y));
-    e.setAttribute('rx',f(d.r));e.setAttribute('ry',f(d.r*0.82));
-    e.style.transformBox='fill-box';
-    e.style.transformOrigin='center';
-    e.style.setProperty('--dd',(0.25+i*0.045).toFixed(2)+'s');
-    svg.appendChild(e);
-  }
-}
-
-function drawAll(){for(var i=0;i<seps.length;i++)draw(seps[i],i)}
-drawAll();
-
 var io2=new IntersectionObserver(function(es){
   es.forEach(function(en){
     if(en.isIntersecting){en.target.classList.add('in');io2.unobserve(en.target)}
   });
 },{threshold:.35});
 for(var i=0;i<seps.length;i++)io2.observe(seps[i]);
-
-var rt;
-window.addEventListener('resize',function(){
-  clearTimeout(rt);
-  rt=setTimeout(function(){
-    var on=[],i;
-    for(i=0;i<seps.length;i++)on.push(seps[i].classList.contains('in'));
-    drawAll();
-    for(i=0;i<seps.length;i++)if(on[i])seps[i].classList.add('in');
-  },200);
-});
 })();
 
 /* PROCESS TREE - timeline je strom: kmen uprostred, z kazdeho kroku vetev do prazdne strany */
