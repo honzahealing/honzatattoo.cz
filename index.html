@@ -386,14 +386,14 @@ nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
 <li><a href="#gallery">Galerie</a></li>
 <li><a href="#process">Proces</a></li>
 <li><a href="#pricing">Ceník</a></li>
-<li><a href="#reviews">Reference</a></li>
+<!-- <li><a href="#reviews">Reference</a></li> -->
 <li><a href="#faq">FAQ</a></li>
 <li><a href="#contact">Kontakt</a></li>
 </ul>
 <button class="hb" id="hb"><span></span><span></span><span></span></button>
 </nav>
 <div class="mm" id="mm">
-<a href="#about" onclick="cm()">O mně</a><a href="#styles" onclick="cm()">Styl</a><a href="#gallery" onclick="cm()">Galerie</a><a href="#process" onclick="cm()">Proces</a><a href="#pricing" onclick="cm()">Ceník</a><a href="#reviews" onclick="cm()">Reference</a><a href="#faq" onclick="cm()">FAQ</a><a href="#contact" onclick="cm()">Kontakt</a>
+<a href="#about" onclick="cm()">O mně</a><a href="#styles" onclick="cm()">Styl</a><a href="#gallery" onclick="cm()">Galerie</a><a href="#process" onclick="cm()">Proces</a><a href="#pricing" onclick="cm()">Ceník</a><!-- <a href="#reviews" onclick="cm()">Reference</a> --><a href="#faq" onclick="cm()">FAQ</a><a href="#contact" onclick="cm()">Kontakt</a>
 </div>
 
 <!-- HERO -->
@@ -545,9 +545,17 @@ nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
 </section>
 
 <!-- text z puvodni marquee (nepouziva se): 100% spokojených klientů ✦ Individuální přístup ✦ Profesionální péče ✦ Přátelská atmosféra ✦ -->
+<div class="sep" style="--from:#F7F8FA;--to:#F7F8FA"></div>
+
+<!-- ============================================================
+     SEKCE "REFERENCE" — DOČASNĚ SKRYTA (2026-08-27, na přání Honzy)
+     Pro obnovení: odkomentuj tento blok a vrať zpět oba separátory
+     (--from:#F7F8FA;--to:#fff a --from:#fff;--to:#F7F8FA) místo
+     jednoho spojovacího separátoru výše. Odkomentuj i odkazy
+     "Reference" v desktop nav (<li>) a mobilním menu (<a>) o pár
+     řádků výš v souboru.
 <div class="sep" style="--from:#F7F8FA;--to:#fff"></div>
 
-<!-- REVIEWS -->
 <section class="reviews" id="reviews">
 <div class="reviews-header">
 <div class="stg rv">Reference</div>
@@ -566,11 +574,12 @@ nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
 <div class="rev-nav"><button id="rev-prev">&#8249;</button><button id="rev-next">&#8250;</button></div>
 </section>
 
-<!-- REVIEW OVERLAY -->
 <div class="rev-overlay" id="rev-overlay"><div class="rev-overlay-card"><button class="ro-close" id="ro-close">&times;</button><div class="ro-stars">★★★★★</div><p class="ro-text" id="ro-text"></p><div class="ro-name" id="ro-name"></div><div class="ro-service" id="ro-service"></div><div class="ro-nav"><button id="ro-prev">&#8249;</button><button id="ro-next">&#8250;</button></div><div class="ro-counter" id="ro-counter"></div></div></div>
 
-<!-- text z puvodni marquee (nepouziva se): Odpovědi na vaše otázky ✦ Péče o tetování ✦ Příprava na sezení ✦ Platba & záloha ✦ Konzultace zdarma ✦ -->
 <div class="sep" style="--from:#fff;--to:#F7F8FA"></div>
+============================================================ -->
+
+<!-- text z puvodni marquee (nepouziva se): Odpovědi na vaše otázky ✦ Péče o tetování ✦ Příprava na sezení ✦ Platba & záloha ✦ Konzultace zdarma ✦ -->
 
 <!-- FAQ - 9 items -->
 <section class="faq" id="faq">
@@ -993,24 +1002,27 @@ var ltx=0,lsw=false;
 lb.addEventListener('touchstart',function(e){if(e.target.closest('.lightbox-close,.lightbox-arrow'))return;ltx=e.changedTouches[0].clientX;lsw=true},{passive:true});
 lb.addEventListener('touchend',function(e){if(!lsw)return;lsw=false;var d=e.changedTouches[0].clientX-ltx;if(Math.abs(d)>50)showLB(d<0?(lC+1)%lG.length:(lC-1+lG.length)%lG.length)},{passive:true});
 
-/* REVIEWS */
+/* REVIEWS \u2014 sekce "Reference" je do\u010Dasn\u011B skryt\u00E1 v HTML v\u00FD\u0161e, tyto
+   prvky proto v DOM nejsou; cel\u00FD blok je zagardovan\u00FD p\u0159es if(revOv)
+   tak, aby nic nespadlo. Vr\u00E1t\u00ED se s\u00E1m do provozu, jakmile se sekce
+   v HTML odkomentuje. */
 var revTrack=document.getElementById('rev-track'),revPrev=document.getElementById('rev-prev'),revNext=document.getElementById('rev-next');
 if(revTrack){revNext.addEventListener('click',function(){revTrack.scrollBy({left:320,behavior:'smooth'})});revPrev.addEventListener('click',function(){revTrack.scrollBy({left:-320,behavior:'smooth'})})}
 var revCards=Array.from(document.querySelectorAll('.rev-card')),revOv=document.getElementById('rev-overlay'),roText=document.getElementById('ro-text'),roName=document.getElementById('ro-name'),roService=document.getElementById('ro-service'),roClose=document.getElementById('ro-close'),roPrev=document.getElementById('ro-prev'),roNext=document.getElementById('ro-next'),roCounter=document.getElementById('ro-counter');
 var rC=0;
-function showRev(i){if(i<0||i>=revCards.length)return;rC=i;var c=revCards[i];roText.textContent='\u201E'+c.getAttribute('data-text')+'\u201C';roName.textContent=c.getAttribute('data-name');roService.textContent=c.getAttribute('data-service');roCounter.textContent=(i+1)+' / '+revCards.length;revOv.classList.add('active');document.body.style.overflow='hidden'}
-revCards.forEach(function(c,i){c.addEventListener('click',function(){showRev(i)})});
-function closeRev(){revOv.classList.remove('active');document.body.style.overflow=''}
+function showRev(i){if(!revOv||i<0||i>=revCards.length)return;rC=i;var c=revCards[i];roText.textContent='\u201E'+c.getAttribute('data-text')+'\u201C';roName.textContent=c.getAttribute('data-name');roService.textContent=c.getAttribute('data-service');roCounter.textContent=(i+1)+' / '+revCards.length;revOv.classList.add('active');document.body.style.overflow='hidden'}
+function closeRev(){if(!revOv)return;revOv.classList.remove('active');document.body.style.overflow=''}
+if(revOv){revCards.forEach(function(c,i){c.addEventListener('click',function(){showRev(i)})});
 roClose.addEventListener('click',function(e){e.stopPropagation();closeRev()});
 revOv.addEventListener('click',function(e){if(e.target===revOv)closeRev()});
 roPrev.addEventListener('click',function(e){e.stopPropagation();showRev((rC-1+revCards.length)%revCards.length)});
-roNext.addEventListener('click',function(e){e.stopPropagation();showRev((rC+1)%revCards.length)});
+roNext.addEventListener('click',function(e){e.stopPropagation();showRev((rC+1)%revCards.length)})}
 
 /* KEYBOARD */
 document.addEventListener('keydown',function(e){
 if(e.key==='Escape'){closeLB();closeRev();var fo=document.getElementById('form-ov');if(fo&&fo.classList.contains('active')){fo.classList.remove('active');document.body.style.overflow=''}}
 if(lb.classList.contains('active')){if(e.key==='ArrowRight')showLB((lC+1)%lG.length);if(e.key==='ArrowLeft')showLB((lC-1+lG.length)%lG.length)}
-if(revOv.classList.contains('active')){if(e.key==='ArrowRight')showRev((rC+1)%revCards.length);if(e.key==='ArrowLeft')showRev((rC-1+revCards.length)%revCards.length)}
+if(revOv&&revOv.classList.contains('active')){if(e.key==='ArrowRight')showRev((rC+1)%revCards.length);if(e.key==='ArrowLeft')showRev((rC-1+revCards.length)%revCards.length)}
 });
 
 /* CHAR COUNTER */
