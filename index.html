@@ -115,12 +115,10 @@ nav.sc .hb span{background:var(--gold-light)}
 .btn-dark{background:var(--charcoal);color:var(--white);border:1.5px solid var(--charcoal)}
 .btn-dark:hover{background:#333;transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.2)}
 
-/* SEPARATOR - plynuly gradientovy prechod barev mezi sekcemi + jemna zlata linka */
-.sep{position:relative;overflow:hidden;line-height:0;height:88px;background:linear-gradient(180deg,var(--from,#1A1A1A) 0%,var(--to,#fff) 100%)}
-.sep::before{content:'';position:absolute;top:50%;left:50%;width:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold-light) 15%,var(--gold) 50%,var(--gold-light) 85%,transparent);transform:translate(-50%,-50%);opacity:0;transition:width 1.3s cubic-bezier(.22,1,.36,1),opacity .8s ease}
-.sep.in::before{width:60%;opacity:.55}
-@media(prefers-reduced-motion:reduce){.sep::before{transition:none;width:60%;opacity:.55}}
-@media(max-width:768px){.sep{height:56px}.sep.in::before{width:78%}}
+/* SEPARATOR - dlouhy, jemny gradientovy prechod barev mezi sekcemi (bez dekorace) */
+.sep{position:relative;overflow:hidden;line-height:0;height:260px;background:linear-gradient(180deg,var(--from,#1A1A1A) 0%,var(--to,#fff) 100%)}
+@media(max-width:900px){.sep{height:160px}}
+@media(max-width:480px){.sep{height:110px}}
 
 /* SECTION HELPERS */
 .stg{font-size:.72rem;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
@@ -674,18 +672,6 @@ document.querySelectorAll('.rv,.rl,.rr,.rd').forEach(function(e){obs.observe(e)}
 
 /* SMOOTH SCROLL */
 document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();var t=document.querySelector(this.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'})})});
-
-/* SEPARATOR - jemna zlata linka se rozestre pri prijezdu do zorneho pole */
-(function(){
-var seps=document.querySelectorAll('.sep');
-if(!seps.length)return;
-var io2=new IntersectionObserver(function(es){
-  es.forEach(function(en){
-    if(en.isIntersecting){en.target.classList.add('in');io2.unobserve(en.target)}
-  });
-},{threshold:.35});
-for(var i=0;i<seps.length;i++)io2.observe(seps[i]);
-})();
 
 /* PROCESS TREE - timeline je strom: kmen uprostred, z kazdeho kroku vetev do prazdne strany */
 (function(){
