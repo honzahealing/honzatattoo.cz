@@ -115,11 +115,6 @@ nav.sc .hb span{background:var(--gold-light)}
 .btn-dark{background:var(--charcoal);color:var(--white);border:1.5px solid var(--charcoal)}
 .btn-dark:hover{background:#333;transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.2)}
 
-/* SEPARATOR - dlouhy, jemny gradientovy prechod barev mezi sekcemi (bez dekorace) */
-.sep{position:relative;overflow:hidden;line-height:0;height:260px;background:linear-gradient(180deg,var(--from,#1A1A1A) 0%,var(--to,#fff) 100%)}
-@media(max-width:900px){.sep{height:160px}}
-@media(max-width:480px){.sep{height:110px}}
-
 /* SECTION HELPERS */
 .stg{font-size:.72rem;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
 .stt{font-family:var(--font-display);font-size:clamp(2rem,4vw,3.2rem);font-weight:300;line-height:1.15;color:var(--charcoal);margin-bottom:14px}
@@ -407,7 +402,6 @@ nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
 
 <!-- MARQUEE -->
 <!-- text z puvodni marquee (nepouziva se): Black & Grey Realismus ✦ Zvířecí motivy ✦ Abstraktní kompozice ✦ Barevné práce ✦ Pozitivní energie ✦ Praha — Žižkov ✦ 12+ let zkušeností ✦ Unikátní návrhy ✦ -->
-<div class="sep" style="--from:#1A1A1A;--to:#fff"></div>
 
 <!-- ABOUT -->
 <section class="about" id="about">
@@ -429,7 +423,6 @@ nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
 </section>
 
 <!-- text z puvodni marquee (nepouziva se): Černobílý realismus ✦ Zvířata ✦ Antické motivy ✦ Portréty ✦ Nápisy ✦ Květinové motivy ✦ Design ✦ Barevné práce ✦ -->
-<div class="sep" style="--from:#fff;--to:#F7F8FA"></div>
 
 <!-- STYLES -->
 <section class="styles" id="styles">
@@ -449,7 +442,6 @@ nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
 </section>
 
 <!-- text z puvodni marquee (nepouziva se): Preciznost v každém detailu ✦ Výhradně pozitivní motivy ✦ Unikátní návrhy na míru ✦ 12+ let zkušeností ✦ -->
-<div class="sep" style="--from:#F7F8FA;--to:#fff"></div>
 
 <!-- GALLERY -->
 <section class="gallery" id="gallery">
@@ -472,7 +464,6 @@ nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
 </section>
 
 <!-- text z puvodni marquee (nepouziva se): Více prací na Instagramu ✦ @honza.tattoo ✦ Sledujte mě ✦ Nové práce každý týden ✦ -->
-<div class="sep" style="--from:#fff;--to:#1A1A1A"></div>
 
 <!-- INSTAGRAM -->
 <div class="ig-section">
@@ -485,7 +476,6 @@ nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
 </div>
 
 <!-- text z puvodni marquee (nepouziva se): Konzultace zdarma ✦ Návrh na míru ✦ Záloha od 1 000 Kč ✦ Studio Praha — Žižkov ✦ Včetně víkendů ✦ -->
-<div class="sep" style="--from:#1A1A1A;--to:#0C0F14"></div>
 
 <!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox">
@@ -518,7 +508,6 @@ nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
 </section>
 
 <!-- text z puvodni marquee (nepouziva se): Od 1 500 Kč ✦ Malé tetování od 1 hodiny ✦ Celodenní sezení od 7 000 Kč ✦ Transparentní ceny ✦ Žádné skryté poplatky ✦ -->
-<div class="sep" style="--from:#0C0F14;--to:#F7F8FA"></div>
 
 <!-- PRICING -->
 <section class="pricing" id="pricing">
@@ -538,16 +527,13 @@ nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
 </section>
 
 <!-- text z puvodni marquee (nepouziva se): 100% spokojených klientů ✦ Individuální přístup ✦ Profesionální péče ✦ Přátelská atmosféra ✦ -->
-<div class="sep" style="--from:#F7F8FA;--to:#F7F8FA"></div>
 
 <!-- ============================================================
      SEKCE "REFERENCE" — DOČASNĚ SKRYTA (2026-08-27, na přání Honzy)
-     Pro obnovení: odkomentuj tento blok a vrať zpět oba separátory
-     (--from:#F7F8FA;--to:#fff a --from:#fff;--to:#F7F8FA) místo
-     jednoho spojovacího separátoru výše. Odkomentuj i odkazy
+     Pro obnovení: odkomentuj tento blok. Odkomentuj i odkazy
      "Reference" v desktop nav (<li>) a mobilním menu (<a>) o pár
-     řádků výš v souboru.
-<div class="sep" style="--from:#F7F8FA;--to:#fff"></div>
+     řádků výš v souboru. (Pozn.: mezisekční separátory --sep-- byly
+     2026-08-27 z webu úplně odstraněny, netýká se obnovy Reference.)
 
 <section class="reviews" id="reviews">
 <div class="reviews-header">
@@ -569,7 +555,6 @@ nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
 
 <div class="rev-overlay" id="rev-overlay"><div class="rev-overlay-card"><button class="ro-close" id="ro-close">&times;</button><div class="ro-stars">★★★★★</div><p class="ro-text" id="ro-text"></p><div class="ro-name" id="ro-name"></div><div class="ro-service" id="ro-service"></div><div class="ro-nav"><button id="ro-prev">&#8249;</button><button id="ro-next">&#8250;</button></div><div class="ro-counter" id="ro-counter"></div></div></div>
 
-<div class="sep" style="--from:#fff;--to:#F7F8FA"></div>
 ============================================================ -->
 
 <!-- text z puvodni marquee (nepouziva se): Odpovědi na vaše otázky ✦ Péče o tetování ✦ Příprava na sezení ✦ Platba & záloha ✦ Konzultace zdarma ✦ -->
@@ -595,7 +580,6 @@ nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
 </section>
 
 <!-- text z puvodni marquee (nepouziva se): Napište mi ✦ honza@honzatattoo.cz ✦ Praha — Žižkov ✦ Termíny včetně víkendů ✦ Těším se na spolupráci ✦ -->
-<div class="sep" style="--from:#F7F8FA;--to:#fff"></div>
 
 <!-- CONTACT -->
 <section class="contact" id="contact">
