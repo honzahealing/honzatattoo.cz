@@ -375,13 +375,14 @@ nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
 <li><a href="#process">Proces</a></li>
 <li><a href="#pricing">Ceník</a></li>
 <!-- <li><a href="#reviews">Reference</a></li> -->
+<li><a href="#instagram">Instagram</a></li>
 <li><a href="#faq">FAQ</a></li>
 <li><a href="#contact">Kontakt</a></li>
 </ul>
 <button class="hb" id="hb"><span></span><span></span><span></span></button>
 </nav>
 <div class="mm" id="mm">
-<a href="#about" onclick="cm()">O mně</a><a href="#styles" onclick="cm()">Styl</a><a href="#gallery" onclick="cm()">Galerie</a><a href="#process" onclick="cm()">Proces</a><a href="#pricing" onclick="cm()">Ceník</a><!-- <a href="#reviews" onclick="cm()">Reference</a> --><a href="#faq" onclick="cm()">FAQ</a><a href="#contact" onclick="cm()">Kontakt</a>
+<a href="#about" onclick="cm()">O mně</a><a href="#styles" onclick="cm()">Styl</a><a href="#gallery" onclick="cm()">Galerie</a><a href="#process" onclick="cm()">Proces</a><a href="#pricing" onclick="cm()">Ceník</a><!-- <a href="#reviews" onclick="cm()">Reference</a> --><a href="#instagram" onclick="cm()">Instagram</a><a href="#faq" onclick="cm()">FAQ</a><a href="#contact" onclick="cm()">Kontakt</a>
 </div>
 
 <!-- HERO -->
@@ -466,13 +467,12 @@ nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
 <!-- text z puvodni marquee (nepouziva se): Více prací na Instagramu ✦ @honza.tattoo ✦ Sledujte mě ✦ Nové práce každý týden ✦ -->
 
 <!-- INSTAGRAM -->
-<div class="ig-section">
+<div class="ig-section" id="instagram">
 <p>Sledujte mě na Instagramu</p>
 <a href="https://instagram.com/honza.tattoo" target="_blank">@honza.tattoo</a>
 <div class="ig-embed" id="ig-embed">
 <div class="sk-instagram-feed" data-embed-id="25708810"></div><script src="https://widgets.sociablekit.com/instagram-feed/widget.js" defer></script>
 </div>
-<p style="font-size:.75rem;color:rgba(255,255,255,.3);margin-top:20px">Zobrazuje se posledních pár příspěvků · <a href="https://instagram.com/honza.tattoo" target="_blank" style="color:var(--gold-light)">Otevřít na Instagramu →</a></p>
 </div>
 
 <!-- text z puvodni marquee (nepouziva se): Konzultace zdarma ✦ Návrh na míru ✦ Záloha od 1 000 Kč ✦ Studio Praha — Žižkov ✦ Včetně víkendů ✦ -->
@@ -640,7 +640,7 @@ if(announceBar)announceBar.classList.toggle('sc',sy>60);
 if(scrollProg){var dH=document.documentElement.scrollHeight-innerHeight;scrollProg.style.width=(dH>0?(sy/dH)*100:0)+'%'}
 if(heroContent&&sy<innerHeight*1.5){var hp=sy/innerHeight;heroContent.style.opacity=Math.max(0,1-hp*1.3);heroContent.style.transform='translateY('+(sy*.3)+'px) scale('+(1-hp*.06)+')'}
 /* Active nav */
-var secs=document.querySelectorAll('section[id]'),nls=document.querySelectorAll('.nk a'),cur='';
+var secs=document.querySelectorAll('section[id],div.ig-section[id]'),nls=document.querySelectorAll('.nk a'),cur='';
 secs.forEach(function(s){if(sy>=s.offsetTop-120)cur=s.id});
 nls.forEach(function(l){l.classList.remove('active');if(l.getAttribute('href')==='#'+cur)l.classList.add('active')});
 });
