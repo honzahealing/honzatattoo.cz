@@ -15,56 +15,74 @@ var stage=root.querySelector('.sc-stage'),
     bar=root.querySelector('.sc-bar i');
 
 /* draha kamery v hero fotce (podil sirky/vysky): zoom na hlavu andela, pak esicko dolu po tele */
-var HEAD={x:.44,y:.29},FOOT={x:.49,y:.74},footY=.74,ANCHOR_Y=.4,
-    W=0,H=0,iw=1333,ih=2000,rw=0,rh=0,ox=0,oy=0,Z=1.8,A=.2,mobile=false,
-    LUT=null,LN=600;
+var HEAD={x:.44,y:.29},FOOT={x:.49,y:.74},footY=.74,HEAD_SCREEN=.28,anchorY=.28,
+    W=0,H=0,iw=1333,ih=2000,rw=0,rh=0,ox=0,oy=0,Z=1.8,A=.2,mobile=false;
 
-/* zoom bezi 0..ZOOM_T, sjezd dolu zacina uz v DESC_T, aby se na hlave nezastavilo */
-var ZOOM_T=.3,DESC_T=.22,EASE_K=.4,FADE_START=.9;
+/* casova osa: zoom a sjezd se prolinaji v CROSS (zoom plynule dobiha, sjezd se plynule rozjizdi) */
+var CROSS=.16,FADE_START=.9,P_D=.2,P_Z=.36,wZ=1,vD=1,K2=2/Math.PI;
 
 function clamp(v){return v<0?0:v>1?1:v}
 function ss(a,b,v){var t=clamp((v-a)/(b-a));return t*t*(3-2*t)}
 function lerp(a,b,t){return a+(b-a)*t}
-/* plynuly rozjezd (bez skoku v rychlosti), pak rovnomerne */
-function easeIn(x){x=clamp(x);var k=EASE_K;return (x<k?x*x/(2*k):x-k/2)/(1-k/2)}
 
-/* stav kamery pro parametr drahy t (0..1) */
-function state(t){
-  var b=ss(0,ZOOM_T,t),
-      d=easeIn((t-DESC_T)/(1-DESC_T)),
-      wave=Math.sin(d*3*Math.PI)*ss(0,.12,d),
+/* stav kamery: b = kolik je hotovo zoomu (0..1), d = kolik je hotovo sjezdu (0..1) */
+function state(b,d){
+  var wave=Math.sin(d*3*Math.PI)*ss(0,.12,d),
       fx=lerp(HEAD.x,FOOT.x,d)*rw,fy=lerp(HEAD.y,footY,d)*rh;
   return {
     v:d,wave:wave,fx:fx,fy:fy,
-    z:lerp(1,Z,b),
+    z:Math.pow(Z,b),
     sx:lerp(ox+fx,W*(.5+A*wave),b),
-    sy:lerp(oy+fy,H*ANCHOR_Y,b),
+    sy:lerp(oy+fy,H*anchorY,b),
     rot:-wave*1.4*b
   };
 }
 
-/* prepocet: rovnomerna rychlost - meri se posun viditelne plochy (mrizka 3x3) mezi sousednimi stavy */
-function buildLUT(){
-  var L=new Float64Array(LN+1),prev=state(0),D=Math.PI/180,gx,gy,k;
-  for(var i=1;i<=LN;i++){
-    var st=state(i/LN),sum=0,
-        c0=Math.cos(-prev.rot*D),s0=Math.sin(-prev.rot*D),
-        c1=Math.cos(st.rot*D),s1=Math.sin(st.rot*D);
-    for(gx=0;gx<3;gx++)for(gy=0;gy<3;gy++){
-      var px=W*(.2+.3*gx),py=H*(.2+.3*gy),
-          dx=(px-prev.sx)/prev.z,dy=(py-prev.sy)/prev.z,
-          ix=prev.fx+dx*c0-dy*s0,iy=prev.fy+dx*s0+dy*c0,
-          ex=(ix-st.fx)*st.z,ey=(iy-st.fy)*st.z,
-          nx=st.sx+ex*c1-ey*s1,ny=st.sy+ex*s1+ey*c1;
-      sum+=Math.hypot(nx-px,ny-py);
-    }
-    L[i]=L[i-1]+sum/9;
-    prev=st;
+/* posun viditelne plochy (mrizka 3x3) mezi dvema stavy kamery */
+function flow(a,c){
+  var D=Math.PI/180,sum=0,
+      c0=Math.cos(-a.rot*D),s0=Math.sin(-a.rot*D),
+      c1=Math.cos(c.rot*D),s1=Math.sin(c.rot*D);
+  for(var gx=0;gx<3;gx++)for(var gy=0;gy<3;gy++){
+    var px=W*(.2+.3*gx),py=H*(.2+.3*gy),
+        dx=(px-a.sx)/a.z,dy=(py-a.sy)/a.z,
+        ix=a.fx+dx*c0-dy*s0,iy=a.fy+dx*s0+dy*c0,
+        ex=(ix-c.fx)*c.z,ey=(iy-c.fy)*c.z;
+    sum+=Math.hypot(c.sx+ex*c1-ey*s1-px,c.sy+ex*s1+ey*c1-py);
   }
-  for(k=0;k<=LN;k++)L[k]/=L[LN]||1;
+  return sum/9;
+}
+
+/* delky casti podle toho, kolik pohybu na obrazovce udela zoom a kolik sjezd -> stejna rychlost */
+function timeline(){
+  var N=200,Fz=0,Fd=0,i,c=CROSS;
+  for(i=0;i<N;i++){Fz+=flow(state(i/N,0),state((i+1)/N,0));Fd+=flow(state(1,i/N),state(1,(i+1)/N))}
+  P_D=Math.min(.5,Math.max(.05,(Fz*(1-c+K2*c)-Fd*K2*c)/(Fz+Fd)));
+  P_Z=P_D+c;
+  wZ=1/(P_D+K2*c);
+  vD=1/(K2*c+1-P_Z);
+}
+function zoomAt(p){
+  if(p<P_D)return wZ*p;
+  if(p<P_Z)return wZ*(P_D+K2*CROSS*Math.sin(Math.PI/2*(p-P_D)/CROSS));
+  return 1;
+}
+function descAt(p){
+  if(p<P_D)return 0;
+  if(p<P_Z)return vD*K2*CROSS*(1-Math.cos(Math.PI/2*(p-P_D)/CROSS));
+  return Math.min(1,vD*(K2*CROSS+p-P_Z));
+}
+
+/* stejna rychlost po cele draze: preparametrizace podle posunu viditelne plochy.
+   Tvar drahy (plynule prolnuti zoomu a sjezdu) zustava, meni se jen tempo. */
+var LUT=null,LN=500;
+function buildLUT(){
+  var L=new Float64Array(LN+1),prev=state(zoomAt(0),descAt(0)),i;
+  for(i=1;i<=LN;i++){var st=state(zoomAt(i/LN),descAt(i/LN));L[i]=L[i-1]+flow(prev,st);prev=st}
+  for(i=0;i<=LN;i++)L[i]/=L[LN]||1;
   LUT=L;
 }
-function tAt(s){
+function qAt(s){
   s=clamp(s);var lo=0,hi=LN;
   while(hi-lo>1){var m=(lo+hi)>>1;if(LUT[m]<s)lo=m;else hi=m}
   var d=LUT[hi]-LUT[lo];
@@ -77,13 +95,16 @@ function layout(){
   var s=Math.max(W/iw,H/ih);
   rw=iw*s;rh=ih*s;
   ox=(W-rw)/2;
-  oy=Math.min(0,Math.max(H-rh,(H*.42)-.29*rh*1.35));
+  /* vychozi zaber: hlava v horni tretine; pri zoomu zustane na stejne vysce, aby se obraz neotacel nahoru/dolu */
+  oy=Math.min(0,Math.max(H-rh,H*HEAD_SCREEN-HEAD.y*rh));
+  anchorY=(oy+HEAD.y*rh)/H;
   img.style.width=rw+'px';img.style.height=rh+'px';
   mobile=W<769;
   Z=W>H?1.8:2.4;
   A=mobile?.1:.2;
   /* konec drahy tak, aby spodni okraj fotky zustal vzdy pod obrazovkou (+rezerva na naklon) */
-  footY=Math.min(FOOT.y,1-(H*(1-ANCHOR_Y)+40)/(rh*Z));
+  footY=Math.min(FOOT.y,1-(H*(1-anchorY)+40)/(rh*Z));
+  timeline();
   buildLUT();
 }
 
@@ -95,7 +116,7 @@ function progress(){
 }
 
 function render(p){
-  var st=state(tAt(p));
+  var q=qAt(p),st=state(zoomAt(q),descAt(q));
 
   img.style.transform='translate3d('+st.sx.toFixed(1)+'px,'+st.sy.toFixed(1)+'px,0) rotate('+st.rot.toFixed(3)+'deg) scale('+st.z.toFixed(4)+') translate3d('+(-st.fx).toFixed(1)+'px,'+(-st.fy).toFixed(1)+'px,0)';
 
