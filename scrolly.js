@@ -14,18 +14,67 @@ var stage=root.querySelector('.sc-stage'),
     sideR=root.querySelector('.sc-side-r'),
     bar=root.querySelector('.sc-bar i');
 
-/* cesta kamery v hero fotce (podil sirky/vysky): hlava andela -> spodek draperie */
-var HEAD={x:.44,y:.29},FOOT={x:.49,y:.74},
-    W=0,H=0,iw=1333,ih=2000,rw=0,rh=0,ox=0,oy=0,Z=1.8,A=.2,mobile=false;
+/* draha kamery v hero fotce (podil sirky/vysky): obloukem kolem hlavy andela, pak dolu po tele */
+var HEAD_PATH=[[.34,.23],[.45,.17],[.56,.26],[.47,.37]],
+    BODY_PATH=[[.47,.5],[.48,.62],[.49,.74]],
+    W=0,H=0,iw=1333,ih=2000,rw=0,rh=0,ox=0,oy=0,Z=1.8,A=.2,mobile=false,
+    KP=[],T_HEAD=0,LUT=null,LN=600;
 
-/* rozdeleni scrollu: najeti na hlavu, vlna po tele, doznani */
-var ZOOM_END=.14,TRAVEL_END=.9;
+var FADE_START=.9;
 
 function clamp(v){return v<0?0:v>1?1:v}
 function ss(a,b,v){var t=clamp((v-a)/(b-a));return t*t*(3-2*t)}
 function lerp(a,b,t){return a+(b-a)*t}
-function easeIO(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2}
-function easeSine(t){return -(Math.cos(Math.PI*t)-1)/2}
+
+function cr(a,b,c,d,t){var t2=t*t,t3=t2*t;return .5*(2*b+(-a+c)*t+(2*a-5*b+4*c-d)*t2+(-a+3*b-3*c+d)*t3)}
+function spline(t){
+  var n=KP.length-1,x=clamp(t)*n,i=Math.min(n-1,Math.floor(x)),f=x-i,
+      p0=KP[Math.max(i-1,0)],p1=KP[i],p2=KP[i+1],p3=KP[Math.min(i+2,n)];
+  return [cr(p0[0],p1[0],p2[0],p3[0],f),cr(p0[1],p1[1],p2[1],p3[1],f)];
+}
+
+/* stav kamery pro parametr drahy t (0..1) */
+function state(t){
+  var b=ss(0,T_HEAD,t),
+      v=(t-T_HEAD)/(1-T_HEAD),
+      wave=v>0?Math.sin(v*3*Math.PI)*ss(0,.12,v):0,
+      f=spline(t),fx=f[0]*rw,fy=f[1]*rh;
+  return {
+    v:v,wave:wave,fx:fx,fy:fy,
+    z:lerp(1,Z,b),
+    sx:lerp(ox+fx,W*(.5+A*wave),b),
+    sy:lerp(oy+fy,H*(mobile?.4:.46),b),
+    rot:-wave*1.4*b
+  };
+}
+
+/* prepocet: rovnomerna rychlost - meri se posun viditelne plochy (mrizka 3x3) mezi sousednimi stavy */
+function buildLUT(){
+  var L=new Float64Array(LN+1),prev=state(0),D=Math.PI/180,gx,gy,k;
+  for(var i=1;i<=LN;i++){
+    var st=state(i/LN),sum=0,
+        c0=Math.cos(-prev.rot*D),s0=Math.sin(-prev.rot*D),
+        c1=Math.cos(st.rot*D),s1=Math.sin(st.rot*D);
+    for(gx=0;gx<3;gx++)for(gy=0;gy<3;gy++){
+      var px=W*(.2+.3*gx),py=H*(.2+.3*gy),
+          dx=(px-prev.sx)/prev.z,dy=(py-prev.sy)/prev.z,
+          ix=prev.fx+dx*c0-dy*s0,iy=prev.fy+dx*s0+dy*c0,
+          ex=(ix-st.fx)*st.z,ey=(iy-st.fy)*st.z,
+          nx=st.sx+ex*c1-ey*s1,ny=st.sy+ex*s1+ey*c1;
+      sum+=Math.hypot(nx-px,ny-py);
+    }
+    L[i]=L[i-1]+sum/9;
+    prev=st;
+  }
+  for(k=0;k<=LN;k++)L[k]/=L[LN]||1;
+  LUT=L;
+}
+function tAt(s){
+  s=clamp(s);var lo=0,hi=LN;
+  while(hi-lo>1){var m=(lo+hi)>>1;if(LUT[m]<s)lo=m;else hi=m}
+  var d=LUT[hi]-LUT[lo];
+  return (lo+(d>0?(s-LUT[lo])/d:0))/LN;
+}
 
 function layout(){
   W=stage.clientWidth;H=stage.clientHeight;
@@ -33,11 +82,14 @@ function layout(){
   var s=Math.max(W/iw,H/ih);
   rw=iw*s;rh=ih*s;
   ox=(W-rw)/2;
-  oy=Math.min(0,Math.max(H-rh,(H*.42)-HEAD.y*rh*1.35));
+  oy=Math.min(0,Math.max(H-rh,(H*.42)-.29*rh*1.35));
   img.style.width=rw+'px';img.style.height=rh+'px';
   mobile=W<769;
   Z=W>H?1.8:2.4;
   A=mobile?.1:.2;
+  KP=[[(W*.5-ox)/rw,(H*.5-oy)/rh]].concat(HEAD_PATH,BODY_PATH);
+  T_HEAD=HEAD_PATH.length/(KP.length-1);
+  buildLUT();
 }
 
 var target=0,cur=0,raf=0;
@@ -48,24 +100,11 @@ function progress(){
 }
 
 function render(p){
-  var e=easeIO(clamp(p/ZOOM_END)),
-      u=easeSine(clamp((p-ZOOM_END)/(TRAVEL_END-ZOOM_END))),
-      wave=Math.sin(u*3*Math.PI);
+  var st=state(tAt(p));
 
-  /* bod na tele, na ktery se prave diva kamera */
-  var fx=lerp(HEAD.x,FOOT.x,u)*rw,
-      fy=lerp(HEAD.y,FOOT.y,u)*rh;
+  img.style.transform='translate3d('+st.sx.toFixed(1)+'px,'+st.sy.toFixed(1)+'px,0) rotate('+st.rot.toFixed(3)+'deg) scale('+st.z.toFixed(4)+') translate3d('+(-st.fx).toFixed(1)+'px,'+(-st.fy).toFixed(1)+'px,0)';
 
-  /* kam na obrazovce ten bod patri: pred najetim puvodni kompozice, pak stred s vlnou */
-  var sx0=ox+HEAD.x*rw,sy0=oy+HEAD.y*rh,
-      sx=lerp(sx0,W*(.5+A*wave),e),
-      sy=lerp(sy0,H*(mobile?.4:.46),e),
-      z=lerp(1,Z,e),
-      rot=-wave*1.4*e;
-
-  img.style.transform='translate3d('+sx.toFixed(1)+'px,'+sy.toFixed(1)+'px,0) rotate('+rot.toFixed(3)+'deg) scale('+z.toFixed(4)+') translate3d('+(-fx).toFixed(1)+'px,'+(-fy).toFixed(1)+'px,0)';
-
-  var out=ss(TRAVEL_END,.99,p);
+  var out=ss(FADE_START,.99,p);
   img.style.filter='brightness('+lerp(1.08,.2,out).toFixed(3)+') contrast(1.06)';
   shade.style.opacity=lerp(1,.35,ss(.02,.1,p)).toFixed(3);
 
@@ -78,8 +117,8 @@ function render(p){
   /* texty: vrchol kazde vlny = jeden text na volne strane */
   var l=0,r=0;
   for(var i=0;i<notes.length;i++){
-    var c=(2*i+1)/(2*notes.length),
-        o=ss(c-.13,c-.04,u)*(1-ss(c+.06,c+.15,u)),
+    var c=(2*i+1)/(2*notes.length),v=st.v,
+        o=ss(c-.13,c-.04,v)*(1-ss(c+.06,c+.15,v)),
         n=notes[i],left=n.getAttribute('data-side')==='left',
         dx=(1-o)*(left?-50:50);
     n.style.opacity=o.toFixed(3);
