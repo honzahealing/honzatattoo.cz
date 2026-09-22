@@ -9,18 +9,23 @@ var stage=root.querySelector('.sc-stage'),
     shade=root.querySelector('.sc-shade'),
     intro=root.querySelector('.sc-intro'),
     hint=root.querySelector('.sc-hint'),
-    works=[].slice.call(root.querySelectorAll('.sc-work')),
-    figs=works.map(function(w){return w.querySelector('figure')}),
-    end=root.querySelector('.sc-end'),
+    notes=[].slice.call(root.querySelectorAll('.sc-note')),
+    sideL=root.querySelector('.sc-side-l'),
+    sideR=root.querySelector('.sc-side-r'),
     bar=root.querySelector('.sc-bar i');
 
-/* bod v hero fotce, kam kamera najizdi (tvar andela), v podilu sirky/vysky */
-var FX=.44,FY=.29,W=0,H=0,iw=1333,ih=2000,rw=0,rh=0,ox=0,oy=0,Z=1.8;
+/* cesta kamery v hero fotce (podil sirky/vysky): hlava andela -> spodek draperie */
+var HEAD={x:.44,y:.29},FOOT={x:.49,y:.74},
+    W=0,H=0,iw=1333,ih=2000,rw=0,rh=0,ox=0,oy=0,Z=1.8,A=.2,mobile=false;
+
+/* rozdeleni scrollu: najeti na hlavu, vlna po tele, doznani */
+var ZOOM_END=.14,TRAVEL_END=.9;
 
 function clamp(v){return v<0?0:v>1?1:v}
 function ss(a,b,v){var t=clamp((v-a)/(b-a));return t*t*(3-2*t)}
 function lerp(a,b,t){return a+(b-a)*t}
 function easeIO(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2}
+function easeSine(t){return -(Math.cos(Math.PI*t)-1)/2}
 
 function layout(){
   W=stage.clientWidth;H=stage.clientHeight;
@@ -28,9 +33,11 @@ function layout(){
   var s=Math.max(W/iw,H/ih);
   rw=iw*s;rh=ih*s;
   ox=(W-rw)/2;
-  oy=Math.min(0,Math.max(H-rh,(H*.42)-FY*rh*1.35));
+  oy=Math.min(0,Math.max(H-rh,(H*.42)-HEAD.y*rh*1.35));
   img.style.width=rw+'px';img.style.height=rh+'px';
+  mobile=W<769;
   Z=W>H?1.8:2.4;
+  A=mobile?.1:.2;
 }
 
 var target=0,cur=0,raf=0;
@@ -41,18 +48,26 @@ function progress(){
 }
 
 function render(p){
-  /* 1) najeti do tvare */
-  var e=easeIO(clamp(p/.2));
-  var z=lerp(1,Z,e),
-      px=FX*rw,py=FY*rh,
-      tx=lerp(ox,W*.5-px*Z,e),
-      ty=lerp(oy,H*.46-py*Z,e);
-  img.style.transform='translate3d('+tx.toFixed(1)+'px,'+ty.toFixed(1)+'px,0) scale('+z.toFixed(4)+')';
-  var out=ss(.19,.28,p),
-      br=lerp(1.08,.35,out),bl=out*8;
-  img.style.filter='brightness('+br.toFixed(3)+') contrast(1.06) blur('+bl.toFixed(2)+'px)';
-  shade.style.opacity=lerp(1,.4,ss(.02,.12,p)).toFixed(3);
-  heroLayer.style.opacity=(1-ss(.22,.3,p)).toFixed(3);
+  var e=easeIO(clamp(p/ZOOM_END)),
+      u=easeSine(clamp((p-ZOOM_END)/(TRAVEL_END-ZOOM_END))),
+      wave=Math.sin(u*3*Math.PI);
+
+  /* bod na tele, na ktery se prave diva kamera */
+  var fx=lerp(HEAD.x,FOOT.x,u)*rw,
+      fy=lerp(HEAD.y,FOOT.y,u)*rh;
+
+  /* kam na obrazovce ten bod patri: pred najetim puvodni kompozice, pak stred s vlnou */
+  var sx0=ox+HEAD.x*rw,sy0=oy+HEAD.y*rh,
+      sx=lerp(sx0,W*(.5+A*wave),e),
+      sy=lerp(sy0,H*(mobile?.4:.46),e),
+      z=lerp(1,Z,e),
+      rot=-wave*1.4*e;
+
+  img.style.transform='translate3d('+sx.toFixed(1)+'px,'+sy.toFixed(1)+'px,0) rotate('+rot.toFixed(3)+'deg) scale('+z.toFixed(4)+') translate3d('+(-fx).toFixed(1)+'px,'+(-fy).toFixed(1)+'px,0)';
+
+  var out=ss(TRAVEL_END,.99,p);
+  img.style.filter='brightness('+lerp(1.08,.2,out).toFixed(3)+') contrast(1.06)';
+  shade.style.opacity=lerp(1,.35,ss(.02,.1,p)).toFixed(3);
 
   var io=1-ss(.004,.055,p);
   intro.style.opacity=io.toFixed(3);
@@ -60,35 +75,27 @@ function render(p){
   intro.classList.toggle('on',io>.5);
   if(hint)hint.style.opacity=(1-ss(0,.03,p)).toFixed(3);
 
-  /* 2) prace jedna po druhe v prostoru */
-  var n=works.length;
-  for(var i=0;i<n;i++){
-    var s0=.25+i*.145,L=.185,t=(p-s0)/L,
-        o=ss(0,.22,t)*(1-ss(.78,1,t)),
-        w=works[i];
-    if(o<=.001){w.style.opacity=0;w.style.visibility='hidden';continue}
-    w.style.visibility='visible';
-    w.style.opacity=o.toFixed(3);
-    var tc=clamp(t),
-        sc=lerp(.86,1.06,tc),
-        rx=lerp(10,-6,tc),
-        ry=lerp(i%2?-8:8,i%2?4:-4,tc),
-        yy=lerp(60,-40,tc);
-    figs[i].style.transform='perspective(1400px) translate3d(0,'+yy.toFixed(1)+'px,0) rotateX('+rx.toFixed(2)+'deg) rotateY('+ry.toFixed(2)+'deg) scale('+sc.toFixed(4)+')';
+  /* texty: vrchol kazde vlny = jeden text na volne strane */
+  var l=0,r=0;
+  for(var i=0;i<notes.length;i++){
+    var c=(2*i+1)/(2*notes.length),
+        o=ss(c-.13,c-.04,u)*(1-ss(c+.06,c+.15,u)),
+        n=notes[i],left=n.getAttribute('data-side')==='left',
+        dx=(1-o)*(left?-50:50);
+    n.style.opacity=o.toFixed(3);
+    n.style.visibility=o>.001?'visible':'hidden';
+    n.style.transform=mobile?'translate3d(0,'+((1-o)*30).toFixed(1)+'px,0)':'translate3d('+dx.toFixed(1)+'px,-50%,0)';
+    if(left)l=Math.max(l,o);else r=Math.max(r,o);
   }
-
-  /* 3) zaver s vyzvou */
-  var eo=ss(.84,.92,p);
-  end.style.opacity=eo.toFixed(3);
-  end.style.transform='translate3d(0,'+lerp(40,0,eo).toFixed(1)+'px,0)';
-  end.classList.toggle('on',eo>.5);
+  sideL.style.opacity=l.toFixed(3);
+  sideR.style.opacity=r.toFixed(3);
 
   if(bar)bar.style.width=(p*100).toFixed(2)+'%';
 }
 
 function tick(){
-  cur+=(target-cur)*.14;
-  if(Math.abs(target-cur)<.0004)cur=target;
+  cur+=(target-cur)*.12;
+  if(Math.abs(target-cur)<.0003)cur=target;
   render(cur);
   raf=cur!==target?requestAnimationFrame(tick):0;
 }
