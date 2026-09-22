@@ -14,36 +14,31 @@ var stage=root.querySelector('.sc-stage'),
     sideR=root.querySelector('.sc-side-r'),
     bar=root.querySelector('.sc-bar i');
 
-/* draha kamery v hero fotce (podil sirky/vysky): obloukem kolem hlavy andela, pak dolu po tele */
-var HEAD_PATH=[[.34,.23],[.45,.17],[.56,.26],[.47,.37]],
-    BODY_PATH=[[.47,.5],[.48,.62],[.49,.74]],
+/* draha kamery v hero fotce (podil sirky/vysky): zoom na hlavu andela, pak esicko dolu po tele */
+var HEAD={x:.44,y:.29},FOOT={x:.49,y:.74},footY=.74,ANCHOR_Y=.4,
     W=0,H=0,iw=1333,ih=2000,rw=0,rh=0,ox=0,oy=0,Z=1.8,A=.2,mobile=false,
-    KP=[],T_HEAD=0,LUT=null,LN=600;
+    LUT=null,LN=600;
 
-var FADE_START=.9;
+/* zoom bezi 0..ZOOM_T, sjezd dolu zacina uz v DESC_T, aby se na hlave nezastavilo */
+var ZOOM_T=.3,DESC_T=.22,EASE_K=.4,FADE_START=.9;
 
 function clamp(v){return v<0?0:v>1?1:v}
 function ss(a,b,v){var t=clamp((v-a)/(b-a));return t*t*(3-2*t)}
 function lerp(a,b,t){return a+(b-a)*t}
-
-function cr(a,b,c,d,t){var t2=t*t,t3=t2*t;return .5*(2*b+(-a+c)*t+(2*a-5*b+4*c-d)*t2+(-a+3*b-3*c+d)*t3)}
-function spline(t){
-  var n=KP.length-1,x=clamp(t)*n,i=Math.min(n-1,Math.floor(x)),f=x-i,
-      p0=KP[Math.max(i-1,0)],p1=KP[i],p2=KP[i+1],p3=KP[Math.min(i+2,n)];
-  return [cr(p0[0],p1[0],p2[0],p3[0],f),cr(p0[1],p1[1],p2[1],p3[1],f)];
-}
+/* plynuly rozjezd (bez skoku v rychlosti), pak rovnomerne */
+function easeIn(x){x=clamp(x);var k=EASE_K;return (x<k?x*x/(2*k):x-k/2)/(1-k/2)}
 
 /* stav kamery pro parametr drahy t (0..1) */
 function state(t){
-  var b=ss(0,T_HEAD,t),
-      v=(t-T_HEAD)/(1-T_HEAD),
-      wave=v>0?Math.sin(v*3*Math.PI)*ss(0,.12,v):0,
-      f=spline(t),fx=f[0]*rw,fy=f[1]*rh;
+  var b=ss(0,ZOOM_T,t),
+      d=easeIn((t-DESC_T)/(1-DESC_T)),
+      wave=Math.sin(d*3*Math.PI)*ss(0,.12,d),
+      fx=lerp(HEAD.x,FOOT.x,d)*rw,fy=lerp(HEAD.y,footY,d)*rh;
   return {
-    v:v,wave:wave,fx:fx,fy:fy,
+    v:d,wave:wave,fx:fx,fy:fy,
     z:lerp(1,Z,b),
     sx:lerp(ox+fx,W*(.5+A*wave),b),
-    sy:lerp(oy+fy,H*(mobile?.4:.46),b),
+    sy:lerp(oy+fy,H*ANCHOR_Y,b),
     rot:-wave*1.4*b
   };
 }
@@ -87,8 +82,8 @@ function layout(){
   mobile=W<769;
   Z=W>H?1.8:2.4;
   A=mobile?.1:.2;
-  KP=[[(W*.5-ox)/rw,(H*.5-oy)/rh]].concat(HEAD_PATH,BODY_PATH);
-  T_HEAD=HEAD_PATH.length/(KP.length-1);
+  /* konec drahy tak, aby spodni okraj fotky zustal vzdy pod obrazovkou (+rezerva na naklon) */
+  footY=Math.min(FOOT.y,1-(H*(1-ANCHOR_Y)+40)/(rh*Z));
   buildLUT();
 }
 
