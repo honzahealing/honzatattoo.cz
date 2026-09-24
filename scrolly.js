@@ -95,9 +95,12 @@ function qAt(s){
 var shots=[].slice.call(root.querySelectorAll('.sc-shot')).map(function(el,i){
   var im=el.querySelector('img');
   function pt(a){var v=(el.getAttribute(a)||'.5,.5,1').split(',').map(Number);return {x:v[0],y:v[1],z:v[2]||1}}
+  var mz=(el.getAttribute('data-mzoom')||'').split(',').map(Number);
   return {el:el,img:im,from:pt('data-from'),to:pt('data-to'),side:el.getAttribute('data-side'),
+    /* data-wave: kamera jede esickem (jako u andela), texty na vrcholech vln; data-len = delka zaberu v obrazovkach */
+    wave:el.hasAttribute('data-wave'),len:+el.getAttribute('data-len')||0,mz:mz.length===2?mz:null,
     notes:[].slice.call(root.querySelectorAll('.sc-note[data-shot="'+i+'"]')),
-    iw:+im.getAttribute('width')||1,ih:+im.getAttribute('height')||1,b:0,vis:false};
+    iw:+im.getAttribute('width')||1,ih:+im.getAttribute('height')||1,b:0,L:0,vis:false};
 });
 
 /* casova osa v px scrollu: ANGEL = cela scena s andelem, X = prolnuti, L = odstup zaberu */
@@ -126,9 +129,10 @@ function layout(){
     var sh=shots[i];
     if(sh.img.naturalWidth){sh.iw=sh.img.naturalWidth;sh.ih=sh.img.naturalHeight}
     sh.img.style.width=sh.iw+'px';sh.img.style.height=sh.ih+'px';
-    sh.b=ANGEL-X+i*L;
+    sh.L=sh.len?sh.len*H:L;
+    sh.b=i?shots[i-1].b+shots[i-1].L:ANGEL-X;
   }
-  dist=shots.length?shots[shots.length-1].b+L+X:ANGEL;
+  dist=shots.length?shots[shots.length-1].b+shots[shots.length-1].L+X:ANGEL;
   root.style.height=(dist+H)+'px';
   /* kotvy menu (O mne, Styl) = misto, kde je zaber uz cely prolnuty */
   for(var id in anchors){var a=document.getElementById(id),sh2=shots[anchors[id]];if(a&&sh2)a.style.top=(sh2.b+X)+'px'}
@@ -150,24 +154,38 @@ function noteStyle(n,o){
 }
 
 function renderShot(sh,s,side){
-  var life=L+X,u=(s-sh.b)/life,last=sh===shots[shots.length-1],
-      vis=u>0&&(u<1||last);
+  var life=sh.L+X,u=(s-sh.b)/life,last=sh===shots[shots.length-1],
+      vis=u>0&&(u<1||last),k=clamp(u),n=sh.notes.length,o,j,
+      /* vlny a texty jen v case, kdy je zaber cely (po prolnuti, pred dalsim) */
+      kn=clamp((s-sh.b-X)/(sh.L-X));
   if(vis!==sh.vis){sh.vis=vis;sh.el.style.visibility=vis?'visible':'hidden'}
-  var o=0;
-  for(var j=0;j<sh.notes.length;j++){
-    o=ss(sh.b+.8*X,sh.b+.8*X+.4*H,s)*(1-ss(sh.b+L-.3*H,sh.b+L+.15*H,s));
+  for(j=0;j<n;j++){
+    if(sh.wave){
+      /* vrchol j-te vlny; text na opacne strane, nez kam uhne ohnisko */
+      var w=1/n,c=(2*j+1)*w/2;
+      o=ss(c-.4*w,c-.12*w,kn)*(1-ss(c+.18*w,c+.45*w,kn));
+    }else o=ss(sh.b+.8*X,sh.b+.8*X+.4*H,s)*(1-ss(sh.b+sh.L-.3*H,sh.b+sh.L+.15*H,s));
     if(noteStyle(sh.notes[j],o))side.l=Math.max(side.l,o);else side.r=Math.max(side.r,o);
   }
   if(!vis)return;
   sh.el.style.opacity=ss(sh.b,sh.b+X,s).toFixed(3);
-  var k=reduce?.3:clamp(u),
-      fx=lerp(sh.from.x,sh.to.x,k),fy=lerp(sh.from.y,sh.to.y,k),
-      S=Math.max(W/sh.iw,H/sh.ih)*lerp(sh.from.z,sh.to.z,k),
-      /* ohnisko na volnou stranu od textu; na mobilu nad text dole */
-      px=mobile?W*.5:W*(sh.side==='left'?.64:.36),py=mobile?H*.36:H*.5,
-      tx=Math.min(0,Math.max(W-sh.iw*S,px-fx*sh.iw*S)),
-      ty=Math.min(0,Math.max(H-sh.ih*S,py-fy*sh.ih*S));
-  sh.img.style.transform='translate3d('+tx.toFixed(1)+'px,'+ty.toFixed(1)+'px,0) scale('+S.toFixed(4)+')';
+  if(reduce)k=.3;
+  var z0=sh.from.z,z1=sh.to.z;
+  if(mobile&&sh.mz){z0=sh.mz[0];z1=sh.mz[1]}
+  var fx=lerp(sh.from.x,sh.to.x,k),fy=lerp(sh.from.y,sh.to.y,k),
+      S=Math.max(W/sh.iw,H/sh.ih)*lerp(z0,z1,k)*(sh.wave?1.04:1),
+      wave=sh.wave&&n&&!reduce?Math.sin(kn*n*Math.PI):0,rot=0,px,py;
+  if(sh.wave){
+    px=W*(.5+(mobile?.1:.2)*wave);py=mobile?H*.36:H*.5;rot=-wave*(mobile?.6:1);
+  }else{
+    /* ohnisko na volnou stranu od textu; na mobilu nad text dole */
+    px=mobile?W*.5:W*(sh.side==='left'?.64:.36);py=mobile?H*.36:H*.5;
+  }
+  /* fotka nesmi odjet z obrazovky: ohnisko se posune jen tak daleko, kam fotka staci */
+  var ix=fx*sh.iw*S,iy=fy*sh.ih*S;
+  px=Math.min(ix,Math.max(W-(sh.iw*S-ix),px));
+  py=Math.min(iy,Math.max(H-(sh.ih*S-iy),py));
+  sh.img.style.transform='translate3d('+px.toFixed(1)+'px,'+py.toFixed(1)+'px,0) rotate('+rot.toFixed(3)+'deg) scale('+S.toFixed(4)+') translate3d('+(-fx*sh.iw).toFixed(1)+'px,'+(-fy*sh.ih).toFixed(1)+'px,0)';
 }
 
 function render(s){
