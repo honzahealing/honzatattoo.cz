@@ -9,7 +9,9 @@ var stage=root.querySelector('.sc-stage'),
     shade=root.querySelector('.sc-shade'),
     intro=root.querySelector('.sc-intro'),
     hint=root.querySelector('.sc-hint'),
-    notes=[].slice.call(root.querySelectorAll('.sc-note')),
+    notes=[].slice.call(root.querySelectorAll('.sc-note:not([data-shot])')),
+    fade=root.querySelector('.sc-fade'),
+    anchors={about:0,styles:1},
     sideL=root.querySelector('.sc-side-l'),
     sideR=root.querySelector('.sc-side-r'),
     bar=root.querySelector('.sc-bar i');
@@ -19,7 +21,7 @@ var HEAD={x:.44,y:.29},FOOT={x:.49,y:.74},footY=.74,HEAD_SCREEN=.28,anchorY=.28,
     W=0,H=0,iw=1333,ih=2000,rw=0,rh=0,ox=0,oy=0,Z=1.8,A=.2,mobile=false;
 
 /* casova osa: zoom a sjezd se prolinaji v CROSS (zoom plynule dobiha, sjezd se plynule rozjizdi) */
-var CROSS=.16,FADE_START=.9,P_D=.2,P_Z=.36,wZ=1,vD=1,K2=2/Math.PI;
+var CROSS=.16,P_D=.2,P_Z=.36,wZ=1,vD=1,K2=2/Math.PI;
 
 function clamp(v){return v<0?0:v>1?1:v}
 function ss(a,b,v){var t=clamp((v-a)/(b-a));return t*t*(3-2*t)}
@@ -89,6 +91,18 @@ function qAt(s){
   return (lo+(d>0?(s-LUT[lo])/d:0))/LN;
 }
 
+/* zabery za andelem: kazdy se prolne pres predchozi a kamera po nem plynule jede z data-from do data-to */
+var shots=[].slice.call(root.querySelectorAll('.sc-shot')).map(function(el,i){
+  var im=el.querySelector('img');
+  function pt(a){var v=(el.getAttribute(a)||'.5,.5,1').split(',').map(Number);return {x:v[0],y:v[1],z:v[2]||1}}
+  return {el:el,img:im,from:pt('data-from'),to:pt('data-to'),side:el.getAttribute('data-side'),
+    notes:[].slice.call(root.querySelectorAll('.sc-note[data-shot="'+i+'"]')),
+    iw:+im.getAttribute('width')||1,ih:+im.getAttribute('height')||1,b:0,vis:false};
+});
+
+/* casova osa v px scrollu: ANGEL = cela scena s andelem, X = prolnuti, L = odstup zaberu */
+var ANGEL=0,X=0,L=0,dist=0;
+
 function layout(){
   W=stage.clientWidth;H=stage.clientHeight;
   if(img.naturalWidth){iw=img.naturalWidth;ih=img.naturalHeight}
@@ -106,23 +120,65 @@ function layout(){
   footY=Math.min(FOOT.y,1-(H*(1-anchorY)+40)/(rh*Z));
   timeline();
   buildLUT();
+
+  ANGEL=(mobile?4.2:5)*H;X=.8*H;L=(mobile?2.1:2.4)*H;
+  for(var i=0;i<shots.length;i++){
+    var sh=shots[i];
+    if(sh.img.naturalWidth){sh.iw=sh.img.naturalWidth;sh.ih=sh.img.naturalHeight}
+    sh.img.style.width=sh.iw+'px';sh.img.style.height=sh.ih+'px';
+    sh.b=ANGEL-X+i*L;
+  }
+  dist=shots.length?shots[shots.length-1].b+L+X:ANGEL;
+  root.style.height=(dist+H)+'px';
+  /* kotvy menu (O mne, Styl) = misto, kde je zaber uz cely prolnuty */
+  for(var id in anchors){var a=document.getElementById(id),sh2=shots[anchors[id]];if(a&&sh2)a.style.top=(sh2.b+X)+'px'}
 }
 
 var target=0,cur=0,raf=0;
 
 function progress(){
-  var r=root.getBoundingClientRect(),dist=root.offsetHeight-H;
-  return dist>0?clamp(-r.top/dist):0;
+  var r=root.getBoundingClientRect();
+  return Math.min(dist,Math.max(0,-r.top));
 }
 
-function render(p){
-  var q=qAt(p),st=state(zoomAt(q),descAt(q));
+function noteStyle(n,o){
+  var left=n.getAttribute('data-side')==='left',dx=(1-o)*(left?-50:50);
+  n.style.opacity=o.toFixed(3);
+  n.style.visibility=o>.001?'visible':'hidden';
+  n.style.transform=mobile?'translate3d(0,'+((1-o)*30).toFixed(1)+'px,0)':'translate3d('+dx.toFixed(1)+'px,-50%,0)';
+  return left;
+}
 
-  img.style.transform='translate3d('+st.sx.toFixed(1)+'px,'+st.sy.toFixed(1)+'px,0) rotate('+st.rot.toFixed(3)+'deg) scale('+st.z.toFixed(4)+') translate3d('+(-st.fx).toFixed(1)+'px,'+(-st.fy).toFixed(1)+'px,0)';
+function renderShot(sh,s,side){
+  var life=L+X,u=(s-sh.b)/life,last=sh===shots[shots.length-1],
+      vis=u>0&&(u<1||last);
+  if(vis!==sh.vis){sh.vis=vis;sh.el.style.visibility=vis?'visible':'hidden'}
+  var o=0;
+  for(var j=0;j<sh.notes.length;j++){
+    o=ss(sh.b+.8*X,sh.b+.8*X+.4*H,s)*(1-ss(sh.b+L-.3*H,sh.b+L+.15*H,s));
+    if(noteStyle(sh.notes[j],o))side.l=Math.max(side.l,o);else side.r=Math.max(side.r,o);
+  }
+  if(!vis)return;
+  sh.el.style.opacity=ss(sh.b,sh.b+X,s).toFixed(3);
+  var k=reduce?.3:clamp(u),
+      fx=lerp(sh.from.x,sh.to.x,k),fy=lerp(sh.from.y,sh.to.y,k),
+      S=Math.max(W/sh.iw,H/sh.ih)*lerp(sh.from.z,sh.to.z,k),
+      /* ohnisko na volnou stranu od textu; na mobilu nad text dole */
+      px=mobile?W*.5:W*(sh.side==='left'?.64:.36),py=mobile?H*.36:H*.5,
+      tx=Math.min(0,Math.max(W-sh.iw*S,px-fx*sh.iw*S)),
+      ty=Math.min(0,Math.max(H-sh.ih*S,py-fy*sh.ih*S));
+  sh.img.style.transform='translate3d('+tx.toFixed(1)+'px,'+ty.toFixed(1)+'px,0) scale('+S.toFixed(4)+')';
+}
 
-  var out=ss(FADE_START,.99,p);
-  img.style.filter='brightness('+lerp(1.08,.2,out).toFixed(3)+') contrast(1.06)';
-  shade.style.opacity=lerp(1,.35,ss(.02,.1,p)).toFixed(3);
+function render(s){
+  var p=clamp(s/ANGEL),q=qAt(p),st=state(zoomAt(q),descAt(q)),
+      cam=reduce?state(0,0):st;
+
+  if(s<=ANGEL+2){
+    heroLayer.style.visibility='visible';
+    img.style.transform='translate3d('+cam.sx.toFixed(1)+'px,'+cam.sy.toFixed(1)+'px,0) rotate('+cam.rot.toFixed(3)+'deg) scale('+cam.z.toFixed(4)+') translate3d('+(-cam.fx).toFixed(1)+'px,'+(-cam.fy).toFixed(1)+'px,0)';
+    shade.style.opacity=lerp(1,.35,ss(.02,.1,p)).toFixed(3);
+  }else heroLayer.style.visibility='hidden';
 
   var io=1-ss(.004,.055,p);
   intro.style.opacity=io.toFixed(3);
@@ -130,43 +186,44 @@ function render(p){
   intro.classList.toggle('on',io>.5);
   if(hint)hint.style.opacity=(1-ss(0,.03,p)).toFixed(3);
 
-  /* texty: vrchol kazde vlny = jeden text na volne strane */
-  var l=0,r=0;
+  /* texty andela: vrchol kazde vlny = jeden text na volne strane */
+  var side={l:0,r:0};
   for(var i=0;i<notes.length;i++){
-    var c=(2*i+1)/(2*notes.length),v=st.v,
-        o=ss(c-.13,c-.04,v)*(1-ss(c+.06,c+.15,v)),
-        n=notes[i],left=n.getAttribute('data-side')==='left',
-        dx=(1-o)*(left?-50:50);
-    n.style.opacity=o.toFixed(3);
-    n.style.visibility=o>.001?'visible':'hidden';
-    n.style.transform=mobile?'translate3d(0,'+((1-o)*30).toFixed(1)+'px,0)':'translate3d('+dx.toFixed(1)+'px,-50%,0)';
-    if(left)l=Math.max(l,o);else r=Math.max(r,o);
+    var c=(2*i+1)/(2*notes.length)*.9,v=st.v,
+        o=ss(c-.13,c-.04,v)*(1-ss(c+.06,c+.15,v));
+    if(noteStyle(notes[i],o))side.l=Math.max(side.l,o);else side.r=Math.max(side.r,o);
   }
-  sideL.style.opacity=l.toFixed(3);
-  sideR.style.opacity=r.toFixed(3);
+  for(i=0;i<shots.length;i++)renderShot(shots[i],s,side);
+  sideL.style.opacity=side.l.toFixed(3);
+  sideR.style.opacity=side.r.toFixed(3);
 
-  if(bar)bar.style.width=(p*100).toFixed(2)+'%';
+  /* na konci filmu dotmava, at dalsi sekce navaze */
+  if(fade)fade.style.opacity=ss(dist-.6*H,dist,s).toFixed(3);
+
+  if(bar)bar.style.width=(dist?s/dist*100:0).toFixed(2)+'%';
 }
 
 function tick(){
   cur+=(target-cur)*.12;
-  if(Math.abs(target-cur)<.0003)cur=target;
+  if(Math.abs(target-cur)<.5)cur=target;
   render(cur);
   raf=cur!==target?requestAnimationFrame(tick):0;
 }
 
 function onScroll(){
   target=progress();
+  if(reduce){cur=target;render(cur);return}
   if(!raf)raf=requestAnimationFrame(tick);
 }
 
+var ready=false;
+function refresh(){layout();target=cur=progress();render(cur)}
 function init(){
-  layout();
-  if(reduce){render(0);return}
-  target=cur=progress();
-  render(cur);
+  if(ready)return;ready=true;
+  refresh();
   window.addEventListener('scroll',onScroll,{passive:true});
-  window.addEventListener('resize',function(){layout();target=cur=progress();render(cur)});
+  window.addEventListener('resize',function(){refresh()});
+  shots.forEach(function(sh){if(!sh.img.complete)sh.img.addEventListener('load',refresh)});
 }
 
 if(img.complete)init();else{img.addEventListener('load',init);layout();render(0)}
