@@ -95,10 +95,13 @@ function qAt(s){
 var shots=[].slice.call(root.querySelectorAll('.sc-shot')).map(function(el,i){
   var im=el.querySelector('img');
   function pt(a){var v=(el.getAttribute(a)||'.5,.5,1').split(',').map(Number);return {x:v[0],y:v[1],z:v[2]||1}}
-  var mz=(el.getAttribute('data-mzoom')||'').split(',').map(Number);
-  return {el:el,img:im,from:pt('data-from'),to:pt('data-to'),side:el.getAttribute('data-side'),
-    /* data-wave: kamera jede esickem (jako u andela), texty na vrcholech vln; data-len = delka zaberu v obrazovkach */
-    wave:el.hasAttribute('data-wave'),len:+el.getAttribute('data-len')||0,mz:mz.length===2?mz:null,
+  /* data-keys: body drahy kamery "x,y,z|x,y,z|..." rozlozene rovnomerne po celem zaberu (misto from/to) */
+  var keys=el.getAttribute('data-keys');
+  keys=keys?keys.split('|').map(function(k){var v=k.split(',').map(Number);return {x:v[0],y:v[1],z:v[2]||1}}):null;
+  return {el:el,img:im,from:pt('data-from'),to:pt('data-to'),keys:keys,side:el.getAttribute('data-side'),
+    /* data-wave: kamera jede esickem (jako u andela), texty na vrcholech vln; data-len = delka zaberu v obrazovkach;
+       data-mzoom = nasobek zoomu na mobilu */
+    wave:el.hasAttribute('data-wave'),len:+el.getAttribute('data-len')||0,mz:+el.getAttribute('data-mzoom')||1,
     notes:[].slice.call(root.querySelectorAll('.sc-note[data-shot="'+i+'"]')),
     iw:+im.getAttribute('width')||1,ih:+im.getAttribute('height')||1,b:0,L:0,vis:false};
 });
@@ -149,34 +152,66 @@ function noteStyle(n,o){
   var left=n.getAttribute('data-side')==='left',dx=(1-o)*(left?-50:50);
   n.style.opacity=o.toFixed(3);
   n.style.visibility=o>.001?'visible':'hidden';
+  /* text uprostred (napr. na cernem tricku): vyjede zespodu, bez tmaveho pruhu na boku */
+  if(n.getAttribute('data-pos')==='center'){
+    n.style.transform='translate3d(-50%,calc(-50% + '+((1-o)*40).toFixed(1)+'px),0)';
+    return null;
+  }
   n.style.transform=mobile?'translate3d(0,'+((1-o)*30).toFixed(1)+'px,0)':'translate3d('+dx.toFixed(1)+'px,-50%,0)';
   return left;
+}
+
+/* plynula draha pres body (Catmull-Rom), t = 0..1 */
+function spline(keys,t){
+  var m=keys.length-1,f=clamp(t)*m,i=Math.min(m-1,Math.floor(f)),u=f-i,
+      p0=keys[Math.max(0,i-1)],p1=keys[i],p2=keys[i+1],p3=keys[Math.min(m,i+2)];
+  function cr(a,b,c,d){return .5*(2*b+(c-a)*u+(2*a-5*b+4*c-d)*u*u+(3*b-a-3*c+d)*u*u*u)}
+  return {x:cr(p0.x,p1.x,p2.x,p3.x),y:cr(p0.y,p1.y,p2.y,p3.y),z:cr(p0.z,p1.z,p2.z,p3.z)};
+}
+
+/* prechod mezi zabery: novy zaber najede zespodu a stary odjede nahoru, jako jeden souvisly pas;
+   mekky sev jede spolu s obrazem (zadne prolinani) */
+function ease(t){return (1-Math.cos(Math.PI*clamp(t)))/2}
+function slide(el,y){el.style.transform=y?'translate3d(0,'+y.toFixed(1)+'px,0)':''}
+/* mekky okraj nove fotky prekryva spodek stare (F = sirka svu, na zacatku a konci prechodu nulova) */
+function feather(e){return Math.min(H*.5*Math.sin(Math.PI*clamp(e)),(1-clamp(e))*H)}
+function seam(el,e){
+  var m=e>0&&e<1?'linear-gradient(180deg,transparent 0,#000 '+feather(e).toFixed(0)+'px)':'none';
+  el.style.webkitMaskImage=m;el.style.maskImage=m;
 }
 
 function renderShot(sh,s,side){
   var life=sh.L+X,u=(s-sh.b)/life,last=sh===shots[shots.length-1],
       vis=u>0&&(u<1||last),k=clamp(u),n=sh.notes.length,o,j,
-      /* vlny a texty jen v case, kdy je zaber cely (po prolnuti, pred dalsim) */
+      /* vlny a texty jen v case, kdy je zaber cely (po prechodu, pred dalsim) */
       kn=clamp((s-sh.b-X)/(sh.L-X));
   if(vis!==sh.vis){sh.vis=vis;sh.el.style.visibility=vis?'visible':'hidden'}
+  var amp=[];
   for(j=0;j<n;j++){
-    if(sh.wave){
-      /* vrchol j-te vlny; text na opacne strane, nez kam uhne ohnisko */
-      var w=1/n,c=(2*j+1)*w/2;
-      o=ss(c-.4*w,c-.12*w,kn)*(1-ss(c+.18*w,c+.45*w,kn));
-    }else o=ss(sh.b+.8*X,sh.b+.8*X+.4*H,s)*(1-ss(sh.b+sh.L-.3*H,sh.b+sh.L+.15*H,s));
-    if(noteStyle(sh.notes[j],o))side.l=Math.max(side.l,o);else side.r=Math.max(side.r,o);
+    var w=1/n,c=(2*j+1)*w/2,nt=sh.notes[j];
+    amp.push(nt.getAttribute('data-pos')==='center'?0:1);
+    if(sh.wave)o=ss(c-.4*w,c-.12*w,kn)*(1-ss(c+.18*w,c+.45*w,kn));
+    else o=ss(sh.b+.8*X,sh.b+.8*X+.4*H,s)*(1-ss(sh.b+sh.L-.3*H,sh.b+sh.L+.15*H,s));
+    var sd=noteStyle(nt,o);
+    if(sd===true)side.l=Math.max(side.l,o);else if(sd===false)side.r=Math.max(side.r,o);
   }
   if(!vis)return;
-  sh.el.style.opacity=ss(sh.b,sh.b+X,s).toFixed(3);
-  if(reduce)k=.3;
-  var z0=sh.from.z,z1=sh.to.z;
-  if(mobile&&sh.mz){z0=sh.mz[0];z1=sh.mz[1]}
-  var fx=lerp(sh.from.x,sh.to.x,k),fy=lerp(sh.from.y,sh.to.y,k),
-      S=Math.max(W/sh.iw,H/sh.ih)*lerp(z0,z1,k)*(sh.wave?1.04:1),
-      wave=sh.wave&&n&&!reduce?Math.sin(kn*n*Math.PI):0,rot=0,px,py;
+  if(reduce){sh.el.style.opacity=ss(sh.b,sh.b+X,s).toFixed(3);k=.3}
+  else{
+    var e=ease((s-sh.b)/X);
+    sh.el.style.opacity=1;slide(sh.el,(1-e)*H-feather(e));seam(sh.el,e);
+  }
+  var f=sh.keys?spline(sh.keys,k):{x:lerp(sh.from.x,sh.to.x,k),y:lerp(sh.from.y,sh.to.y,k),z:lerp(sh.from.z,sh.to.z,k)},
+      fx=f.x,fy=f.y,
+      S=Math.max(W/sh.iw,H/sh.ih)*f.z*(mobile?sh.mz:1)*(sh.wave?1.04:1),
+      wave=0,rot=0,px,py,a=1;
+  if(sh.wave&&n&&!reduce){
+    /* esicko: vychyleni jen u textu na boku, u textu uprostred kamera drzi stred */
+    var fj=kn*n-.5,j0=Math.max(0,Math.min(n-1,Math.floor(fj))),j1=Math.min(n-1,j0+1);a=lerp(amp[j0],amp[j1],ss(0,1,fj-j0));
+    wave=Math.sin(kn*n*Math.PI)*a;
+  }
   if(sh.wave){
-    px=W*(.5+(mobile?.1:.2)*wave);py=mobile?H*.36:H*.5;rot=-wave*(mobile?.6:1);
+    px=W*(.5+(mobile?.1:.2)*wave);py=mobile?H*lerp(.5,.36,a):H*.5;rot=-wave*(mobile?.6:1);
   }else{
     /* ohnisko na volnou stranu od textu; na mobilu nad text dole */
     px=mobile?W*.5:W*(sh.side==='left'?.64:.36);py=mobile?H*.36:H*.5;
@@ -188,12 +223,20 @@ function renderShot(sh,s,side){
   sh.img.style.transform='translate3d('+px.toFixed(1)+'px,'+py.toFixed(1)+'px,0) rotate('+rot.toFixed(3)+'deg) scale('+S.toFixed(4)+') translate3d('+(-fx*sh.iw).toFixed(1)+'px,'+(-fy*sh.ih).toFixed(1)+'px,0)';
 }
 
+/* stary zaber odjizdi nahoru spolu s tim, jak novy najizdi zespodu */
+function outgoing(i,s){
+  var nx=shots[i+1];
+  if(!nx||reduce)return 0;
+  return -ease((s-nx.b)/X)*H;
+}
+
 function render(s){
   var p=clamp(s/ANGEL),q=qAt(p),st=state(zoomAt(q),descAt(q)),
       cam=reduce?state(0,0):st;
 
   if(s<=ANGEL+2){
     heroLayer.style.visibility='visible';
+    slide(heroLayer,shots.length&&!reduce?-ease((s-shots[0].b)/X)*H:0);
     img.style.transform='translate3d('+cam.sx.toFixed(1)+'px,'+cam.sy.toFixed(1)+'px,0) rotate('+cam.rot.toFixed(3)+'deg) scale('+cam.z.toFixed(4)+') translate3d('+(-cam.fx).toFixed(1)+'px,'+(-cam.fy).toFixed(1)+'px,0)';
     shade.style.opacity=lerp(1,.35,ss(.02,.1,p)).toFixed(3);
   }else heroLayer.style.visibility='hidden';
@@ -211,7 +254,7 @@ function render(s){
         o=ss(c-.13,c-.04,v)*(1-ss(c+.06,c+.15,v));
     if(noteStyle(notes[i],o))side.l=Math.max(side.l,o);else side.r=Math.max(side.r,o);
   }
-  for(i=0;i<shots.length;i++)renderShot(shots[i],s,side);
+  for(i=0;i<shots.length;i++){renderShot(shots[i],s,side);if(shots[i].vis&&!reduce){var og=outgoing(i,s);if(og)slide(shots[i].el,og)}}
   sideL.style.opacity=side.l.toFixed(3);
   sideR.style.opacity=side.r.toFixed(3);
 
