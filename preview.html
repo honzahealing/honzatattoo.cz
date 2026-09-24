@@ -122,36 +122,6 @@ nav.sc .hb span{background:var(--gold-light)}
 .stl{width:60px;height:1.5px;background:var(--gold);margin-bottom:20px}
 .stp{font-size:.95rem;font-weight:300;color:var(--text-light);max-width:560px;line-height:1.85}
 
-/* ABOUT */
-.about{padding:var(--section-pad) 60px;position:relative;overflow:hidden}
-.about-bg{position:absolute;inset:0;background:url('img/tattoo3.jpg') center/cover no-repeat;opacity:.06;filter:blur(30px);transform:scale(1.1)}
-.about-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;position:relative}
-.about-img{position:relative;aspect-ratio:3/4;overflow:hidden;border-radius:2px}
-.about-img img{width:100%;height:100%;object-fit:cover;object-position:center 20%;transition:transform .6s var(--ease)}
-.about-img:hover img{transform:scale(1.03)}
-.about-img::after{content:'';position:absolute;inset:0;border:1px solid var(--gold);transform:translate(12px,12px);pointer-events:none;opacity:.2}
-.about-quote{font-family:var(--font-display);font-size:1.3rem;font-weight:300;font-style:italic;color:var(--gold);line-height:1.65;border-left:2px solid var(--gold);padding-left:24px;margin-top:28px}
-.about-tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
-.about-tag{padding:8px 18px;background:var(--bg-alt);border:1px solid var(--border);font-size:.78rem;font-weight:400;color:var(--text-light);transition:all .3s var(--ease)}
-.about-tag:hover{border-color:var(--gold);color:var(--gold-dark);background:var(--white)}
-
-/* STYLE CARDS */
-.styles{padding:var(--section-pad) 60px;background:var(--bg-alt);position:relative}
-.styles-header{text-align:center;margin-bottom:60px}
-.styles-header .stl{margin:0 auto 20px}
-.styles-header .stp{margin:0 auto}
-.styles-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
-.style-card{position:relative;overflow:hidden;background:var(--white);border-radius:3px;transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
-.style-card:hover{transform:translateY(-8px);box-shadow:0 20px 50px rgba(200,164,92,.08)}
-.style-card-img{overflow:hidden;aspect-ratio:3/4}
-.style-card-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
-.style-card:hover .style-card-img img{transform:scale(1.05)}
-.style-card-body{padding:20px 18px}
-.style-card-title{font-family:var(--font-display);font-size:1.2rem;font-weight:400;color:var(--charcoal);margin-bottom:6px}
-.style-card-text{font-size:.8rem;font-weight:300;color:var(--text-light);line-height:1.7}
-.styles-note{text-align:center;margin-top:36px;font-size:.88rem;color:var(--text-light);max-width:600px;margin-left:auto;margin-right:auto;line-height:1.7}
-.styles-note strong{color:var(--gold-dark);font-weight:500}
-
 /* GALLERY */
 .gallery{padding:var(--section-pad) 60px;position:relative}
 .gallery-header{text-align:center;margin-bottom:50px}
@@ -162,12 +132,6 @@ nav.sc .hb span{background:var(--gold-light)}
 .gallery-item:hover img{transform:scale(1.05)}
 .gallery-item::after{content:'\2922';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2rem;color:white;background:rgba(26,26,26,.3);opacity:0;transition:opacity .3s var(--ease)}
 .gallery-item:hover::after{opacity:1}
-
-/* INSTAGRAM EMBED */
-.ig-section{background:var(--charcoal);padding:40px 60px;text-align:center;position:relative}
-.ig-section p{font-family:var(--font-display);font-size:1.3rem;font-weight:300;color:var(--white);margin-bottom:6px}
-.ig-section a{font-size:.85rem;color:var(--gold-light);text-decoration:none;letter-spacing:.1em}
-.ig-embed{margin-top:24px;max-width:420px;margin-left:auto;margin-right:auto}
 
 /* LIGHTBOX */
 .lightbox{position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.94);backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all .4s var(--ease)}
@@ -209,26 +173,6 @@ nav.sc .hb span{background:var(--gold-light)}
 .p-step.on .p-num{opacity:1}
 .p-title{font-family:var(--font-display);font-size:1.2rem;font-weight:400;color:var(--white);margin-bottom:4px}
 .p-text{font-size:.84rem;color:rgba(255,255,255,.4);line-height:1.7}
-
-/* PRICING - interactive */
-.pricing{padding:var(--section-pad) 60px;background:var(--bg-alt);position:relative}
-.pricing-header{text-align:center;margin-bottom:50px}
-.pricing-header .stl{margin:0 auto 20px}
-.pricing-header .stp{margin:0 auto}
-.pricing-grid{max-width:900px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.price-card{background:var(--white);border:1px solid var(--border);border-radius:4px;padding:30px 20px;text-align:center;transition:all .4s var(--ease);cursor:default;position:relative;overflow:hidden}
-.price-card::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(200,164,92,.06),transparent);transition:left .6s ease}
-.price-card:hover::before{left:100%}
-.price-card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(200,164,92,.1);border-color:var(--gold-light)}
-.price-card.featured{border-color:var(--gold)}
-.price-card.featured::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gold)}
-.price-label{font-size:.68rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
-.price-size{font-family:var(--font-display);font-size:1.05rem;color:var(--charcoal);margin-bottom:4px}
-.price-desc{font-size:.75rem;color:var(--text-muted);margin-bottom:18px}
-.price-amount{font-family:var(--font-display);font-size:2.4rem;font-weight:300;color:var(--charcoal);line-height:1}
-.price-amount span{font-size:.9rem;color:var(--text-muted)}
-.price-from{font-size:.7rem;color:var(--text-muted);margin-top:6px}
-.pricing-footer{text-align:center;margin-top:32px;font-size:.84rem;color:var(--text-light);line-height:1.8}
 
 /* REVIEWS */
 .reviews{padding:var(--section-pad) 60px;position:relative}
@@ -325,21 +269,14 @@ footer{background:var(--charcoal);padding:36px 60px;text-align:center;color:rgba
 /* RESPONSIVE */
 @media(max-width:1024px){
 nav{padding:20px 30px}nav.sc{padding:14px 30px}
-.about-inner{grid-template-columns:1fr;gap:36px}.about-img{max-width:420px;margin:0 auto}
-.styles-grid{grid-template-columns:1fr 1fr}
 .process-steps{padding-left:0}.p-step{grid-template-columns:1fr;gap:8px}.process-steps::before{display:none}.p-num{justify-self:start}.p-content{text-align:left!important;padding:0}.p-step:nth-child(even) .p-content{grid-column:auto}.p-empty{display:none}
-.pricing-grid{grid-template-columns:1fr 1fr}
 .contact-grid{grid-template-columns:1fr;gap:36px}
 }
 @media(max-width:768px){
 nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
 .announce-bar{padding:5px 16px}
-.about{padding:60px 24px}
-.styles{padding:60px 24px}.styles-grid{grid-template-columns:1fr 1fr}
 .gallery{padding:60px 24px}.gallery-grid{grid-template-columns:1fr 1fr}
-.ig-section{padding:30px 24px}
 .process{padding:60px 24px}
-.pricing{padding:60px 24px}.pricing-grid{grid-template-columns:1fr 1fr}
 .reviews{padding:60px 24px}.rev-card{flex:0 0 270px}
 .faq{padding:60px 24px}
 .contact{padding:60px 24px}
@@ -351,11 +288,9 @@ nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
 @media(max-width:480px){
 .gallery-grid{grid-template-columns:1fr;max-width:340px;margin:0 auto}
 .hero{min-height:600px}.hero-content{padding:0 20px}
-.styles-grid{grid-template-columns:1fr;max-width:340px}
-.pricing-grid{grid-template-columns:1fr;max-width:300px;margin:0 auto}
 }
 </style>
-<link rel="stylesheet" href="scrolly.css?v=8">
+<link rel="stylesheet" href="scrolly.css?v=9">
 </head>
 <body>
 
@@ -374,24 +309,29 @@ nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
 <li><a href="#styles">Styl</a></li>
 <li><a href="#gallery">Galerie</a></li>
 <li><a href="#process">Proces</a></li>
-<li><a href="#pricing">Ceník</a></li>
 <!-- <li><a href="#reviews">Reference</a></li> -->
-<li><a href="#instagram">Instagram</a></li>
 <li><a href="#faq">FAQ</a></li>
 <li><a href="#contact">Kontakt</a></li>
 </ul>
 <button class="hb" id="hb"><span></span><span></span><span></span></button>
 </nav>
 <div class="mm" id="mm">
-<a href="#about" onclick="cm()">O mně</a><a href="#styles" onclick="cm()">Styl</a><a href="#gallery" onclick="cm()">Galerie</a><a href="#process" onclick="cm()">Proces</a><a href="#pricing" onclick="cm()">Ceník</a><!-- <a href="#reviews" onclick="cm()">Reference</a> --><a href="#instagram" onclick="cm()">Instagram</a><a href="#faq" onclick="cm()">FAQ</a><a href="#contact" onclick="cm()">Kontakt</a>
+<a href="#about" onclick="cm()">O mně</a><a href="#styles" onclick="cm()">Styl</a><a href="#gallery" onclick="cm()">Galerie</a><a href="#process" onclick="cm()">Proces</a><!-- <a href="#reviews" onclick="cm()">Reference</a> --><a href="#faq" onclick="cm()">FAQ</a><a href="#contact" onclick="cm()">Kontakt</a>
 </div>
 
-<!-- HERO - scroll scena: najeti na hlavu andela, pak vlna po tele s texty o mne -->
+<!-- HERO / FILM - scroll scena: najeti na hlavu andela, vlna po tele s texty o mne, pak prolinani do zaberu (ja u prace, 4 styly) -->
 <section class="scrolly" id="hero">
 <div class="sc-stage">
 <div class="sc-layer sc-hero"><img class="sc-hero-img" src="img/hero.webp" alt="Tetování anděl, black &amp; grey" fetchpriority="high"><div class="sc-shade"></div></div>
+<!-- zabery filmu: data-from/data-to = ohnisko x,y (podil fotky) a zoom; data-side = strana textu -->
+<div class="sc-layer sc-shot" data-from=".47,.28,1" data-to=".4,.66,1.12" data-side="right"><img src="img/about.jpg" width="600" height="1067" alt="Honza při tetování" decoding="async"><div class="sc-veil"></div></div>
+<div class="sc-layer sc-shot" data-from=".45,.22,1.1" data-to=".45,.62,1.3" data-side="left"><img src="img/tattoo6.jpg" width="455" height="600" alt="Tetování Poseidón, black &amp; grey" decoding="async"><div class="sc-veil"></div></div>
+<div class="sc-layer sc-shot" data-from=".45,.3,1.05" data-to=".42,.62,1.3" data-side="right"><img src="img/tattoo1.jpg" width="400" height="600" alt="Tetování hroch" decoding="async"><div class="sc-veil"></div></div>
+<div class="sc-layer sc-shot" data-from=".45,.3,1.1" data-to=".45,.62,1.3" data-side="left"><img src="img/tattoo5.jpg" width="345" height="600" alt="Tetování abstraktní erby" decoding="async"><div class="sc-veil"></div></div>
+<div class="sc-layer sc-shot" data-from=".45,.28,1" data-to=".5,.7,1.25" data-side="right"><img src="img/tattoo_main.jpg" width="533" height="800" alt="Tetování drak, barevný backpiece" decoding="async"><div class="sc-veil"></div></div>
 <div class="sc-side sc-side-l"></div>
 <div class="sc-side sc-side-r"></div>
+<div class="sc-fade"></div>
 <div class="sc-intro">
 <div class="hero-tag">Black &amp; Grey · Colour · Praha</div>
 <h1>Umění, které nosíte<br><em>s sebou</em></h1>
@@ -421,54 +361,45 @@ nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
 <div class="sc-line"></div>
 <p>A výsledek — příběh, který nosíte navždy.</p>
 </div>
+<div class="sc-note" data-side="right" data-shot="0">
+<div class="hero-tag">O mně</div>
+<h3>Preciznost v každém <em>detailu</em></h3>
+<div class="sc-line"></div>
+<p>Každé tetování je originál — návrh připravuji na míru. Studio na pražském Žižkově, termíny včetně víkendů.</p>
+<div class="sc-tags">12+ let zkušeností · Konzultace zdarma</div>
+</div>
+<div class="sc-note" data-side="left" data-shot="1">
+<div class="hero-tag">Specializace · 01</div>
+<h3>Black &amp; <em>Grey</em></h3>
+<div class="sc-line"></div>
+<p>Fotorealistické motivy v černošedé škále. Jemné přechody a hloubka.</p>
+</div>
+<div class="sc-note" data-side="right" data-shot="2">
+<div class="hero-tag">Specializace · 02</div>
+<h3><em>Zvířata</em></h3>
+<div class="sc-line"></div>
+<p>Zvířata plná výrazu a síly. Každé zachycuji s respektem k jeho charakteru.</p>
+</div>
+<div class="sc-note" data-side="left" data-shot="3">
+<div class="hero-tag">Specializace · 03</div>
+<h3><em>Abstrakt</em></h3>
+<div class="sc-line"></div>
+<p>Geometrie, flow a organické tvary. Příběh vyprávěný formou a energií.</p>
+</div>
+<div class="sc-note" data-side="right" data-shot="4">
+<div class="hero-tag">Specializace · 04</div>
+<h3><em>Colour</em></h3>
+<div class="sc-line"></div>
+<p>Výrazné barvy, živé kompozice. Když chcete, aby vaše tetování zářilo.</p>
+<div class="sc-tags">A dál nápisy · Květinové motivy · Portréty · Design<br>Jen pozitivní energie</div>
+</div>
 <div class="sc-grain"></div>
 <div class="sc-hint"><span>Scrollujte</span></div>
 <div class="sc-bar"><i></i></div>
 </div>
+<div class="sc-anchor" id="about"></div>
+<div class="sc-anchor" id="styles"></div>
 </section>
-
-<!-- MARQUEE -->
-<!-- text z puvodni marquee (nepouziva se): Black & Grey Realismus ✦ Zvířecí motivy ✦ Abstraktní kompozice ✦ Barevné práce ✦ Pozitivní energie ✦ Praha — Žižkov ✦ 12+ let zkušeností ✦ Unikátní návrhy ✦ -->
-
-<!-- ABOUT -->
-<section class="about" id="about">
-<div class="about-bg"></div>
-<div class="about-inner">
-<div class="about-img rl"><img src="img/about.jpg" alt="Honza při tetování" loading="lazy"></div>
-<div class="rr">
-<div class="stg">O mně</div>
-<h2 class="stt">Umění, které nosíte <em>s sebou</em></h2>
-<div class="stl"></div>
-<p class="stp">Tetuji výhradně pozitivní motivy. Každé tetování je pro mě forma umění a výraz krásy — ne agrese. Chci, aby z každé práce vyzařovalo něco, co vás posiluje a těší, kdykoli se na to podíváte.</p>
-<p class="stp" style="margin-top:14px">Specializuji se na širokou škálu stylů, ale vždy s jedním společným jmenovatelem: estetika a pozitivní energie.</p>
-<div class="about-quote">„Tělo je plátno. Jehla je štětec. A výsledek — příběh, který nosíte navždy."</div>
-<div class="about-tags">
-<span class="about-tag">Černobílý realismus</span><span class="about-tag">Zvířata</span><span class="about-tag">Antické motivy</span><span class="about-tag">Portréty</span><span class="about-tag">Design</span><span class="about-tag">Nápisy</span><span class="about-tag">Květinové motivy</span><span class="about-tag">Barevné práce</span>
-</div>
-</div>
-</div>
-</section>
-
-<!-- text z puvodni marquee (nepouziva se): Černobílý realismus ✦ Zvířata ✦ Antické motivy ✦ Portréty ✦ Nápisy ✦ Květinové motivy ✦ Design ✦ Barevné práce ✦ -->
-
-<!-- STYLES -->
-<section class="styles" id="styles">
-<div class="styles-header">
-<div class="stg rv">Specializace</div>
-<h2 class="stt rv d1">Čtyři hlavní směry, jeden <em>rukopis</em></h2>
-<div class="stl rv d2"></div>
-<p class="stp rv d3">Každý styl má své kouzlo. Společné mají preciznost, čisté linie a důraz na detail.</p>
-</div>
-<div class="styles-grid">
-<div class="style-card rd d1"><div class="style-card-img"><img src="img/tattoo3.jpg" alt="Black and grey" loading="lazy"></div><div class="style-card-body"><h3 class="style-card-title">Black &amp; Grey</h3><p class="style-card-text">Fotorealistické motivy v černošedé škále. Jemné přechody a hloubka.</p></div></div>
-<div class="style-card rd d2"><div class="style-card-img"><img src="img/tattoo1.jpg" alt="Zvířata" loading="lazy"></div><div class="style-card-body"><h3 class="style-card-title">Zvířata</h3><p class="style-card-text">Zvířata plná výrazu a síly. Každé zachycuji s respektem k jeho charakteru.</p></div></div>
-<div class="style-card rd d3"><div class="style-card-img"><img src="img/tattoo7.jpg" alt="Abstrakt" loading="lazy"></div><div class="style-card-body"><h3 class="style-card-title">Abstrakt</h3><p class="style-card-text">Geometrie, flow a organické tvary. Příběh vyprávěný formou a energií.</p></div></div>
-<div class="style-card rd d4"><div class="style-card-img"><img src="img/tattoo_main.jpg" alt="Colour" loading="lazy"></div><div class="style-card-body"><h3 class="style-card-title">Colour</h3><p class="style-card-text">Výrazné barvy, živé kompozice. Když chcete, aby vaše tetování zářilo.</p></div></div>
-</div>
-<p class="styles-note rv d5">Toto jsou mé čtyři hlavní směry — ale zdaleka ne vše. Dělám i <strong>nápisy, květinové motivy, portréty, design</strong> a mnohé další. Jediné, co netetuji, jsou negativní a agresivní motivy. <strong>Jen pozitivní energie.</strong></p>
-</section>
-
-<!-- text z puvodni marquee (nepouziva se): Preciznost v každém detailu ✦ Výhradně pozitivní motivy ✦ Unikátní návrhy na míru ✦ 12+ let zkušeností ✦ -->
 
 <!-- GALLERY -->
 <section class="gallery" id="gallery">
@@ -489,19 +420,6 @@ nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
 <div class="gallery-item rd d3" data-lightbox data-caption="Při práci"><img src="img/tattoo_work.jpg" alt="Honza při tetování" loading="lazy"></div>
 </div>
 </section>
-
-<!-- text z puvodni marquee (nepouziva se): Více prací na Instagramu ✦ @honza.tattoo ✦ Sledujte mě ✦ Nové práce každý týden ✦ -->
-
-<!-- INSTAGRAM -->
-<div class="ig-section" id="instagram">
-<p>Sledujte mě na Instagramu</p>
-<a href="https://instagram.com/honza.tattoo" target="_blank">@honza.tattoo</a>
-<div class="ig-embed" id="ig-embed">
-<div class="sk-instagram-feed" data-embed-id="25708810"></div><script src="https://widgets.sociablekit.com/instagram-feed/widget.js" defer></script>
-</div>
-</div>
-
-<!-- text z puvodni marquee (nepouziva se): Konzultace zdarma ✦ Návrh na míru ✦ Záloha od 1 000 Kč ✦ Studio Praha — Žižkov ✦ Včetně víkendů ✦ -->
 
 <!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox">
@@ -531,25 +449,6 @@ nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
 <div class="p-step"><div class="p-empty"></div><div class="p-num">6</div><div class="p-content"><h3 class="p-title">Péče &amp; hojení</h3><p class="p-text">Dostanete podrobný návod k péči. Jsem k dispozici pro dotazy po celou dobu.</p></div></div>
 <div class="p-step"><div class="p-content"><h3 class="p-title">Hotovo!</h3><p class="p-text">Tetování je zahojené a vypadá skvěle. Pokud budete chtít pokračovat — jsem tu.</p></div><div class="p-num">7</div><div class="p-empty"></div></div>
 </div>
-</section>
-
-<!-- text z puvodni marquee (nepouziva se): Od 1 500 Kč ✦ Malé tetování od 1 hodiny ✦ Celodenní sezení od 7 000 Kč ✦ Transparentní ceny ✦ Žádné skryté poplatky ✦ -->
-
-<!-- PRICING -->
-<section class="pricing" id="pricing">
-<div class="pricing-header">
-<div class="stg rv">Ceník</div>
-<h2 class="stt rv d1">Transparentní <em>ceny</em></h2>
-<div class="stl rv d2"></div>
-<p class="stp rv d3">Finální cenu vždy potvrdím předem po konzultaci. Žádné skryté poplatky.</p>
-</div>
-<div class="pricing-grid">
-<div class="price-card rd d1"><div class="price-label">Malé</div><div class="price-size">Do 10 cm</div><div class="price-desc">Jednoduché motivy</div><div class="price-amount">1 500 <span>Kč</span></div><div class="price-from">od</div></div>
-<div class="price-card rd d2"><div class="price-label">Střední</div><div class="price-size">10 — 20 cm</div><div class="price-desc">Detailní práce</div><div class="price-amount">3 000 <span>Kč</span></div><div class="price-from">od</div></div>
-<div class="price-card featured rd d3"><div class="price-label">Velké</div><div class="price-size">20+ cm</div><div class="price-desc">Rozsáhlé kompozice</div><div class="price-amount">5 000 <span>Kč</span></div><div class="price-from">od</div></div>
-<div class="price-card rd d4"><div class="price-label">Full day</div><div class="price-size">Celodenní sezení</div><div class="price-desc">Velké projekty</div><div class="price-amount">7 000 <span>Kč</span></div><div class="price-from">od</div></div>
-</div>
-<div class="pricing-footer rv">Platba v hotovosti nebo převodem. Přesná cena vždy po konzultaci.<br><span style="color:var(--gold)">Záloha 1 000 — 2 500 Kč</span> podle velikosti projektu pro potvrzení termínu.</div>
 </section>
 
 <!-- text z puvodni marquee (nepouziva se): 100% spokojených klientů ✦ Individuální přístup ✦ Profesionální péče ✦ Přátelská atmosféra ✦ -->
@@ -599,7 +498,7 @@ nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
 <div class="faq-item rv d4"><button class="faq-q"><span>Jak dlouho trvá jedno sezení?</span><span class="faq-icon">+</span></button><div class="faq-a"><p>Malé tetování zvládneme za 1–2 hodiny. Větší projekty mohou trvat 3–5 hodin, případně se rozdělí do více sezení.</p></div></div>
 <div class="faq-item rv d5"><button class="faq-q"><span>Jak pečovat o čerstvé tetování?</span><span class="faq-icon">+</span></button><div class="faq-a"><p>Po sezení dostanete podrobný návod. Základem je: udržovat čistotu, nanášet hojivou mast, vyhnout se slunci, bazénům a lázním po dobu 2–3 týdnů.</p></div></div>
 <div class="faq-item rv d6"><button class="faq-q"><span>Mohu přijít s vlastním návrhem?</span><span class="faq-icon">+</span></button><div class="faq-a"><p>Určitě — většina klientů přichází s vlastní představou a já ji dotáhnu do finální podoby. Tetuji výhradně pozitivní motivy.</p></div></div>
-<div class="faq-item rv"><button class="faq-q"><span>Jaké platební metody přijímáte?</span><span class="faq-icon">+</span></button><div class="faq-a"><p>Hotovost nebo převod na účet. Záloha 1 000 — 2 500 Kč pro potvrzení termínu — odečítá se z finální ceny.</p></div></div>
+<div class="faq-item rv"><button class="faq-q"><span>Jaké platební metody přijímáte?</span><span class="faq-icon">+</span></button><div class="faq-a"><p>Hotovost nebo převod na účet. Termín potvrzujete zálohou, která se odečítá z finální ceny. Cenu i výši zálohy vám napíšu po konzultaci.</p></div></div>
 <div class="faq-item rv"><button class="faq-q"><span>Děláte i jiné styly než ty čtyři hlavní?</span><span class="faq-icon">+</span></button><div class="faq-a"><p>Ano! Kromě black &amp; grey, zvířat, abstraktu a colour dělám i nápisy, květinové motivy, portréty, design a další. Jediné omezení — tetuji výhradně pozitivní motivy se světlou energií.</p></div></div>
 <div class="faq-item rv"><button class="faq-q"><span>Mohu přijít na konzultaci osobně?</span><span class="faq-icon">+</span></button><div class="faq-a"><p>Samozřejmě. Pokud chcete motiv probrat osobně, domluvíme se na termínu konzultace v mém studiu na Žižkově. Konzultace je nezávazná a zdarma.</p></div></div>
 </div>
@@ -666,8 +565,8 @@ if(announceBar)announceBar.classList.toggle('sc',sy>60);
 if(scrollProg){var dH=document.documentElement.scrollHeight-innerHeight;scrollProg.style.width=(dH>0?(sy/dH)*100:0)+'%'}
 if(heroContent&&sy<innerHeight*1.5){var hp=sy/innerHeight;heroContent.style.opacity=Math.max(0,1-hp*1.3);heroContent.style.transform='translateY('+(sy*.3)+'px) scale('+(1-hp*.06)+')'}
 /* Active nav */
-var secs=document.querySelectorAll('section[id],div.ig-section[id]'),nls=document.querySelectorAll('.nk a'),cur='';
-secs.forEach(function(s){if(sy>=s.offsetTop-120)cur=s.id});
+var secs=document.querySelectorAll('section[id],.sc-anchor[id]'),nls=document.querySelectorAll('.nk a'),cur='';
+secs.forEach(function(s){if(sy>=s.getBoundingClientRect().top+sy-120)cur=s.id});
 nls.forEach(function(l){l.classList.remove('active');if(l.getAttribute('href')==='#'+cur)l.classList.add('active')});
 });
 
@@ -952,6 +851,6 @@ foc.addEventListener('click',function(e){e.stopPropagation();closeFO()});
 fo.addEventListener('click',function(e){if(e.target===fo)closeFO()})}
 })();
 </script>
-<script src="scrolly.js?v=8"></script>
+<script src="scrolly.js?v=9"></script>
 </body>
 </html>
