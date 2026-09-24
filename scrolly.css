@@ -23,6 +23,8 @@
 .sc-note{position:absolute;top:50%;width:min(420px,34vw);opacity:0;visibility:hidden;z-index:3;will-change:opacity,transform}
 .sc-note[data-side="left"]{left:8vw}
 .sc-note[data-side="right"]{right:8vw;text-align:right}
+.sc-note[data-pos="center"]{left:50%;width:min(460px,82vw);text-align:center;text-shadow:0 2px 24px rgba(0,0,0,.85)}
+.sc-note[data-pos="center"] .sc-line{margin-left:auto;margin-right:auto}
 .sc-note .hero-tag{margin-bottom:18px}
 .sc-note h3{font-family:var(--font-display);font-size:clamp(2rem,3.4vw,3.1rem);font-weight:300;line-height:1.12;color:var(--white);margin-bottom:18px}
 .sc-note h3 em{font-style:italic;color:var(--gold)}
@@ -42,6 +44,8 @@
 .sc-side{top:auto;left:0;right:0;width:auto;height:62%;background:linear-gradient(0deg,rgba(7,8,11,.92) 0%,rgba(7,8,11,.6) 55%,rgba(7,8,11,0) 100%)}
 .sc-note,.sc-note[data-side="left"],.sc-note[data-side="right"]{top:auto;bottom:84px;left:24px;right:24px;width:auto;text-align:left}
 .sc-note[data-side="right"] .sc-line{margin-left:0}
+.sc-note[data-pos="center"]{top:50%;bottom:auto;left:50%;right:auto;width:84vw;text-align:center}
+.sc-note[data-pos="center"] .sc-line{margin-left:auto;margin-right:auto}
 .sc-note h3{font-size:2rem}
 .sc-note p{font-size:.92rem}
 }
