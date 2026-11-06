@@ -216,7 +216,7 @@ ST.cam=cam;
 
 ST.start=function(){
   story=$('story');cap=$('caption');capN=$('capN');capT=$('capT');capP=$('capP');
-  buildCam();
+  buildCam();ST.hasHero=!!document.getElementById('hero');
   ST.mods.forEach(function(m){
     if(ST.debug.only&&ST.debug.only.split(',').indexOf(m.name)<0)return;
     if(ST.debug.nochars&&m.name==='chars')return;
@@ -271,6 +271,8 @@ function size(){
   if(asp<1.25){var w=asp<.8?720:900,h=w/asp;vb=(760-w/2)+' '+(470-h/2)+' '+w+' '+h}
   ['close','closeBg'].forEach(function(id){var e=$(id);if(e)e.setAttribute('viewBox',vb)});
   ST.closeVB=vb.split(' ').map(Number);
+  /* navazujici sekce s andelem (na webu) prekryva posledni obrazovku pribehu */
+  var hero=document.getElementById('hero');if(hero&&(story.compareDocumentPosition(hero)&4))hero.style.marginTop=(-vh)+'px';
 }
 function targetT(){var span=story.offsetHeight-vh;return clamp((scrollY-story.offsetTop)/span)*ST.N}
 function scrollToT(t){var span=story.offsetHeight-vh;scrollTo({top:story.offsetTop+t/ST.N*span,behavior:reduce?'auto':'smooth'})}
@@ -354,8 +356,10 @@ function render(time){
   /* uvod a konec */
   var intro=$('intro'),io=1-ss(.3,1.0,T);intro.style.opacity=io;intro.style.transform='translateY('+(-50*(1-io)).toFixed(1)+'px)';intro.style.visibility=io<=0?'hidden':'visible';
   $('introfade').style.opacity=io;$('hint').style.opacity=1-ss(.05,.4,T);
-  var cta=$('cta'),ct=ss(12.3,12.75,T);cta.style.opacity=ct;cta.style.transform='translate(-50%,'+(24*(1-ct)).toFixed(1)+'px)';cta.style.pointerEvents=ct>.5?'auto':'none';
+  var cta=$('cta'),ct=ST.hasHero?0:ss(12.3,12.75,T);cta.style.opacity=ct;cta.style.transform='translate(-50%,'+(24*(1-ct)).toFixed(1)+'px)';cta.style.pointerEvents=ct>.5?'auto':'none';
   $('steps').style.opacity=1-ss(12.3,12.6,T)*.75;
+  /* konec: scena se rozplyne do navazujici fotky andela */
+  if(ST.hasHero){var so=1-ss(12.8,13,T);$('stage').style.opacity=so;document.body.classList.toggle('in-story',T<12.97)}
 
   /* bubliny */
   var placed=[],capR=cap.getBoundingClientRect(),floor=vh-Math.max(110,(vh-capR.top)+14);

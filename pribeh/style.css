@@ -31,7 +31,7 @@ a{color:inherit}
 .top-cta{font-size:.7rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;text-decoration:none;color:var(--line);border-bottom:1px solid var(--gold);padding-bottom:3px}
 
 /* PRIBEH */
-.story{position:relative;height:1200vh}
+.story{position:relative;z-index:2;height:1200vh;padding:0;margin:0}
 .stage{position:sticky;top:0;height:100vh;height:100svh;width:100%;overflow:hidden;background:var(--bg)}
 #world,#close,#closeBg{position:absolute;inset:0;width:100%;height:100%;display:block}
 #closeBg{opacity:0;pointer-events:none;will-change:opacity}
@@ -113,8 +113,8 @@ a{color:inherit}
 .cta h2 em{font-style:italic;color:var(--gold)}
 .cta p{margin:18px auto 0;max-width:44ch;color:rgba(231,221,199,.7);font-size:.98rem}
 .cta .row{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 22px;margin-top:28px;align-items:center}
-.btn{display:inline-block;text-decoration:none;font-size:.72rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;background:var(--gold);color:#16120B;padding:15px 28px;border-radius:40px;transition:background .3s}
-.btn:hover{background:var(--gold-light)}
+.st-btn{display:inline-block;text-decoration:none;font-size:.72rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;background:var(--gold);color:#16120B;padding:15px 28px;border-radius:40px;transition:background .3s}
+.st-btn:hover{background:var(--gold-light)}
 .cta .mail{font-family:var(--font-display);font-size:1.25rem;color:var(--line);user-select:all;text-decoration:none;border-bottom:1px solid rgba(200,164,92,.5)}
 .cta .meta{margin-top:22px;font-size:.62rem;letter-spacing:.26em;text-transform:uppercase;color:rgba(231,221,199,.45)}
 .cta .meta a{color:var(--gold-light);text-decoration:none}
