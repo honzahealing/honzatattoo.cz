@@ -2,7 +2,7 @@
 
 ## Kanonické soubory
 
-Repozitář `honzahealing/honzatattoo.cz`, větev **`claude/upbeat-ramanujan-x738zi`**, poslední commit `42653c2` (6. 11. 2026). Pull request zatím není a `main` je beze změn. Velikosti platí pro commit `42653c2`.
+Repozitář `honzahealing/honzatattoo.cz`, větev **`pribeh-na-scroll`**, poslední commit `42653c2` (6. 11. 2026). Pull request zatím není a `main` je beze změn. Velikosti platí pro commit `42653c2`.
 
 | Bajty | Soubor | K čemu |
 |---|---|---|
