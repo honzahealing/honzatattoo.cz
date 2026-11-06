@@ -109,8 +109,8 @@ function build(kind){
       ln(A.upper.inner,'M -4,6 q4,6 9,4',.6,LF);
       /* tetovani rukavu: slunce s paprsky na bicepsu, vinna reva a lotosove listy na predlokti, teckovany naramek */
       var tg=el('g',{opacity:dark?.45:.9},A.upper.inner);
-      ln(tg,ST.circ(0,42,6.2),.8,'var(--gold)');ln(tg,ST.circ(0,42,3),.6,'var(--gold)');
-      for(var i=0;i<10;i++){var a=i*36*R;ln(tg,'M '+(Math.cos(a)*8).toFixed(1)+','+(42+Math.sin(a)*8).toFixed(1)+' L '+(Math.cos(a)*11).toFixed(1)+','+(42+Math.sin(a)*11).toFixed(1),.55,'var(--gold)')}
+      ln(tg,'M 0,42 c 2,-2 4,0 3,2 c -1,3 -6,3 -7,-1 c -1,-5 5,-8 9,-5 c 4,3 3,10 -3,12 c -6,2 -11,-3 -10,-8',.7,'var(--gold)');
+      ln(tg,'M -6,48 q -6,4 -9,-1 q 5,-3 9,1 M 6,47 q 6,3 9,-2 q -5,-2 -9,2',.55,'var(--gold)');
       ln(tg,'M -8,30 C -4,32 4,32 8,30',.5,'var(--gold)');
       var fg=el('g',{opacity:dark?.45:.9},A.fore.inner);
       ln(fg,'M .5,2 C 5,10 -4,18 .5,26 C 5,34 -3.5,42 .5,49',.75,'var(--gold)');
@@ -132,9 +132,8 @@ function build(kind){
       ln(A.rolled,'M -10,4 C -4,7 4,7 10,4',.8,LD);ln(A.rolled,'M -9.6,9 C -4,12 4,12 9.6,9',.7,LD);
       A.rolled.style.display='none';
       if(!dark){A.mark=el('g',{transform:'translate(2.6,30) scale(.36)',opacity:0},A.fore.inner);
-        P(A.mark,ST.circ(0,-6,8),{fill:'none',stroke:'var(--gold-light)','stroke-width':1.6});
-        P(A.mark,'M0,2 C 5,-3 4,-10 0,-14 C -4,-10 -5,-3 0,2 Z',{fill:'var(--gold-light)'});
-        P(A.mark,'M -9,3 Q 0,7 9,3',{fill:'none',stroke:'var(--gold-light)','stroke-width':1.4});
+        P(A.mark,'M 2,-12 C 6,-13 8,-10 7,-7 C 9,-6 8,-4 6,-4 C 5,0 3,5 1,9 L -1,16 L -2,9 C -4,4 -4,-2 -2,-7 C -2,-10 0,-12 2,-12 Z',{fill:'#C8664F'});
+        P(A.mark,'M -2,-4 C -4,0 -4,5 -2,9 L 1,2 Z',{fill:'#5E8DAE'});P(A.mark,'M -7,4 L 9,2',{fill:'none',stroke:'var(--gold-light)','stroke-width':1.2});
         A.mark.setAttribute('filter','url(#glowW)');}
     }
     return A;
@@ -157,7 +156,7 @@ function build(kind){
   }
   F.aB=limbArm('b');F.lB=limbLeg('b');
   /* vlasy vzadu (klient) */
-  if(!H){F.hairBackG=el('g',{},body);F.hairBack=P(F.hairBackG,'',{fill:C.hair,stroke:LINE,'stroke-width':1.4,'stroke-linejoin':'round'});F.hairStr=el('g',{},F.hairBackG)}
+  if(!H){F.hairBackG=el('g',{},body);F.lockG=null;F.hairBack=P(F.hairBackG,'',{fill:C.hair,stroke:LINE,'stroke-width':1.4,'stroke-linejoin':'round'});F.hairStr=el('g',{},F.hairBackG)}
   /* krk a trup */
   F.torsoG=el('g',{},body);
   part(F.torsoG,SH.neck,C.skin,{w:1.4,open:SH.neckO,shade:'M -10,-130 L -2,-130 L -2,-100 L -10,-100 Z'});
@@ -169,11 +168,6 @@ function build(kind){
     ln(tp.inner,'M -6,-108 C -2,-103 4,-102 8,-106',.9,LD);ln(tp.inner,'M -4,-104 C 0,-100 5,-100 8.6,-103',.6,LF);
     ln(tp.inner,'M 14,-40 q-7,-3 -14,1',.6,LF);ln(tp.inner,'M 15,-26 q-8,-2 -17,3',.6,LF);ln(tp.inner,'M -14,-60 q4,10 2,22',.6,LF);
     ln(tp.inner,'M 4,-4 C 6,2 10,6 14,7',.7,LD);ln(tp.inner,'M -2,-9 L -2,4',.6,LF);
-    /* zastera z kuze: pas pres hrud, laclove poutko */
-    F.apron=el('g',{},tp.inner);
-    P(F.apron,'M 6,-96 C 12,-92 18,-82 19,-68 L 20,-10 L 20,30 L 8,30 L 6,-60 Z',{fill:'#2A2119'});
-    ln(F.apron,'M 6,-96 C 12,-92 18,-82 19,-68 L 20,30',.9,LD);ln(F.apron,'M 8.6,-88 L 9.6,28',.5,'var(--gold)',.6);
-    ln(F.apron,'M -16,-80 C -6,-88 2,-94 7,-96',1,LD);P(F.apron,ST.rect(16,-40,6,8,1),{fill:'none',stroke:'var(--gold)','stroke-width':.6,opacity:.8});
   }else{
     P(tp.inner,'M -32,-130 L 32,-130 L 32,3 C 14,6 -10,6 -32,2 Z',{fill:C.shirt});
     P(tp.inner,SH.torsoShade,{fill:'rgba(0,0,0,.3)'});P(tp.inner,SH.torsoShade,{fill:'url(#hatchFine)',opacity:.9});
@@ -192,6 +186,8 @@ function build(kind){
   /* hlava */
   F.headG=el('g',{},body);F.head=el('g',{},F.headG);
   buildHead(F,H);
+  /* pramen vlasu pred ramenem (v hlave) */
+  if(!H){F.lock=P(F.head,'',{fill:C.hair,stroke:LINE,'stroke-width':1.1,'stroke-linejoin':'round'})}
   /* sala */
   if(!H){F.scarfG=el('g',{},body);
     F.scarfWrap=part(F.scarfG,'M -9,-116 C -4,-108 6,-106 13,-111 L 14,-100 C 7,-95 -4,-96 -11,-104 Z',C.scarf,{w:1.3});
@@ -212,24 +208,35 @@ function buildHead(F,H){
   ln(hp.inner,'M 6,-24 q3,-3 7,-2.6',.5,LF);
   ln(hp.inner,'M 19.2,-27.4 C 18,-26.6 17.4,-25.2 17.8,-24',.55,LD);
   if(H){
-    /* vous, knir, vlasy s drdolem */
+    /* vous a knir */
     var bd=part(g,'M -1,-33 C 2,-30 4,-26 6,-22.6 C 9,-20 13,-20.4 16.6,-20.8 C 18.6,-20 19.8,-19.2 19.6,-17.8 C 20.6,-16.6 20.8,-15 19.8,-13.6 C 20.8,-11 21,-7.6 18.6,-4.4 C 15.8,-1.2 11,-.4 7,-1.2 C 2,-2.4 -2,-6 -4,-10 C -5.4,-14 -4.6,-20 -3.6,-26 Z',C.hair,{w:1.2});
     var rb=ST.rng(5);for(var i=0;i<26;i++){var x=-3+rb()*21,y=-28+rb()*25;ln(bd.inner,'M '+x.toFixed(1)+','+y.toFixed(1)+' l '+(1+rb()*1.6).toFixed(1)+','+(2.4+rb()*2).toFixed(1),.5,LF)}
     F.mouth=P(g,'M 16.8,-17.9 Q 18.6,-17.4 19.8,-17.8',{fill:'none',stroke:LINE,'stroke-width':.8});
     F.lip=P(g,'M 18.4,-17.2 C 19.6,-17 20.4,-16.4 20,-15.6 C 19.2,-15.2 18.2,-15.6 17.8,-16.4 Z',{fill:C.skin,stroke:LD,'stroke-width':.5});
     P(g,'M 15.6,-21 C 17.6,-21.9 19.8,-21.4 21,-20 C 20.2,-19 18.4,-18.8 16.2,-19.6 Z',{fill:C.hair,stroke:LD,'stroke-width':.5});
-    var hr=part(g,'M -1,-30 C -6,-31.5 -12,-30.5 -18,-26 C -23.5,-31 -24.5,-45 -16.5,-52.5 C -9,-58.5 4,-59.4 12.4,-55.4 C 16.4,-53.4 18.8,-49.4 18.9,-45 C 15,-48.6 9,-50.2 3,-49.8 C -2,-49.2 -5,-46.2 -6,-41 C -6.4,-36 -4.4,-32.4 -1,-30 Z',C.hair,{w:1.3});
-    for(var s=0;s<7;s++)ln(hr.inner,'M '+(12-s*4)+',-54 C '+(4-s*4)+',-53 '+(-4-s*3)+',-48 '+(-10-s*1.6)+',-40',.55,LF);
-    var bun=part(g,ST.circ(-17,-55.6,7.6),C.hair,{w:1.3});
-    ln(bun.inner,'M -23,-58 C -20,-62 -14,-62 -11,-57',.5,LF);ln(bun.inner,'M -24,-54 C -20,-57 -14,-57 -10,-53',.5,LF);
-    P(g,'M -12.4,-50.4 L -10.6,-53.2 L -9,-51.6 L -10.8,-49.4 Z',{fill:'var(--gold)',opacity:.8});
+    /* kratke zastrizene boky (fade) */
+    var fd=P(g,'M -5,-45 C -2,-40 0,-36 -1,-32 C -6,-31 -12,-28 -18,-22 C -22,-26 -23.5,-33 -22.5,-39 C -17,-43 -11,-45.5 -5,-45 Z',{fill:C.hair,opacity:.55});
+    P(g,'M -5,-45 C -2,-40 0,-36 -1,-32 C -6,-31 -12,-28 -18,-22 C -22,-26 -23.5,-33 -22.5,-39 C -17,-43 -11,-45.5 -5,-45 Z',{fill:'url(#stipple)',opacity:.9});
+    /* vrsek: texturovany, vycesany nahoru a dozadu */
+    var hr=part(g,'M 18,-44.5 C 19.5,-47 21.5,-51 20.5,-55 C 22,-58 20,-63 16,-64.5 C 14,-68.5 8,-70 3,-68.5 C -2,-71 -9,-69.5 -13,-66 C -18,-65 -22,-60.5 -23,-55 C -25,-51 -24.6,-44 -23.5,-39 C -18,-43 -11.5,-45.5 -5.5,-45.2 C 1,-47.5 10,-47 18,-44.5 Z',C.hair,{w:1.2});
+    var rh=ST.rng(21);for(var s3=0;s3<12;s3++){var hx0=16-s3*3.3+rh()*2,hy0=-46-rh()*2,cx1=hx0-2+rh()*3,cy1=-55-rh()*6,ex1=hx0-8-rh()*6,ey1=-64-rh()*5+s3*.5;
+      ln(hr.inner,'M '+hx0.toFixed(1)+','+hy0.toFixed(1)+' Q '+cx1.toFixed(1)+','+cy1.toFixed(1)+' '+ex1.toFixed(1)+','+ey1.toFixed(1),.5,rh()<.3?'rgba(232,213,163,.3)':'rgba(231,221,199,.14)')}
+    ln(hr.inner,'M 17,-49 C 16,-56 12,-61 6,-63.5',.9,'rgba(232,213,163,.22)');
+    /* sediny ve vousech */
+    var rg=ST.rng(9);for(var i2=0;i2<16;i2++){var gx2=-2+rg()*20,gy2=-24+rg()*20;ln(bd.inner,'M '+gx2.toFixed(1)+','+gy2.toFixed(1)+' l '+(.8+rg()*1.4).toFixed(1)+','+(2+rg()*2).toFixed(1),.55,'rgba(231,221,199,.4)')}
+    /* tenke kovove bryle (z profilu): obruba cocky, nosnik, straznice k uchu */
+    F.glasses=el('g',{},g);
+    P(F.glasses,'M 16.4,-38.6 C 19.8,-37.4 20.6,-31 18.2,-27.6 C 15.8,-27.8 14.8,-30 15,-33 C 15.2,-36 15.6,-38 16.4,-38.6 Z',{fill:'rgba(232,213,163,.1)',stroke:'rgba(231,221,199,.85)','stroke-width':.7});
+    ln(F.glasses,'M 15.4,-36.6 C 9,-36 3,-35.4 -1.6,-34.6 C -3,-34.2 -3.8,-32.8 -3.4,-31',.7,'rgba(231,221,199,.85)');
+    ln(F.glasses,'M 19.6,-36.8 C 20.6,-37 21,-36.4 21.2,-35.6',.6,'rgba(231,221,199,.7)');
+    ln(F.glasses,'M 17.4,-37 C 18.4,-35.6 18.6,-33 18,-30.6',.5,'rgba(255,246,223,.5)');
   }else{
     F.mouth=P(g,'M 17,-17.8 Q 18.8,-17.3 20,-17.8',{fill:'none',stroke:LINE,'stroke-width':.8});
     F.lip=P(g,'M 18.6,-17.2 C 20,-17 20.8,-16.2 20.2,-15.4 C 19.2,-15 18.2,-15.6 17.8,-16.4 Z',{fill:C.skin,stroke:LD,'stroke-width':.5});
     P(g,'M 19,-19.6 C 19.8,-20.2 20.6,-20.2 20.9,-19.7 C 20.4,-19.2 19.6,-19 19,-19.6 Z',{fill:'rgba(231,221,199,.25)'});
     /* vlasy: objem pres temeno, ofina na stranu */
-    var hc=part(g,'M 17.4,-44.6 C 15,-52 7,-58.6 -4,-58.4 C -17,-58 -26,-48 -26,-34 C -26,-27 -24.4,-21 -21.6,-16 C -19,-20 -16.6,-24 -15.4,-28 C -13.6,-33.6 -9.6,-38.6 -4,-41.6 C 2,-44.8 10,-45.6 17.4,-44.6 Z',C.hair,{w:1.3});
-    for(var s2=0;s2<8;s2++)if(s2%2===0)ln(hc.inner,'M '+(15-s2*3.4)+',-46 C '+(6-s2*3.2)+',-54 '+(-8-s2*1.8)+',-52 '+(-19-s2*.7)+',-38',.45,'rgba(232,213,163,.13)');
+    var hc=part(g,'M 17.4,-44.6 C 16,-52 9,-58 0,-59 C -12,-60 -22,-53 -25,-42 C -27,-34 -25.5,-26 -22,-19 C -19,-24 -16,-30 -12,-34 C -8,-38 -3,-41 2,-43 C 7,-44.6 12.4,-45 17.4,-44.6 Z',C.hair,{w:1.2});
+    var rc=ST.rng(33);for(var s2=0;s2<10;s2++){var q0=15-s2*3.6+rc()*2,q1=-46-rc()*2;ln(hc.inner,'M '+q0.toFixed(1)+','+q1.toFixed(1)+' C '+(q0-4).toFixed(1)+','+(-55+rc()*3).toFixed(1)+' '+(q0-14-rc()*4).toFixed(1)+','+(-54+rc()*4).toFixed(1)+' '+(q0-20-rc()*6).toFixed(1)+','+(-40+rc()*8).toFixed(1),.45,rc()<.35?'rgba(232,213,163,.24)':'rgba(231,221,199,.1)')}
     P(g,'M 17.6,-45 C 13,-46.4 7,-44 3,-39.6 C 1.4,-37.6 .4,-35.4 -.4,-33.6 C 3.4,-37.4 9,-41 15,-42 Z',{fill:C.hair,stroke:LD,'stroke-width':.6});
     P(g,'M 4,-49 C 9,-52 13,-51 16,-48',{fill:'none',stroke:'var(--gold-light)','stroke-width':.7,opacity:.3});
   }
@@ -256,6 +263,10 @@ function ik(jx,jy,tx,ty,a,b,s){
   var kx=jx+Math.sin(u*R)*a,ky=jy+Math.cos(u*R)*a;
   return {u:u,l:Math.atan2(tx-kx,ty-ky)/R,kx:kx,ky:ky};
 }
+function crc(pts){var n=pts.length,d='M '+pts[0][0].toFixed(1)+','+pts[0][1].toFixed(1);
+  for(var i=0;i<n;i++){var p0=pts[(i-1+n)%n],p1=pts[i],p2=pts[(i+1)%n],p3=pts[(i+2)%n];
+    d+=' C '+(p1[0]+(p2[0]-p0[0])/6).toFixed(1)+','+(p1[1]+(p2[1]-p0[1])/6).toFixed(1)+' '+(p2[0]-(p3[0]-p1[0])/6).toFixed(1)+','+(p2[1]-(p3[1]-p1[1])/6).toFixed(1)+' '+p2[0].toFixed(1)+','+p2[1].toFixed(1)}
+  return d+' Z'}
 function rot(x,y,a){var c=Math.cos(a*R),s=Math.sin(a*R);return [x*c-y*s,x*s+y*c]}
 var L1=80,L2=82,U1=58,U2=54,SHF=[2,-98],SHB=[-3,-99],NECK=[2,-115];
 
@@ -307,8 +318,11 @@ function walkPose(dist){
 /* ---------- vykresleni pozy ---------- */
 function apply(F,st,time){
   var p=st.p,face=st.face;
-  F.root.setAttribute('transform','translate('+st.x.toFixed(2)+','+GY+') scale('+face.toFixed(3)+',1)');
-  F.root.style.opacity=st.op==null?1:st.op;
+  var af=Math.abs(face),sg=face<0?-1:1,op0=st.op==null?1:st.op,po=ss(.22,.58,af),fo=1-ss(.3,.66,af);
+  F.root.setAttribute('transform','translate('+st.x.toFixed(2)+','+GY+') scale('+(sg*lerp(.4,1,ss(.1,1,af))).toFixed(3)+',1)');
+  F.root.style.opacity=op0*po;
+  if(F.front){F.front.setAttribute('opacity',(op0*fo).toFixed(3));if(fo>0)F.front.setAttribute('transform','translate('+st.x.toFixed(2)+','+GY+') scale('+lerp(1,.72,ss(.3,.8,af)).toFixed(3)+',1)');
+    if(F.fMouth&&fo>0){var tk=ST.talk[F.kind==='honza'?'h':'c'];F.fMouth.setAttribute('transform',tk?'translate(0,'+(Math.abs(Math.sin(time*.024))*1.2).toFixed(2)+')':'')}}
   /* nohy */
   [['lF','fF',2],['lB','fB',-2]].forEach(function(q){
     var Lg=F[q[0]],hx=q[2],hy=p.py,tx=p[q[1]+'x'],ty=p[q[1]+'y'],r=ik(hx,hy,tx,ty,L1,L2,1);
@@ -324,16 +338,15 @@ function apply(F,st,time){
   F.headTop=rot(0,-58*.86,ha);F.headTop=[hx2+F.headTop[0],hy2+F.headTop[1]];
   /* vlasy vzadu: visi po vahou a houpou se */
   if(F.hairBack){
-    var sw=F.spring.a,gv=rot(0,1,-ha),nv=[-gv[1],gv[0]],bx=-22,by=-37;
-    function f(v){return v.toFixed(1)}
-    function A(px,py,g,n){return [px+gv[0]*g+nv[0]*n,py+gv[1]*g+nv[1]*n]}
-    var E=A(bx,by,34,3+sw*10),c1=A(bx,by,7,7),c2=A(E[0],E[1],-13,5),c3=A(E[0],E[1],-9,-1.5),c4=A(bx,by,12,-3.5),p0=A(bx,by,-3,1),p1=A(bx,by,4,-2.5),Ex=E[0],Ey=E[1];
-    var d='M '+f(p0[0])+','+f(p0[1])+' C '+f(c1[0])+','+f(c1[1])+' '+f(c2[0])+','+f(c2[1])+' '+f(Ex)+','+f(Ey)+' C '+f(c3[0])+','+f(c3[1])+' '+f(c4[0])+','+f(c4[1])+' '+f(p1[0])+','+f(p1[1])+' Z';
-    F.hairBack.setAttribute('d',d);
-    var st2='';for(var i=0;i<4;i++){var k=i/3-.5,q1=A(bx,by,16,2+k*5),q2=A(Ex,Ey,-(5+i*3),k*2);st2+='M '+f(bx)+','+f(by)+' Q '+f(q1[0])+','+f(q1[1])+' '+f(q2[0])+','+f(q2[1])+' '}
-    F.hairStr.innerHTML='';ln(F.hairStr,st2,.55,'rgba(232,213,163,.22)');
-    if(!F.tie){F.tie=P(F.hairBackG,'',{fill:'var(--gold)',opacity:.85})}
-    var t1=A(bx,by,-1,3.4),t2=A(bx,by,-1,-3),t3=A(bx,by,3,-2.6),t4=A(bx,by,3,3.6);F.tie.setAttribute('d','M '+f(t1[0])+','+f(t1[1])+' L '+f(t2[0])+','+f(t2[1])+' L '+f(t3[0])+','+f(t3[1])+' L '+f(t4[0])+','+f(t4[1])+' Z');
+    var sw=F.spring.a,gv=rot(0,1,-ha),nv=[-gv[1],gv[0]],bx=-17,by=-30,wind=ST.reduce?0:Math.sin(time*.0013)*.5+Math.sin(time*.0031)*.3;
+    function A(g,n){var k=Math.max(0,g)/100;n+=k*(sw*-26+wind*6)+Math.sin(g*.09+time*.002)*(.8+k*3);return [bx+gv[0]*g+nv[0]*n,by+gv[1]*g+nv[1]*n]}
+    var outer=[A(-30,2),A(-18,10),A(0,13),A(25,14.5),A(50,15),A(75,13),A(98,10),A(112,4)],inner=[A(108,-4),A(92,-6),A(70,-8),A(45,-9),A(20,-9),A(2,-6),A(-12,0)];
+    F.hairBack.setAttribute('d',crc(outer.concat(inner)));
+    var st2='';for(var i=0;i<6;i++){var nn=-6+i*3.6,a1=A(5,nn+1),a2=A(50,nn+.6),a3=A(100-i*3,nn*.6);st2+='M '+a1[0].toFixed(1)+','+a1[1].toFixed(1)+' Q '+a2[0].toFixed(1)+','+a2[1].toFixed(1)+' '+a3[0].toFixed(1)+','+a3[1].toFixed(1)+' '}
+    F.hairStr.innerHTML='';ln(F.hairStr,st2,.55,'rgba(232,213,163,.2)');
+    /* pramen pres rameno dopredu */
+    var f0=[-3,-26],fg=rot(0,1,-ha),fe=[f0[0]+fg[0]*44+wind*2+8,f0[1]+fg[1]*44];
+    F.lock.setAttribute('d','M '+(f0[0]-3)+','+f0[1]+' C '+(f0[0]+2)+','+(f0[1]+16)+' '+(fe[0]-4).toFixed(1)+','+(fe[1]-14).toFixed(1)+' '+fe[0].toFixed(1)+','+fe[1].toFixed(1)+' C '+(fe[0]-1).toFixed(1)+','+(fe[1]-16).toFixed(1)+' '+(f0[0]+6)+','+(f0[1]+12)+' '+(f0[0]+3)+','+f0[1]+' Z');
     T(F.hairBackG,hx2,hy2,ha,.86);
   }
   /* sala */
@@ -367,7 +380,7 @@ function walkSeg(T,t0,t1,x0,x1,from,to,face,rootX){
   var r=mixR(a,w,ss(0,.1,u));r=mixR(r,b,ss(.9,1,u));
   return {x:x,face:f,p:r};
 }
-function idle(p,time,amt){var q=cp(p);q.lean+=Math.sin(time*.0017)*.7*amt;q.headT+=Math.sin(time*.0011+1)*1.2*amt;return q}
+function idle(p,time,amt){var q=cp(p);q.lean+=Math.sin(time*.0017)*.7*amt;q.headT+=(Math.sin(time*.0011+1)*1.2+Math.sin(time*.00043+2)*3.5)*amt;q.py+=Math.sin(time*.0017+.6)*.5*amt;return q}
 /* sednuti: panev dolu a nazad s predklonem, chodidla dopredu */
 function sitMix(T,t0,t1,from,to){
   var u=lin(t0,t1,T),r=mixR(from,to,ss(0,1,u));
@@ -417,7 +430,7 @@ function clientAt(T,time){
 }
 function honzaAt(T,time){
   var st,R0=function(p,x,f){return resolve(p,f,x)};
-  var drawP=function(t,x){var o=Math.sin(t*61)*5,o2=Math.sin(t*37+1)*4;
+  var drawP=function(t,x){var tm=time*.001,o=Math.sin(tm*5.3)*4+Math.sin(tm*2.1)*3,o2=Math.sin(tm*4.1+1)*3.5+Math.sin(tm*1.3)*2;
     return ext(SIT,{lean:13,headT:12,aF:{fk:0,wx:1624+o,wy:540+o2,abs:75},hF:'hold',aB:{fk:1,a1:36,el:64,wr:-6}})};
   if(T<2.85)st={x:1760,face:-1,p:R0(idle(drawP(T*.7),time,.5),1760,-1)};
   else if(T<4.5){
@@ -437,7 +450,7 @@ function honzaAt(T,time){
   else if(T<6.62)st={x:1760,face:-1,p:sitMix(T,6.4,6.62,R0(SIT,1760,-1),R0(STAND,1760,-1))};
   else if(T<7.35){st=walkSeg(T,6.62,7.35,1760,2985,null,null,1);st.face=lerp(-1,1,ss(6.6,6.72,T))}
   else if(T<10.65){
-    var tat=function(t){var j=Math.sin(t*90)*.8;return ext(SIT,{py:-106,lean:24,headT:16,fFx:52,fBx:36,fBy:-14,
+    var tat=function(t){var j=Math.sin(time*.03)*.8;t=time*.0012;return ext(SIT,{py:-106,lean:24,headT:16,fFx:52,fBx:36,fBy:-14,
       aF:{fk:0,wx:tatSpot[0]+12+Math.cos(t*13)*4,wy:tatSpot[1]-34+j,abs:20},hF:'hold',
       aB:{fk:0,wx:2846,wy:522,abs:70},hB:'flat'})};
     var r3=sitMix(T,7.35,7.56,R0(STAND,2985,-1),R0(SIT,2985,-1));
@@ -451,7 +464,7 @@ function honzaAt(T,time){
     st={x:2985,face:-1,p:r4};
   }
   else if(T<12.05){st=walkSeg(T,11.62,12.05,2985,3330,null,null,1);st.face=lerp(-1,1,ss(11.58,11.72,T))}
-  else{var wave=function(t){return ext(STAND,{headT:-3,aF:{fk:1,a1:158,el:18+16*Math.sin(t*26),wr:-10},hF:'open'})};
+  else{var wave=function(t){return ext(STAND,{headT:-3,aF:{fk:1,a1:158,el:18+16*Math.sin(time*.006),wr:-10},hF:'open'})};
     st={x:3330,face:1,p:mixR(R0(idle(STAND,time,1),3330,1),R0(wave(T),3330,1),ss(12.1,12.35,T))}}
   st.op=ss(1.9,2.4,T);
   st.glove=T>7.62&&T<10.72;
@@ -460,12 +473,67 @@ function honzaAt(T,time){
   return st;
 }
 
+
+/* ---------- celni pohled (pouziva se pri otaceni) ---------- */
+function mirror(d){return d.replace(/(-?\d+\.?\d*),(-?\d+\.?\d*)/g,function(m,x,y){return (-parseFloat(x))+','+y})}
+function buildFront(F,H){
+  var C=F.C,g=el('g',{opacity:0},ST.L.fig),S={fill:'none',stroke:LINE,'stroke-width':1.4,'stroke-linejoin':'round','stroke-linecap':'round'};
+  function sh(d,fill,w){return P(g,d,{fill:fill,stroke:LINE,'stroke-width':w||1.4,'stroke-linejoin':'round'})}
+  function both(d,fill,w){sh(d,fill,w);sh(mirror(d),fill,w)}
+  if(!H)sh('M -19,-318 C -24,-296 -26,-262 -24,-228 C -12,-222 12,-222 24,-228 C 26,-262 24,-296 19,-318 C 14,-338 -14,-338 -19,-318 Z',C.hair,1.2);
+  /* boty a nohy */
+  both(H?'M -20,-12 C -22,-5 -23,0 -19,1.5 L -3,1.5 C -1,0 -1,-6 -3,-14 Z':'M -19,-9 C -21,-4 -22,0 -18,1.5 L -4,1.5 C -2,0 -2,-5 -4,-10 Z',C.shoe,1.3);
+  both('M -20,-170 C -21,-120 -19,-60 -18,-10 L -3.5,-10 C -3.5,-60 -3,-120 -1,-158 Z',C.pants);
+  ln(g,'M -11,-96 q 4,3 8,0 M 11,-96 q -4,3 -8,0 M -12,-20 L -10,-12 M 12,-20 L 10,-12',.6,LF);
+  /* paze */
+  both('M -35,-240 C -36,-222 -36,-208 -35,-196 C -35,-180 -34,-166 -33,-156 L -25,-156 C -25,-168 -25,-182 -25,-196 C -25,-210 -24.5,-226 -24,-240 Z',H?C.skin:C.shirt);
+  both('M -33.5,-158 C -36,-150 -35,-140 -31,-136 C -27,-134 -24,-137 -24.5,-146 L -25.5,-158 Z',C.skin,1.2);
+  if(H){var tg=el('g',{opacity:.85},g);[1,-1].forEach(function(k){ln(tg,'M '+(k*-30)+',-228 C '+(k*-32)+',-214 '+(k*-28)+',-200 '+(k*-30)+',-186 C '+(k*-32)+',-174 '+(k*-28)+',-166 '+(k*-29.5)+',-160',.6,'var(--gold)');
+    ln(tg,ST.circ(k*-30,-222,3.4),.5,'var(--gold)')})}
+  /* trup */
+  var tor=H?'M -26,-272 C -29,-250 -24,-215 -21,-195 C -21,-185 -22,-175 -22,-164 L 22,-164 C 22,-175 21,-185 21,-195 C 24,-215 29,-250 26,-272 C 18,-280 8,-283 0,-283 C -8,-283 -18,-280 -26,-272 Z'
+           :'M -24,-272 C -27,-252 -23,-222 -20,-200 C -20,-188 -22,-176 -23,-164 L 23,-164 C 22,-176 20,-188 20,-200 C 23,-222 27,-252 24,-272 C 17,-280 8,-283 0,-283 C -8,-283 -17,-280 -24,-272 Z';
+  sh(tor,C.shirt);P(g,tor,{fill:'url(#chVolF)'});
+  if(H){both('M -26,-272 C -33,-266 -36,-252 -35,-238 L -24,-236 C -24,-250 -23,-262 -20,-268 Z',C.shirt,1.3);ln(g,'M -7,-282 C -4,-276 4,-276 7,-282',.8,LD);ln(g,'M -14,-210 q 6,-3 12,1 M 4,-226 q 7,-3 13,1 M -6,-172 q 6,-2 12,0',.6,LF)}
+  else{ln(g,'M 0,-280 L 0,-166',.8,LD);ln(g,'M -9,-262 L 3,-236 L 9,-262',.8,LD);both('M -24,-272 C -31,-262 -35,-252 -35,-240 L -24,-238 C -24,-250 -23,-262 -21,-268 Z',C.shirt,1.3);
+    ln(g,'M 18,-270 C 8,-240 -6,-205 -18,-176',2,'#3a2c1f');P(g,ST.rect(-26,-182,16,13,2),{fill:C.bag,stroke:LINE,'stroke-width':1});
+    sh('M -12,-286 C -6,-278 6,-278 12,-286 L 13,-276 C 6,-270 -6,-270 -13,-276 Z',C.scarf,1.1);sh('M 5,-276 C 8,-262 9,-250 10,-238 L 3,-238 C 2,-250 2,-262 1,-274 Z',C.scarf,1)}
+  /* krk a hlava */
+  sh('M -6.5,-280 L -6.5,-293 L 6.5,-293 L 6.5,-280 Z',C.skin,1.2);
+  both('M -16.5,-314 C -20,-315 -21,-309 -19.5,-305 C -18.5,-302 -17,-302 -16,-303.5',C.skin,1.1);
+  sh('M 0,-334 C 12,-334 17,-322 17,-309 C 17,-296 10,-286 0,-286 C -10,-286 -17,-296 -17,-309 C -17,-322 -12,-334 0,-334 Z',C.skin,1.4);
+  P(g,'M -17,-316 C -17,-300 -10,-287 0,-286 C -8,-292 -12,-302 -12,-316 Z',{fill:'rgba(0,0,0,.25)'});
+  both('M -10,-311 Q -6.5,-313.6 -3,-311 Q -6.5,-309.4 -10,-311 Z','#0c0c0e',.7);
+  P(g,ST.circ(-6.4,-311.2,1.1),{fill:'var(--line)'});P(g,ST.circ(6.6,-311.2,1.1),{fill:'var(--line)'});
+  both(H?'M -11,-316 C -8,-318.4 -4,-318.4 -2,-316.6':'M -10.5,-316.4 C -8,-318.6 -4.4,-318.6 -2.4,-317',H?1.3:1,LINE);
+  ln(g,'M 0,-311 C -1,-305 -2.4,-301 -.6,-299.4 C .8,-298.8 2.4,-299.2 3,-300',.8,LD);
+  F.fMouth=ln(g,'M -4,-293.4 Q 0,-292.4 4,-293.4',.9,LINE);
+  if(H){
+    sh('M -17,-309 C -17,-296 -11,-284 0,-283 C 11,-284 17,-296 17,-309 C 14,-302 11,-297 6,-295.4 C 3,-296.4 -3,-296.4 -6,-295.4 C -11,-297 -14,-302 -17,-309 Z',C.hair,1.1);
+    sh('M -6,-296.6 C -3,-298.4 3,-298.4 6,-296.6 C 4,-295.6 2,-295.8 0,-296 C -2,-295.8 -4,-295.6 -6,-296.6 Z',C.hair,.6);
+    ln(g,'M -4,-292.8 Q 0,-291.6 4,-292.8',.9,LINE);
+    var rb=ST.rng(14),bs='';for(var i=0;i<24;i++){var x=-15+rb()*30,y=-304+rb()*16;if(Math.abs(x)<6&&y<-293)continue;bs+='M '+x.toFixed(1)+','+y.toFixed(1)+' l '+((rb()-.5)*1.4).toFixed(1)+','+(2+rb()*1.8).toFixed(1)+' '}
+    ln(g,bs,.5,'rgba(231,221,199,.32)');
+    sh('M -16.5,-316 C -18.5,-330 -12,-343 0,-345 C 12,-346 19.5,-336 17,-316 C 15,-325 9,-331 1,-331.5 C -7,-331.5 -13,-326 -16.5,-316 Z',C.hair,1.3);
+    ln(g,'M -10,-334 C -6,-340 2,-343 9,-340 M -6,-331 C -2,-337 5,-339 12,-335',.6,'rgba(232,213,163,.25)');
+    var gl={fill:'rgba(232,213,163,.08)',stroke:'rgba(231,221,199,.85)','stroke-width':.7};
+    P(g,ST.rect(-13.6,-315.6,11,8.4,3),gl);P(g,ST.rect(2.6,-315.6,11,8.4,3),gl);ln(g,'M -2.6,-313 Q 0,-314.6 2.6,-313 M -13.6,-313 L -17,-313.6 M 13.6,-313 L 17,-313.6',.7,'rgba(231,221,199,.85)');
+  }else{
+    P(g,'M -4.6,-293.4 Q 0,-291 4.6,-293.4 Q 0,-290.6 -4.6,-293.4 Z',{fill:'#3a2a27'});
+    sh('M -17.5,-308 C -19,-326 -12,-339 0,-339 C 12,-339 19,-326 17.5,-308 C 16,-318 12,-326 4,-328 C -2,-325 -9,-320 -13,-312 C -14,-310 -16,-309 -17.5,-308 Z',C.hair,1.2);
+    both('M -17.5,-308 C -19,-292 -19,-276 -21,-258 C -18,-262 -15,-276 -14.5,-292 C -14,-300 -15.5,-306 -17.5,-308 Z',C.hair,1);
+    ln(g,'M -9,-332 C -4,-336 4,-336 10,-332 M -14,-320 C -10,-328 0,-332 8,-330',.55,'rgba(232,213,163,.2)');
+    P(g,ST.circ(-18.6,-302,.9),{fill:'var(--gold)'});P(g,ST.circ(18.6,-302,.9),{fill:'var(--gold)'});
+  }
+  F.front=g;
+}
 /* ---------- start ---------- */
-var hz=build('honza'),cl=build('client');
+var hz=build('honza'),cl=build('client');buildFront(hz,true);buildFront(cl,false);
+(function(){var g=el('linearGradient',{id:'chVolF',x1:0,y1:0,x2:1,y2:0},defs);el('stop',{offset:0,'stop-color':'#000','stop-opacity':.3},g);el('stop',{offset:.5,'stop-color':'#000','stop-opacity':0},g);el('stop',{offset:1,'stop-color':'#000','stop-opacity':.3},g)})();
 /* tuzka a strojek v ruce Honzy (souradnice ruky: zapesti 0,0, prsty +y) */
 var pen=el('g',{},hz.aF.tool);
-P(pen,'M 1.6,6 L 4.4,6.4 L 8.4,30 L 7.2,33.6 L 5.4,30.6 Z',{fill:'#3a2f1f',stroke:'var(--gold)','stroke-width':.6});
-ln(pen,'M 6,30.4 L 7.2,33.6',.8,LINE);
+P(pen,'M 1.4,4 L 4.6,4.2 L 8.2,29 L 7.6,32.4 L 6.4,32.6 L 5,29.4 Z',{fill:'#141418',stroke:LINE,'stroke-width':.6});
+ln(pen,'M 2.6,12 L 5.8,11.8',.9,'var(--gold)');ln(pen,'M 6.8,32.4 L 7.2,34.2',1,'var(--gold-light)');
 var mach=el('g',{},hz.aF.tool);
 P(mach,'M -1,-4 L 5,-4.6 L 7.6,24 L 5.6,25 L 2.4,25.2 Z',{fill:'#1b1c21',stroke:LINE,'stroke-width':.8});
 P(mach,'M 2.4,25 L 6,24.6 L 6.6,32 L 4.4,36 L 3.2,32 Z',{fill:'rgba(231,221,199,.12)',stroke:LD,'stroke-width':.6});
