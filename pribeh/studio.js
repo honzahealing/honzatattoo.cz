@@ -823,7 +823,7 @@ backdrop();
 /* ---------- popredi: rozostrene listy a stonky (parallax f > 1) ---------- */
 function foreground(){
   var pf=ST.plane('fore',1.35,1400,470),g1=ST.section(pf,-100,3000);
-  function leaf(g,x,y,rot,L,W,sd,op){var gg=G(g,'translate('+x+','+y+') rotate('+rot+')'),m=monsteraLeaf(0,0,L,W,0,sd);el('path',{d:m.a,'class':'f-t3',opacity:op,filter:'url(#blurFore)'},gg)}
+  function leaf(g,x,y,rot,L,W,sd,op){var gg=G(g,'translate('+x+','+y+') rotate('+rot+')'),m=monsteraLeaf(0,0,L,W,0,sd);el('path',{d:m.a,'class':'f-t3',opacity:op},gg)}
   leaf(g1,860,790,18,230,130,1,.55);leaf(g1,1960,800,-24,200,120,2,.5);
   var pf2=ST.plane('fore',1.3,2900,470),g2=ST.section(pf2,1900,3900);
   leaf(g2,2240,800,14,220,126,4,.5);leaf(g2,3560,790,-20,210,124,5,.5);

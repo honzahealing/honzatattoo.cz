@@ -79,7 +79,7 @@ function buildSky(){
     for(i=0;i<1150;i++)dS+=dot(cx0+rnd()*(cx1-cx0),Y0+(Y1-Y0)*Math.pow(rnd(),1.12));
     for(i=0;i<320;i++)dM+=dot(cx0+rnd()*(cx1-cx0),Y0+(Y1-Y0)*Math.pow(rnd(),1.15));
     for(i=0;i<48;i++)dB+=dot(cx0+rnd()*(cx1-cx0),Y0+(Y1-Y0)*Math.pow(rnd(),1.3));
-    dots(s,dS,1.1,.7);dots(s,dM,1.9,.9);dots(s,dB,3,1);
+    dots(s,dS,1.5,.7);dots(s,dM,2.5,.9);dots(s,dB,4,1);
     for(i=0;i<6;i++){var sp=sparkle(s,cx0+rnd()*(cx1-cx0),-500+rnd()*800,4+rnd()*5,.8);twinkle.push({e:sp,s:s,f:.0007+rnd()*.0012,p:rnd()*6.28})}
     if(c===1){
       var cs=[[1890,-130],[1925,-95],[1960,-120],[1998,-80],[2040,-104]];
@@ -832,7 +832,7 @@ function buildTree(g,x,gy,sc,seed,dl,o){
   var shade='',leaves='',spark='';
   cl.forEach(function(c,j){
     var dd=bump(c[0],c[1],c[2],r,10);
-    var cls=j<N*.35?'hair dim t1':(j<N*.7?'hair t2':'thin t2');
+    var cls=j<N*.35?'hair dim t1':(j<N*.7?'hair t2':'hair t2');
     ink(s,dd,cls,dl+.1+j/N*.5);
     shade+=M(c[0]-c[2]*.85,c[1]+c[2]*.12)+'q'+n(c[2]*.85)+','+n(c[2]*1.05)+' '+n(c[2]*1.7)+',0q'+n(-c[2]*.85)+','+n(-c[2]*.35)+' '+n(-c[2]*1.7)+',0';
     for(var q=0;q<7;q++){var lx=c[0]+(r()-.5)*c[2]*1.4,ly=c[1]+(r()-.5)*c[2]*1.2;leaves+=M(lx,ly)+'l'+n(2.5+r()*2)+','+n(-1.5-r()*2)+'l'+n(2.4+r()*2)+','+n(1.5+r()*2)}
@@ -995,7 +995,7 @@ function buildFore(end,pl,AX,AY,xa,xb,o){
   d='';for(i=0;i<5;i++){var px=xa+r()*W,py=1000+r()*40;d+=rect(px,py,120+r()*90,18+r()*14)}
   fillp(s,d,'',{fill:'url(#hatchX)',opacity:.9});ink(s,d,'hair',dl);
   /* rozmazane silhouety v popredi */
-  var fs=el('g',{filter:'url(#blurFore)'},s);
+  var fs=el('g',{opacity:.7},s);
   o.poles.forEach(function(p){
     var px=p[0],tp=p[1],q;
     if(p[2]==='tree'){
