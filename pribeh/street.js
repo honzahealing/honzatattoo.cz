@@ -1124,14 +1124,14 @@ function buildBack(end){
     buildPigeons(back,420,697,.4,3,1);buildPigeons(back,-130,697,.4,2);
     buildLamp(back,560,697,.1,true);buildColumn(back,222,697,.2,5);
   }else{
-    buildTree(back,4180,697,.8,81,.4,{n:30,heart:[-6,70]});
+    buildTree(back,4730,697,.8,81,.4,{n:30,heart:[-6,70]});
     buildTree(back,5060,697,.95,82,.6,{n:34});
     buildBin(back,3620,697,.3);buildBin2(back,4075,697,.35);
     buildBench(back,4330,697,.4);
     buildBike(back,3745,697,.4);
     buildPigeons(back,4460,697,.5,3);
     streetDetail(sect(back,3600,3800),3690,.3,RNG(4));
-    buildLamp(back,3700,697,.15,true,440);buildColumn(back,4600,697,.5,9);
+    buildLamp(back,3700,697,.15,true,440);buildColumn(back,4960,697,.5,9);
   }
   CTX.end=false;
 }

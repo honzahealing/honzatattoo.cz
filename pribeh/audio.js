@@ -351,7 +351,10 @@ function refreshVoices() {
   var all = [];
   try { all = synth.getVoices() || []; } catch (e) {}
   var cs = all.filter(function (v) { return /^cs([-_]|$)/i.test(v.lang || ''); });
-  var fem = /zuzana|iveta|eli[sš]ka|alena|lenka|jana|female|žena|zena/i, mal = /jakub|anton[ií]n|tom[aá][sš]|vlastimil|male|muž|muz/i;
+  // prirozene (neuronove) hlasy maji prednost: Edge "Online (Natural)", Apple "Enhanced/Premium", Google
+  var q = function (v) { return /natural|online|neural/i.test(v.name) ? 3 : /premium|enhanced|vylepšen/i.test(v.name) ? 2 : /google/i.test(v.name) ? 1 : 0; };
+  cs.sort(function (a, b) { return q(b) - q(a); });
+  var fem = /vlasta|zuzana|iveta|eli[sš]ka|alena|lenka|jana|google|female|žena|zena/i, mal = /jakub|anton[ií]n|tom[aá][sš]|vlastimil|male|muž|muz/i;
   var f = cs.filter(function (v) { return fem.test(v.name); })[0];
   var m = cs.filter(function (v) { return mal.test(v.name) && !/female/i.test(v.name); })[0];
   voiceC = voiceH = null; pitchC = 1; pitchH = 1; rateC = rateH = 1;
