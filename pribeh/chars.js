@@ -430,7 +430,7 @@ function honzaAt(T,time){
   else if(T<6.4){
     var r2=sitMix(T,4.5,4.8,R0(STAND,1760,-1),R0(SIT,1760,-1));
     if(T>4.8){r2=R0(idle(SIT,time,.6),1760,-1);r2=mixR(r2,R0(drawP(T),1760,-1),ss(4.85,5.05,T)*(1-ss(5.85,6.02,T)));
-      var cal=ext(SIT,{headT:-4,aB:{fk:1,a1:-60,el:30,wr:-10},hB:'point'});
+      var cal=ext(SIT,{headT:-6,lean:-4,aF:{fk:1,a1:40,el:70,wr:-30},hF:'open'});
       r2=mixR(r2,R0(cal,1760,-1),ss(6.05,6.2,T)*(1-ss(6.3,6.4,T)));}
     st={x:1760,face:-1,p:r2};
   }
@@ -475,7 +475,8 @@ var cable=P(ST.L.fig,'',{fill:'none',stroke:'rgba(231,221,199,.55)','stroke-widt
 ST.L.fig.insertBefore(cable,ST.L.fig.firstChild);
 
 var lastTime=0;
-ST.on(function(T,time){
+ST.on(function(T,time,cam){
+  var sepOn=cam.s<1.9;if(sepOn!==ST._sep){ST._sep=sepOn;[cl,hz].forEach(function(F){if(sepOn)F.root.setAttribute('filter','url(#chSep)');else F.root.removeAttribute('filter')})}
   var dt=Math.min(50,Math.max(1,time-lastTime));lastTime=time;
   [[cl,clientAt(T,time),'c'],[hz,honzaAt(T,time),'h']].forEach(function(q){
     var F=q[0],st=q[1];
