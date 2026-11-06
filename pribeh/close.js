@@ -340,28 +340,33 @@ function finger(par,pts,o){o=o||{};var g=G(par);
 }
 function palmShape(par,pts){var g=G(par);el('path',{d:cr(pts,true),fill:GLOVE,stroke:GLV.stroke,'stroke-width':1.6,'stroke-linejoin':'round'},g);return g}
 
-/* ---------- leva ruka: napina kuzi (prichazi zleva shora) ---------- */
+/* ---------- leva ruka: lezi naplocho na predlokti vlevo od motivu, prsty napinaji kuzi ---------- */
 var LG=G(FR),LGi=G(LG);ST.closeParts.glove=LG;
 (function(){
-  var g=G(LGi,{transform:'translate(606,352) scale(.6) translate(-552,-318)'});
-  /* stiny prstu na kuzi */
-  [[556,334,40,13],[452,528,44,16],[612,276,34,10]].forEach(function(q){el('ellipse',{cx:q[0],cy:q[1]+8,rx:q[2],ry:q[3],fill:'url(#clShadowSoft)',opacity:.9},g)});
-  /* napnuta kuze mezi palcem a ukazovakem */
-  P(g,'M 520,350 C 500,400 478,450 462,505 M 540,356 C 522,405 502,452 488,500 M 506,346 C 484,396 466,440 452,488','hair',{stroke:'rgba(231,221,199,.16)',fill:'none'});
-  var ring=[[350,70,30],[420,102,27],[452,140,24],[446,176,21]],pinky=[[318,92,26],[372,128,23],[392,160,20],[384,188,18]];
-  finger(g,pinky,{side:1});finger(g,ring,{side:1});
-  var mid=[[372,96,35],[470,166,32],[538,214,29],[590,248,26]];
-  finger(g,mid,{side:1});
-  palmShape(g,[[120,-160],[330,-150],[420,10],[430,110],[380,170],[300,250],[220,300],[110,260],[40,40]]);
-  var idx=[[352,150,36],[440,222,32],[505,278,29],[552,318,26]];
-  finger(g,idx,{side:1});
-  var th=[[200,248,52],[300,366,44],[380,450,37],[436,512,31]];
-  finger(g,th,{side:-1});
-  /* klouby na hrbetu, sval palce, manzeta */
-  P(g,'M 330,80 C 352,92 370,108 380,128 M 300,40 C 330,60 354,80 366,100','hair',{stroke:'rgba(231,221,199,.22)',fill:'none'});
-  P(g,cr([[120,-150],[240,-120],[320,-60],[360,40]],false),'',{fill:'none',stroke:GL,'stroke-width':6,opacity:.08});
-  P(g,cr([[150,-130],[260,-100],[330,-30]],false),'',{fill:'none',stroke:'#FFF6DF','stroke-width':1.2,opacity:.3});
-  P(g,'M 40,40 C 70,120 120,210 170,280','hair',{stroke:'rgba(231,221,199,.25)',fill:'none'});
+  var g=LGi;
+  /* mekky stin ruky na kuzi */
+  el('ellipse',{cx:470,cy:440,rx:170,ry:110,fill:'url(#clShadowSoft)',opacity:.75},g);
+  /* napnuta kuze mezi prsty a motivem */
+  P(g,'M 604,372 C 618,380 632,388 646,396 M 612,424 C 626,428 640,432 654,436 M 600,470 C 614,472 628,474 642,476','hair',{stroke:'rgba(231,221,199,.15)',fill:'none'});
+  /* zapesti a manzeta rukavice odchazi vlevo nahoru z obrazu */
+  el('path',{d:chain([[120,-160,74],[250,120,66],[340,300,60]]),fill:GLOVE,stroke:GLV.stroke,'stroke-width':1.5},g);
+  P(g,cr([[150,-140],[250,90],[322,250]],false),'',{fill:'none',stroke:GL,'stroke-width':6,opacity:.08});
+  P(g,cr([[170,-120],[262,80],[330,232]],false),'',{fill:'none',stroke:'#FFF6DF','stroke-width':1.2,opacity:.3});
+  /* prsty (lezi na kuzi, roztazene k motivu) */
+  var pinky=[[470,488,19],[524,516,17],[562,532,15],[592,542,13]];
+  var ring=[[492,446,21],[552,464,19],[596,476,17],[630,482,15]];
+  var mid=[[494,402,22],[558,412,20],[604,418,18],[640,422,16]];
+  var idx=[[482,360,22],[544,360,20],[590,360,18],[624,360,16]];
+  finger(g,pinky,{side:-1});finger(g,ring,{side:-1});finger(g,mid,{side:-1});finger(g,idx,{side:1});
+  /* dlan (hrbet ruky) */
+  palmShape(g,[[300,280],[420,300],[496,340],[516,420],[500,496],[440,530],[360,520],[300,450],[280,360]]);
+  P(g,'M 440,342 C 468,352 486,366 494,384 M 452,392 C 476,400 490,412 498,428 M 446,442 C 468,452 482,464 488,480','hair',{stroke:'rgba(231,221,199,.2)',fill:'none'});
+  P(g,cr([[310,300],[410,312],[480,346]],false),'',{fill:'none',stroke:GL,'stroke-width':6,opacity:.09});
+  P(g,cr([[330,306],[420,318],[476,350]],false),'',{fill:'none',stroke:'#FFF6DF','stroke-width':1.2,opacity:.35});
+  /* palec stahuje kuzi dolu */
+  var th=[[360,500,30],[392,560,25],[412,600,21],[424,628,18]];
+  finger(g,th,{side:1});
+  P(g,'M 432,640 C 444,656 452,672 456,690 M 412,646 C 418,664 420,680 420,698','hair',{stroke:'rgba(231,221,199,.14)',fill:'none'});
 })();
 
 /* ---------- strojek (rotacni pero v ochranne folii) a prava ruka ---------- */
@@ -423,11 +428,11 @@ var needleG=null,machLift=null;
    6. ZIVOT: jehla vibruje, ruce dychaji a sleduji hrot
    ========================================================== */
 var gx=0,gy=0;
-ST.fade(LG,7.75,8.0,1,9.45,9.62);
+ST.fade(LG,7.75,8.0,1,9.5,9.66);
 ST.on(function(T,time){
   if(T<7.6||T>10.95)return;
   var tip=ST.closeTip,tx=0,ty=0,tattoo=T>8.1&&T<9.5,br=ST.reduce?0:Math.sin(time*.0021);
-  if(tip&&tattoo){tx=Math.max(-18,Math.min(18,(tip.x-760)*.08));ty=Math.max(-18,Math.min(18,(tip.y-470)*.08))}
+  if(tip&&tattoo){tx=Math.max(-8,Math.min(8,(tip.x-760)*.04));ty=Math.max(-8,Math.min(8,(tip.y-470)*.04))}
   gx+=(tx-gx)*.08;gy+=(ty-gy)*.08;
   LGi.setAttribute('transform','translate('+(gx+br*1.5).toFixed(2)+','+(gy+br*2).toFixed(2)+')');
   if(needleG&&!ST.reduce){var v=tattoo?Math.sin(time*.11)*1.6:0;needleG.setAttribute('transform','translate('+v.toFixed(2)+',0)')}

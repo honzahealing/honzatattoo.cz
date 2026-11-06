@@ -28,7 +28,7 @@ function part(par,d,fill,o){
   P(inner,d,{fill:'url(#chVol)'});
   if(o.rim)ln(inner,o.rim,1,'var(--gold-light)',.32);
   var dark=null;if(o.dark)dark=P(g,d,{fill:'rgba(4,5,7,.42)'});
-  var out=P(g,o.open||d,{fill:'none',stroke:o.dark?'rgba(231,221,199,.6)':LINE,'stroke-width':o.w||1.45,'stroke-linejoin':'round','stroke-linecap':'round'});
+  var out=P(g,o.open||d,{fill:'none',stroke:o.stroke||(o.dark?'rgba(231,221,199,.6)':LINE),'stroke-width':o.w||1.45,'stroke-linejoin':'round','stroke-linecap':'round'});
   if(dark)g.insertBefore(dark,out);
   return {g:g,inner:inner,fill:f,out:out};
 }
@@ -156,7 +156,7 @@ function build(kind){
   }
   F.aB=limbArm('b');F.lB=limbLeg('b');
   /* vlasy vzadu (klient) */
-  if(!H){F.hairBackG=el('g',{},body);F.lockG=null;F.hairBack=P(F.hairBackG,'',{fill:C.hair,stroke:LINE,'stroke-width':1.4,'stroke-linejoin':'round'});F.hairStr=el('g',{},F.hairBackG)}
+  if(!H){F.hairBackG=el('g',{},body);F.lockG=null;F.hairBack=P(F.hairBackG,'',{fill:C.hair,stroke:'rgba(231,221,199,.5)','stroke-width':1.1,'stroke-linejoin':'round'});F.hairStr=el('g',{},F.hairBackG)}
   /* krk a trup */
   F.torsoG=el('g',{},body);
   part(F.torsoG,SH.neck,C.skin,{w:1.4,open:SH.neckO,shade:'M -10,-130 L -2,-130 L -2,-100 L -10,-100 Z'});
@@ -187,7 +187,7 @@ function build(kind){
   F.headG=el('g',{},body);F.head=el('g',{},F.headG);
   buildHead(F,H);
   /* pramen vlasu pred ramenem (v hlave) */
-  if(!H){F.lock=P(F.head,'',{fill:C.hair,stroke:LINE,'stroke-width':1.1,'stroke-linejoin':'round'})}
+  if(!H){F.lock=P(F.head,'',{fill:C.hair,stroke:'rgba(231,221,199,.45)','stroke-width':.9,'stroke-linejoin':'round'})}
   /* sala */
   if(!H){F.scarfG=el('g',{},body);
     F.scarfWrap=part(F.scarfG,'M -9,-116 C -4,-108 6,-106 13,-111 L 14,-100 C 7,-95 -4,-96 -11,-104 Z',C.scarf,{w:1.3});
@@ -218,7 +218,7 @@ function buildHead(F,H){
     var fd=P(g,'M -5,-45 C -2,-40 0,-36 -1,-32 C -6,-31 -12,-28 -18,-22 C -22,-26 -23.5,-33 -22.5,-39 C -17,-43 -11,-45.5 -5,-45 Z',{fill:C.hair,opacity:.55});
     P(g,'M -5,-45 C -2,-40 0,-36 -1,-32 C -6,-31 -12,-28 -18,-22 C -22,-26 -23.5,-33 -22.5,-39 C -17,-43 -11,-45.5 -5,-45 Z',{fill:'url(#stipple)',opacity:.9});
     /* vrsek: texturovany, vycesany nahoru a dozadu */
-    var hr=part(g,'M 18,-44.5 C 19.5,-47 21.5,-51 20.5,-55 C 22,-58 20,-63 16,-64.5 C 14,-68.5 8,-70 3,-68.5 C -2,-71 -9,-69.5 -13,-66 C -18,-65 -22,-60.5 -23,-55 C -25,-51 -24.6,-44 -23.5,-39 C -18,-43 -11.5,-45.5 -5.5,-45.2 C 1,-47.5 10,-47 18,-44.5 Z',C.hair,{w:1.2});
+    var hr=part(g,'M 18,-44.5 C 19.5,-47 21.5,-51 20.5,-55 C 22,-58 20,-63 16,-64.5 C 14,-68.5 8,-70 3,-68.5 C -2,-71 -9,-69.5 -13,-66 C -18,-65 -22,-60.5 -23,-55 C -25,-51 -24.6,-44 -23.5,-39 C -18,-43 -11.5,-45.5 -5.5,-45.2 C 1,-47.5 10,-47 18,-44.5 Z',C.hair,{w:1.1,stroke:'rgba(231,221,199,.5)'});
     var rh=ST.rng(21);for(var s3=0;s3<12;s3++){var hx0=16-s3*3.3+rh()*2,hy0=-46-rh()*2,cx1=hx0-2+rh()*3,cy1=-55-rh()*6,ex1=hx0-8-rh()*6,ey1=-64-rh()*5+s3*.5;
       ln(hr.inner,'M '+hx0.toFixed(1)+','+hy0.toFixed(1)+' Q '+cx1.toFixed(1)+','+cy1.toFixed(1)+' '+ex1.toFixed(1)+','+ey1.toFixed(1),.5,rh()<.3?'rgba(232,213,163,.3)':'rgba(231,221,199,.14)')}
     ln(hr.inner,'M 17,-49 C 16,-56 12,-61 6,-63.5',.9,'rgba(232,213,163,.22)');
@@ -235,9 +235,9 @@ function buildHead(F,H){
     F.lip=P(g,'M 18.6,-17.2 C 20,-17 20.8,-16.2 20.2,-15.4 C 19.2,-15 18.2,-15.6 17.8,-16.4 Z',{fill:C.skin,stroke:LD,'stroke-width':.5});
     P(g,'M 19,-19.6 C 19.8,-20.2 20.6,-20.2 20.9,-19.7 C 20.4,-19.2 19.6,-19 19,-19.6 Z',{fill:'rgba(231,221,199,.25)'});
     /* vlasy: objem pres temeno, ofina na stranu */
-    var hc=part(g,'M 17.4,-44.6 C 16,-52 9,-58 0,-59 C -12,-60 -22,-53 -25,-42 C -27,-34 -25.5,-26 -22,-19 C -19,-24 -16,-30 -12,-34 C -8,-38 -3,-41 2,-43 C 7,-44.6 12.4,-45 17.4,-44.6 Z',C.hair,{w:1.2});
+    var hc=part(g,'M 17.4,-44.6 C 16,-52 9,-58 0,-59 C -12,-60 -22,-53 -25,-42 C -27,-34 -25.5,-26 -22,-19 C -19,-24 -16,-30 -12,-34 C -8,-38 -3,-41 2,-43 C 7,-44.6 12.4,-45 17.4,-44.6 Z',C.hair,{w:1.1,stroke:'rgba(231,221,199,.5)'});
     var rc=ST.rng(33);for(var s2=0;s2<10;s2++){var q0=15-s2*3.6+rc()*2,q1=-46-rc()*2;ln(hc.inner,'M '+q0.toFixed(1)+','+q1.toFixed(1)+' C '+(q0-4).toFixed(1)+','+(-55+rc()*3).toFixed(1)+' '+(q0-14-rc()*4).toFixed(1)+','+(-54+rc()*4).toFixed(1)+' '+(q0-20-rc()*6).toFixed(1)+','+(-40+rc()*8).toFixed(1),.45,rc()<.35?'rgba(232,213,163,.24)':'rgba(231,221,199,.1)')}
-    P(g,'M 17.6,-45 C 13,-46.4 7,-44 3,-39.6 C 1.4,-37.6 .4,-35.4 -.4,-33.6 C 3.4,-37.4 9,-41 15,-42 Z',{fill:C.hair,stroke:LD,'stroke-width':.6});
+    P(g,'M 17.6,-45 C 15,-43 12,-40.5 9,-39.6 C 6,-38.8 3,-39.4 1,-40.6 C 5,-41.6 10,-43.4 13,-45.6 Z',{fill:C.hair,stroke:'rgba(231,221,199,.35)','stroke-width':.5});
     P(g,'M 4,-49 C 9,-52 13,-51 16,-48',{fill:'none',stroke:'var(--gold-light)','stroke-width':.7,opacity:.3});
   }
   /* ucho */
@@ -340,7 +340,7 @@ function apply(F,st,time){
   if(F.hairBack){
     var sw=F.spring.a,gv=rot(0,1,-ha),nv=[-gv[1],gv[0]],bx=-17,by=-30,wind=ST.reduce?0:Math.sin(time*.0013)*.5+Math.sin(time*.0031)*.3;
     function A(g,n){var k=Math.max(0,g)/100;n+=k*(sw*-26+wind*6)+Math.sin(g*.09+time*.002)*(.8+k*3);return [bx+gv[0]*g+nv[0]*n,by+gv[1]*g+nv[1]*n]}
-    var outer=[A(-30,2),A(-18,10),A(0,13),A(25,14.5),A(50,15),A(75,13),A(98,10),A(112,4)],inner=[A(108,-4),A(92,-6),A(70,-8),A(45,-9),A(20,-9),A(2,-6),A(-12,0)];
+    var outer=[A(-14,4),A(-4,11),A(12,14),A(32,15),A(55,15),A(78,13),A(98,10),A(112,4)],inner=[A(108,-4),A(92,-6),A(70,-8),A(45,-9),A(22,-9),A(6,-7),A(-6,-2)];
     F.hairBack.setAttribute('d',crc(outer.concat(inner)));
     var st2='';for(var i=0;i<6;i++){var nn=-6+i*3.6,a1=A(5,nn+1),a2=A(50,nn+.6),a3=A(100-i*3,nn*.6);st2+='M '+a1[0].toFixed(1)+','+a1[1].toFixed(1)+' Q '+a2[0].toFixed(1)+','+a2[1].toFixed(1)+' '+a3[0].toFixed(1)+','+a3[1].toFixed(1)+' '}
     F.hairStr.innerHTML='';ln(F.hairStr,st2,.55,'rgba(232,213,163,.2)');
@@ -401,7 +401,7 @@ function clientAt(T,time){
   }
   else if(T<4.55)st=walkSeg(T,4.35,4.55,1330,1390);
   else if(T<6.45){
-    var lean=ext(SIT,{lean:9,headT:12,aF:{fk:0,wx:1514,wy:546,abs:100},hF:'point'});
+    var lean=ext(SIT,{lean:11,headT:13,aF:{fk:0,wx:1476,wy:583,abs:96},hF:'flat',aB:{fk:0,wx:1460,wy:585,abs:96},hB:'flat'});
     var r2=sitMix(T,4.55,4.9,R0(STAND,1390),R0(SIT,1390));
     if(T>4.9)r2=mixR(R0(idle(SIT,time,.6),1390),R0(lean,1390),ss(4.95,5.2,T)*(1-ss(5.9,6.15,T)));
     st={x:1390,face:1,p:r2};

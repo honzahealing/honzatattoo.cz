@@ -154,7 +154,9 @@ var PARROT={
 })();
 function buildMotif(parent,o){
   var g=el('g',{},parent),items=[],glow=null,rnd=ST.rng(77),fine=o.cls+' fine',fills=[];
-  if(o.gold){glow=el('path',{d:ST.ellipse(0,-66,160,260),fill:'url(#gHalo)',opacity:0},g);
+  var stencil=null;if(o.stencil){stencil=el('g',{opacity:0},g);PARROT.out.concat(PARROT.fine).forEach(function(d){el('path',{d:d,fill:'none',stroke:'rgba(150,132,206,.6)','stroke-width':1.5,'stroke-linecap':'round','stroke-linejoin':'round'},stencil)})}
+  if(o.gold)glow=el('path',{d:ST.ellipse(0,-66,160,260),fill:'url(#gHalo)',opacity:0},g);
+  if(o.gold||o.fills){
     if(!document.getElementById('gTatShade')){var gs=el('linearGradient',{id:'gTatShade',x1:0,y1:0,x2:.35,y2:1},ST.closeDefs);
       el('stop',{offset:0,'stop-color':'#FFF6DF','stop-opacity':.16},gs);el('stop',{offset:.45,'stop-color':'#000','stop-opacity':0},gs);el('stop',{offset:1,'stop-color':'#000','stop-opacity':.42},gs)}
     PARROT.fills.forEach(function(q){var fg=el('g',{opacity:0},g);el('path',{d:q[0],fill:q[1],stroke:'none'},fg);el('path',{d:q[0],fill:'url(#gTatShade)',stroke:'none'},fg);fills.push(fg)})}
@@ -166,7 +168,8 @@ function buildMotif(parent,o){
   function cloud(cx,cy,rx,ry,n,rmax){for(var i=0;i<n;i++){var a=rnd()*6.283,rr=Math.sqrt(rnd());dots.push(el('path',{d:ST.circ(cx+Math.cos(a)*rx*rr,cy+Math.sin(a)*ry*rr,.6+rnd()*(rmax||1.1)),fill:dc,opacity:0},g))}}
   cloud(4,-110,9,40,40);cloud(26,-226,10,6,16);cloud(-36,-60,8,30,26);cloud(0,-22,60,4,34,.9);cloud(-16,70,6,60,30,.9);cloud(-36,-120,6,30,18,.8);cloud(30,-150,6,24,18);cloud(-6,-250,14,10,18,.9);
   var total=0;items.forEach(function(it){it.len=it.e.getTotalLength()||1;it.c=total;total+=it.len});
-  return {g:g,items:items,dots:dots,total:total,dotLen:total*.12,glow:glow,fills:fills,last:-1};
+  var cen=fills.map(function(f){try{var b=f.getBBox();return [b.x+b.width/2,b.y+b.height/2,Math.min(b.width,b.height)/3]}catch(e){return [0,-80,10]}});
+  return {g:g,items:items,dots:dots,total:total,dotLen:total*.12,glow:glow,fills:fills,cen:cen,stencil:stencil,last:-1};
 }
 function setMotif(m,k){
   if(Math.abs(m.last-k)<1e-5)return m.tip;m.last=k;
@@ -184,6 +187,8 @@ function setMotif(m,k){
   m.tip=tip;return tip;
 }
 function healMotif(m,h){if(Math.abs((m.lh||0)-h)<1e-4)return;m.lh=h;m.fills.forEach(function(f){f.setAttribute('opacity',(h*.82).toFixed(3))});if(m.glow)m.glow.setAttribute('opacity',(h*.7).toFixed(3))}
+/* vybarvovani plochu po plose (k = 0..1) */
+function packMotif(m,k){if(Math.abs((m.lp==null?-1:m.lp)-k)<1e-4)return;m.lp=k;var n=m.fills.length;m.fills.forEach(function(f,i){f.setAttribute('opacity',(ss(i/n,(i+1)/n,k)*.84).toFixed(3))})}
 
 /* ---------- bubliny a kroky ---------- */
 var BUB=[
@@ -224,13 +229,14 @@ ST.start=function(){
   });
   sections.forEach(function(s){s.p=planeOf(s.parent)});
   /* skica na desce (slot od studia) */
-  if(ST.slots.board)ST.bm=buildMotif(el('g',{transform:'translate(0,32) scale(.68)'},ST.slots.board),{cls:'sk',skin:'var(--t1)'});
+  if(ST.slots.board){var bcp=el('clipPath',{id:'boardClip'},ST.defs);el('rect',{x:-205,y:-246,width:410,height:324},bcp);
+    ST.bm=buildMotif(el('g',{transform:'translate(0,-45) scale(.6)'},el('g',{'clip-path':'url(#boardClip)'},ST.slots.board)),{cls:'sk',skin:'var(--t1)',fills:true})}
   /* detail ruky */
   var cs=$('closeScene');ST.closeBack=ST.closeBack||el('g',{},cs);
   var motifG=el('g',{transform:'translate(760,532) scale(.8)'},cs);
   ST.closeFront=ST.closeFront||el('g',{},cs);
   ST.red=el('ellipse',{cx:760,cy:470,rx:240,ry:175,fill:'url(#gRed)',opacity:0});cs.insertBefore(ST.red,motifG);
-  ST.tm=buildMotif(motifG,{cls:'tt',skin:'var(--skin)',gold:true});
+  ST.tm=buildMotif(motifG,{cls:'tt',skin:'var(--skin)',gold:true,stencil:true});
   ST.film=el('path',{d:ST.rect(556,296,408,368,48),fill:'url(#gFilm)',stroke:'rgba(231,221,199,.22)','stroke-width':1.5,opacity:0},cs);
   cs.appendChild(ST.closeFront);
   if(!ST.closeParts.machine){var mg=el('g',{},ST.closeFront);el('path',{d:'M0,0 L120,-190','class':'ink bold'},mg);ST.closeParts.machine=mg}
@@ -313,7 +319,7 @@ function render(time){
     d.e.style.strokeDashoffset=(1-k);d.e.style.visibility=k<=0?'hidden':'visible';if(d.fill)d.e.style.fillOpacity=k}
   for(i=0;i<fades.length;i++){var f=fades[i];k=f.max*ss(f.t0,f.t1,T)*(f.t2!=null?1-ss(f.t2,f.t3,T):1);if(Math.abs(k-f.k)<1e-4)continue;f.k=k;f.e.setAttribute('opacity',k.toFixed(3))}
   for(i=0;i<ups.length;i++){try{ups[i](T,time,cam)}catch(e){if(!ups[i].err){ups[i].err=1;console.error(e)}}}
-  if(ST.bm)setMotif(ST.bm,ss(5.05,5.85,T));
+  if(ST.bm){setMotif(ST.bm,ss(5.05,5.6,T));packMotif(ST.bm,lin(5.6,5.95,T))}
 
   /* lampa: stmivani okoli */
   var lamp=ST.lamp(T),lp=toScreen(2866,500),dim=$('dimmer');
@@ -329,18 +335,21 @@ function render(time){
   var cb=$('closeBg');cb.style.opacity=co;cb.style.visibility=co<=0?'hidden':'visible';
   var wh=co>=.999?'none':'';if(world.style.display!==wh)world.style.display=wh;
   if(co>0){
-    var tk=ss(8.1,9.5,T),tip=setMotif(ST.tm,tk);
-    healMotif(ST.tm,ss(9.6,10.45,T));
+    var tk=ss(8.1,9.0,T),tip=setMotif(ST.tm,tk),pk=lin(9.02,9.5,T);
+    packMotif(ST.tm,pk);if(ST.tm.glow)ST.tm.glow.setAttribute('opacity',(ss(9.6,10.45,T)*.7).toFixed(3));
+    if(ST.tm.stencil)ST.tm.stencil.setAttribute('opacity',(ss(7.75,8.0,T)*(1-ss(9.35,9.7,T))*.9).toFixed(3));
     ST.red.setAttribute('opacity',(ss(8.6,9.5,T)*(1-ss(9.8,10.35,T))).toFixed(3));
     ST.film.setAttribute('opacity',(ss(9.45,9.62,T)*(1-ss(9.95,10.3,T))).toFixed(3));
-    var mOn=ss(7.95,8.15,T)*(1-ss(9.45,9.62,T)),mach=ST.closeParts.machine;
+    var mOn=ss(7.95,8.15,T)*(1-ss(9.5,9.66,T)),mach=ST.closeParts.machine;
     var tq=null;
     if(tip&&tip.e.getPointAtLength){var pt=tip.e.getPointAtLength(tip.len),M=$('closeScene').getCTM().inverse().multiply(tip.e.getCTM());tq=pt.matrixTransform(M);
       /* jehla pracuje na miste i pri zastavenem scrollu: kmita podel linky */
       if(!reduce&&tip.len>0){var p2=tip.e.getPointAtLength(Math.min(tip.e.getTotalLength(),tip.len+2)).matrixTransform(M),dx=p2.x-tq.x,dy=p2.y-tq.y,dl=Math.sqrt(dx*dx+dy*dy)||1,o=Math.sin(time*.012)*2.6;tq={x:tq.x+dx/dl*o,y:tq.y+dy/dl*o}}}
-    else if(tk<=0)tq={x:1000,y:330};else if(tk>=1)tq={x:1040,y:300};
+    else if(pk>0&&pk<1){var nf=ST.tm.fills.length,ci=Math.min(nf-1,Math.floor(pk*nf)),c=ST.tm.cen[ci],an=reduce?0:time*.011,rr=Math.min(14,c[2]);
+      var MM=$('closeScene').getCTM().inverse().multiply(ST.tm.fills[ci].getCTM()),cp=$('closeScene').createSVGPoint();cp.x=c[0]+Math.cos(an)*rr;cp.y=c[1]+Math.sin(an*1.3)*rr;tq=cp.matrixTransform(MM);tip={e:null}}
+    else if(tk<=0)tq={x:1000,y:330};else tq={x:1040,y:300};
     /* presun mezi tahy: hrot plynule dojede a strojek se zvedne */
-    var pv=ST._tipS;if(!pv||tk<=0||tk>=1)pv=tq;
+    var pv=ST._tipS;if(!pv||(tk<=0)||(tk>=1&&!(pk>0&&pk<1)))pv=tq;
     var gap=Math.sqrt((tq.x-pv.x)*(tq.x-pv.x)+(tq.y-pv.y)*(tq.y-pv.y)),fol=gap>7?.22:1;
     pv={x:pv.x+(tq.x-pv.x)*fol,y:pv.y+(tq.y-pv.y)*fol};ST._tipS=pv;
     ST.closeLift=Math.max(gap>7?Math.min(1,gap/40):0,(ST.closeLift||0)*.86);
@@ -348,7 +357,7 @@ function render(time){
     mach.setAttribute('transform','translate('+(pv.x+j).toFixed(1)+','+(pv.y-j).toFixed(1)+')');
     ST.needle.setAttribute('cx',pv.x.toFixed(1));ST.needle.setAttribute('cy',pv.y.toFixed(1));ST.closeTip={x:pv.x,y:pv.y};
     mach.setAttribute('opacity',mOn.toFixed(3));
-    ST.needle.setAttribute('opacity',((tip&&tk>0&&tk<1?1:0)*mOn*(1-Math.min(1,ST.closeLift*2))*(reduce?1:.8+.2*Math.sin(time*.05))).toFixed(3));
+    ST.needle.setAttribute('opacity',((tip&&((tk>0&&tk<1)||(pk>0&&pk<1))?1:0)*mOn*(1-Math.min(1,ST.closeLift*2))*(reduce?1:.8+.2*Math.sin(time*.05))).toFixed(3));
   }
   var days=$('days');days.style.opacity=ss(9.55,9.7,T)*(1-ss(10.5,10.7,T));
   $('dayN').textContent=Math.round(1+20*lin(9.65,10.45,T));

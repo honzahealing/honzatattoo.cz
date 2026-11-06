@@ -343,15 +343,17 @@ function monstera(g,cx,A,B,pot0){
   lv.forEach(function(l,k){var m=monsteraLeaf(cx+l[0],646+l[1],l[2],l[3],l[4],k+5);D(pot,m.a,'thin t2',A+.05*k,B);FILL(pot,m.a,'hair',A+.05*k,B,{fill:HF});D(pot,m.b,'hair',A+.05*k,B)});
 }
 function dried(g,x,y,n,seed,len,dir,A,B){
-  var r=rng(seed),st=[],hd=[],dt=[],i;
+  var r=rng(seed),st=[],hd=[],dt=[],i,hs=[];
+  var hmark=0;
   for(i=0;i<n;i++){var sp=(i/(n-1)-.5)*1.5+(r()-.5)*.25,L=len*(.7+r()*.3),ex=x+sin(sp)*L,ey=y+dir*cos(sp)*L,ux=sin(sp),uy=dir*cos(sp),ty=r(),
       cx2=x+sin(sp)*L*.4+(r()-.5)*6;
-    st.push('M'+n1(x)+','+n1(y)+' Q'+n1(cx2)+','+n1(y+dir*L*.55)+' '+n1(ex)+','+n1(ey));
+    var h0=hd.length;st.push('M'+n1(x)+','+n1(y)+' Q'+n1(cx2)+','+n1(y+dir*L*.55)+' '+n1(ex)+','+n1(ey));
     if(ty<.3){for(var k=0;k<6;k++){var px=ex+ux*k*4.5,py=ey+uy*k*4.5;hd.push(lf(px,py,ux,uy,7,2.4));dt.push('M'+n1(px)+','+n1(py)+' L'+n1(px+ux*9+uy*(-4))+','+n1(py+uy*9+ux*4))}}
     else if(ty<.55){for(var k2=0;k2<7;k2++){var px2=ex-ux*k2*3.4,py2=ey-uy*k2*3.4;hd.push(cir(px2+(k2%2?2.2:-2.2),py2,1.5))}}
     else if(ty<.8){hd.push(cir(ex,ey,3.4));dt.push('M'+n1(ex-3)+','+n1(ey-1)+' H'+n1(ex+3)+' M'+n1(ex)+','+n1(ey-3)+' V'+n1(ey+1))}
-    else{hd.push(lf(ex-ux*8,ey-uy*8,ux,uy,24,5.5));dt.push('M'+n1(ex-ux*4)+','+n1(ey-uy*4)+' L'+n1(ex+ux*14)+','+n1(ey+uy*14)+' M'+n1(ex+ux*2+uy*2)+','+n1(ey+uy*2-ux*2)+' L'+n1(ex+ux*12+uy*4)+','+n1(ey+uy*12-ux*4))}}
-  var gg=sway(G(g),x,y,1.6,.0011,seed);D(gg,st.join(' '),'thin',A,B);D(gg,hd.join(' '),'hair t3',A,B);D(gg,dt.join(' '),'hair',A,B);
+    else{hd.push(lf(ex-ux*8,ey-uy*8,ux,uy,24,5.5));dt.push('M'+n1(ex-ux*4)+','+n1(ey-uy*4)+' L'+n1(ex+ux*14)+','+n1(ey+uy*14)+' M'+n1(ex+ux*2+uy*2)+','+n1(ey+uy*2-ux*2)+' L'+n1(ex+ux*12+uy*4)+','+n1(ey+uy*12-ux*4))}
+    hs.push(hd.slice(hmark).join(' '));hmark=hd.length}
+  var gg=sway(G(g),x,y,1.6,.0011,seed);D(gg,st.join(' '),'thin',A,B);hs.forEach(function(h){D(gg,h,'hair t3',A,B)});D(gg,dt.join(' '),'hair',A,B);
 }
 function vase(g,x,y,w,h,A,B,kind){
   var d;if(kind===1)d='M'+(x-w*.3)+','+y+' C'+(x-w*.6)+','+(y-h*.3)+' '+(x-w*.5)+','+(y-h*.7)+' '+(x-w*.18)+','+(y-h*.86)+' L'+(x-w*.16)+','+(y-h)+' H'+(x+w*.16)+' L'+(x+w*.18)+','+(y-h*.86)+' C'+(x+w*.5)+','+(y-h*.7)+' '+(x+w*.6)+','+(y-h*.3)+' '+(x+w*.3)+','+y+'Z';
@@ -365,7 +367,7 @@ function potos(g,x,y,A,B,id){
     p+=' S'+(sx+sw*1.1)+','+(y+len*.9)+' '+(sx+sw*.8)+','+(y+len);st.push(p);
     for(var j=0;j<4+Math.floor(r()*3);j++){var ty=y+8+j*len/5+r()*6,tx=sx+sw*(ty-y)/len*.9,sd=(j%2?1:-1);
       hl.push('M'+n1(tx)+','+n1(ty)+' C'+n1(tx+sd*9)+','+n1(ty-3)+' '+n1(tx+sd*10)+','+n1(ty+10)+' '+n1(tx+sd*1)+','+n1(ty+13)+' C'+n1(tx-sd*1)+','+n1(ty+9)+' '+n1(tx-sd*1)+','+n1(ty+3)+' '+n1(tx)+','+n1(ty)+'Z')}}
-  D(gp,st.join(' '),'thin',A,B);D(gp,hl.join(' '),'hair t2',A,B);
+  D(gp,st.join(' '),'thin',A,B);hl.forEach(function(h){D(gp,h,'hair t2',A,B)});
   return {g:gp,x:x,y:y-14};
 }
 
@@ -441,7 +443,7 @@ function entryZone(){
   /* veshak */
   var rk=G(g,'translate(10,0)');
   D(rk,'M930,672 Q914,690 902,700 M930,672 Q946,690 958,700 M930,672 V700','thin',.4,.7);D(rk,ell(930,672,7,2.6),'thin t3',.4,.7);D(rk,cir(902,699,1.8)+cir(958,699,1.8),'hair',.4,.7);
-  D(rk,'M928,676 V382 M932,676 V382','ink',.4,.8);D(rk,'M928,540 h4 M928,520 h4 M928,600 h4','hair',.5,.8);
+  D(rk,R(928,382,4,294),'thin t3',.4,.8);D(rk,'M928,540 h4 M928,520 h4 M928,600 h4','hair',.5,.8);
   D(rk,'M930,392 Q918,392 914,382 M930,392 Q942,392 946,382 M930,420 Q914,420 910,408 M930,420 Q946,420 950,408','thin',.5,.85);
   D(rk,cir(914,381,2.2)+cir(946,381,2.2)+cir(910,407,2.2)+cir(950,407,2.2),'thin gold t1',.55,.85);
   /* kabat */
@@ -498,7 +500,7 @@ function chair(g){
 
 /* ---------- stul, deska, drobnosti ---------- */
 function deskZone(){
-  zone(1.9,3.0);var gr=sec('room',1),gf=sec('front',1),gl=sec('light',1),k,d,x;
+  zone(1.9,3.0);var gr=sec('room',1),gf=sec('front',1),gl=sec('light',1),gd=sec('room',1),k,d,x;
   /* koberec */
   D(gr,'M1372,704 H1808 L1826,720 H1354Z','ink t3',.1,.4);FILL(gr,'M1372,704 H1808 L1826,720 H1354Z','hair',.1,.4,{fill:STIP});
   D(gr,'M1384,707 H1796 L1810,717 H1370Z','hair',.15,.45);d=[];for(k=0;k<9;k++){var cx=1430+k*54;d.push('M'+(cx-20)+',712 L'+cx+',707.8 L'+(cx+20)+',712 L'+cx+',716.2Z')}
@@ -521,23 +523,23 @@ function deskZone(){
   D(gf,ST.wline(1450,1700,594,.8,16,rng(3)),'hair',.05,.4);D(gf,'M1450,590 H1700','hair faint',.05,.4);
   FILL(gf,R(1446,600,258,12),'hair',.1,.4,{fill:HF});
   /* pen display (Cintiq) na nastavitelnem stojanu */
-  D(gf,R(1500,466,154,120,5),'ink solid',.3,.6);D(gf,R(1504,470,146,112,3),'hair',.35,.6);
-  D(gf,R(1508,474,138,110),'thin t1',.3,.6);
-  D(gf,R(1510,586,22,3,1)+R(1622,586,22,3,1),'thin t3',.4,.6);D(gf,cir(1500,530,3.4)+cir(1654,530,3.4),'thin gold t1',.4,.65);D(gf,'M1500,530 H1496 M1654,530 H1658','hair',.4,.65);
-  D(gf,R(1501,490,4,7,1)+R(1501,500,4,7,1)+R(1501,510,4,7,1)+R(1501,520,4,7,1),'hair',.4,.65);FO(gf,cir(1650,471,1.5),'f-goldl',.9,.5,.8);
+  D(gd,R(1500,466,154,120,5),'ink solid',.3,.6);D(gd,R(1504,470,146,112,3),'hair',.35,.6);
+  D(gd,R(1508,474,138,110),'thin t1',.3,.6);
+  D(gd,R(1510,586,22,3,1)+R(1622,586,22,3,1),'thin t3',.4,.6);D(gd,cir(1500,530,3.4)+cir(1654,530,3.4),'thin gold t1',.4,.65);D(gd,'M1500,530 H1496 M1654,530 H1658','hair',.4,.65);
+  D(gd,R(1501,490,4,7,1)+R(1501,500,4,7,1)+R(1501,510,4,7,1)+R(1501,520,4,7,1),'hair',.4,.65);FO(gd,cir(1650,471,1.5),'f-goldl',.9,.5,.8);
   var ui=[],ui2=[],ui3=[],q;ui.push('M1508,481 H1646 M1508,577 H1646');
   for(q=0;q<7;q++){ui2.push(R(1512,486+q*11,9,9,2));ui3.push('M1514,'+(490+q*11)+' l5,0')}
   for(q=0;q<5;q++){ui2.push(R(1624,486+q*13,18,10,1));ui3.push('M1626,'+(493+q*13)+' h8')}
   ui.push('M1622,484 V560 M1511,570 H1560 M1584,570 H1616');ui3.push(cir(1560,570,2)+cir(1600,570,2));
   d=[];for(q=0;q<8;q++)d.push('M'+(1512+q*10)+',477.6 h6');
-  [ui.join(' '),ui2.join(''),ui3.join(' '),d.join(' ')].forEach(function(s){FO(gf,s,'ink hair',.5,.4,.7)});
-  ST.uiHl=FO(gf,R(1623,485,20,12,1),'f-goldl',.18,.5,.7);
+  [ui.join(' '),ui2.join(''),ui3.join(' '),d.join(' ')].forEach(function(s){FO(gd,s,'ink hair',.5,.4,.7)});
+  ST.uiHl=FO(gd,R(1623,485,20,12,1),'f-goldl',.18,.5,.7);
   var tw0=tt(.4,.8),dg=el('path',{d:ell(1577,529,92,74),fill:'url(#gGlow)'},gl);ST.fade(dg,tw0[0],tw0[1],.28);
   var dg2=el('path',{d:ell(1577,588,78,5),fill:'url(#gGlow)'},gf);ST.fade(dg2,tw0[0],tw0[1],.5);
-  ST.slot('board',el('g',{transform:'translate(1577,557) scale(.33)'},gf));
-  ST.cur=FO(gf,'M-3,0 H3 M0,-3 V3 '+cir(0,0,2.4),'ink hair goldl',.8,.7,.9);
+  ST.slot('board',el('g',{transform:'translate(1577,557) scale(.33)'},gd));
+  ST.cur=FO(gd,'M-3,0 H3 M0,-3 V3 '+cir(0,0,2.4),'ink hair goldl',.8,.7,.9);
   /* lampicka vlevo */
-  D(gf,R(1448,583,22,5,2),'thin t3',.4,.7);D(gf,'M1458,583 L1454,530 M1462,583 L1458,530','thin',.45,.7);D(gf,'M1455,531 L1472,500 M1458,533 L1475,502','thin',.45,.7);
+  D(gf,R(1448,583,22,5,2),'thin t3',.4,.7);D(gf,'M1458,583 L1454,530 L1458,530 L1462,583Z','thin t3',.45,.7);D(gf,'M1455,531 L1472,500 L1475,502 L1458,533Z','thin t3',.45,.7);
   D(gf,cir(1456,531,3.2),'thin gold t1',.5,.75);D(gf,cir(1473,501,2.6),'thin gold t1',.5,.75);
   var lh=G(gf,'translate(1476,498) rotate(-42)');D(lh,'M-13,10 C-14,-9 14,-9 13,10Z','ink t3',.5,.8);D(lh,'M-8,6 Q0,-6 8,6','hair',.5,.8);D(lh,ell(0,10,13,2.4),'thin',.5,.8);FO(lh,cir(0,10,3.4),'f-goldl',.9,.55,.8);
   var lg=el('path',{d:cir(1496,514,48),fill:'url(#gGlow)'},gl),tw=tt(.6,.9);ST.fade(lg,tw[0],tw[1],.4);
@@ -665,7 +667,7 @@ function windowZ(){
   d=[];for(k=0;k<9;k++)d.push('M'+(2478+k*8)+',646 L'+(2480+k*7.4)+',700');D(g,d.join(' '),'hair faint',.65,.95);
   D(g,'M2474,646 C2480,626 2500,620 2512,628 C2524,618 2540,626 2544,646','thin t3',.7,1);D(g,'M2486,634 C2496,630 2506,632 2514,636 M2518,634 C2526,628 2536,632 2540,640','hair',.7,1);
   frame(g,2040,404,40,50,'rose',.5,.9);
-  pendant(2210,322,.7,1);
+  pendant(2010,318,.7,1);
 }
 windowZ();
 
@@ -675,11 +677,11 @@ function ficus(g,cx,A,B){
   [[0,-1],[1,1],[-1,.4]].forEach(function(s,si){
     var x0=cx+s[0]*3,pts=[];for(i=0;i<=8;i++){var t=i/8;pts.push([x0+s[1]*10*sin(t*2.2)*t*3+s[0]*t*8,652-t*(190+si*30)])}
     st.push('M'+n1(x0)+',652 '+pts.map(function(p,j){return j?'L'+n1(p[0])+','+n1(p[1]):''}).join(' '));
-    pts.forEach(function(p,j){if(j<2)return;for(var sd=-1;sd<=1;sd+=2){var a=(-90+sd*(35+r()*30))*PI/180,len=24+r()*8,ux=cos(a),uy=sin(a);lv.push(lf(p[0],p[1],ux,uy,len,7.5));vn.push('M'+n1(p[0])+','+n1(p[1])+' L'+n1(p[0]+ux*len*.9)+','+n1(p[1]+uy*len*.9))}});
-    var tp=pts[8],a2=-90*PI/180;lv.push(lf(tp[0],tp[1],0,-1,28,8));vn.push('M'+n1(tp[0])+','+n1(tp[1])+' V'+n1(tp[1]-26));
+    pts.forEach(function(p,j){if(j<2)return;for(var sd=-1;sd<=1;sd+=2){var a=(-90+sd*(35+r()*30))*PI/180,len=24+r()*8,ux=cos(a),uy=sin(a);lv.push(lf(p[0],p[1],ux,uy,len,11));vn.push('M'+n1(p[0])+','+n1(p[1])+' L'+n1(p[0]+ux*len*.9)+','+n1(p[1]+uy*len*.9))}});
+    var tp=pts[8],a2=-90*PI/180;lv.push(lf(tp[0],tp[1],0,-1,30,12));vn.push('M'+n1(tp[0])+','+n1(tp[1])+' V'+n1(tp[1]-26));
   });
   D(g,'M'+(cx-24)+',650 L'+(cx-18)+',700 H'+(cx+18)+' L'+(cx+24)+',650Z','ink t3',A,B);D(g,R(cx-27,642,54,10,3),'thin t3',A,B);D(g,'M'+(cx-22)+',670 H'+(cx+22),'hair gold',A,B);
-  var fg=sway(G(g),cx,650,1.0,.0008,cx);D(fg,st.join(' '),'thin',A,B);D(fg,lv.join(' '),'thin t2',A,B);FILL(fg,lv.join(' '),'hair',A,B,{fill:HF});D(fg,vn.join(' '),'hair',A,B);
+  var fg=sway(G(g),cx,650,1.0,.0008,cx);D(fg,st.join(' '),'thin',A,B);lv.forEach(function(l,i){D(fg,l,'thin t2',A+.0004*i,B);D(fg,vn[i],'hair',A+.0004*i,B)});
 }
 function tattooZone(){
   zone(6.3,7.3);var g=sec('room',3),gl=sec('light',3),k,d;
@@ -689,7 +691,7 @@ function tattooZone(){
   D(g,d.join(' '),'hair',.1,.35);D(g,d.map(function(s,i){return cir(2740+i*46,712,1.3)}).join(' '),'hair gold',.15,.35);
   d=[];for(k=0;k<8;k++)d.push('M'+(2706-k*2.2)+','+(704+k*2)+' l-6,.6 M'+(3052+k*2.2)+','+(704+k*2)+' l6,.6');D(g,d.join(' '),'hair',.15,.35);
   /* obrazy */
-  frame(g,2606,318,84,92,'ara',.1,.4);frame(g,2706,266,76,98,'archangel',.15,.45);frame(g,3016,256,56,72,'kakadu',.2,.5);frame(g,2796,268,50,66,'rose',.25,.55);frame(g,2868,262,52,64,'colibri',.3,.6);frame(g,3022,346,46,56,'feather',.25,.55);
+  frame(g,2606,318,84,92,'ara',.1,.4);frame(g,2706,266,76,98,'archangel',.15,.45);frame(g,3104,262,40,52,'kakadu',.2,.5);frame(g,2796,268,50,66,'rose',.25,.55);frame(g,2868,262,52,64,'colibri',.3,.6);frame(g,3022,346,46,56,'feather',.25,.55);
   /* polica s barvami nad vozikem */
   D(g,R(2602,470,92,5,1),'ink t3',.15,.4);D(g,'M2614,475 V488 L2624,475 M2682,475 V488 L2672,475','thin',.15,.4);bottles(g,2608,2690,470,71,.2,.5);
   /* vozik */
@@ -730,10 +732,10 @@ function tattooZone(){
   D(g,R(2980,620,10,42),'thin t3',.4,.75);D(g,'M2980,630 h10 M2980,640 h10 M2980,650 h10','hair',.45,.75);D(g,R(2975,660,20,5,2),'thin t3',.4,.75);
   D(g,R(2956,606,58,14,7),'ink t3',.4,.8);D(g,'M2962,611 H3008','hair',.45,.8);FILL(g,R(2956,614,58,6),'hair',.45,.8,{fill:HF});
   /* lampa */
-  D(g,R(3064,692,60,8,4),'ink t3',.5,.8);D(g,'M3093,692 V340 M3097,692 V340','thin',.5,.85);D(g,cir(3095,338,5),'thin gold t1',.55,.85);D(g,'M3093,660 h4 M3093,540 h4','hair',.55,.85);
-  D(g,'M3095,334 L2990,292 M3095,343 L2992,301','thin',.55,.9);
+  D(g,R(3064,692,60,8,4),'ink t3',.5,.8);D(g,R(3093,340,4,352),'thin t3',.5,.85);D(g,cir(3095,338,5),'thin gold t1',.55,.85);D(g,'M3093,660 h4 M3093,540 h4','hair',.55,.85);
+  D(g,'M3095,334 L2990,292 L2992,301 L3095,343Z','thin t3',.55,.9);
   d=['M3088,339'];for(k=0;k<9;k++){var u=k/8;d.push('L'+n1(3088-86*u+(k%2?-3:3)*.5)+','+n1(338-37*u+(k%2?3:-3)))}D(g,d.join(' '),'hair',.6,.9);
-  D(g,cir(2988,296,5),'thin gold t1',.6,.9);D(g,'M2988,292 L2868,364 M2990,300 L2872,372','thin',.6,.95);D(g,cir(2866,368,3.4),'thin gold t1',.65,.95);
+  D(g,cir(2988,296,5),'thin gold t1',.6,.9);D(g,'M2988,292 L2868,364 L2872,372 L2990,300Z','thin t3',.6,.95);D(g,cir(2866,368,3.4),'thin gold t1',.65,.95);
   D(g,'M2836,400 C2836,382 2850,370 2866,370 C2882,370 2896,382 2896,400Z','ink t3',.65,1);D(g,'M2846,396 Q2850,380 2866,374 M2886,396 Q2882,380 2866,374 M2866,372 V398','hair',.7,1);D(g,ell(2866,400,30,4),'thin',.7,1);
   FO(g,cir(2866,404,6),'f-goldl',.95,.7,1);
   /* svetlo lampy: kuzel, halo, skvrna (nastavuje se v ST.on) */
@@ -754,7 +756,7 @@ function tattooZone(){
   var pt=potos(g,3176,440,.65,1,8);ST.potos2=pt;bottles(g,3220,3296,440,81,.65,.95);
   D(g,R(3196,296,74,98),'ink t3',.6,.95);D(g,R(3202,302,62,86),'thin t2',.65,.95);TX(g,'OSVĚDČENÍ',3233,318,6.4,'label',.7,1,1,{'letter-spacing':.6});
   D(g,'M3210,326 H3256 M3210,332 H3250 M3210,338 H3256 M3210,344 H3244 M3210,350 H3252','hair',.7,1);D(g,cir(3233,370,9),'thin gold t1',.7,1);D(g,star4(3233,370,5.5),'hair gold',.75,1);D(g,'M3228,378 L3226,390 L3233,385 L3240,390 L3238,378','hair gold',.75,1);D(g,'M3212,380 q5,-6 9,0 t9,0','hair',.75,1);
-  frame(g,3140,296,48,60,'rose',.6,.95);frame(g,3338,256,50,64,'swallow',.65,1);
+  frame(g,3152,296,40,52,'rose',.6,.95);frame(g,3338,256,50,64,'swallow',.65,1);
   /* ficus */
   ficus(g,3380,.65,1);
   pendant(3312,332,.7,1);
@@ -804,14 +806,14 @@ function more(){
     [0,1].forEach(function(par){var e=el('path',{d:bl.filter(function(q,i){return i%2===par}).join(' '),'class':'f-goldl',filter:'url(#glowW)',opacity:0},gg);FL.push({e:e,par:par,x:s[0],x1:s[1],t0:s[4]+.5*(s[5]-s[4]),t1:s[5]})})});
   /* stojaci lampa u kalendare */
   zone(1.9,3.0);g=sec('room',1);
-  var fx=1990;
+  var fx=2054;
   D(g,'M'+fx+',560 L'+(fx-22)+',700 M'+fx+',560 L'+(fx+22)+',700 M'+fx+',560 L'+fx+',700','thin',.7,1);D(g,cir(fx-22,698,2)+cir(fx+22,698,2)+cir(fx,698,2),'hair',.7,1);
   D(g,'M'+fx+',560 V496','ink',.7,1);D(g,R(fx-4,548,8,5,1),'thin gold',.7,1);
   D(g,'M'+(fx-20)+',500 L'+(fx-14)+',462 H'+(fx+14)+' L'+(fx+20)+',500Z','ink t3',.75,1);D(g,'M'+(fx-8)+',462 L'+(fx-12)+',500 M'+fx+',462 V500 M'+(fx+8)+',462 L'+(fx+12)+',500','hair',.75,1);D(g,ell(fx,500,20,3),'thin',.75,1);
   FO(g,cir(fx,503,3.4),'f-goldl',.9,.8,1);
   var gl=sec('light',1),gw=el('path',{d:cir(fx,505,64),fill:'url(#gGlow)'},gl);ST.fade(gw,tt(.7)[0],tt(1)[1],.5);
   /* vydlazdeny stolek s knihami */
-  D(g,R(2020,640,36,5,1),'thin t3',.75,1);D(g,'M2024,645 L2022,700 M2052,645 L2054,700 M2024,672 H2052','thin',.75,1);D(g,R(2024,628,28,12,1)+R(2028,620,20,8,1),'thin t2',.8,1);D(g,'M2026,634 h24 M2030,624 h16','hair gold',.8,1);
+  g=G(g,'translate(-88,0)');D(g,R(2020,640,36,5,1),'thin t3',.75,1);D(g,'M2024,645 L2022,700 M2052,645 L2054,700 M2024,672 H2052','thin',.75,1);D(g,R(2024,628,28,12,1)+R(2028,620,20,8,1),'thin t2',.8,1);D(g,'M2026,634 h24 M2030,624 h16','hair gold',.8,1);
   /* holubi na strese a okapy */
   zone(1.9,3.0);g=sec('back',1);
   [[1440,0],[1470,1]].forEach(function(b,i){var x=b[0],y=rY(x)-1;
