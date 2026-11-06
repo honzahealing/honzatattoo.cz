@@ -375,7 +375,7 @@ function sitMix(T,t0,t1,from,to){
   return r;
 }
 
-var tatSpot=[2870,520];
+var tatSpot=[2881,521];
 function clientAt(T,time){
   var R0=function(p,x){return resolve(p,1,x)},st;
   if(T<2.95)st=walkSeg(T,.3,2.95,-1000,1330);
