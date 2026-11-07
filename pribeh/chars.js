@@ -76,10 +76,12 @@ var HAND={
 var SHOE={
   sneaker:{d:'M -9,-6 C -11,-2 -12.5,3 -11.5,7 L -11,9.5 L 30,9.5 C 33,9.5 34.5,7.5 33.5,5 C 32,2 27,0 21,-1.5 C 15,-3 10,-6 7,-9 C 3,-11 -6,-10.5 -9,-6 Z',
     sole:'M -11.5,5.6 L 33.8,5.2 L 33.5,6.5 C 33.6,8.6 32.4,9.5 30,9.5 L -11,9.5 Z',
-    l:['M -10.6,1 C -6,2 0,1.6 6,-2','M 18,-1.2 C 22,3 27,4 33,4.2','M 8,-6.6 l3,2.4 M 11,-5.2 l3,2.4 M 14,-3.8 l3,2.4','M -9,-5 C -7,-8 -3,-9.4 1,-9.6']},
+    l:['M -10.6,1 C -6,2 0,1.6 6,-2','M 18,-1.2 C 22,3 27,4 33,4.2','M 8,-6.6 l3,2.4 M 11,-5.2 l3,2.4 M 14,-3.8 l3,2.4','M -9,-5 C -7,-8 -3,-9.4 1,-9.6',
+       'M 20,-.6 C 24,1.6 28,2.6 32.4,3 M 21,4.6 C 25,5.4 29,5.4 33,5','M -8,2.4 C -2,4.2 6,4 12,1.6 C 16,0 20,1 24,3.4','M 5.6,-8.2 l1,1 M 8.6,-6.6 l1,1 M 11.6,-5.2 l1,1 M 14.6,-3.8 l1,1','M -11,7.6 h3 M -6,7.6 h3 M -1,7.6 h3 M 4,7.6 h3 M 9,7.6 h3 M 14,7.6 h3 M 19,7.6 h3 M 24,7.6 h3']},
   boot:{d:'M -9,-21 C -10.5,-10 -12,2 -11.5,7 L -11,10 L 29,10 C 32.5,10 34,7.5 33,5 C 31.5,1.5 25,-.5 18,-2.5 C 12,-4 8.5,-8 8,-21 Z',
     sole:'M -11.6,6 L 33.4,5.4 C 33.6,8 32.6,10 29,10 L -11,10 Z',
-    l:['M 8,-18 l-4,1.6 M 8.2,-13 l-4,1.6 M 8.8,-8 l-4,1.6','M -11,3.6 L 33,3.2','M 12,-3.6 C 18,1.6 26,2 32,3','M -10,-12 C -6,-11 -2,-11.4 2,-12.8']}
+    l:['M 8,-18 l-4,1.6 M 8.2,-13 l-4,1.6 M 8.8,-8 l-4,1.6','M -11,3.6 L 33,3.2','M 12,-3.6 C 18,1.6 26,2 32,3','M -10,-12 C -6,-11 -2,-11.4 2,-12.8',
+       'M 4,-19.4 l 4.6,3 M 4.2,-14.4 l 4.6,3 M 4.6,-9.4 l 4.6,3','M -10.6,1.6 h2.6 M -5.6,1.6 h2.6 M -.6,1.6 h2.6 M 4.4,1.4 h2.6 M 9.4,1.4 h2.6 M 14.4,1.2 h2.6 M 19.4,1.2 h2.6 M 24.4,1.6 h2.6','M -11.4,6.4 L -2,6.2 L -2,10','M -7,-21 C -7.4,-14 -8.4,-6 -9,0']}
 };
 
 /* ---------- stavba postavy ---------- */
@@ -112,12 +114,18 @@ function build(kind){
       ln(tg,'M 0,42 c 2,-2 4,0 3,2 c -1,3 -6,3 -7,-1 c -1,-5 5,-8 9,-5 c 4,3 3,10 -3,12 c -6,2 -11,-3 -10,-8',.7,'var(--gold)');
       ln(tg,'M -6,48 q -6,4 -9,-1 q 5,-3 9,1 M 6,47 q 6,3 9,-2 q -5,-2 -9,2',.55,'var(--gold)');
       ln(tg,'M -8,30 C -4,32 4,32 8,30',.5,'var(--gold)');
+      ln(tg,'M -7,26 C -2,18 4,14 8,4 M -4,22 l -4,-1 M -1,18 l -4,-2 M 2,14 l -4,-2 M -2,24 l 3,2 M 1,20 l 3,1 M 4,16 l 3,1',.5,'var(--gold)');
+      for(var dd=0;dd<14;dd++)P(tg,ST.circ(-6+((dd*37)%13),34+((dd*17)%10),.35),{fill:'var(--gold-light)',opacity:.7});
       var fg=el('g',{opacity:dark?.45:.9},A.fore.inner);
       ln(fg,'M .5,2 C 5,10 -4,18 .5,26 C 5,34 -3.5,42 .5,49',.75,'var(--gold)');
       [[1.6,8,1],[-1.5,16,-1],[2,24,1],[-1.6,32,-1],[1.6,40,1]].forEach(function(q){
         ln(fg,'M '+q[0]+','+q[1]+' q'+(q[2]*5)+',-3.5 '+(q[2]*6.5)+',1.5 q'+(-q[2]*4.5)+',2 '+(-q[2]*6.5)+',-1.5 Z',.55,'var(--gold)')});
       for(var j=-4;j<=4;j++)P(fg,ST.circ(j*1.15,50.5+Math.abs(j)*.12,.42),{fill:'var(--gold)'});
       ln(fg,'M -5,46.5 C -2,47.6 2,47.6 5,46.5',.45,'var(--gold)');
+      /* kvet pivonky na vnitrni strane predlokti a jemne stinovani teckami */
+      ln(fg,'M -4,20 c -3,-3 -1,-7 3,-6 c 1,-4 6,-4 7,0 c 4,-1 5,4 2,6 c 2,3 -1,6 -4,5 c -2,3 -6,2 -6,-1 c -3,0 -4,-3 -2,-4 Z',.5,'var(--gold)');
+      ln(fg,'M -1,18 c 1,-2 3,-2 4,0 c -1,2 -3,2 -4,0',.4,'var(--gold-light)');
+      for(var de=0;de<18;de++)P(fg,ST.circ(-5+((de*29)%11),4+((de*23)%40),.3),{fill:'var(--gold-light)',opacity:.55});
     }else{
       /* bunda klienta: rukav pres celou paži, manzeta; u predni ruky vyhrnuty variant */
       A.sleeveU=el('g',{},A.upper.inner);
@@ -149,6 +157,13 @@ function build(kind){
     ln(L.thigh.inner,'M 1.5,-6 C 2.5,30 1.5,60 .5,82',.55,LF);
     ln(L.thigh.inner,'M -9,70 q6,3 15,0',.7,LD);ln(L.thigh.inner,'M -7,77 q5,2 12,-1',.6,LF);
     if(!dark)ln(L.thigh.inner,'M 5,-8 q6,6 9,15',.7,LD);
+    /* zadni kapsa s prosivanim, nyt u predni kapsy, dvojity bocni sev */
+    ln(L.thigh.inner,'M -19,-4 L -6,-6 L -5,14 L -12,19 L -19,14 Z',.75,dark?LF:LD);
+    ln(L.thigh.inner,'M -17.4,-2 L -7.6,-3.6 L -7,12.6 L -12,16.4 L -17.2,12.6',.45,LF);
+    ln(L.thigh.inner,'M -17,5 L -12,8.6 L -7.4,4',.45,LF);
+    P(L.thigh.inner,ST.circ(12.4,-4,1),{fill:'var(--gold)',opacity:dark?.3:.75});
+    ln(L.thigh.inner,'M 3,-6 C 4,30 3,60 2,82',.4,'rgba(200,164,92,.35)');
+    ln(L.thigh.inner,'M -8,32 q 8,4 18,1 M -9,46 q 9,3 19,0',.5,LF);
     L.shin=part(g,SH.shin,C.pants,{shade:SH.shinShade,dark:dark,open:SH.shinO});
     ln(L.shin.inner,'M -9.6,79 L 9.4,79',.8,LD);ln(L.shin.inner,'M -9.6,82.4 L 9.4,82.4',.5,LF);
     ln(L.shin.inner,'M -7,68 q4,2.4 9,-1',.6,LF);ln(L.shin.inner,'M -8,60 q5,3 11,0',.6,LF);ln(L.shin.inner,'M 2,-4 C 3,26 2,56 1,78',.5,LF);
@@ -168,6 +183,16 @@ function build(kind){
     ln(tp.inner,'M -6,-108 C -2,-103 4,-102 8,-106',.9,LD);ln(tp.inner,'M -4,-104 C 0,-100 5,-100 8.6,-103',.6,LF);
     ln(tp.inner,'M 14,-40 q-7,-3 -14,1',.6,LF);ln(tp.inner,'M 15,-26 q-8,-2 -17,3',.6,LF);ln(tp.inner,'M -14,-60 q4,10 2,22',.6,LF);
     ln(tp.inner,'M 4,-4 C 6,2 10,6 14,7',.7,LD);ln(tp.inner,'M -2,-9 L -2,4',.6,LF);
+    /* opasek: kuze, prosiveni, spona a poutka */
+    P(tp.inner,'M -30,-10 C -18,-11 -6,-9 6,-11 C 16,-12.6 24,-11.4 30,-12.4 L 30,-4 C 24,-3 16,-4.4 6,-3 C -6,-1.4 -18,-3.6 -30,-2.6 Z',{fill:'#0d0c0b',stroke:LD,'stroke-width':.7});
+    ln(tp.inner,'M -30,-8.4 C -18,-9.4 -6,-7.4 6,-9.4 C 16,-11 24,-9.8 30,-10.8 M -30,-4.2 C -18,-5.2 -6,-3 6,-4.6 C 16,-6 24,-4.6 30,-5.6',.35,'rgba(231,221,199,.3)');
+    P(tp.inner,ST.rect(9,-11.6,7.4,8.4,1.4),{fill:'none',stroke:'var(--gold)','stroke-width':1});ln(tp.inner,'M 12.6,-11 V -3.6',.7,'var(--gold-light)');
+    ln(tp.inner,'M -12,-11 V -2 M -11,-11 V -2 M 1,-11 V -2.4 M 2,-11 V -2.4',.5,LD);
+    /* golier (zebrovany), bocni sev a prosiveni lemu */
+    ln(tp.inner,'M -6.5,-110 C -2,-104 5,-103 9,-107.6',1.6,'rgba(0,0,0,.6)');ln(tp.inner,'M -5.6,-106.6 C -1.6,-101.8 4.6,-101 8.4,-104.4',.45,LF);
+    ln(tp.inner,'M -1,-100 C 0,-70 -1,-40 -1,-14',.45,'rgba(231,221,199,.16)');
+    ln(tp.inner,'M -30,-14.4 C -22,-15.4 -14,-12.4 -6,-14.4 C 6,-17.4 18,-13.4 30,-16.4',.4,'rgba(231,221,199,.22)');
+    ln(tp.inner,'M 4,-30 q 6,-2 10,2 M -10,-50 q 6,4 4,12 M 8,-78 q 4,4 8,4',.5,LF);
   }else{
     P(tp.inner,'M -32,-130 L 32,-130 L 32,3 C 14,6 -10,6 -32,2 Z',{fill:C.shirt});
     P(tp.inner,SH.torsoShade,{fill:'rgba(0,0,0,.3)'});P(tp.inner,SH.torsoShade,{fill:'url(#hatchFine)',opacity:.9});
@@ -175,6 +200,14 @@ function build(kind){
     ln(tp.inner,'M 12.6,-104 C 14,-70 13.6,-30 12.6,0',.7,LD);
     ln(tp.inner,'M 2,-40 L 10,-40 L 10,-26 L 2,-26',.6,LD);ln(tp.inner,'M -10,-80 q4,14 2,30',.6,LF);ln(tp.inner,'M 8,-60 q-5,6 -12,6',.6,LF);
     ln(tp.inner,'M -24,-28 L 24,-28',.4,LF);
+    /* zip bundy s jezdcem, stojaci limec, nprsni kapsa, prosiveni */
+    ln(tp.inner,'M 12.2,-104 C 13.6,-70 13.2,-30 12.2,0',1.4,'rgba(0,0,0,.45)');
+    P(tp.inner,'M 12.2,-104 C 13.6,-70 13.2,-30 12.2,0',{fill:'none',stroke:'rgba(231,221,199,.4)','stroke-width':1.6,'stroke-dasharray':'.6 1.6'});
+    P(tp.inner,ST.rect(10.6,-97,3.4,6,1),{fill:'var(--gold)',opacity:.8});ln(tp.inner,'M 12.3,-91 v 4',.6,'var(--gold-light)');
+    ln(tp.inner,'M 6,-112 C 9,-106 12,-102 14.6,-100 M -6,-112 C -9,-106 -12,-103 -15,-101',.8,LD);
+    ln(tp.inner,'M -4,-74 L 9,-74 L 9,-64 L -4,-64 Z',.6,LD);ln(tp.inner,'M -4,-74 L 9,-74 L 8,-69 L -3,-69 Z',.5,LF);P(tp.inner,ST.circ(2.6,-70.6,.9),{fill:'var(--gold)',opacity:.7});
+    ln(tp.inner,'M -30,-6 C -10,-2 14,-2 32,-5',.4,'rgba(231,221,199,.22)');ln(tp.inner,'M -18,-100 C -20,-70 -19,-40 -17,-8',.4,'rgba(231,221,199,.14)');
+    ln(tp.inner,'M -14,-46 q 6,3 12,0 M -10,-20 q 6,3 14,-1',.5,LF);
     /* popruh tasky pres hrud */
     ln(tp.inner,'M 12,-102 C 4,-76 -8,-40 -18,-8',2.2,'#3a2c1f');ln(tp.inner,'M 12,-102 C 4,-76 -8,-40 -18,-8',.6,LD);
   }
@@ -182,7 +215,10 @@ function build(kind){
   F.lF=limbLeg('f');
   /* taska klienta */
   if(!H){F.bagG=el('g',{},body);var bg=part(F.bagG,'M -14,-2 L 14,-2 C 16,-2 17,0 17,3 L 16,26 C 16,29 14,31 11,31 L -11,31 C -14,31 -16,29 -16,26 L -17,3 C -17,0 -16,-2 -14,-2 Z',C.bag,{w:1.4,shade:'M -20,14 L 20,14 L 20,34 L -20,34 Z'});
-    ln(bg.inner,'M -16,8 C -6,11 6,11 16,8',.7,LD);P(bg.inner,ST.rect(-2.5,6,5,6,1),{fill:'var(--gold)',opacity:.8});ln(bg.inner,'M -14,2 L 14,2',.4,LF)}
+    ln(bg.inner,'M -16,8 C -6,11 6,11 16,8',.7,LD);P(bg.inner,ST.rect(-2.5,6,5,6,1),{fill:'var(--gold)',opacity:.8});ln(bg.inner,'M -14,2 L 14,2',.4,LF);
+    P(bg.inner,'M -17,-2 L 17,-2 L 16,13 C 6,16 -6,16 -16,13 Z',{fill:'rgba(0,0,0,.25)',stroke:LD,'stroke-width':.6});
+    P(bg.inner,'M -14,0 L 14,0 L 13.4,11 C 5,13.6 -5,13.6 -13.4,11 Z',{fill:'none',stroke:'rgba(231,221,199,.3)','stroke-width':.6,'stroke-dasharray':'1.4 1.4'});
+    P(bg.inner,'M -14,18 L 14,18 M -15,24 L 15,24',{fill:'none',stroke:'rgba(231,221,199,.18)','stroke-width':.5,'stroke-dasharray':'1.4 1.4'});}
   /* hlava */
   F.headG=el('g',{},body);F.head=el('g',{},F.headG);
   buildHead(F,H);
@@ -391,7 +427,8 @@ function sitMix(T,t0,t1,from,to){
 var tatSpot=[2881,521];
 function clientAt(T,time){
   var R0=function(p,x){return resolve(p,1,x)},st;
-  if(T<2.95)st=walkSeg(T,.3,2.95,-1000,1330);
+  if(T<2.02)st=walkSeg(T,.3,1.9,-1000,750);
+  else if(T<2.95)st=walkSeg(T,2.02,2.95,750,1330);
   else if(T<4.35){
     var p=idle(STAND,time,1),r=R0(p,1330);
     var g1=ext(STAND,{aF:{fk:1,a1:34,el:52,wr:-20},hF:'open'}),g2=ext(STAND,{aF:{fk:0,tx:12,ty:-238,abs:150},hF:'flat',headT:-4});
@@ -415,19 +452,28 @@ function clientAt(T,time){
     r3=mixR(r3,R0(idle(arm,time,.4),2790),ss(7.48,7.74,T));
     st={x:2790,face:1,p:r3};
   }
-  else if(T<11.6){
+  else if(T<11.5){
     var arm2=ext(SIT,{lean:1,headT:14,aF:{fk:0,wx:2897,wy:526,abs:92},hF:'flat'});
     var look=ext(STAND,{headT:20,aF:{fk:1,a1:58,el:84,wr:-16},hF:'relax',aB:{fk:1,a1:10,el:30,wr:0}});
     var r4=sitMix(T,10.65,10.92,R0(arm2,2790),R0(STAND,2790));
-    if(T>10.92)r4=mixR(R0(idle(STAND,time,1),2790),R0(look,2790),ss(10.95,11.2,T)*(1-ss(11.42,11.6,T)));
+    if(T>10.92)r4=mixR(R0(idle(STAND,time,1),2790),R0(look,2790),ss(10.95,11.2,T)*(1-ss(11.32,11.5,T)));
     st={x:2790,face:1,p:r4};
   }
-  else if(T<12.35)st=walkSeg(T,11.6,12.35,2790,3900);
-  else{var up=ext(STAND,{headT:-15,lean:-1});st={x:3900,face:1,p:mixR(R0(idle(STAND,time,1),3900),R0(idle(up,time,1),3900),ss(12.35,12.7,T))}}
+  else if(T<12.04)st=walkSeg(T,11.5,11.98,2790,3372);
+  else if(T<12.5)st=walkSeg(T,12.04,12.5,3372,3900);
+  else{var up=ext(STAND,{headT:-15,lean:-1});st={x:3900,face:1,p:mixR(R0(idle(STAND,time,1),3900),R0(idle(up,time,1),3900),ss(12.5,12.8,T))}}
+  /* ruka na klice dveri */
+  if(ST.doorHandle){
+    if(T>1.7&&T<2.3){var hd=ST.doorHandle(0,T);st.p=reachArm(st.p,st.x,hd[0],hd[1],ss(1.78,1.92,T)*(1-ss(2.1,2.22,T)))}
+    if(T>11.75&&T<12.3){var hd2=ST.doorHandle(1,T);st.p=reachArm(st.p,st.x,hd2[0],hd2[1],ss(11.86,11.98,T)*(1-ss(12.1,12.2,T)))}
+  }
   st.rolled=T>7.35&&T<10.95;
   st.mark=ss(10.55,10.9,T);
   return st;
 }
+function reachArm(r,x,wx,wy,k){if(k<=0)return r;
+  var p=ext(STAND,{lean:r.lean,py:r.py,aF:{fk:0,wx:wx,wy:wy,abs:96}}),a=armAngles(p,'aF',1,x),o=cp(r);
+  o.AF={a1:lerp(r.AF.a1,a.a1,k),a2:lerp(r.AF.a2,a.a2,k),wr:lerp(r.AF.wr,a.wr,k)};if(k>.5)o.hF='hold';o.lean=r.lean+2*k;return o}
 function honzaAt(T,time){
   var st,R0=function(p,x,f){return resolve(p,f,x)};
   var drawP=function(t,x){var tm=time*.001,o=Math.sin(tm*5.3)*4+Math.sin(tm*2.1)*3,o2=Math.sin(tm*4.1+1)*3.5+Math.sin(tm*1.3)*2;
@@ -458,14 +504,14 @@ function honzaAt(T,time){
     r3=mixR(r3,R0(tat(T),2985,-1),ss(7.54,7.8,T));
     st={x:2985,face:lerp(1,-1,ss(7.33,7.43,T)),p:r3};
   }
-  else if(T<11.62){
+  else if(T<11.72){
     var r4=sitMix(T,10.65,10.9,R0(SIT,2985,-1),R0(STAND,2985,-1));
     if(T>10.9){r4=R0(idle(STAND,time,1),2985,-1);var g4=ext(STAND,{aF:{fk:1,a1:30,el:56,wr:-22},hF:'open'});r4=mixR(r4,R0(g4,2985,-1),ss(11.3,11.45,T)*(1-ss(11.7,11.9,T)))}
     st={x:2985,face:-1,p:r4};
   }
-  else if(T<12.05){st=walkSeg(T,11.62,12.05,2985,3330,null,null,1);st.face=lerp(-1,1,ss(11.58,11.72,T))}
+  else if(T<12.15){st=walkSeg(T,11.72,12.15,2985,3296,null,null,1);st.face=lerp(-1,1,ss(11.68,11.82,T))}
   else{var wave=function(t){return ext(STAND,{headT:-3,aF:{fk:1,a1:158,el:18+16*Math.sin(time*.006),wr:-10},hF:'open'})};
-    st={x:3330,face:1,p:mixR(R0(idle(STAND,time,1),3330,1),R0(wave(T),3330,1),ss(12.1,12.35,T))}}
+    st={x:3296,face:1,p:mixR(R0(idle(STAND,time,1),3296,1),R0(wave(T),3296,1),ss(12.2,12.45,T))}}
   st.op=ss(1.9,2.4,T);
   st.glove=T>7.62&&T<10.72;
   st.pencil=(T<2.95?1-ss(2.86,2.95,T):0)+ss(4.86,5.0,T)*(1-ss(5.86,6.0,T));
@@ -528,7 +574,10 @@ function buildFront(F,H){
   F.front=g;
 }
 /* ---------- start ---------- */
-var hz=build('honza'),cl=build('client');buildFront(hz,true);buildFront(cl,false);
+var shadowG=el('g',{},ST.L.fig);ST.L.fig.insertBefore(shadowG,ST.L.fig.firstChild);
+(function(){var g=el('radialGradient',{id:'chShadow'},defs);el('stop',{offset:0,'stop-color':'#000','stop-opacity':.62},g);el('stop',{offset:.7,'stop-color':'#000','stop-opacity':.22},g);el('stop',{offset:1,'stop-color':'#000','stop-opacity':0},g)})();
+var hz=build('honza'),cl=build('client');
+hz.shadow=el('ellipse',{cx:0,cy:GY+2,rx:44,ry:6,fill:'url(#chShadow)'},shadowG);cl.shadow=el('ellipse',{cx:0,cy:GY+2,rx:44,ry:6,fill:'url(#chShadow)'},shadowG);buildFront(hz,true);buildFront(cl,false);
 (function(){var g=el('linearGradient',{id:'chVolF',x1:0,y1:0,x2:1,y2:0},defs);el('stop',{offset:0,'stop-color':'#000','stop-opacity':.3},g);el('stop',{offset:.5,'stop-color':'#000','stop-opacity':0},g);el('stop',{offset:1,'stop-color':'#000','stop-opacity':.3},g)})();
 /* tuzka a strojek v ruce Honzy (souradnice ruky: zapesti 0,0, prsty +y) */
 var pen=el('g',{},hz.aF.tool);
@@ -557,6 +606,8 @@ ST.on(function(T,time,cam){
     if(F===hz){pen.style.opacity=st.pencil;mach.style.opacity=st.machine}
     ST.heads[q[2]]={x:0,y:0};
     var h=apply(F,st,time);ST.heads[q[2]]={x:h[0],y:h[1]-10};
+    if(F.shadow){var p0=st.p,sp0=Math.abs((p0.fFx||0)-(p0.fBx||0)),sit=p0.py>-140;F.shadow.setAttribute('cx',(st.x+st.face*((p0.fFx+p0.fBx)/2+(sit?-10:0))).toFixed(1));
+      F.shadow.setAttribute('rx',(30+sp0*.5+(sit?20:0)).toFixed(1));F.shadow.setAttribute('opacity',((st.op==null?1:st.op)*.9).toFixed(3))}
     if(F===hz){
       if(st.machine>0){var A=hz.aF,a=A.handAng*R,bx=A.W[0]+Math.sin(a)*1.5-Math.cos(a)*0,by=A.W[1]+Math.cos(a)*1.5;
         var wx=st.x+st.face*bx,wy=GY+by;cable.setAttribute('d','M '+wx.toFixed(1)+','+wy.toFixed(1)+' C '+(wx+30).toFixed(1)+','+(wy-40).toFixed(1)+' 2720,560 2668,586');cable.style.opacity=st.machine}

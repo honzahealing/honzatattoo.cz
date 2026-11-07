@@ -31,7 +31,7 @@ body:not(.in-story) #story .top .snd{background:rgba(12,15,20,.78);padding:9px 1
 mark = re.search(r'<section class="story" id="story".*?</section>\s*<!--[^>]*-->\s*<section class="sr".*?</section>', story, re.S).group(0)
 mark = mark.replace('href="index.html#contact"', 'href="#contact"').replace('href="index.html"', 'href="#hero"')
 fonts = '<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">\n'
-mods = ['core', 'street', 'studio', 'close', 'chars', 'audio']
+mods = ['core', 'street', 'studio', 'doors', 'close', 'chars', 'audio']
 if inline:
     js = ''.join('<script>\n' + (root / f'pribeh/{m}.js').read_text().replace('</script', '<\\/script') + '\n</script>\n' for m in mods)
 else:

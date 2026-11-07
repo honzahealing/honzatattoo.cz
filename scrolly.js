@@ -2,6 +2,7 @@
 var root=document.getElementById('hero');
 if(!root||!root.classList.contains('scrolly'))return;
 var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var afterStory=!!document.getElementById('story');
 
 var stage=root.querySelector('.sc-stage'),
     heroLayer=root.querySelector('.sc-hero'),
@@ -241,9 +242,10 @@ function render(s){
     shade.style.opacity=lerp(1,.35,ss(.02,.1,p)).toFixed(3);
   }else heroLayer.style.visibility='hidden';
 
-  var io=1-ss(.004,.055,p);
+  /* s pribehem pred filmem: texty nabehnou az po najezdu do fotky a chvili zustanou */
+  var io=afterStory?ss(.003,.03,p)*(1-ss(.11,.17,p)):1-ss(.004,.055,p);
   intro.style.opacity=io.toFixed(3);
-  intro.style.transform='translate3d(0,'+(-70*ss(.004,.055,p)).toFixed(1)+'px,0)';
+  intro.style.transform='translate3d(0,'+(afterStory?(24*(1-ss(.003,.03,p))-70*ss(.11,.17,p)):-70*ss(.004,.055,p)).toFixed(1)+'px,0)';
   intro.classList.toggle('on',io>.5);
   if(hint)hint.style.opacity=(1-ss(0,.03,p)).toFixed(3);
 

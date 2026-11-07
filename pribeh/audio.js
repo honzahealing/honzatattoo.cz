@@ -502,19 +502,58 @@ function buildButton() {
   });
   paint(false);
 
-  /* uložená volba „zapnuto“: spustit až po prvním gestu kdekoli na stránce */
-  if (loadPref() && AC) {
+  /* hudba hraje rovnou: zvuk je zapnutý, dokud ho návštěvník sám nevypne.
+     Prohlížeč pustí zvuk až po prvním doteku, kliknutí nebo klávese (pravidlo všech prohlížečů),
+     proto ho zkusíme spustit hned a pak při každém takovém gestu, dokud se nerozehraje. */
+  var off = false; try { off = localStorage.getItem(PREF_KEY) === '0'; } catch (e) {}
+  if (!off && AC) {
     S.want = true; paint(true);
-    var evs = ['pointerdown', 'touchend', 'keydown', 'click'];
-    var start = function () {
+    var evs = ['pointerdown', 'mousedown', 'touchstart', 'touchend', 'keydown', 'click', 'wheel'];
+    var done = function () {
       evs.forEach(function (e) { document.removeEventListener(e, onGesture, true); });
-      S.pendingStart = null; turnOn();
+      S.pendingStart = null; hideHint();
     };
-    var onGesture = function (e) { if (S.btn && S.btn.contains(e.target)) return; start(); };
-    S.pendingStart = start;
-    evs.forEach(function (e) { document.addEventListener(e, onGesture, true); });
+    var lastTry = 0;
+    var tryStart = function () {
+      if (S.on && S.ctx && S.ctx.state === 'running') { done(); return; }
+      var now = Date.now(); if (now - lastTry < 600) return; lastTry = now;
+      turnOn();
+      var c = S.ctx; if (!c) return;
+      var chk = function () { if (c.state === 'running') done(); else paint(true); };
+      setTimeout(chk, 60); setTimeout(chk, 1300);
+    };
+    var onGesture = function (e) { if (S.btn && S.btn.contains(e.target)) return; tryStart(); };
+    S.pendingStart = function () { tryStart(); };
+    evs.forEach(function (e) { document.addEventListener(e, onGesture, { capture: true, passive: true }); });
+    /* pokus hned po načtení (projde, když už stránku návštěvník dřív poslouchal) */
+    try {
+      if (!S.ctx) { S.ctx = new AC(); S.eng = createEngine(S.ctx, Date.now() & 0xffff); }
+      var r0 = S.ctx.resume && S.ctx.resume();
+      if (r0 && r0.then) r0.then(function () { if (S.ctx.state === 'running') tryStart(); }, function () {});
+    } catch (e) {}
+    showHint();
   }
 }
+/* nenápadná výzva v úvodu: dokud zvuk nehraje */
+var hintEl = null;
+function showHint() {
+  var stg = document.getElementById('stage'); if (!stg || hintEl) return;
+  var st = document.createElement('style');
+  st.textContent = '.snd-hint{position:absolute;left:50%;bottom:calc(120px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:9;display:flex;align-items:center;gap:10px;' +
+    'padding:10px 18px;border-radius:30px;background:rgba(12,13,17,.78);border:1px solid rgba(200,164,92,.45);color:var(--gold-light);font:500 .66rem/1 var(--font-body,"Outfit",sans-serif);' +
+    'letter-spacing:.2em;text-transform:uppercase;cursor:pointer;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 10px 30px rgba(0,0,0,.5);transition:opacity .6s;animation:sndPulse 2.6s ease-in-out infinite}' +
+    '.snd-hint i{width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px var(--gold)}' +
+    '@keyframes sndPulse{0%,100%{box-shadow:0 10px 30px rgba(0,0,0,.5),0 0 0 0 rgba(200,164,92,.35)}50%{box-shadow:0 10px 30px rgba(0,0,0,.5),0 0 0 8px rgba(200,164,92,0)}}' +
+    '@media (prefers-reduced-motion:reduce){.snd-hint{animation:none}}';
+  document.head.appendChild(st);
+  hintEl = document.createElement('button'); hintEl.type = 'button'; hintEl.className = 'snd-hint';
+  hintEl.innerHTML = '<i></i>Klepněte kamkoli a hraje hudba';
+  hintEl.addEventListener('click', function () { if (S.pendingStart) S.pendingStart(); });
+  stg.appendChild(hintEl);
+  var loop = function () { if (!hintEl) return; var T = typeof ST.T === 'number' ? ST.T : 0; hintEl.style.opacity = T > .6 ? 0 : 1; hintEl.style.pointerEvents = T > .6 ? 'none' : 'auto'; requestAnimationFrame(loop); };
+  requestAnimationFrame(loop);
+}
+function hideHint() { if (!hintEl) return; var h = hintEl; hintEl = null; h.style.opacity = 0; setTimeout(function () { if (h.parentNode) h.parentNode.removeChild(h); }, 700); }
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', buildButton);
 else buildButton();
