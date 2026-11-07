@@ -80,6 +80,17 @@ ST.KEYS=KEYS;
 var ZW0=[2897,526],ZC0=[1320,478],ZK=36;ST.zoomMap={W0:ZW0,C0:ZC0,K:ZK};
 /* fotka andela v rame na zdi studia: na konci do ni kamera najede a fotka navaze na film (#hero) */
 var PH={x:3198,y:298,w:72,h:108,iw:1333,ih:2000,src:'img/hero.webp'};ST.photo=PH;
+/* galerie na zdi studia: fotky filmu za andelem v poradi zaberu (#hero .sc-shot); kamera mezi nimi preleta po zdi */
+var GAL=[PH,
+  {x:2704,y:270,w:76,h:114,iw:1024,ih:1536,src:'img/ja-u-prace.webp'},
+  {x:1626,y:276,w:68,h:68*600/455,iw:455,ih:600,src:'img/tattoo6.jpg'},
+  {x:1404,y:284,w:62,h:93,iw:400,ih:600,src:'img/tattoo1.jpg'},
+  {x:1176,y:290,w:54,h:54*600/345,iw:345,ih:600,src:'img/tattoo5.jpg'},
+  {x:978,y:270,w:66,h:66*800/533,iw:533,ih:800,src:'img/tattoo_main.jpg'}];
+ST.gal=GAL;ST.galCam=null;
+/* film zavola pri prechodu mezi zabery: a, b = index fotky, k = 0..1, ra, rb = obdelnik fotky na obrazovce {L,T,W} na koncich */
+ST.gallery={fly:function(a,b,k,ra,rb){ST.galCam=a==null?null:{a:a,b:b,k:k,ra:ra,rb:rb}}};
+function camFor(ph,r){var sc=r.W/ph.w;return {s:sc,x:ph.x+(vw/2-r.L)/sc,y:ph.y+(vh/2-r.T)/sc}}
 function photoZoom(T){return ss(13.15,14,T)}
 function monotone(xs,ys){
   var n=xs.length,d=[],m=[],i;
@@ -247,20 +258,23 @@ ST.start=function(){
   ST.needle=el('circle',{r:16,fill:'url(#gNeedle)',opacity:0},cs);
   var cl0=$('close'),bgS=el('svg',{id:'closeBg','aria-hidden':'true',preserveAspectRatio:'xMidYMid slice',viewBox:'0 0 1600 900'});
   cl0.parentNode.insertBefore(bgS,cl0);var bgRect=cl0.querySelector(':scope > rect');if(bgRect)bgS.appendChild(bgRect);bgS.appendChild(ST.closeBack);
-  /* fotka andela v rame */
-  (function(){var g=ST.section(ST.L.room,PH.x-40,PH.x+PH.w+40),x=PH.x,y=PH.y,w=PH.w,h=PH.h;
-    el('path',{d:ST.circ(x+w/2,y+h/2,90),fill:'url(#gGlow)',opacity:.55},g);
-    el('path',{d:ST.rect(x-10,y-10,w+20,h+20,1),'class':'ink t1'},g);
-    el('path',{d:ST.rect(x-6,y-6,w+12,h+12,1),'class':'ink hair gold'},g);
-    el('path',{d:'M'+(x-10)+','+(y-10)+' L'+(x-6)+','+(y-6)+' M'+(x+w+10)+','+(y-10)+' L'+(x+w+6)+','+(y-6)+' M'+(x-10)+','+(y+h+10)+' L'+(x-6)+','+(y+h+6)+' M'+(x+w+10)+','+(y+h+10)+' L'+(x+w+6)+','+(y+h+6),'class':'ink hair'},g);
+  /* fotky v ramech na zdi */
+  GAL.forEach(function(P,i){var g=ST.section(ST.L.room,P.x-40,P.x+P.w+40),x=P.x,y=P.y,w=P.w,h=P.h,m=i===1?12:10;
+    el('path',{d:ST.circ(x+w/2,y+h/2,Math.max(w,h)*.85),fill:'url(#gGlow)',opacity:.5},g);
+    el('path',{d:ST.rect(x-m-3,y-m+4,w+2*m+6,h+2*m,1),fill:'#000',opacity:.35},g);
+    el('path',{d:ST.rect(x-m,y-m,w+2*m,h+2*m,1),'class':'ink t1'},g);
+    el('path',{d:ST.rect(x-m+4,y-m+4,w+2*m-8,h+2*m-8,1),'class':'ink hair gold'},g);
+    el('path',{d:'M'+(x-m)+','+(y-m)+' L'+(x-3)+','+(y-3)+' M'+(x+w+m)+','+(y-m)+' L'+(x+w+3)+','+(y-3)+' M'+(x-m)+','+(y+h+m)+' L'+(x-3)+','+(y+h+3)+' M'+(x+w+m)+','+(y+h+m)+' L'+(x+w+3)+','+(y+h+3),'class':'ink hair'},g);
     el('path',{d:ST.rect(x-3,y-3,w+6,h+6,0),'class':'ink hair solid'},g);
-    var im=el('image',{x:x,y:y,width:w,height:h,preserveAspectRatio:'none'},g);im.setAttribute('href',PH.src);
+    var im=el('image',{x:x,y:y,width:w,height:h,preserveAspectRatio:'none'},g);im.setAttribute('href',P.src);
     el('path',{d:ST.rect(x,y,w,h,0),'class':'ink hair dim'},g);
-    el('path',{d:'M'+(x+w/2-14)+','+(y-10)+' L'+(x+w/2)+','+(y-26)+' L'+(x+w/2+14)+','+(y-10),'class':'ink hair dim'},g);
-    el('path',{d:ST.circ(x+w/2,y-27,1.6),'class':'ink hair gold'},g);
-    var gl=el('path',{d:'M'+x+','+(y+h*.55)+' L'+(x+w*.45)+','+y+' L'+(x+w*.62)+','+y+' L'+x+','+(y+h*.75)+'Z',fill:'#FFF6DF',opacity:.06},g);
-    ST.on(function(T){var k=photoZoom(T);gl.setAttribute('opacity',(.06*(1-k)).toFixed(3))});
-  })();
+    el('path',{d:'M'+(x+w/2-14)+','+(y-m)+' L'+(x+w/2)+','+(y-m-16)+' L'+(x+w/2+14)+','+(y-m),'class':'ink hair dim'},g);
+    el('path',{d:ST.circ(x+w/2,y-m-17,1.6),'class':'ink hair gold'},g);
+    /* mosazne svetylko nad obrazem */
+    el('path',{d:'M'+(x+w/2-12)+','+(y-m-5)+' h24 l-3,4 h-18 Z','class':'ink hair gold t1'},g);
+    var gl=el('path',{d:'M'+x+','+(y+h*.55)+' L'+(x+w*.45)+','+y+' L'+(x+w*.62)+','+y+' L'+x+','+(y+h*.75)+'Z',fill:'#FFF6DF',opacity:.06},g);P.gl=gl;
+  });
+  ST.on(function(T){var gc=ST.galCam,k=gc?0:photoZoom(T);GAL.forEach(function(P,i){var o=i===0?.06*(1-k):.06;if(gc&&(i===gc.a||i===gc.b)){var e=i===gc.a?1-gc.k:gc.k;o=.06*(1-ss(.6,1,e))}if(P.gl._o!==o){P.gl._o=o;P.gl.setAttribute('opacity',o.toFixed(3))}})});
   buildUI();
   size();T=Tt=ST.debug.T!=null?ST.debug.T:targetT();
   addEventListener('resize',size);
@@ -327,6 +341,12 @@ function updateCam(time){
     var b0x=(Ax-cam.x)*cam.s,b0y=(Ay-cam.y)*cam.s,b1x=hox+rw/2-vw/2,b1y=hoy+rh/2-vh/2;
     var ez=pz*pz*(3-2*pz),sZ=cam.s*Math.pow(sP/cam.s,ez);
     cam.x=Ax-lerp(b0x,b1x,ez)/sZ;cam.y=Ay-lerp(b0y,b1y,ez)/sZ;cam.s=sZ;
+  }
+  var gc=ST.galCam;
+  if(gc){var A=GAL[gc.a],B=GAL[gc.b],ca=camFor(A,gc.ra),cb=camFor(B,gc.rb),e=gc.k*gc.k*(3-2*gc.k);
+    var dx=Math.abs((A.x+A.w/2)-(B.x+B.w/2)),sOut=Math.min(vw/Math.max(520,dx+460),vh/520),bb=Math.pow(Math.sin(Math.PI*e),.75);
+    cam.s=Math.exp(lerp(Math.log(ca.s),Math.log(cb.s),e)*(1-bb)+Math.log(sOut)*bb);
+    var w=ss(.12,.88,e);cam.x=lerp(ca.x,cb.x,w);cam.y=lerp(ca.y,cb.y,w)+(1-Math.abs(2*e-1))*0;
   }
   if(ST.debug.cam){var dc=ST.debug.cam;cam.x=dc[0];cam.y=dc[1];cam.s=Math.min(vw/dc[2],vh/dc[3])}
   else if(!reduce){cam.x+=Math.sin(time*.00031)*2.2;cam.y+=Math.cos(time*.00027)*1.6}
@@ -397,9 +417,17 @@ function render(time){
   /* konec: scena se rozplyne do navazujici fotky andela */
   if(ST.hasHero){
     var ov=1-ss(13.25,13.85,T);['grain','vig','ffade'].forEach(function(k){if(!ST._ov)ST._ov={grain:$('grain'),vig:story.querySelector('.vignette'),ffade:story.querySelector('.floorfade')};ST._ov[k].style.opacity=k==='grain'?(.07*ov):ov});
-    var lf=1-ss(.55,.92,cam.pz||0);['front','fore','fig','light'].forEach(function(n){var e=$('L-'+n);if(e&&e._o!==lf){e._o=lf;e.style.opacity=lf}});
-    var sh=$('stShade');if(sh)sh.style.opacity=ss(13.5,14,T).toFixed(3);
-    var gone=Tt>=ST.N-.004,sg=$('stage');sg.style.opacity=gone?0:1;sg.style.pointerEvents=gone?'none':'';
+    var lf=ST.galCam?1:1-ss(.55,.92,cam.pz||0);['front','fore','fig','light'].forEach(function(n){var e=$('L-'+n);if(e&&e._o!==lf){e._o=lf;e.style.opacity=lf}});
+    var sh=$('stShade');if(sh&&!ST.galCam)sh.style.opacity=ss(13.5,14,T).toFixed(3);
+    var gone=Tt>=ST.N-.004,sg=$('stage'),gm=!!ST.galCam&&gone;
+    if(gm!==ST._gm){ST._gm=gm;sg.classList.toggle('gal',gm)}
+    sg.style.opacity=gone&&!gm?0:1;sg.style.pointerEvents=gone?'none':'';
+    var ve=$('stVeil');
+    if(gm){var gk=ST.galCam,out=1-ss(0,.35,gk.k),inn=ss(.65,1,gk.k);
+      /* stin na koncich letu odpovida filmu: andel ma .sc-shade (35 %), ostatni zabery .sc-veil */
+      $('stShade').style.opacity=(gk.a===0?.35*out:0).toFixed(3);
+      ve.style.opacity=Math.max(gk.a===0?0:out,inn).toFixed(3);
+    }else if(ve&&ve.style.opacity!=='0')ve.style.opacity='0';
     document.body.classList.toggle('in-story',Tt<ST.N-.01);
     $('steps').style.opacity=(1-ss(12.3,12.6,T)*.75)*(1-ss(12.9,13.2,T));
   }
