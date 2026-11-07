@@ -13,6 +13,7 @@
 - **Konec a anděl:** `ST.N = 14`. Na zdi studia visí zarámovaná fotka anděla (`ST.photo`, x 3198, y 298, 72×108). T 13,15–14 kamera najede do fotky tak, že na konci sedí přesně tam, kde ji ukazuje film `#hero` (scrolly.js). Pak scéna zmizí (podle skutečného scrollu `Tt`). Texty u anděla (`.sc-intro`, „Umění, které nosíte s sebou“) teď po najetí nabíhají (`scrolly.js`, `afterStory`), verze `?v=15`.
 - **Hudba:** zvuk je výchozí zapnutý; spustí se při prvním doteku, kliknutí nebo klávese (prohlížeče bez gesta zvuk nepustí). V úvodu je výzva „Klepněte kamkoli a hraje hudba“. Vypnutí si stránka pamatuje.
 - **Čitelnost:** popisek kroku na tmavém panelu, podsvícený nadpis, tmavý pás pod lištou kroků a pod hlavičkou, kontrastnější bubliny.
+- **Galerie na zdi (7. 11. večer, Honziho nápad):** všech šest fotek filmu (anděl, já u práce, 4 styly) visí v rámech na zdi studia ( v ). Mezi záběry filmu kamera vyjede z fotky na zeď, přeletí k dalšímu rámu a vjede do něj. Film (, ,  = délka letu, funkce , , ) při letu volá ; scéna příběhu se na tu chvíli přepne na  () a překryje film. Na koncích letu sedí fotka přesně na pixel. Bez příběhu (samotný ) zůstávají staré přechody.
 - **Otevřené:** hlasy (volba pořád čeká na Honziho), plynulost na skutečném telefonu, jestli Honzi u anděla myslel i texty „O mně“ (ty jsou od 24. 9. u fotky z práce).
 
 ## Kanonické soubory (stav 6. 11.)
