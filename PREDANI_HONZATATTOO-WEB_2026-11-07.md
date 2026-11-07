@@ -1,6 +1,21 @@
-# PŘEDÁNÍ: honzatattoo.cz, web s příběhem na scroll / 2026-11-06
+# PŘEDÁNÍ: honzatattoo.cz, web s příběhem na scroll / 2026-11-07
 
-## Kanonické soubory
+
+## Novinky 7. 11. 2026 (verze 5) — čti první
+
+- **Větev:** práce je teď na `claude/beautiful-volta-qqu59n` (vychází z `pribeh-na-scroll`). Pull request zatím není.
+- **Náhled verze 5:** nový artefakt https://claude.ai/artifact/Ad3FTgi6YvGuDd8C9t3Z8q (starý odkaz z verze 4 zůstal beze změny). Publikace: `build_site.py <scratchpad>/site/index.html --artifact`, `<title>` na „Honza Tattoo · Příběh“, publikovat stejný soubor se soubory `img/*`.
+- **Nový modul `pribeh/doors.js`:** obě dveře (křídlo s panty, klikou a sklem, otočení kolem pantu, osvětlený otvor, světlo na chodník). `ST.doorOpen(i,T)`, `ST.doorHandle(i,T)`. Staré křídlo ve `studio.js` je odstraněné, cedule HONZA TATTOO je zvednutá nad hlavu.
+- **Průchod dveřmi:** klientka zastaví (x 750, T 1,9), sáhne na kliku, dveře se otevřou (T 1,98–2,24), projde, zavřou se za ní (2,52–2,86). Odchod: dojde k x 3372, klika, dveře 2 se otevřou (11,98–12,2), vyjde ven. Honza stojí na x 3296.
+- **Ruce v detailu (`close.js`, oddíl 4–6):** přepsané od základu: správné pořadí prstů (palec, ukazovák … malíček), články s klouby, nitrilový lesk, manžeta, tetované předloktí tatéra, pravá ruka drží strojek jako tužku (ukazovák nahoře, palec z boku, prostředník pod gripem, prsteník a malíček zatočené). Přibylo otírání ubrouskem (T 8,4; 8,78; 9,5) a film barvy kolem čerstvých linek.
+- **Postavy (`chars.js`):** stíny na zemi, opasek se sponou, kapsy a nýty na džínách, švy, zip a kapsa bundy, taška s klopnou, boty s očky a prošitím, bohatší tetování rukávů.
+- **Kulisy:** subagenti (Sonnet) dokreslili město (`street.js`, kočky odstraněné, opravené překryvy z mřížky) a studio (`studio.js`, lišák a lotos odstraněné).
+- **Konec a anděl:** `ST.N = 14`. Na zdi studia visí zarámovaná fotka anděla (`ST.photo`, x 3198, y 298, 72×108). T 13,15–14 kamera najede do fotky tak, že na konci sedí přesně tam, kde ji ukazuje film `#hero` (scrolly.js). Pak scéna zmizí (podle skutečného scrollu `Tt`). Texty u anděla (`.sc-intro`, „Umění, které nosíte s sebou“) teď po najetí nabíhají (`scrolly.js`, `afterStory`), verze `?v=15`.
+- **Hudba:** zvuk je výchozí zapnutý; spustí se při prvním doteku, kliknutí nebo klávese (prohlížeče bez gesta zvuk nepustí). V úvodu je výzva „Klepněte kamkoli a hraje hudba“. Vypnutí si stránka pamatuje.
+- **Čitelnost:** popisek kroku na tmavém panelu, podsvícený nadpis, tmavý pás pod lištou kroků a pod hlavičkou, kontrastnější bubliny.
+- **Otevřené:** hlasy (volba pořád čeká na Honziho), plynulost na skutečném telefonu, jestli Honzi u anděla myslel i texty „O mně“ (ty jsou od 24. 9. u fotky z práce).
+
+## Kanonické soubory (stav 6. 11.)
 
 Repozitář `honzahealing/honzatattoo.cz`, větev **`pribeh-na-scroll`**, poslední commit `42653c2` (6. 11. 2026). Pull request zatím není a `main` je beze změn. Velikosti platí pro commit `42653c2`.
 
