@@ -55,16 +55,12 @@ var ART={
        b:'M44,34 C48,44 52,44 56,34 M44,50 C46,70 44,84 40,92 M56,50 C54,70 56,84 60,92 M50,46 V92 M10,30 C20,34 28,44 32,60 M8,40 C16,46 24,56 28,68 M18,22 C24,30 30,40 36,52 M14,26 C20,30 24,36 28,44 M47,14 C45,18 46,22 48,24 M52,8 C56,10 57,14 55,17'},
  rose:{a:'M50,28 C36,28 28,40 32,52 C36,64 52,66 62,58 C72,48 68,32 56,28 C50,26 44,32 44,40 C44,46 50,48 54,44 C58,40 54,36 50,38 M32,52 C22,50 20,38 28,32 M62,58 C74,60 80,48 74,38 M38,62 C40,70 50,72 58,66 M50,66 C48,80 50,90 50,98 M50,82 C38,80 28,84 22,92 C34,94 46,90 50,82Z M50,76 C60,72 72,74 78,82 C68,86 56,84 50,76Z',
        b:'M34,44 C38,40 42,40 46,44 M56,40 C62,40 66,44 66,50 M40,56 C46,60 54,60 58,56 M30,36 C26,30 26,24 30,20 M50,90 L46,87 M50,86 L54,83 M30,88 C38,86 44,84 48,82'},
- lotus:{a:'M50,78 C62,66 62,40 50,24 C38,40 38,66 50,78Z M50,78 C68,76 84,62 86,40 C70,42 58,56 50,78Z M50,78 C32,76 16,62 14,40 C30,42 42,56 50,78Z M50,80 C70,86 92,78 98,60 C80,60 62,68 50,80Z M50,80 C30,86 8,78 2,60 C20,60 38,68 50,80Z',
-        b:'M50,72 L50,38 M52,74 C60,64 72,54 78,48 M48,74 C40,64 28,54 22,48 M54,80 C66,76 82,70 90,64 M46,80 C34,76 18,70 10,64 M10,90 Q30,84 50,90 Q70,96 90,90 M26,97 Q50,92 74,97'},
  peony:{a:'M20,56 C14,40 28,26 40,32 C42,22 58,22 60,32 C72,26 88,40 80,56 C92,64 82,82 66,78 C60,88 40,88 34,78 C18,82 8,64 20,56Z M30,56 C28,46 36,38 44,42 C48,34 58,36 58,42 C66,40 72,50 68,58 C74,66 64,74 56,70 C50,76 40,74 38,68 C30,70 24,62 30,56Z M42,56 C40,50 46,46 50,50 C56,46 62,52 58,58 C60,64 52,66 48,62 C42,64 38,60 42,56Z',
         b:'M48,56 C48,52 54,52 54,56 C54,60 48,60 47,55 M50,84 C40,92 24,92 14,86 C26,80 40,80 50,84Z M50,84 C60,92 76,92 86,86 C74,80 60,80 50,84Z M50,86 L50,99 M40,86 C32,86 26,88 22,88 M60,86 C68,86 74,88 78,88 M26,50 C28,44 32,40 36,38 M74,50 C72,44 68,40 64,38'},
  moon:{a:'M62,14 C34,16 18,40 26,64 C34,88 66,94 86,78 C62,80 46,64 50,44 C52,30 56,20 62,14Z',
         b:star4(78,30,7)+' '+star4(20,20,5)+' '+star4(86,58,4)+' '+cir(72,52,1.3)+' '+cir(14,50,1.1)+' M58,22 C40,26 30,44 36,62 C42,78 58,84 74,78 M10,88 Q18,80 28,86 Q36,78 46,86 Q54,84 62,90 L10,90'},
  wave:{a:'M4,76 C12,52 28,34 48,30 C64,27 76,34 78,46 C72,42 64,44 62,52 C70,50 76,56 72,64 C66,60 58,62 56,70 M44,30 C42,24 46,18 52,18 C56,18 58,22 56,26',
         b:cir(60,24,1.5)+' '+cir(68,19,1.1)+' '+cir(72,28,1.3)+' M0,86 Q12,80 24,86 Q36,92 48,86 Q60,80 72,86 Q84,92 96,86 M0,94 Q12,88 24,94 Q36,100 48,94 Q60,88 72,94 Q84,100 96,94 M16,68 C22,54 34,44 48,41 M26,72 C30,62 38,54 50,52 M38,76 C42,68 48,62 56,60'},
- fox:{a:'M50,88 L20,58 L12,16 L38,32 C46,30 54,30 62,32 L88,16 L80,58 Z',
-        b:'M20,26 L32,36 L24,48Z M80,26 L68,36 L76,48Z M34,58 Q38,54 44,59 M66,58 Q62,54 56,59 M45,74 L55,74 L50,81Z M50,81 L50,86 M22,60 L38,72 L50,86 M78,60 L62,72 L50,86 M50,34 L50,48 M44,36 L47,46 M56,36 L53,46'},
  colibri:{a:'M22,40 C24,34 32,32 36,36 C46,40 58,50 66,64 L76,84 L68,80 L62,88 L58,76 C48,66 36,58 30,50 C26,46 22,44 22,40Z M40,40 C48,24 66,14 88,12 C80,22 70,34 56,48Z',
         b:'M22,39 L4,34 M52,38 C62,28 72,20 82,16 M48,44 C60,36 70,28 80,24 M58,46 C66,40 74,34 84,30 '+cir(28,38,1.6)+' M8,66 C14,60 22,62 24,70 C20,76 12,76 8,72Z M16,72 C20,80 22,88 20,96 M16,84 C10,84 6,88 4,92'},
  swallow:{a:'M14,52 C24,46 40,44 56,46 C64,47 70,46 76,42 C80,48 72,54 60,54 C46,56 32,56 14,52Z M50,46 C46,30 38,16 22,8 C34,22 44,34 60,44Z M52,54 C46,66 40,76 28,84 C44,76 56,66 64,54Z M30,50 L4,64 L24,56 L8,74 L32,54',
@@ -72,6 +68,17 @@ var ART={
  sprig:{a:'M50,92 C50,60 52,30 50,8 M50,70 C34,66 26,56 24,44 C38,48 46,58 50,70Z M50,56 C66,52 74,42 76,30 C62,34 54,44 50,56Z M50,38 C40,34 36,26 36,18 C44,22 48,28 50,38Z M50,26 C58,22 62,16 62,10 C56,14 52,18 50,26Z',b:'M50,70 L30,52 M50,56 L70,38 M50,38 L40,24'}
 };
 ART.archangel.a+=' '+X('M44,30 C28,14 10,16 4,34 C8,52 20,66 30,76 C34,60 38,44 44,30Z',50,50,1,0,-1);ART.archangel.b+=' '+X('M10,30 C20,34 28,44 32,60 M8,40 C16,46 24,56 28,68 M18,22 C24,30 30,40 36,52 M14,26 C20,30 24,36 28,44',50,50,1,0,-1);ART.feather=featherArt();ART.daisy=daisyArt();
+(function(){
+  var w1='M50,46 C60,24 84,12 90,26 C95,40 78,52 50,52Z M50,54 C70,54 86,64 80,80 C74,90 58,82 50,60Z',w2='M52,48 C62,34 76,26 86,27 M52,50 C64,46 76,42 88,34 M52,58 C64,60 72,66 76,76 M52,56 C60,62 64,72 62,80';
+  ART.butterfly={a:w1+' '+X(w1,50,50,1,0,-1)+' M48,40 C48,36 52,36 52,40 L52,76 C52,80 48,80 48,76Z',
+    b:w2+' '+X(w2,50,50,1,0,-1)+' M49,38 C46,28 40,22 34,20 M51,38 C54,28 60,22 66,20 '+cir(34,20,1.6)+' '+cir(66,20,1.6)+' '+cir(76,34,3)+' '+cir(24,34,3)+' '+cir(70,72,2)+' '+cir(30,72,2)};
+  ART.fish={a:'M10,50 C24,28 54,26 74,48 C58,72 26,72 10,50Z M72,48 L94,30 C88,44 88,54 94,68 L72,52 M38,34 C42,22 54,22 60,32 M42,66 C46,76 54,76 58,66',
+    b:cir(24,46,2.2)+' M32,40 C27,47 27,55 32,62 M44,42 q5,5 0,10 M52,42 q5,5 0,10 M60,43 q4,5 0,9 M40,52 q5,5 0,9 M48,56 q5,4 0,8 M80,44 L90,38 M80,52 L90,58 M2,86 Q12,80 22,86 Q32,92 42,86 Q52,80 62,86 Q72,92 82,86 Q90,82 98,86 M10,94 Q20,88 30,94 Q40,100 50,94'};
+  var sa=[],sb=[],i;for(i=0;i<12;i++){var an=i*PI/6,a1=an-.17,a2=an+.17,am=an+PI/12;sa.push('M'+n1(50+cos(a1)*22)+','+n1(50+sin(a1)*22)+' L'+n1(50+cos(an)*40)+','+n1(50+sin(an)*40)+' L'+n1(50+cos(a2)*22)+','+n1(50+sin(a2)*22)+'Z');sb.push('M'+n1(50+cos(am)*24)+','+n1(50+sin(am)*24)+' Q'+n1(50+cos(am+.12)*32)+','+n1(50+sin(am+.12)*32)+' '+n1(50+cos(am)*38)+','+n1(50+sin(am)*38))}
+  ART.sun={a:cir(50,50,16)+' '+sa.join(' '),b:cir(50,50,11)+' '+cir(50,50,6)+' '+sb.join(' ')};
+  ART.tulip={a:'M34,28 C34,50 40,62 50,64 C60,62 66,50 66,28 C60,38 56,32 50,24 C44,32 40,38 34,28Z M50,64 V98 M50,90 C36,86 26,74 24,60 C38,64 48,76 50,90Z M50,84 C62,82 72,72 76,60 C62,62 52,72 50,84Z',
+    b:'M50,26 V58 M42,34 C42,46 46,56 50,62 M58,34 C58,46 54,56 50,62 M36,34 C37,46 42,56 48,62 M64,34 C63,46 58,56 52,62 M36,70 C40,74 44,80 46,86 M64,68 C60,72 56,76 54,80 M6,96 H94'};
+})();
 function art(g,nm,cx,cy,s,rot,fx,a,b,c1,c2){var A=ART[nm];D(g,X(A.a,cx,cy,s,rot,fx),c1||'thin',a,b);if(A.b)D(g,X(A.b,cx,cy,s,rot,fx),c2||'hair',a,b)}
 /* zarameovany obrazek: x,y,w,h = vnejsi rozmer */
 function frame(g,x,y,w,h,nm,a,b,o){o=o||{};var s=Math.min(w-18,h-18)/100;
@@ -79,7 +86,11 @@ function frame(g,x,y,w,h,nm,a,b,o){o=o||{};var s=Math.min(w-18,h-18)/100;
   if(o.paper!==false)D(g,R(x+8,y+8,w-16,h-16),'hair t2',a,b);
   art(g,nm,x+w/2,y+h/2,s*.92,o.rot||0,o.fx||1,a,b);
   D(g,'M'+(x+w*.2)+','+(y+h-8)+' L'+(x+w*.55)+','+(y+8)+' M'+(x+w*.34)+','+(y+h-8)+' L'+(x+w*.7)+','+(y+8),'hair faint',a,b);
-  D(g,'M'+(x+w/2-w*.16)+','+y+' L'+(x+w/2)+','+(y-9)+' L'+(x+w/2+w*.16)+','+y,'hair dim',a,b)}
+  D(g,'M'+(x+w/2-w*.16)+','+y+' L'+(x+w/2)+','+(y-9)+' L'+(x+w/2+w*.16)+','+y,'hair dim',a,b);
+  /* sklo: vnitrni stin pod paspartou, nitovani rohu, hrebik, odlesk */
+  FILL(g,'M'+(x+4)+','+(y+4)+' h'+(w-8)+' v4 h'+(8-w)+'Z M'+(x+4)+','+(y+8)+' h4 v'+(h-16)+' h-4Z','hair',a,b,{fill:HF});
+  D(g,'M'+x+','+y+' L'+(x+4)+','+(y+4)+' M'+(x+w)+','+y+' L'+(x+w-4)+','+(y+4)+' M'+x+','+(y+h)+' L'+(x+4)+','+(y+h-4)+' M'+(x+w)+','+(y+h)+' L'+(x+w-4)+','+(y+h-4),'hair dim',a,b);
+  D(g,cir(x+w/2,y-9.5,1.1)+' M'+(x+w*.7)+','+(y+6)+' L'+(x+w*.42)+','+(y+h*.3)+' M'+(x+w*.8)+','+(y+6)+' L'+(x+w*.56)+','+(y+h*.28),'hair',a,b)}
 
 /* ---------- sekce a vrstvy ---------- */
 var RX=[[600,1300],[1300,2040],[2040,2600],[2600,3640]],SEC={};
@@ -101,6 +112,12 @@ function bricks(g,x0,y0,x1,y1,seed,jag,a,b){
       d.push(s);if(r()<.28)d2.push(s)}}
   D(g,d.join(''),'hair dim t2',a,b);
   FILL(g,d2.join(''),'hair',a,b,{fill:HF});
+  /* hrana omitky (tloustka), stin, odpadle drobky */
+  var Lp=[],Rp=[],cr=rng(seed+9),cb=[];
+  for(row=0;row<rows;row++){var yy2=y0+row*bh,rr2=rng(seed*7+row);Lp.push((row?'L':'M')+n1(x0+rr2()*jag*.9)+','+n1(yy2));Rp.push((row?'L':'M')+n1(x1-rr2()*jag*.9)+','+n1(yy2))}
+  D(g,Lp.join(' ')+' '+Rp.join(' '),'thin dim',a,b);
+  for(x=0;x<7;x++)cb.push(ell(x0+cr()*(x1-x0),y1-2-cr()*5,2+cr()*3,1+cr()*1.2));
+  D(g,cb.join(' '),'hair dim',a,b);
 }
 
 /* ---------- plaste ---------- */
@@ -109,7 +126,7 @@ function floorBoards(g,fa,fb,a,b){
   d.push('M'+fa+',707 H'+fb+' M'+fa+',714 H'+fb);
   for(r=0;r<3;r++){var rg=rng(31+r*7),yy=[700,707,714,722][r],yh=[700,707,714,722][r+1];
     for(x=800+rg()*160;x<3520;x+=140+rg()*110){if(x>fa&&x<fb){d.push('M'+n1(x)+','+yy+' V'+yh);nl.push(cir(x-2.5,yy+2,.55),cir(x+2.5,yh-2,.55))}}
-    var rk=rng(77+r);for(x=820+rk()*260;x<3520;x+=300+rk()*380){if(x>fa&&x<fb){var ky=(yy+yh)/2;kn.push(ell(x,ky,3.4,1.7),ell(x,ky,1.7,.8))}}
+    var rk=rng(77+r);for(x=820+rk()*260;x<3520;x+=300+rk()*380){if(x>fa&&x<fb){var ky=(yy+yh)/2;kn.push(ell(x,ky,3.4,1.7),ell(x,ky,1.7,.8),ell(x,ky,5.8,2.5),'M'+n1(x-24)+','+n1(ky+1)+' Q'+n1(x-10)+','+n1(ky-3.2)+' '+n1(x-6)+','+n1(ky-.4)+' M'+n1(x+6)+','+n1(ky+.4)+' Q'+n1(x+10)+','+n1(ky+3.2)+' '+n1(x+24)+','+n1(ky-1))}}
     var rw=rng(5+r*3+Math.floor(fa));gr.push(ST.wline(fa,fb,(yy+yh)/2,.5,22,rw))}
   D(g,d.join(' '),'hair dim',a,b);D(g,kn.join(' '),'hair dim',a,b);D(g,gr.join(' '),'hair faint',a,b);D(g,nl.join(' '),'hair dim',a,b);
   D(g,'M'+fa+',722 H'+fb,'ink',a,b);
@@ -198,7 +215,7 @@ function shellPart(i,a,b,z0,z1){
     d=[];for(x=Math.ceil(wa/14)*14;x<wb;x+=14)d.push('M'+x+',244 v6');
     D(g,'M'+wa+',256 H'+wb+' M'+wa+',251 H'+wb,'thin',.1,.9);D(g,d.join(' '),'hair',.1,.9);
     /* praskliny a skvrny na omitce */
-    var rc=rng(Math.floor(wa)+3),cr=[];for(var k=0;k<4;k++){var cx0=wa+rc()*(wb-wa),cy0=270+rc()*150,p='M'+n1(cx0)+','+n1(cy0);
+    var rc=rng(Math.floor(wa)+3),cr=[];for(var k=0;k<4;k++){var cx0=wa+rc()*(wb-wa),cy0=270+rc()*150;if(cx0>3090&&cx0<3380)cx0=wa+(cx0-wa)*.45;var p='M'+n1(cx0)+','+n1(cy0);
       for(var j=0;j<5;j++){cx0+=(rc()-.4)*14;cy0+=6+rc()*12;p+=' L'+n1(cx0)+','+n1(cy0)}cr.push(p)}
     D(g,cr.join(' '),'hair dim',.2,1);
     /* odhalene cihly */
@@ -277,20 +294,21 @@ function facade(){
   /* obklad dveri */
   D(g,'M790,360 V700','thin',.3,.8);D(g,'M794,338 V700','hair',.3,.8);
   /* zelezna konzola a stit */
-  D(g,'M800,424 H696','ink',.3,.8);D(g,'M798,455 C782,452 764,442 752,426','thin',.4,.9);
-  D(g,'M772,424 C772,412 758,410 758,420 C758,428 766,428 766,422','thin',.4,.9);
-  D(g,'M730,424 C730,416 722,414 722,420 C722,425 727,425 727,421','hair',.4,.9);
-  D(g,cir(692,424,3.4),'thin gold t1',.5,.9);D(g,'M696,424 V438 M786,424 V438','thin',.5,.9);D(g,cir(696,431,1.4)+cir(786,431,1.4),'hair',.5,.9);
-  D(g,R(684,438,112,42,7),'ink solid',.4,1);D(g,R(689,443,102,32,4),'thin gold',.5,1);
-  D(g,cir(692,441,1.4)+cir(788,441,1.4)+cir(692,477,1.4)+cir(788,477,1.4),'hair gold',.6,1);
-  TX(g,'HONZA',740,461,17,'label',.6,1,1,{'letter-spacing':2});TX(g,'TATTOO',740,472.5,8.6,'label',.65,1,1,{'letter-spacing':4.2});
-  FO(g,star4(699,469,3.4),'f-gold',.9,.7,1);FO(g,star4(781,469,3.4),'f-gold',.9,.7,1);
+  var gS=G(g,'translate(0,-100)'),gN=G(g,'translate(0,112)');
+  D(gS,'M800,424 H696','ink',.3,.8);D(gS,'M798,455 C782,452 764,442 752,426','thin',.4,.9);
+  D(gS,'M772,424 C772,412 758,410 758,420 C758,428 766,428 766,422','thin',.4,.9);
+  D(gS,'M730,424 C730,416 722,414 722,420 C722,425 727,425 727,421','hair',.4,.9);
+  D(gS,cir(692,424,3.4),'thin gold t1',.5,.9);D(gS,'M696,424 V438 M786,424 V438','thin',.5,.9);D(gS,cir(696,431,1.4)+cir(786,431,1.4),'hair',.5,.9);
+  D(gS,R(684,438,112,42,7),'ink solid',.4,1);D(gS,R(689,443,102,32,4),'thin gold',.5,1);
+  D(gS,cir(692,441,1.4)+cir(788,441,1.4)+cir(692,477,1.4)+cir(788,477,1.4),'hair gold',.6,1);
+  TX(gS,'HONZA',740,461,17,'label',.6,1,1,{'letter-spacing':2});TX(gS,'TATTOO',740,472.5,8.6,'label',.65,1,1,{'letter-spacing':4.2});
+  FO(gS,star4(699,469,3.4),'f-gold',.9,.7,1);FO(gS,star4(781,469,3.4),'f-gold',.9,.7,1);
   /* tabulky */
   D(g,R(727,257,66,24,3),'ink t2',.5,1);D(g,R(730,260,60,18,2),'hair goldl',.5,1);
   D(g,cir(731,262,1)+cir(789,262,1)+cir(731,276,1)+cir(789,276,1),'hair goldl',.6,1);
   TX(g,'PRAHA 3',760,267,4.4,'f-goldl',.6,1,.8);TX(g,'TÁBORITSKÁ',760,275.5,8.2,'f-goldl',.6,1,1,{'letter-spacing':.5});
-  D(g,R(738,292,30,22,3),'thin t2 goldl',.5,1);D(g,R(742,296,22,14,2),'hair goldl',.6,1);TX(g,'1284',753,306.6,8.6,'f-goldl',.6,1,1);
-  D(g,R(772,297,20,16,2),'thin t3 gold',.5,1);TX(g,'17',782,308.6,8.6,'f-gold',.6,1,1);
+  D(gN,R(738,292,30,22,3),'thin t2 goldl',.5,1);D(gN,R(742,296,22,14,2),'hair goldl',.6,1);TX(gN,'1284',753,306.6,8.6,'f-goldl',.6,1,1);
+  D(gN,R(772,297,20,16,2),'thin t3 gold',.5,1);TX(gN,'17',782,308.6,8.6,'f-gold',.6,1,1);
   /* zvonek */
   D(g,R(773,516,20,48,3),'thin solid gold',.6,1);d=[];for(k=0;k<3;k++)d.push(cir(783,527+k*14,2.6));
   D(g,d.join(' '),'thin gold',.7,1);d=[];for(k=0;k<3;k++)d.push('M776,'+(532+k*14)+' h14');D(g,d.join(' '),'hair',.7,1);
@@ -301,8 +319,8 @@ function facade(){
   var gw=el('path',{d:cir(782,396,52),fill:'url(#gGlow)'},gl),tw=tt(.6,1);ST.fade(gw,tw[0],tw[1],.8);ST.on(function(T,time,cam){if(cam.x0<900&&cam.x1>600)gw.setAttribute('opacity',(.55+(ST.reduce?0:.1*sin(time*.0017))).toFixed(3)*ss(1.1,1.7,T))});
   /* svod dverí a dvere 1 */
   doorWall(0);
-  var gr=sec('room',0),gD=G(gr);doorLeaf(gD,0,false);
-  ST.on(function(T,time,cam){if(cam.x0>1100||cam.x1<700)return;var o=ss(1.95,2.2,T)*(1-ss(2.5,2.8,T));gD.setAttribute('transform','translate(887,0) scale('+(1-.85*o).toFixed(3)+',1) translate(-887,0)')});
+  /* kridlo dveri 1 kresli modul doors.js */
+
 }
 facade();
 
@@ -317,8 +335,8 @@ function rightFacade(){
   D(g,'M3510,372 H3524 Q3530,372 3530,378','thin',.5,1);D(g,'M3522,382 L3542,382 L3539,408 L3525,408Z','thin t1',.6,1);D(g,'M3520,382 L3532,371 L3544,382Z','thin t3',.6,1);D(g,'M3532,382 V408','hair gold',.7,1);
   var gw=el('path',{d:cir(3532,396,50),fill:'url(#gGlow)'},gl),tw=tt(.6,1);ST.fade(gw,tw[0],tw[1],.7);
   doorWall(2620);
-  var gD=G(sec('room',3));doorLeaf(gD,2620,true);
-  ST.on(function(T,time,cam){if(cam.x0>3600||cam.x1<3300)return;var o=ss(11.75,11.95,T);gD.setAttribute('transform','translate(3507,0) scale('+(1-.85*o).toFixed(3)+',1) translate(-3507,0)')});
+  /* kridlo dveri 2 kresli modul doors.js */
+
 }
 rightFacade();
 
@@ -372,14 +390,20 @@ function potos(g,x,y,A,B,id){
 }
 
 /* ---------- lustr, zavesna svetla ---------- */
-function pendant(x,yb,A,B){
+function pendant(x,yb,A,B,gr){gr=gr||76;
   var g0=secAt('room',x),gl=secAt('light',x),g=sway(G(g0),x,240,1.1,.0008,x);zx(x);
   D(g,'M'+x+',240 V'+(yb-26),'thin',A,B);D(g,R(x-3.5,yb-28,7,6,1),'thin gold',A,B);D(g,R(x-12,238,24,4,1),'thin t3',A,B);
   D(g,'M'+(x-20)+','+yb+' C'+(x-20)+','+(yb-12)+' '+(x-10)+','+(yb-22)+' '+x+','+(yb-24)+' C'+(x+10)+','+(yb-22)+' '+(x+20)+','+(yb-12)+' '+(x+20)+','+yb+'Z','ink t3',A,B);
   D(g,'M'+(x-8)+','+(yb-22)+' Q'+(x-12)+','+(yb-8)+' '+(x-13)+','+yb+' M'+x+','+(yb-24)+' V'+yb+' M'+(x+8)+','+(yb-22)+' Q'+(x+12)+','+(yb-8)+' '+(x+13)+','+yb,'hair',A,B);
   D(g,ell(x,yb,20,3.2),'thin',A,B);
+  /* detail: stropni rozeta, kroucena snura, zebra, odlesk, stin, zarovka s vlaknem */
+  D(g,'M'+(x-9)+',238 Q'+x+',231 '+(x+9)+',238 M'+(x-5)+',234.5 H'+(x+5),'hair',A,B);
+  var tw=[],ty;for(ty=246;ty<yb-32;ty+=5)tw.push('M'+n1(x-1.6)+','+ty+' l3.2,2.6');D(g,tw.join(' '),'hair dim',A,B);
+  D(g,'M'+(x-14)+','+(yb-5)+' Q'+(x-12)+','+(yb-15)+' '+(x-4)+','+(yb-21)+' M'+(x-17)+','+(yb-2)+' Q'+(x-16)+','+(yb-6)+' '+(x-15)+','+(yb-8)+' '+ell(x,yb,17,2.2),'hair',A,B);
+  FILL(g,'M'+(x+4)+','+(yb-23)+' C'+(x+12)+','+(yb-21)+' '+(x+20)+','+(yb-12)+' '+(x+20)+','+yb+' H'+(x+4)+'Z','hair',A,B,{fill:HF});
+  D(g,'M'+(x-3)+','+(yb+1)+' C'+(x-6)+','+(yb+5)+' '+(x-3.5)+','+(yb+9)+' '+x+','+(yb+9)+' C'+(x+3.5)+','+(yb+9)+' '+(x+6)+','+(yb+5)+' '+(x+3)+','+(yb+1)+'M'+(x-1.6)+','+(yb+3)+' l1.1,2.4 l1,-2.4 l1.1,2.4','hair',A,B);
   FO(g,cir(x,yb+4,4),'f-goldl',.95,A,B);
-  var gw=sway(el('path',{d:cir(x,yb+6,76),fill:'url(#gGlow)'},gl),x,240,1.1,.0008,x),t=tt(A,B);ST.fade(gw,t[0],t[1],.6);
+  var gw=sway(el('path',{d:cir(x,yb+6,gr),fill:'url(#gGlow)'},gl),x,240,1.1,.0008,x),t=tt(A,B);ST.fade(gw,t[0],t[1],.6);
   return gw;
 }
 
@@ -393,16 +417,16 @@ function entryZone(){
   d=[];[985,1008,1242,1262].forEach(function(f){d.push(R(f,672,12,28,4))});
   D(g,d.join(''),'thin t3',.05,.25);D(g,'M985,682 h12 M1008,682 h12 M1242,682 h12 M1262,682 h12 M985,692 h12 M1262,692 h12','hair',.05,.25);
   D(g,R(1013,634,224,40,4),'ink t3',.05,.3);
-  d=[];for(k=1019;k<1232;k+=14)d.push('M'+k+',640 Q'+(k+3)+',656 '+k+',672');D(g,d.join(' '),'hair',.1,.3);
-  d=[];for(k=1020;k<1232;k+=9){d.push(cir(k,638,1),cir(k,670,1))}D(g,d.join(' '),'hair gold',.1,.3);
+  d=[];for(k=1019;k<1232;k+=14)d.push('M'+k+',640 Q'+(k+3)+',656 '+k+',672');D(g,d.join(' '),'hair dim',.1,.3);
+  d=[];for(k=1020;k<1232;k+=9){d.push(cir(k,638,1),cir(k,670,1))}D(g,d.join(' '),'hair gold dim',.1,.3);
   D(g,R(1001,544,248,66,16),'ink t3',.1,.4);
   /* prosiv zad */
   var bt=[],ln=[],c0=[],c1=[];for(k=0;k<8;k++)c0.push(1019+30*k);for(k=0;k<7;k++)c1.push(1034+30*k);
   c0.forEach(function(x,i){bt.push(cir(x,562,1.8));ln.push('M'+x+',562 Q'+(x+8)+',576 '+(x+15)+',586');if(i>0)ln.push('M'+x+',562 Q'+(x-8)+',576 '+(x-15)+',586');
     ln.push('M'+x+',562 L'+(x+(i<7?15:-15))+',548 M'+x+',562 L'+(x-(i>0?15:-15))+',548')});
   c1.forEach(function(x){bt.push(cir(x,586,1.8));ln.push('M'+x+',586 L'+(x+15)+',604 M'+x+',586 L'+(x-15)+',604')});
-  D(g,ln.join(' '),'hair',.15,.45);D(g,bt.join(' '),'thin t1',.2,.45);
-  D(g,'M1017,548 Q1125,543 1233,548','hair',.15,.4);
+  D(g,ln.join(' '),'hair dim',.15,.45);D(g,bt.join(' '),'hair t1',.2,.45);
+  D(g,'M1017,548 Q1125,543 1233,548','hair dim',.15,.4);
   /* sedak */
   D(g,R(1013,606,112,30,8),'ink t3',.15,.45);D(g,R(1125,606,112,30,8),'ink t3',.15,.45);
   D(g,'M1019,611 H1119 M1131,611 H1231','hair',.2,.45);
@@ -469,22 +493,49 @@ entryZone();
 
 /* ---------- knihy, lahvicky ---------- */
 function books(g,x0,x1,yb,seed,hmin,hmax,A,B){
-  var r=rng(seed),x=x0,b=[[],[],[]],bands=[],gold=[];
+  var r=rng(seed),x=x0,b=[[],[],[]],bands=[],gold=[],lean=[],lab=[],ttl=[],shade=[],dots=[];
   while(x<x1-5){var w=5+r()*8,h=hmin+r()*(hmax-hmin);if(x+w>x1)w=x1-x;
+    var kd=r();
+    if(kd<.08&&x+w+h*.3<x1-2){var sk=h*.3,h2=h*.92;
+      lean.push('M'+n1(x)+','+yb+' H'+n1(x+w)+' L'+n1(x+w+sk)+','+n1(yb-h2)+' H'+n1(x+sk)+'Z');bands.push('M'+n1(x+sk*.8)+','+n1(yb-h2*.8)+' L'+n1(x+w+sk*.8)+','+n1(yb-h2*.8));
+      x+=w+sk*.9+1;continue}
     b[Math.floor(r()*3)].push(rr(n1(x),n1(yb-h),n1(w),n1(h)));
-    if(r()<.5)bands.push('M'+n1(x)+','+n1(yb-h+4)+' h'+n1(w)+' M'+n1(x)+','+n1(yb-4-r()*4)+' h'+n1(w));
+    if(r()<.55)bands.push('M'+n1(x)+','+n1(yb-h+4)+' h'+n1(w)+' M'+n1(x)+','+n1(yb-4-r()*4)+' h'+n1(w));
     if(r()<.3)gold.push('M'+n1(x+1.5)+','+n1(yb-h*.55)+' h'+n1(w-3));
+    if(r()<.34)lab.push(rr(n1(x+1.3),n1(yb-h*.84),n1(w-2.6),n1(h*.2)));
+    if(r()<.55){var ty=yb-h*.6,xm=x+w/2,tl=[],k2=0;while(ty<yb-6&&k2<4){var ll=1.5+r()*5;tl.push('M'+n1(xm)+','+n1(ty)+' v'+n1(ll));ty+=ll+1.8;k2++}ttl.push(tl.join(' '))}
+    shade.push(rr(n1(x+w-2),n1(yb-h),2,n1(h)));
+    if(r()<.12)dots.push(cir(x+w/2,yb-h+8,1));
     x+=w+(r()<.1?3+r()*9:0)}
-  D(g,b[0].join(''),'hair t1',A,B);D(g,b[1].join(''),'hair t2',A,B);D(g,b[2].join(''),'hair t3',A,B);D(g,bands.join(' '),'hair',A,B);D(g,gold.join(' '),'hair gold',A,B);
+  D(g,b[0].join(''),'hair t1',A,B);D(g,b[1].join(''),'hair t2',A,B);D(g,b[2].join(''),'hair t3',A,B);
+  if(lean.length)D(g,lean.join(''),'hair t3',A,B);
+  FILL(g,shade.join(''),'hair',A,B,{fill:HF});
+  D(g,bands.join(' '),'hair',A,B);D(g,gold.join(' ')+' '+dots.join(' '),'hair gold',A,B);D(g,lab.join(''),'hair dim',A,B);D(g,ttl.join(' '),'hair dim',A,B);
 }
-function bottles(g,x0,x1,yb,seed,A,B){
-  var r=rng(seed),x=x0,pl=[],gd=[],lb=[],cap=[],lq=[];
-  while(x<x1-6){var w=8+r()*8,h=18+r()*22;if(x+w>x1)break;
+function bottles(g,x0,x1,yb,seed,A,B,hs){hs=hs||1;
+  var r=rng(seed),x=x0,pl=[],gd=[],lb=[],cap=[],lq=[],gl=[],tk=[];
+  while(x<x1-6){var w=8+r()*8,h=(18+r()*22)*hs;if(x+w>x1)break;
     var d='M'+n1(x)+','+yb+' V'+n1(yb-h*.62)+' Q'+n1(x)+','+n1(yb-h*.7)+' '+n1(x+w*.32)+','+n1(yb-h*.76)+' V'+n1(yb-h)+' H'+n1(x+w*.68)+' V'+n1(yb-h*.76)+' Q'+n1(x+w)+','+n1(yb-h*.7)+' '+n1(x+w)+','+n1(yb-h*.62)+' V'+yb+'Z';
     (r()<.4?gd:pl).push(d);cap.push('M'+n1(x+w*.28)+','+n1(yb-h-3)+' h'+n1(w*.44)+' v3');
     lb.push('M'+n1(x+1)+','+n1(yb-h*.5)+' h'+n1(w-2)+' v'+n1(h*.2)+' h'+n1(2-w)+'Z');lq.push('M'+n1(x+1.2)+','+n1(yb-h*.58)+' H'+n1(x+w-1.2));
+    gl.push('M'+n1(x+w*.2)+','+n1(yb-h*.3)+' V'+n1(yb-h*.58)+' M'+n1(x+w*.36)+','+n1(yb-h*.84)+' V'+n1(yb-h*.95));
+    tk.push('M'+n1(x+2.4)+','+n1(yb-h*.42)+' h'+n1(w-4.8)+' M'+n1(x+2.4)+','+n1(yb-h*.36)+' h'+n1((w-4.8)*.6));
     x+=w+1.5+r()*5}
-  D(g,pl.join(''),'thin t2',A,B);D(g,gd.join(''),'thin gold t1',A,B);D(g,cap.join(' '),'thin',A,B);D(g,lb.join(''),'hair',A,B);D(g,lq.join(' '),'hair dim',A,B);
+  D(g,pl.join(''),'thin t2',A,B);D(g,gd.join(''),'thin gold t1',A,B);D(g,cap.join(' '),'thin',A,B);D(g,lb.join(''),'hair',A,B);D(g,lq.join(' '),'hair dim',A,B);D(g,gl.join(' '),'hair',A,B);D(g,tk.join(' '),'hair dim',A,B);
+}
+/* inkoustove lahvicky s kapatkem a etiketou s kvetinou (tetovaci kout) */
+function inkBottles(g,x0,x1,yb,seed,A,B){
+  var r=rng(seed),x=x0,bd=[],gd=[],nz=[],lb=[],fl=[],gl=[],lq=[];
+  while(x<x1-8){var w=9+r()*4,h=24+r()*10,cx=x+w/2;if(x+w>x1)break;
+    var d='M'+n1(x)+','+yb+' V'+n1(yb-h*.62)+' Q'+n1(x)+','+n1(yb-h*.78)+' '+n1(cx-2.4)+','+n1(yb-h*.84)+' V'+n1(yb-h*.9)+' H'+n1(cx+2.4)+' V'+n1(yb-h*.84)+' Q'+n1(x+w)+','+n1(yb-h*.78)+' '+n1(x+w)+','+n1(yb-h*.62)+' V'+yb+'Z';
+    (r()<.45?gd:bd).push(d);
+    nz.push('M'+n1(cx-2)+','+n1(yb-h*.9)+' L'+n1(cx-1)+','+n1(yb-h)+' H'+n1(cx+1)+' L'+n1(cx+2)+','+n1(yb-h*.9)+' M'+n1(cx-2.6)+','+n1(yb-h*.9)+' h5.2');
+    lb.push('M'+n1(x+1)+','+n1(yb-h*.55)+' h'+n1(w-2)+' v'+n1(h*.32)+' h'+n1(2-w)+'Z');
+    fl.push(cir(cx,yb-h*.42,1.5)+' M'+n1(cx-3)+','+n1(yb-h*.3)+' h6');
+    lq.push('M'+n1(x+1)+','+n1(yb-h*.64)+' H'+n1(x+w-1));
+    gl.push('M'+n1(x+w*.17)+','+n1(yb-h*.2)+' V'+n1(yb-h*.5));
+    x+=w+2+r()*4}
+  D(g,bd.join(''),'thin t2',A,B);D(g,gd.join(''),'thin gold t1',A,B);D(g,nz.join(' '),'thin',A,B);D(g,lb.join(''),'hair t3',A,B);D(g,fl.join(' '),'hair',A,B);D(g,lq.join(' '),'hair dim',A,B);D(g,gl.join(' '),'hair',A,B);
 }
 
 /* ---------- zidle (Thonet) ---------- */
@@ -509,7 +560,7 @@ function deskZone(){
   /* zidle */
   chair(G(gr));var ch2=G(gr,'translate(3150,0) scale(-1,1)');chair(ch2);
   /* galerie na zdi */
-  frame(gr,1345,270,62,80,'ara',.5,.8);frame(gr,1418,262,84,60,'wave',.55,.85);art(gr,'ara',1490,277,.17,0,1,.6,.9,'hair','hair');frame(gr,1418,332,52,72,'fox',.6,.9);frame(gr,1482,332,56,60,'colibri',.65,.95);
+  frame(gr,1345,270,62,80,'ara',.5,.8);frame(gr,1418,262,84,60,'wave',.55,.85);art(gr,'ara',1490,277,.17,0,1,.6,.9,'hair','hair');frame(gr,1418,332,52,72,'butterfly',.6,.9);frame(gr,1482,332,56,60,'colibri',.65,.95);
   frame(gr,1618,266,74,92,'moon',.5,.8);frame(gr,1704,284,56,74,'peony',.55,.85);frame(gr,1770,262,40,56,'feather',.6,.9);
   frame(gr,1636,372,46,54,'kakadu',.65,.95);frame(gr,1700,368,52,56,'swallow',.7,1);
   /* lustr */
@@ -580,7 +631,7 @@ function calendar(){
   D(g,'M1980,352 V362 M1976,352 H1984','thin gold',.5,.8);
   D(g,R(1930,360,100,112,2),'ink t2',.4,.8);D(g,R(1930,360,100,10,1),'thin t3',.4,.8);
   d=[];for(k=0;k<6;k++)d.push(cir(1950+k*6.4,365,1.5));D(g,d.join(' '),'hair',.5,.8);
-  D(g,R(1938,374,84,34,1),'thin t1',.5,.85);art(g,'lotus',1980,391,.3,0,1,.55,.9,'hair','hair');art(g,'rose',1950,391,.3,0,1,.6,.9,'hair','hair');art(g,'moon',2010,391,.17,0,1,.6,.9,'hair','hair');
+  D(g,R(1938,374,84,34,1),'thin t1',.5,.85);art(g,'sun',1980,391,.3,0,1,.55,.9,'hair','hair');art(g,'rose',1950,391,.3,0,1,.6,.9,'hair','hair');art(g,'moon',2010,391,.17,0,1,.6,.9,'hair','hair');
   TX(g,'LISTOPAD',1980,419,8.6,'label',.6,1,1,{'letter-spacing':1.6});
   var wd=['P','Ú','S','Č','P','S','N'],ln=['M1938,422 H2022'];
   for(i=0;i<7;i++)TX(g,wd[i],1938+(i+.5)*12,427.4,3.8,'f-goldl',.65,1,.9);
@@ -639,7 +690,7 @@ function windowZ(){
     D(cg,dd.join(' '),'hair',.45,.9);FILL(cg,'M2100,322 H2118 C2118,380 2112,420 2112,440 C2112,470 2122,500 2124,528 H2108Z','hair',.5,.9,{fill:HF});
     D(cg,'M2072,442 Q2096,450 2118,440','thin gold',.5,.9)});
   D(g,'M2124,512 L2127,498 H2141 L2144,512Z','ink t3',.6,.95);d=[];for(k=-3;k<=3;k++)d.push(lf(2134,498,sin(k*.28),-cos(k*.28),26-Math.abs(k)*2,3.6));
-  D(g,d.join(' '),'thin t2',.65,1);D(g,R(2226,494,14,18,2),'thin t3',.65,1);FO(g,'M2233,487 Q2230,492 2233,494 Q2236,492 2233,487Z','f-goldl',.9,.7,1);D(g,'M2233,494 V489','hair',.7,1);
+  D(g,d.join(' '),'thin t2',.65,1);D(g,R(2226,494,14,18,2),'thin t3',.65,1);ST.flame2=FO(g,'M2233,487 Q2230,492 2233,494 Q2236,492 2233,487Z','f-goldl',.9,.7,1);D(g,'M2233,494 V489','hair',.7,1);
   /* komoda na plany */
   D(g,R(2062,596,236,8,2),'ink t3',.1,.4);D(g,R(2068,604,224,88),'ink t3',.1,.5);D(g,R(2064,692,232,8,1),'thin t3',.15,.5);
   d=[];for(k=0;k<4;k++){d.push(rr(2072,607+k*21.4,102,19),rr(2186,607+k*21.4,102,19))}D(g,d.join(''),'thin',.2,.6);
@@ -691,9 +742,9 @@ function tattooZone(){
   D(g,d.join(' '),'hair',.1,.35);D(g,d.map(function(s,i){return cir(2740+i*46,712,1.3)}).join(' '),'hair gold',.15,.35);
   d=[];for(k=0;k<8;k++)d.push('M'+(2706-k*2.2)+','+(704+k*2)+' l-6,.6 M'+(3052+k*2.2)+','+(704+k*2)+' l6,.6');D(g,d.join(' '),'hair',.15,.35);
   /* obrazy */
-  frame(g,2606,318,84,92,'ara',.1,.4);frame(g,2706,266,76,98,'archangel',.15,.45);frame(g,3104,262,40,52,'kakadu',.2,.5);frame(g,2796,268,50,66,'rose',.25,.55);frame(g,2868,262,52,64,'colibri',.3,.6);frame(g,3022,346,46,56,'feather',.25,.55);
+  frame(g,2606,318,84,92,'ara',.1,.4);frame(g,2706,266,76,98,'archangel',.15,.45);frame(g,3098,262,40,52,'kakadu',.2,.5);frame(g,2796,268,50,66,'rose',.25,.55);frame(g,2868,262,52,64,'colibri',.3,.6);frame(g,3022,346,46,56,'feather',.25,.55);
   /* polica s barvami nad vozikem */
-  D(g,R(2602,470,92,5,1),'ink t3',.15,.4);D(g,'M2614,475 V488 L2624,475 M2682,475 V488 L2672,475','thin',.15,.4);bottles(g,2608,2690,470,71,.2,.5);
+  D(g,R(2602,470,92,5,1),'ink t3',.15,.4);D(g,'M2614,475 V488 L2624,475 M2682,475 V488 L2672,475','thin',.15,.4);inkBottles(g,2608,2690,470,71,.2,.5);
   /* vozik */
   D(g,R(2590,596,110,6,1),'ink t3',.2,.5);D(g,'M2594,602 V692 M2598,602 V692 M2688,602 V692 M2692,602 V692','thin',.2,.5);
   D(g,R(2594,650,98,4,1),'thin t3',.25,.5);D(g,R(2594,684,98,4,1),'thin t3',.25,.5);D(g,cir(2602,696,4)+cir(2682,696,4),'thin t1',.25,.5);D(g,cir(2602,696,1.2)+cir(2682,696,1.2),'hair',.25,.5);
@@ -753,13 +804,14 @@ function tattooZone(){
   D(g,'M3268,600 V592 H3326 V600','thin',.65,.95);D(g,'M3318,592 V566 Q3318,558 3308,558 H3298 V565','thin gold',.65,.95);D(g,'M3296,566 h6','thin gold',.7,.95);D(g,'M3322,578 h6','thin gold',.7,.95);
   /* police a osvedceni */
   D(g,R(3140,440,164,6,1),'ink t3',.6,.95);D(g,'M3152,446 V460 L3162,446 M3292,446 V460 L3282,446','thin',.6,.95);
-  var pt=potos(g,3176,440,.65,1,8);ST.potos2=pt;bottles(g,3220,3296,440,81,.65,.95);
-  D(g,R(3196,296,74,98),'ink t3',.6,.95);D(g,R(3202,302,62,86),'thin t2',.65,.95);TX(g,'OSVĚDČENÍ',3233,318,6.4,'label',.7,1,1,{'letter-spacing':.6});
-  D(g,'M3210,326 H3256 M3210,332 H3250 M3210,338 H3256 M3210,344 H3244 M3210,350 H3252','hair',.7,1);D(g,cir(3233,370,9),'thin gold t1',.7,1);D(g,star4(3233,370,5.5),'hair gold',.75,1);D(g,'M3228,378 L3226,390 L3233,385 L3240,390 L3238,378','hair gold',.75,1);D(g,'M3212,380 q5,-6 9,0 t9,0','hair',.75,1);
-  frame(g,3152,296,40,52,'rose',.6,.95);frame(g,3338,256,50,64,'swallow',.65,1);
+  var pt=potos(g,3176,440,.65,1,8);ST.potos2=pt;bottles(g,3220,3296,440,81,.65,.95,.4);
+  /* osvedceni (mimo rezervovany obdelnik) */
+  D(g,R(3144,357,36,52),'ink t3',.6,.95);D(g,R(3148,361,28,44),'thin t2',.65,.95);TX(g,'OSVĚDČENÍ',3162,370,3.6,'label',.7,1,1,{'letter-spacing':.3});
+  D(g,'M3151,376 H3173 M3151,380 H3170 M3151,384 H3173 M3151,388 H3166','hair',.7,1);D(g,cir(3166,396,4.6),'thin gold t1',.7,1);D(g,star4(3166,396,3),'hair gold',.75,1);D(g,'M3163,400 L3162,406 L3166,403.5 L3170,406 L3169,400','hair gold',.75,1);D(g,'M3151,400 q3,-4 6,0 t6,0','hair',.75,1);
+  frame(g,3142,296,40,52,'rose',.6,.95);frame(g,3290,254,40,52,'swallow',.65,1);
   /* ficus */
   ficus(g,3380,.65,1);
-  pendant(3312,332,.7,1);
+  pendant(3347,332,.7,1,52);
 }
 tattooZone();
 
@@ -795,10 +847,10 @@ function more(){
   zone(.9,1.8);g=sec('back',0);FILL(g,R(890,252,34,448),'hair',.3,.9,{fill:HV});
   zone(10.6,11.0);g=sec('back',3);FILL(g,R(3388,252,32,448),'hair',.3,.9,{fill:HV});
   /* vlhke skvrny a stiny na omitce */
-  [[0,1010,300,70,18,1.9,3.0],[1,1620,290,90,20,1.9,3.0],[2,2400,430,80,16,4.8,6.0],[3,2860,300,100,18,6.3,7.3],[3,3200,330,70,16,6.3,7.3]].forEach(function(b){
+  [[0,1010,300,70,18,1.9,3.0],[1,1620,290,90,20,1.9,3.0],[2,2400,430,80,16,4.8,6.0],[3,2860,300,100,18,6.3,7.3],[3,3372,372,46,14,6.3,7.3]].forEach(function(b){
     zone(b[5],b[6]);var gg=sec('back',b[0]);FILL(gg,'M'+(b[1]-b[3])+','+b[2]+' Q'+b[1]+','+(b[2]-b[4]*1.4)+' '+(b[1]+b[3])+','+b[2]+' Q'+(b[1]+b[3]*.5)+','+(b[2]+b[4])+' '+b[1]+','+(b[2]+b[4]*.5)+' Q'+(b[1]-b[3]*.6)+','+(b[2]+b[4]*1.2)+' '+(b[1]-b[3])+','+b[2]+'Z','hair',.3,.9,{fill:HF})});
   /* svetylka (fairy lights) */
-  [[2330,2575,296,28,4.8,6.0,13],[3108,3412,268,22,6.3,7.3,15]].forEach(function(s){
+  [[2330,2575,296,28,4.8,6.0,13],[3108,3412,266,15,6.3,7.3,15]].forEach(function(s){
     zone(s[4],s[5]);var gg=secAt('room',s[0]),n=s[6],pts=[],bl=[];
     for(var i=0;i<=n;i++){var u=i/n,x=s[0]+(s[1]-s[0])*u,y=s[2]+s[3]*4*u*(1-u);pts.push(n1(x)+','+n1(y));if(i>0&&i<n){bl.push(cir(x,y+5,2.6));}}
     D(gg,'M'+pts[0]+' '+pts.slice(1).map(function(p,i){return 'L'+p}).join(' '),'hair',.2,.7);
@@ -832,6 +884,267 @@ function more(){
   zone(6.3,7.3);
 }
 more();
+/* ======================================================================
+   DETAILNI PRUCHOD: architektura, recepce, okno a komoda, tetovaci kout
+   (vse deterministicky, do sekci; pozadi pod predmety, predmety s vyplni)
+   ====================================================================== */
+function seg(p){return 'M'+p.map(function(q){return n1(q[0])+','+n1(q[1])}).join(' L')}
+function dashes(x0,y0,x1,y1,l,gp){var d=[],dx=x1-x0,dy=y1-y0,L=Math.sqrt(dx*dx+dy*dy),ux=dx/L,uy=dy/L;for(var s=0;s<L;s+=l+gp){var e=Math.min(s+l,L);d.push('M'+n1(x0+ux*s)+','+n1(y0+uy*s)+' L'+n1(x0+ux*e)+','+n1(y0+uy*e))}return d.join(' ')}
+function zig(x0,y0,x1,y1,n,amp){var dx=x1-x0,dy=y1-y0,L=Math.sqrt(dx*dx+dy*dy),nx=-dy/L,ny=dx/L,p=[[x0,y0]];for(var i=1;i<n;i++){var u=i/n,sg=i%2?amp:-amp;p.push([x0+dx*u+nx*sg,y0+dy*u+ny*sg])}p.push([x1,y1]);return seg(p)}
+function beads(cx,cy,rx,ry,n,r0){var d=[];for(var i=0;i<n;i++){var a=i/n*2*PI;d.push(cir(cx+cos(a)*rx,cy+sin(a)*ry,r0))}return d.join(' ')}
+function socket(g,x,y,a,b){D(g,R(x,y,22,14,2),'thin t3',a,b);D(g,cir(x+7,y+7,2)+cir(x+15,y+7,2),'hair',a,b);D(g,'M'+(x+7)+','+(y+4)+' v6 M'+(x+15)+','+(y+4)+' v6 M'+(x+2)+','+(y+2)+' h1 M'+(x+19)+','+(y+12)+' h1','hair dim',a,b)}
+function swtch(g,x,y,n,a,b){var w=11*n+3;D(g,R(x,y,w,22,2),'thin t3',a,b);var d=[],e=[];for(var i=0;i<n;i++){d.push(R(x+3+i*11,y+4,8,14,1));e.push('M'+(x+5+i*11)+','+(y+8)+' h4')}D(g,d.join(''),'hair',a,b);D(g,e.join(' '),'hair dim',a,b)}
+/* podlahovy koberec: vzor, lem, trasne */
+function rugDeco(g,x0,x1,sl,a,b){
+  var y0=704,y1=720,z=[],z2=[],k,m=[];
+  for(k=x0+6;k<x1-6;k+=8){z.push('l4,2.2 l4,-2.2')}
+  D(g,'M'+(x0+5)+',706.2 '+z.join(' ').replace(/l4,2\.2 l4,-2\.2/g,'l4,1.4 l4,-1.4'),'hair dim',a,b);
+  D(g,'M'+(x0-sl+5)+',718.2 '+z.join(' ').replace(/l4,2\.2 l4,-2\.2/g,'l4,-1.4 l4,1.4'),'hair dim',a,b);
+  for(k=x0+16;k<x1-10;k+=22)m.push(cir(k,712,1.9));
+  D(g,m.join(' '),'hair dim',a,b);
+  for(k=0;k<14;k++){var t=k*2.4;z2.push('M'+n1(x0-sl*(t/16)-.5)+','+n1(y0+t)+' l-4,.5 M'+n1(x1+sl*(t/16)+.5)+','+n1(y0+t)+' l4,.5')}
+  D(g,z2.join(' '),'hair faint',a,b);
+}
+function rug(g,x0,x1,a,b){
+  var d=[],k,sl=14;
+  D(g,'M'+x0+',704 H'+x1+' L'+(x1+sl)+',720 H'+(x0-sl)+'Z','thin t3',a,b);FILL(g,'M'+x0+',704 H'+x1+' L'+(x1+sl)+',720 H'+(x0-sl)+'Z','hair',a,b,{fill:STIP});
+  D(g,'M'+(x0+10)+',707 H'+(x1-10)+' L'+(x1+3)+',717 H'+(x0-3)+'Z','hair',a,b);
+  for(k=x0+22;k<x1-14;k+=26)d.push('M'+(k-9)+',712 L'+k+',708 L'+(k+9)+',712 L'+k+',716Z M'+(k-4)+',712 L'+k+',710 L'+(k+4)+',712 L'+k+',714Z');
+  D(g,d.join(' '),'hair',a,b);rugDeco(g,x0,x1,sl,a,b);
+}
+function pipeV(x,y0,y1,A,B){
+  zx(x);var g=secAt('back',x),c=[],k,vy=Math.round(y0+(y1-y0)*.48);
+  D(g,R(x-3,y0,6,y1-y0),'thin t2',A,B);D(g,'M'+(x-1)+','+y0+' V'+y1,'hair',A,B);
+  for(k=y0+46;k<y1-30;k+=116)c.push(R(x-5,k,10,6,1)+' M'+(x-5)+','+(k+3)+' h-5 M'+(x+5)+','+(k+3)+' h5');
+  D(g,c.join(' '),'thin t3',A,B);
+  D(g,R(x-5,vy,10,15,2),'thin t3',A,B);D(g,'M'+x+','+vy+' V'+(vy-9)+' M'+(x-8)+','+(vy-10)+' H'+(x+8),'thin',A,B);D(g,ell(x,vy-10,8,2.2),'thin',A,B);D(g,cir(x,vy+7.5,2),'hair',A,B);
+  D(g,R(x-6,y1-6,12,6,1)+' '+R(x-6,y0-2,12,4,1),'thin t3',A,B);
+}
+function crackBranch(g,x,y,seed,A,B){
+  var r=rng(seed),p=[[x,y]],br=[],i,cx=x,cy=y,fl=[];
+  for(i=0;i<7;i++){cx+=(r()-.45)*12;cy+=7+r()*11;p.push([cx,cy]);
+    if(i%2===1){var bx=cx,by=cy,q=[[bx,by]];for(var j=0;j<3;j++){bx+=(r()<.5?-1:1)*(4+r()*8);by+=3+r()*6;q.push([bx,by])}br.push(seg(q))}
+    if(r()<.4)fl.push(rr(n1(cx+3),n1(cy+2),2+r()*2,1.5+r()*1.5))}
+  D(g,seg(p)+' '+br.join(' '),'hair dim',A,B);D(g,fl.join(''),'hair dim',A,B);
+}
+/* ---------- architektura: tramy, lista, trubky, praskliny, rada ---------- */
+function archPass(){
+  var i,g,k,d;
+  [[1030,32],[1330,32],[1860,32],[2400,34],[2650,32],[3135,30],[3380,28]].forEach(function(bm,n){
+    var bx=bm[0],bw=bm[1];zx(bx);g=secAt('back',bx);
+    D(g,R(bx,240,bw,28),'ink t3',.05,.7);
+    D(g,ST.wline(bx+2,bx+bw-2,247,.9,9,rng(n+90))+' '+ST.wline(bx+2,bx+bw-2,255,1,11,rng(n+95))+' '+ST.wline(bx+2,bx+bw-2,262,.8,10,rng(n+99)),'hair dim',.1,.7);
+    D(g,'M'+bx+',264 H'+(bx+bw)+' M'+(bx+bw*.62)+',241 V268','hair',.1,.7);
+    FILL(g,R(bx+bw*.62,240,bw*.38,28),'hair',.1,.7,{fill:HF});
+    D(g,R(bx+bw/2-6,240,12,28),'thin',.15,.7);D(g,cir(bx+bw/2,247,1.4)+cir(bx+bw/2,261,1.4)+cir(bx+5,254,1.3)+cir(bx+bw-5,254,1.3),'hair gold',.2,.7);
+    D(g,ell(bx+bw*.25,257,3.4,1.6)+ell(bx+bw*.25,257,1.7,.8),'hair dim',.2,.7);
+    FILL(g,ell(bx+bw/2,272,bw*.75,3.6),'hair',.2,.7,{fill:HF});
+  });
+  /* ovolo / vejcovec pod lisou */
+  [[890,1300],[1300,2040],[2040,2600],[2600,3420]].forEach(function(r){
+    zx(r[0]);g=secAt('back',r[0]);d=[];
+    for(k=Math.ceil(r[0]/11)*11;k<r[1];k+=11)d.push('M'+k+',259.5 q5.5,-5 11,0 M'+(k+5.5)+',260.5 v1.6');
+    D(g,d.join(' '),'hair dim',.2,.9)});
+  /* trubky v rozich */
+  pipeV(897,258,603,.2,.9);pipeV(3406,258,603,.4,.9);
+  /* dalsi praskliny s vetvemi (mimo rezervovany obdelnik) */
+  [[1010,330,3],[1260,380,4],[1700,290,5],[1990,300,6],[2330,420,7],[2590,300,8],[2990,330,9],[3400,300,10]].forEach(function(c){zx(c[0]);crackBranch(secAt('back',c[0]),c[0],c[1],c[2],.3,1)});
+  /* radiator (sloupkovy) pod hodinami */
+  zone(1.9,3.0);g=sec('room',1);
+  D(g,R(1974,556,56,6,2),'ink t3',.7,1);D(g,R(1974,676,56,6,2),'ink t3',.7,1);
+  d=[];var e=[];for(k=0;k<8;k++){var rx=1977+k*6.9;d.push('M'+n1(rx)+',562 v114 h5.2 v-114Z');e.push('M'+n1(rx+1.4)+',566 v106')}
+  D(g,d.join(''),'thin t2',.7,1);D(g,e.join(' '),'hair',.75,1);FILL(g,R(1977,562,55,114),'hair',.75,1,{fill:HF});
+  D(g,R(1989,682,5,18)+' '+R(2012,682,5,18)+' '+R(1987,688,9,3,1)+' '+R(2010,688,9,3,1),'thin t3',.75,1);D(g,R(2032,566,9,12,2),'thin t3',.8,1);D(g,cir(2036.5,572,2),'hair gold',.8,1);
+  D(g,'M1974,568 L1970,568 M2030,568 L2034,568 M1976,676 l-4,0','hair',.8,1);
+  /* vypinace, zasuvky */
+  zone(6.3,7.3);g=sec('room',3);
+  swtch(g,3384,528,2,.8,1);socket(g,3040,648,.8,1);socket(g,3338,664,.8,1);
+    zone(1.9,3.0);g=sec('room',0);swtch(g,1240,524,1,.8,1);
+  /* svetelny retez nad kalendarem */
+  var pts=[],bl=[],n=8;zone(1.9,3.0);g=sec('room',1);
+  for(i=0;i<=n;i++){var u=i/n,xx=1928+(2000-1928)*u,yy=268+12*4*u*(1-u);pts.push(n1(xx)+','+n1(yy));if(i>0&&i<n)bl.push(cir(xx,yy+5,2.4))}
+  D(g,'M'+pts.join(' L'),'hair',.5,.9);D(g,bl.join(' '),'hair gold t1',.6,1);
+  [0,1].forEach(function(par){var el2=el('path',{d:bl.filter(function(q,j){return j%2===par}).join(' '),'class':'f-goldl',filter:'url(#glowW)',opacity:0},g);FL.push({e:el2,par:par,x:1928,x1:2000,t0:2.5,t1:3.0})});
+}
+/* ---------- recepce ---------- */
+function snake(g,x,y,seed,A,B){
+  var r=rng(seed),gp=sway(G(g),x,y-40,1.2,.0009,seed),bl=[],tk=[],mr=[],i;
+  D(g,'M'+(x-12)+','+(y-34)+' L'+(x-9)+','+y+' H'+(x+9)+' L'+(x+12)+','+(y-34)+'Z','ink t3',A,B);D(g,R(x-14,y-40,28,7,2),'thin t3',A,B);D(g,'M'+(x-11)+','+(y-22)+' H'+(x+11)+' M'+(x-10)+','+(y-12)+' H'+(x+10),'hair gold',A,B);FILL(g,'M'+(x-12)+','+(y-34)+' L'+(x-9)+','+y+' H'+(x+9)+' L'+(x+12)+','+(y-34)+'Z','hair',A,B,{fill:HV});
+  for(i=0;i<8;i++){var an=(-90+(i-3.5)*9+(r()-.5)*6)*PI/180,L=56+r()*52,px=x+(i-3.5)*2.4,py=y-40,ux=cos(an),uy=sin(an),w=6+r()*2.4;
+    bl.push(lf(px,py,ux,uy,L,w));mr.push('M'+n1(px)+','+n1(py)+' L'+n1(px+ux*L*.9)+','+n1(py+uy*L*.9));
+    for(var t=.16;t<.88;t+=.13){var cx=px+ux*L*t,cy=py+uy*L*t,ww=w*Math.min(1,(1-t)*2.2)*.8;tk.push('M'+n1(cx-uy*ww)+','+n1(cy+ux*ww)+' L'+n1(cx+uy*ww)+','+n1(cy-ux*ww))}}
+  D(gp,bl.join(' '),'thin t2',A+.03,B);D(gp,tk.join(' '),'hair dim',A+.05,B);D(gp,mr.join(' '),'hair',A+.05,B);
+}
+function hangPlant(g,x,yt,yp,seed,A,B){
+  var r=rng(seed),hg=sway(G(g),x,yt,1.3,.0008,seed),i,k,lv=[],vn=[],st=[];
+  D(hg,cir(x,yt,2.4),'thin gold',A,B);
+  D(hg,'M'+x+','+yt+' L'+(x-14)+','+yp+' M'+x+','+yt+' L'+(x+14)+','+yp+' M'+x+','+yt+' L'+(x+1)+','+yp,'thin',A,B);
+  var mesh=[];for(k=1;k<=3;k++){var f=k*.26,yy=yt+(yp-yt)*f,hw=14*f;mesh.push('M'+n1(x-hw)+','+n1(yy)+' L'+n1(x+hw)+','+n1(yy+(yp-yt)*.1)+' M'+n1(x+hw)+','+n1(yy)+' L'+n1(x-hw)+','+n1(yy+(yp-yt)*.1))}
+  D(hg,mesh.join(' '),'hair dim',A,B);D(hg,cir(x-5,yt+(yp-yt)*.26,1.4)+cir(x+5,yt+(yp-yt)*.52,1.4)+cir(x,yt+(yp-yt)*.78,1.4),'thin t1',A,B);
+  D(hg,'M'+(x-16)+','+yp+' H'+(x+16)+' L'+(x+12)+','+(yp+22)+' H'+(x-12)+'Z','ink t3',A,B);
+  d2=[];for(k=0;k<4;k++)d2.push('M'+(x-15+k*1.4)+','+(yp+5+k*5)+' H'+(x+15-k*1.4));D(hg,d2.join(' ')+' '+dashes(x-14,yp+3,x+14,yp+3,2.4,1.6),'hair',A,B);
+  for(i=0;i<6;i++){var sx=x-12+i*4.8,len=30+r()*58,sw=(r()-.5)*16,p='M'+n1(sx)+','+(yp+2)+' C'+n1(sx+sw*.2)+','+(yp+len*.3)+' '+n1(sx+sw)+','+(yp+len*.6)+' '+n1(sx+sw*.8)+','+n1(yp+len);st.push(p);
+    for(var j=0;j<2+Math.floor(len/22);j++){var ty=yp+14+j*20+r()*5,tx=sx+sw*(ty-yp)/len*.9,sd=(j%2?1:-1);lv.push('M'+n1(tx)+','+n1(ty)+' C'+n1(tx+sd*8)+','+n1(ty-3)+' '+n1(tx+sd*9)+','+n1(ty+9)+' '+n1(tx+sd*1)+','+n1(ty+12)+' C'+n1(tx-sd*1)+','+n1(ty+8)+' '+n1(tx-sd*1)+','+n1(ty+3)+' '+n1(tx)+','+n1(ty)+'Z');vn.push('M'+n1(tx)+','+n1(ty+1)+' L'+n1(tx+sd*5)+','+n1(ty+7))}}
+  D(hg,st.join(' '),'thin',A,B);D(hg,lv.join(' '),'hair t2',A,B);D(hg,vn.join(' '),'hair dim',A,B);
+}
+var d2;
+function lobbyPass(){
+  var g,k,d,x;
+  zone(1.9,3.0);g=sec('room',0);
+  rug(g,1004,1262,.3,.5);
+  /* koberec u stolu: lem a trasne */
+  rugDeco(sec('room',1),1372,1808,18,.2,.45);
+  /* rohozka: kartace */
+  d=[];for(k=0;k<9;k++)d.push('M'+(902+k*9.4)+',709 v6');D(g,d.join(' '),'hair dim',.1,.2);
+  /* zrcadlo: perlovy lem, odlesky, spona */
+  D(g,beads(1125,452,39,65,40,.9),'hair',.45,.8);
+  D(g,'M1099,468 Q1094,440 1106,416 M1105,476 Q1101,462 1102,452 M1150,492 Q1157,474 1154,458','hair',.6,.9);
+  D(g,'M1112,400 q4,-4 8,-1 M1130,396 q4,-2 8,1','hair dim',.6,.9);
+  /* zavesena rostlina (makrame) */
+  hangPlant(g,1268,258,350,21,.7,1);
+  /* flash sheet nad sedackou: polaroidy na snure */
+  /* klice na hacich u dveri */
+  D(g,R(1038,262,32,38,2),'thin t3',.6,1);D(g,R(1042,266,24,30,1),'hair',.65,1);D(g,'M1044,286 H1064',"hair gold",.7,1);
+  d=[];for(k=0;k<4;k++){var kx=1048+k*5.5;d.push(cir(kx,288,1.4)+' M'+n1(kx)+',289.4 v6 h2 M'+n1(kx)+',293 h1.6')}D(g,d.join(' '),'hair',.7,1);D(g,'M1046,274 h10 M1046,278 h14','hair dim',.7,1);
+  /* skleniky/terrarium na stolku u radiatoru */
+  zone(1.9,3.0);g=sec('room',1);
+  D(g,'M1938,621 Q1938,598 1951,596 Q1964,598 1964,621','thin',.8,1);D(g,'M1951,596 V590 M1949,590 h4','hair',.8,1);D(g,'M1942,612 C1944,604 1948,602 1951,606 C1954,602 1958,604 1960,612 M1951,621 V606','hair',.85,1);D(g,'M1942,602 Q1943,608 1943,612','hair',.85,1);
+  zone(4.8,6.0);snake(sec('room',2),2316,700,52,.5,.95);
+  /* tabulka s hodinami nad dvermi? ne - bookcase hrbety jsou nahore */
+}
+/* ---------- okno, komoda, police ---------- */
+function windowPass(){
+  var g,k,d;zone(4.8,6.0);g=sec('room',2);
+  /* panty a zavirani okna */
+  D(g,R(2250,372,8,14,1)+' '+R(2250,452,8,14,1),'thin t3',.55,.9);D(g,cir(2254,379,1.1)+cir(2254,459,1.1),'hair',.6,.9);
+  /* parapet: konzolky, lista, kapnik */
+  d=[];for(k=2092;k<2272;k+=9)d.push('M'+k+',523 v4');D(g,d.join(' ')+' M2086,527 H2274','hair',.5,.9);
+  /* sukulenty na parapetu */
+  d=[];var e=[],f=[];[2190,2200,2210].forEach(function(px,i){d.push('M'+px+',512 L'+(px+1)+',504 H'+(px+7)+' L'+(px+8)+',512Z');e.push(px+'.5,'+(504)+' m0,0');for(var q=0;q<5;q++){var an=(-90+(q-2)*34)*PI/180;f.push(lf(px+4,504,cos(an),sin(an),7+(i%2)*3,2))}});
+  D(g,d.join(' '),'thin t3',.6,1);D(g,f.join(' '),'hair t2',.65,1);
+  /* komoda: vlozky, klicove dirky, intarzie */
+  d=[];e=[];for(k=0;k<4;k++){d.push(R(2077,610+k*21.4,92,13,1),R(2191,610+k*21.4,92,13,1));e.push(cir(2123,625.2+k*21.4-4,.9)+' M2123,'+(626.5+k*21.4-4)+' v2',cir(2237,625.2+k*21.4-4,.9)+' M2237,'+(626.5+k*21.4-4)+' v2')}
+  D(g,d.join(''),'hair dim',.4,.9);D(g,e.join(' '),'hair gold',.45,.9);
+  /* skleník na komode */
+  D(g,R(2212,592,42,4,1),'thin t3',.6,1);D(g,R(2217,576,32,16),'thin',.65,1);D(g,'M2214,576 L2233,562 L2252,576Z','thin t3',.65,1);D(g,'M2233,562 V592 M2217,584 H2249 M2225,570 V576 M2241,570 V576','hair',.7,1);
+  D(g,'M2224,592 C2224,584 2227,580 2229,578 M2229,592 C2229,584 2233,580 2236,577 M2236,592 C2238,586 2242,582 2245,580 M2224,592 C2222,588 2220,586 2219,584','thin',.7,1);
+  D(g,lf(2229,584,.6,-.8,10,2.6)+lf(2240,586,-.5,-.85,10,2.6)+lf(2222,588,-.9,-.4,8,2.2)+lf(2246,588,.9,-.4,8,2.2),'hair t2',.75,1);D(g,'M2220,578 L2224,572 M2244,574 L2248,580','hair dim',.75,1);
+  /* police: papousek-figurka, hrnek s kavou a parou, svicka s plamenem */
+  D(g,R(2494,354,22,6,1),'thin t3',.7,1);art(g,'ara',2505,338,.22,0,1,.75,1,'thin','hair');
+  var mx=2538,my=440;D(g,'M'+mx+','+(my-15)+' V'+(my-2)+' Q'+mx+','+my+' '+(mx+2)+','+my+' H'+(mx+12)+' Q'+(mx+14)+','+my+' '+(mx+14)+','+(my-2)+' V'+(my-15)+'Z','thin t3',.75,1);D(g,'M'+(mx+14)+','+(my-12)+' Q'+(mx+21)+','+(my-12)+' '+(mx+21)+','+(my-7)+' Q'+(mx+21)+','+(my-3)+' '+(mx+14)+','+(my-4),'thin',.75,1);D(g,ell(mx+7,my-15,7,1.6),'thin t1',.8,1);D(g,'M'+mx+','+(my-8)+' H'+(mx+14),'hair gold',.8,1);
+  ST.steam2=[];for(k=0;k<3;k++)ST.steam2.push(FO(g,'M0,0 C-3,-5 3,-9 0,-14 C-2,-18 2,-21 0,-25','ink hair',.55,.8,1));
+  /* konzolky polic: drevo a srouby */
+  d=[];[360,440,520].forEach(function(y){d.push(cir(2354,y+2,.8)+cir(2420,y+2,.8)+cir(2480,y+2,.8)+cir(2548,y+2,.8));});D(g,d.join(' '),'hair',.6,1);
+}
+/* ---------- tetovaci kout ---------- */
+function tattooPass(){
+  var g,k,d,e,gb;zone(6.3,7.3);g=sec('room',3);gb=sec('back',3);
+  /* kachlicky za pultem (back) */
+  d=[];for(k=0;k<17;k++){var ty=462+k*8;d.push('M3134,'+ty+' H3334');for(var tx=3134+(k%2)*10;tx<3334;tx+=20)d.push('M'+tx+','+ty+' v8')}
+  D(gb,d.join(' '),'hair dim',.5,.9);FILL(gb,R(3134,462,200,12),'hair',.5,.9,{fill:HF});D(gb,R(3130,597,208,5,1),'thin t3',.5,.9);D(gb,R(3130,457,208,5,1),'thin t3',.5,.9);
+  /* druha polica nad vozikem: kartridze, folie, vazelina */
+  D(g,R(2602,522,92,5,1),'ink t3',.2,.5);D(g,'M2614,527 V540 L2624,527 M2682,527 V540 L2672,527','thin',.2,.5);FILL(g,R(2604,527,90,8),'hair',.25,.5,{fill:HF});
+  D(g,R(2606,509,28,13,1)+' '+R(2610,499,24,10,1),'thin t2',.3,.55);D(g,'M2609,513 h22 M2609,517 h16 M2613,503 h18 M2613,506 h10','hair dim',.35,.55);D(g,cir(2628,516,1.8)+' M2628,512 v8','hair gold',.4,.55);
+  D(g,'M2640,505 H2668 V521 H2640Z','thin t3',.3,.55);D(g,ell(2640,513,2.8,8)+ell(2668,513,2.8,8)+' M2668,513 q8,0 10,7 h-8','thin',.35,.55);D(g,'M2644,508 h20 M2644,514 h20 M2644,519 h20','hair dim',.4,.55);
+  D(g,R(2682,512,13,10,1)+' '+R(2681,508,15,4,1),'thin t3',.35,.55);D(g,'M2684,516 h9','hair gold',.4,.55);
+  /* nozni pedal s kabelem */
+  D(g,'M2706,700 L2711,692 Q2726,686 2742,692 L2748,700Z','ink t3',.4,.7);D(g,'M2713,692 Q2726,683 2740,690 M2716,696 H2740','hair',.45,.7);D(g,dashes(2716,688,2738,686,2,1.6),'hair dim',.5,.7);
+  D(g,'M2706,698 C2698,709 2686,712 2676,707 C2668,703 2664,700 2662,693','hair',.5,.75);
+  /* sada nastroju na vozniku: odkladaci tacek s vlozkou */
+  D(g,R(2640,596,58,3,1),'hair',.4,.65);
+  /* chranic ostrych predmetu na stene */
+  D(g,R(3100,570,28,3,1),'thin t3',.55,.85);D(g,R(3104,548,22,22,3),'ink t3',.55,.85);D(g,R(3102,544,26,6,2),'thin t2',.55,.85);D(g,'M3110,542 q5,-6 10,0 M3108,547 H3122','hair',.6,.85);D(g,'M3109,556 H3121 M3109,561 H3118','hair dim',.6,.85);D(g,cir(3115,563,2.6),'hair gold',.65,.9);
+  /* davkovac rukavic a kapesniku nad pultem */
+  D(g,R(3238,472,28,38,2),'ink t3',.6,.95);D(g,R(3242,476,20,12,1),'thin t1',.65,.95);D(g,'M3246,486 q4,-8 8,0 q3,-7 6,0','hair t2',.7,.95);D(g,'M3242,494 h20 M3242,499 h14','hair dim',.7,.95);D(g,cir(3252,505,1.6),'hair gold',.7,.95);
+  D(g,R(3274,470,30,44,3),'ink t3',.65,.95);D(g,R(3278,474,22,24,2),'thin t1',.7,.95);D(g,cir(3289,486,9),'thin t3',.7,.95);D(g,cir(3289,486,3),'hair',.7,.95);D(g,'M3285,512 v10 h8 v-10 M3280,505 h18','hair',.75,.95);D(g,cir(3299,478,1.1),'hair gold',.75,.95);
+  /* autoklav: srouby, manometr */
+  D(g,cir(3168,576,17.5),'hair',.7,.95);D(g,beads(3168,576,17.5,17.5,8,.9),'hair gold',.7,.95);D(g,cir(3154,560,3.6)+' M3154,560 l2,-1.6','hair',.7,.95);D(g,R(3144,566,6,4,1)+' M3176,590 h10','hair dim',.75,.95);D(g,'M3146,598 v-4 h6 M3202,598 v-4 h-6','hair',.75,.95);
+  /* pult: kresba dreva */
+  d=[];for(k=0;k<3;k++)d.push(ST.wline(3149+k*63,3191+k*63,664,.8,12,rng(k+60)),ST.wline(3149+k*63,3191+k*63,674,.8,12,rng(k+66)));D(g,d.join(' '),'hair faint',.7,.95);
+  D(g,cir(3140,640,.9)+cir(3140,660,.9)+cir(3322,640,.9)+cir(3322,660,.9),'hair',.7,.95);
+  /* kreslo: prosiv, chrom, hydraulika */
+  d=[];var bt=[];for(k=.196;k<.85;k+=.152){var bx=2770-26*k,by=609-168*k;bt.push(cir(bx,by,1.7));d.push('M'+n1(bx-5)+','+n1(by)+' h3 M'+n1(bx+2)+','+n1(by)+' h3 M'+n1(bx)+','+n1(by-5)+' v3 M'+n1(bx)+','+n1(by+2)+' v3')}
+  D(g,bt.join(' '),'thin t1',.55,.85);D(g,d.join(' '),'hair dim',.6,.85);
+  D(g,dashes(2756,610,2731,447,3,2.2)+' '+dashes(2783,604,2758,441,3,2.2),'hair dim',.6,.85);
+  D(g,dashes(2752,609,2836,609,3,2)+' M2756,618 Q2795,622 2834,618','hair dim',.6,.85);
+  D(g,'M2791,643 V656 M2799,643 V656 M2790,659 V672 M2792.5,659 V672 M2788,646 h14 M2788,653 h14 M2791,664 h8','hair',.6,.9);
+  D(g,cir(2766,697,1.2)+cir(2834,697,1.2)+'M2762,700 h8 M2830,700 h8 M2776,693 h60','hair',.6,.9);
+  D(g,cir(2744,436,2.4)+cir(2744,436,.9),'hair',.6,.9);
+  /* lampa: pruziny, kloubove desky, srouby, drzadlo */
+  D(g,zig(2980,298,2874,361,16,3.2),'hair',.65,.95);
+  D(g,cir(2988,296,8)+cir(3095,338,8)+cir(2866,368,6.5),'hair',.7,.95);D(g,cir(2988,296,1.2)+cir(2983,291,.9)+cir(2993,301,.9)+cir(3095,338,1.2)+cir(3090,333,.9)+cir(3100,343,.9)+cir(2866,368,1.1),'hair',.72,.95);D(g,'M2858,372 q8,-9 16,0 M2852,380 h28 M2850,386 h32','hair',.72,1);
+  D(g,cir(3070,696,1.2)+cir(3118,696,1.2)+' M3072,692 h44','hair',.7,.95);
+  /* stolicka: prosiv a chrom */
+  D(g,dashes(2960,610,3010,610,3,2)+' '+dashes(2958,617,3012,617,3,2),'hair dim',.6,.85);D(g,'M2978,632 h14 M2978,645 h14 M2980,662 h10','hair',.6,.85);
+  /* koberec: lem */
+  rugDeco(g,2706,3052,16,.1,.35);
+  /* vzorkovnik (flash sheet) nad polici */
+  sheet(g,2610,266,80,46,['colibri','rose','swallow','tulip','moon','sun'],3,.2,.5);
+  /* polaroidy na snure vpravo (pod ficusem) */
+  D(g,'M3300,350 Q3356,368 3416,350','hair',.7,1);D(g,cir(3300,350,1.4)+cir(3416,350,1.4),'hair gold',.7,1);
+  [[3306,'sprig',-5],[3331,'wave',3],[3356,'moon',-3],[3384,'tulip',5]].forEach(function(p,i){var px=p[0],py=350+(i%3===1?7:i%3===2?6:2),pg=G(g,'translate('+px+','+py+') rotate('+p[2]+')');
+    D(pg,R(0,0,18,22,1),'thin t3',.75,1);D(pg,R(2,2,14,14),'hair t1',.78,1);art(pg,p[1],9,9,.1,0,1,.8,1,'hair','hair');D(pg,'M3,19.5 h8','hair dim',.8,1);D(pg,cir(9,-1,1.1),'thin gold',.75,1)});
+  /* detail prudu: stin pod vozikem a pultem */
+}
+function sheet(g,x,y,w,h,names,cols,a,b){
+  var rows=Math.ceil(names.length/cols),cw=(w-12)/cols,ch=(h-12)/rows,gd=[],i;
+  D(g,R(x,y,w,h),'ink t3',a,b);D(g,R(x+3,y+3,w-6,h-6),'thin t1',a,b);D(g,R(x+6,y+6,w-12,h-12),'hair t2',a,b);
+  for(i=1;i<cols;i++)gd.push('M'+n1(x+6+i*cw)+','+(y+8)+' V'+(y+h-8));for(i=1;i<rows;i++)gd.push('M'+(x+8)+','+n1(y+6+i*ch)+' H'+(x+w-8));
+  D(g,gd.join(' '),'hair faint',a,b);
+  names.forEach(function(nm,i){art(g,nm,x+6+cw*(i%cols+.5),y+6+ch*(Math.floor(i/cols)+.5),Math.min(cw,ch)*.78/100,0,1,a,b,'hair','hair')});
+  D(g,'M'+(x+w/2-w*.12)+','+y+' L'+(x+w/2)+','+(y-8)+' L'+(x+w/2+w*.12)+','+y,'hair dim',a,b);
+}
+archPass();lobbyPass();windowPass();tattooPass();
+
+/* ---------- druha vlna detailu: obklad, pavuciny, stiny pod policemi, doplnky ---------- */
+function extraPass(){
+  var g,k,d,e,x;
+  /* vyplnove panely obkladu: sražená hrana (bevel) a stín */
+  [[890,1300],[1300,2040],[2040,2600],[2600,3420]].forEach(function(r){
+    zx(r[0]);g=secAt('back',r[0]);d=[];e=[];
+    for(x=Math.ceil(r[0]/62)*62;x<r[1]-50;x+=62){d.push('M'+(x+3)+',611 L'+(x+8)+',616 M'+(x+51)+',611 L'+(x+46)+',616 M'+(x+3)+',669 L'+(x+8)+',664 M'+(x+51)+',669 L'+(x+46)+',664');e.push('M'+(x+8)+',664 V616 H'+(x+46)+' v4 H'+(x+12)+' V664Z')}
+    D(g,d.join(' '),'hair faint',.3,.9);FILL(g,e.join(' '),'hair',.3,.9,{fill:HF})});
+  /* pavuciny v rozich a detektor kouře */
+  function web(g,x,y,sx){var p=[],i;for(i=1;i<=4;i++)p.push('M'+x+','+y+' L'+n1(x+sx*34*cos(i*.4-.1))+','+n1(y+34*sin(i*.4+.15)));
+    for(i=1;i<=3;i++){var rr2=i*9;p.push('M'+n1(x+sx*rr2*cos(.3))+','+n1(y+rr2*sin(.55))+' Q'+n1(x+sx*rr2*.75)+','+n1(y+rr2*.75)+' '+n1(x+sx*rr2*.4)+','+n1(y+rr2*1.3))}return p.join(' ')}
+  zone(1.9,3.0);g=sec('back',0);D(g,web(g,892,262,1),'hair faint',.5,1);
+  zone(10.8,11.5);g=sec('back',3);D(g,web(g,3418,262,-1),'hair faint',.5,1);
+  zone(4.8,6.0);g=sec('back',2);D(g,ell(2210,244,9,2.6)+' '+cir(2210,243,1.6),'thin t3',.4,.9);D(g,'M2204,243 h12','hair dim',.5,.9);
+  /* stiny pod policemi na zdi */
+  zone(4.8,6.0);g=sec('back',2);d=[];[360,440,520].forEach(function(y){d.push('M2338,'+(y+6)+' H2562 L2560,'+(y+14)+' H2340Z')});FILL(g,d.join(' '),'hair',.4,.9,{fill:HF});
+  zone(6.3,7.3);g=sec('back',3);FILL(g,'M2602,475 H2694 L2692,483 H2604Z M2602,527 H2694 L2692,535 H2604Z M3140,446 H3304 L3302,454 H3142Z','hair',.4,.9,{fill:HF});
+  /* strana pod oknem: stin pod parapetem */
+  zone(4.8,6.0);g=sec('back',2);FILL(g,'M2086,527 H2274 L2268,545 H2092Z','hair',.4,.9,{fill:HF});
+  /* sedacka: deka prehozena pres levou opeku, typove nozicky */
+  zone(1.9,3.0);g=sec('room',0);
+  D(g,'M972,576 C978,562 1004,560 1016,572 L1020,632 L1002,642 L984,630 L976,602Z','ink t2',.5,.8);
+  d=[];for(k=0;k<5;k++)d.push('M'+(974+k*.6)+','+(580+k*11)+' Q'+(996)+','+(586+k*11)+' '+(1018)+','+(580+k*11));D(g,d.join(' '),'hair gold dim',.55,.85);
+  D(g,'M984,630 l0,8 M988,632 l0,9 M992,633 l0,8 M996,636 l0,9 M1000,639 l0,8','hair',.6,.85);FILL(g,'M996,566 C1006,566 1014,570 1016,576 L1020,632 L1010,636Z','hair',.6,.85,{fill:HF});
+  D(g,'M985,678 h12 M985,688 h12 M1008,678 h12 M1008,688 h12 M1242,678 h12 M1242,688 h12 M1262,678 h12 M1262,688 h12','hair',.6,.85);
+  /* pod stolem: kos na papiry, svitky se sablonami */
+  zone(1.9,3.0);g=sec('room',1);
+  D(g,'M1554,662 L1558,700 H1596 L1600,662Z','ink t3',.5,.8);D(g,ell(1577,662,23,3.4),'thin',.5,.8);d=[];for(k=0;k<5;k++)d.push('M'+n1(1555+k*.9)+','+(668+k*7)+' H'+n1(1599-k*.9));D(g,d.join(' ')+' '+dashes(1558,664,1596,664,3,2),'hair',.55,.8);
+  d=[];for(k=0;k<8;k++)d.push('M'+(1560+k*5.4)+',663 L'+(1560+k*5.4+(k%2?1.4:-1.4))+',699');D(g,d.join(' '),'hair faint',.6,.8);
+  D(g,'M1566,660 C1568,652 1574,650 1578,656 C1582,650 1590,650 1592,658','thin t3',.65,.85);D(g,'M1572,656 l3,2 M1584,654 l2,3','hair dim',.7,.85);
+  D(g,'M1706,700 L1708,654 H1736 L1738,700Z','ink t3',.55,.85);D(g,ell(1722,654,14,3),'thin',.55,.85);
+  d=[];[[1712,628],[1718,622],[1724,630],[1730,624]].forEach(function(p){d.push('M'+p[0]+',654 V'+p[1]+' q3,-3 6,0 V654')});D(g,d.join(' '),'thin t3',.6,.85);D(g,'M1707,668 H1737 M1707,684 H1737 M1713,656 L1711,698 M1722,656 V698 M1731,656 L1733,698','hair',.65,.85);
+  /* nastenne svitidlo (mosazne) vedle okna */
+  zone(4.8,6.0);g=sec('room',2);gl2=sec('light',2);
+  D(g,R(2576,404,8,34,2),'thin t3',.55,.9);D(g,'M2580,412 Q2594,404 2598,418','thin gold',.6,.9);D(g,'M2588,414 L2596,440 H2606 L2612,414Z','ink t3',.65,.95);D(g,'M2592,416 L2596,440 M2600,414 V440 M2608,416 L2606,440','hair',.7,.95);D(g,ell(2600,440,10,2.2),'thin',.7,.95);D(g,cir(2580,408,1.2)+cir(2580,434,1.2),'hair gold',.6,.9);
+  FO(g,cir(2600,442,3),'f-goldl',.9,.8,1);var sg=el('path',{d:cir(2600,446,46),fill:'url(#gGlow)'},gl2);ST.fade(sg,tt(.8)[0],tt(1)[1],.42);
+  /* tetovaci kout: dalsi vzory na zdi mezi kreslem a stolickou */
+  zone(6.3,7.3);g=sec('room',3);
+  frame(g,2906,398,52,64,'sun',.5,.85);frame(g,2966,386,44,56,'fish',.55,.9);
+  /* patka kresla a stolicka: stiny podlahy uz jsou. Mala polica s rostlinou pod oknem */
+  zone(6.3,7.3);D(g,R(3022,470,60,5,1),'thin t3',.6,.95);D(g,'M3030,475 V486 L3038,475 M3074,475 V486 L3066,475','thin',.6,.95);
+  D(g,'M3048,470 L3050,452 H3064 L3066,470Z','ink t3',.65,.95);D(g,'M3049,460 H3065','hair gold',.7,.95);
+  d=[];var f2=[];for(k=-2;k<=2;k++){var an=(-90+k*28)*PI/180;d.push(lf(3057,452,cos(an),sin(an),20-Math.abs(k)*2,3.6));f2.push('M3057,452 L'+n1(3057+cos(an)*17)+','+n1(452+sin(an)*17))}
+  D(g,d.join(' '),'thin t2',.7,1);D(g,f2.join(' '),'hair',.75,1);
+  D(g,R(3028,452,16,18,1)+' '+R(3031,446,12,6,1),'thin t2',.7,1);D(g,'M3030,458 h12 M3030,464 h8','hair gold',.75,1);
+}
+var gl2;
+extraPass();
+
 /* ---------- ambientni animace ---------- */
 var smoke=[],dust=[];
 (function(){var gs=sec('back',3);zone(6.1,6.7);for(var i=0;i<4;i++)smoke.push(FO(gs,'M0,0 C-8,-10 8,-18 0,-30 C-6,-40 8,-46 2,-58','ink thin faint',.9,.9,1));
@@ -851,6 +1164,10 @@ ST.on(function(T,time,cam){
     tf(ST.cur,'translate('+(1577+Math.sin(ph*.0013)*46).toFixed(1)+','+(548+Math.sin(ph*.0021)*20).toFixed(1)+')');ST.cur.setAttribute('opacity',(.75*uo).toFixed(2));
     tf(ST.uiHl,'translate(0,'+((.5+.5*Math.sin(ph*.0007))*52).toFixed(1)+')');ST.uiHl.setAttribute('opacity',(.18*uo).toFixed(2));
   }
+  /* hrnek na police: para; plamen svicky */
+  if(cam.x0<2600&&cam.x1>2300&&ST.steam2){
+    for(i=0;i<3;i++){var u2=((ph*.0004+i/3)%1);tf(ST.steam2[i],'translate('+(2545+Math.sin(u2*6+i*2)*2).toFixed(1)+','+(422-u2*16).toFixed(1)+')');ST.steam2[i].setAttribute('opacity',(Math.sin(u2*PI)*.7*ss(5.0,5.5,T)).toFixed(2))}
+    if(ST.flame2)tf(ST.flame2,'translate(2233,494) scale('+(1+.07*Math.sin(ph*.011)).toFixed(3)+','+(1+.18*Math.sin(ph*.0073+1)).toFixed(3)+') translate(-2233,-494)')}
   /* hodiny podle skutecneho casu */
   if(ST.clkH&&cam.x0<2300&&cam.x1>1800){var d=new Date(),sec=d.getSeconds()+d.getMilliseconds()/1000,mn=d.getMinutes()+sec/60,hr=(d.getHours()%12)+mn/60;
     if(ST.reduce)sec=0;

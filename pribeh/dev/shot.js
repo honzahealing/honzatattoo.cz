@@ -4,14 +4,14 @@
        nebo "T@x,y,w,h" (pevna kamera: stred x,y ve svete, sirka a vyska zaberu)
    --q=nochars=1&only=street   ... dalsi parametry URL
    Vypise chyby z konzole. Snimek: <prefix>-<index>.png */
-const { chromium } = require('/opt/node-tools/node_modules/playwright');
+const { chromium } = require('playwright');
 const path = require('path');
 const args = process.argv.slice(2);
 const extra = (args.find(a => a.startsWith('--q=')) || '--q=').slice(4);
 const [out, w, h, ...specs] = args.filter(a => !a.startsWith('--q='));
 const file = path.resolve(__dirname, '../../pribeh.html');
 (async () => {
-  const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+  const b = await chromium.launch();
   const p = await b.newPage({ viewport: { width: +w, height: +h } });
   const errs = [];
   p.on('pageerror', e => errs.push('pageerror: ' + e.message));

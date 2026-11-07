@@ -290,7 +290,7 @@ nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
 .hero{min-height:600px}.hero-content{padding:0 20px}
 }
 </style>
-<link rel="stylesheet" href="scrolly.css?v=14">
+<link rel="stylesheet" href="scrolly.css?v=15">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 /* Layout: jeden svitek. Sticky scena na celou obrazovku, scroll posouva kameru po dlouhe kresbe tusem (svet ~ 7000 x 900 jednotek). */
@@ -432,6 +432,31 @@ nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
   .hint i{animation:none}
 }
 
+/* zaver: stejny stin jako na zacatku filmu s andelem (scrolly.css .sc-shade), aby fotka navazala bez skoku */
+.st-shade{position:absolute;inset:0;pointer-events:none;opacity:0;z-index:3;background:radial-gradient(ellipse at 50% 45%,rgba(7,8,11,0) 0%,rgba(7,8,11,.35) 55%,rgba(7,8,11,.9) 100%),linear-gradient(180deg,rgba(7,8,11,.55) 0%,rgba(7,8,11,.2) 40%,rgba(7,8,11,.75) 100%)}
+
+/* CITELNOST PISMA: podklady a podsviceni textu nad kresbou */
+.top::before{content:'';position:absolute;left:0;right:0;top:0;height:110px;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(8,9,12,.78) 0,rgba(8,9,12,.42) 55%,rgba(8,9,12,0) 100%)}
+.logo,.top-cta,.snd{text-shadow:0 1px 12px rgba(0,0,0,.9)}
+.intro::before{content:'';position:absolute;inset:-70px -90px -60px -110px;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 60% 58% at 42% 50%,rgba(9,10,13,.9) 0,rgba(9,10,13,.66) 52%,rgba(9,10,13,0) 100%)}
+.intro h1{text-shadow:0 2px 4px rgba(0,0,0,.7),0 4px 36px rgba(0,0,0,.85)}
+.intro h1 em{text-shadow:0 0 28px rgba(200,164,92,.35),0 2px 4px rgba(0,0,0,.7)}
+.intro p{color:rgba(240,232,214,.9);font-size:1.06rem;font-weight:400;text-shadow:0 1px 10px rgba(0,0,0,.9)}
+.eyebrow{text-shadow:0 1px 8px rgba(0,0,0,.9)}
+.caption{padding:16px 22px 18px;border-radius:16px;background:linear-gradient(160deg,rgba(12,13,17,.86),rgba(12,13,17,.7));border:1px solid rgba(200,164,92,.22);box-shadow:0 18px 50px rgba(0,0,0,.55);-webkit-backdrop-filter:blur(8px) saturate(1.1);backdrop-filter:blur(8px) saturate(1.1)}
+.cap-n{color:var(--gold-light);font-size:.66rem}
+.cap-t{color:#F3EBDA;text-shadow:0 2px 14px rgba(0,0,0,.8)}
+.cap-p{color:rgba(240,232,214,.9);font-size:.98rem;font-weight:400;line-height:1.55}
+.steps::before{content:'';position:absolute;left:calc(-1 * clamp(16px,4vw,48px));right:calc(-1 * clamp(16px,4vw,48px));bottom:calc(-30px - env(safe-area-inset-bottom,0px));height:120px;z-index:-1;pointer-events:none;background:linear-gradient(0deg,rgba(8,9,12,.92) 0,rgba(8,9,12,.6) 55%,rgba(8,9,12,0) 100%)}
+.steps button{color:rgba(231,221,199,.66);font-size:.6rem;text-shadow:0 1px 8px rgba(0,0,0,.9)}
+.steps .tr{background:rgba(231,221,199,.28)}
+.bub{box-shadow:0 0 0 1px rgba(200,164,92,.35),0 16px 44px rgba(0,0,0,.6),0 0 40px rgba(232,213,163,.12)}
+.bub b{color:#7A5C24}
+.bub p{color:#120F0A}
+.days b,.days small,.days span{text-shadow:0 2px 16px rgba(0,0,0,.9)}
+.hint{color:rgba(240,232,214,.8);text-shadow:0 1px 8px rgba(0,0,0,.9)}
+@media (max-width:720px){.caption{padding:12px 16px 14px;left:12px;right:12px;max-width:none}.cap-p{font-size:.9rem}.intro::before{inset:-40px -30px -40px -30px}}
+
 /* napojeni na web */
 #story{background:transparent;color:var(--line)}
 #story *{box-sizing:border-box}
@@ -515,6 +540,7 @@ body:not(.in-story) #story .top .snd{background:rgba(12,15,20,.78);padding:9px 1
     <div class="grain" id="grain"></div>
     <div class="floorfade"></div>
     <div class="introfade" id="introfade"></div>
+    <div class="st-shade" id="stShade"></div>
 
     <div class="intro" id="intro">
       <div class="eyebrow">Black &amp; Grey · Colour · Praha — Žižkov</div>
@@ -1092,10 +1118,11 @@ foc.addEventListener('click',function(e){e.stopPropagation();closeFO()});
 fo.addEventListener('click',function(e){if(e.target===fo)closeFO()})}
 })();
 </script>
-<script src="scrolly.js?v=14"></script>
+<script src="scrolly.js?v=15"></script>
 <script src="pribeh/core.js"></script>
 <script src="pribeh/street.js"></script>
 <script src="pribeh/studio.js"></script>
+<script src="pribeh/doors.js"></script>
 <script src="pribeh/close.js"></script>
 <script src="pribeh/chars.js"></script>
 <script src="pribeh/audio.js"></script>

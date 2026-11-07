@@ -82,4 +82,4 @@ Hodně detailu, ale rozumně: street do ~4000 prvků, studio do ~4500, close do 
 node pribeh/dev/shot.js <prefix> 1440 900 "0" "2.7" "5.4@1577,525,520,380"
 node pribeh/dev/shot.js <prefix> 390 844 "0"
 ```
-Spec `T` použije kameru z časové osy, `T@x,y,w,h` pevnou kameru. Volitelně `--q=nochars=1` (bez postav) nebo `--q=only=street` (jen tvůj modul). Snímky ukládej do `/tmp/claude-0/-home-user-honzatattoo-cz/e747a6b8-4249-50c2-888d-eca6d024c3cc/scratchpad/shots/<modul>/` a prohlédni je nástrojem Read. Skript vypíše chyby konzole: musí být „zadne“.
+Spec `T` použije kameru z časové osy, `T@x,y,w,h` pevnou kameru. Volitelně `--q=nochars=1` (bez postav) nebo `--q=only=street` (jen tvůj modul). Snímky ukládej do `/tmp/claude-0/-home-user-honzatattoo-cz/4574e607-dfe7-5e3b-9cfd-c50732b1b27c/scratchpad/shots/<modul>/` a prohlédni je nástrojem Read. Skript vypíše chyby konzole: musí být „zadne“.
