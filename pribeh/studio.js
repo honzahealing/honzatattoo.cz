@@ -295,7 +295,7 @@ function facade(){
   /* obklad dveri */
   D(g,'M790,360 V700','thin',.3,.8);D(g,'M794,338 V700','hair',.3,.8);
   /* zelezna konzola a stit */
-  var gS=G(g,'translate(0,-100)'),gN=G(g,'translate(0,112)');
+  var gS=G(sec('front',0),'translate(0,-100)'),gN=G(g,'translate(0,112)'); /* vystrc nad hlavou je v popredi pred fasadou */
   D(gS,'M800,424 H696','ink',.3,.8);D(gS,'M798,455 C782,452 764,442 752,426','thin',.4,.9);
   D(gS,'M772,424 C772,412 758,410 758,420 C758,428 766,428 766,422','thin',.4,.9);
   D(gS,'M730,424 C730,416 722,414 722,420 C722,425 727,425 727,421','hair',.4,.9);

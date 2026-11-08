@@ -1,18 +1,18 @@
 /* pribeh/doors.js - dvere studia: kridlo s panty, klikou a sklem, otvirani natocenim kolem pantu,
    osvetleny otvor za kridlem, svetlo na chodnik a zarubeň v popredi (postava jí pri pruchodu zajde).
-   Dvere 1 (vstup z ulice) x 800-890, dvere 2 (odchod) x 3420-3510. Pant je vpravo (x 887 + dx).
+   Dvere 1 (vstup z ulice) x 800-890, dvere 2 (odchod) x 3420-3510. Pant je vlevo (x 803 + dx), klika vpravo; kridlo se otevira dovnitr, pryc od divaka, takze postava jde pred nim.
    ST.doorOpen(i,T) = 0..1 (jak moc jsou dvere otevrene), ST.doorHandle(i,T) = [x,y] kliky ve svete. */
 ST.module('doors',function(ST){
 'use strict';
 var el=ST.el,R=ST.rect,ss=ST.ss,GY=ST.GY;
 var DOORS=[
-  {dx:0,open:function(T){return ss(1.98,2.24,T)*(1-ss(2.52,2.86,T))},show:[.9,1.5],inside:true,sign:true},
-  {dx:2620,open:function(T){return ss(11.98,12.2,T)},show:[10.5,10.9],inside:false,sign:false}
+  {dx:0,open:function(T){return ss(1.94,2.14,T)*(1-ss(2.56,2.88,T))},show:[.9,1.5],inside:true,sign:true},
+  {dx:2620,open:function(T){return ss(11.96,12.14,T)},show:[10.5,10.9],inside:false,sign:false}
 ];
 var X0=803,W=84,Y0=362,Y1=700,HY=521,ANG=74*Math.PI/180;
 function fx(d,x){return x+d.dx}
 ST.doorOpen=function(i,T){return DOORS[i].open(T)};
-ST.doorHandle=function(i,T){var d=DOORS[i],o=d.open(T),c=Math.cos(o*ANG),hx=X0+W+d.dx;return [hx-(hx-(X0+10+d.dx))*c,HY+2]};
+ST.doorHandle=function(i,T){var d=DOORS[i],o=d.open(T),c=Math.cos(o*ANG),hx=X0+d.dx;return [hx+(W-12)*c,HY+2]};
 
 if(!document.getElementById('gDoorIn')){
   var gi=el('linearGradient',{id:'gDoorIn',x1:0,y1:0,x2:0,y2:1},ST.defs);
@@ -24,7 +24,7 @@ if(!document.getElementById('gDoorIn')){
 }
 
 DOORS.forEach(function(d,i){
-  var x=fx(d,X0),x1=x+W,hx=x1;
+  var x=fx(d,X0),x1=x+W,hx=x;
   var sec=function(layer){return ST.section(ST.L[layer],x-60,x1+60)};
   var gRoom=sec('room'),gFront=sec('back'),gLight=sec('light');
   var all=el('g',{},gRoom);ST.fade(all,d.show[0],d.show[1],1);
@@ -66,13 +66,13 @@ DOORS.forEach(function(d,i){
     ST.D(leaf,R(x+22,p[0]+8,W-44,p[1]-16,1),'hair',null,null,{fill:'url(#hatchV)'});
   });
   /* klika s rozetou a klicova dirka (vyska kliky asi 105 cm) */
-  ST.D(leaf,R(x+5,HY-14,12,34,5),'thin solid gold',null);
-  ST.D(leaf,'M'+(x+11)+','+HY+' H'+(x+34)+' q4,0 4,4','thin gold',null);
-  ST.D(leaf,ST.circ(x+11,HY,3),'hair goldl',null,null,{fill:'var(--t1)'});
-  ST.D(leaf,ST.circ(x+11,HY+12,1.6)+' M'+(x+11)+','+(HY+13)+' v3','hair gold',null);
+  ST.D(leaf,R(x1-17,HY-14,12,34,5),'thin solid gold',null);
+  ST.D(leaf,'M'+(x1-11)+','+HY+' H'+(x1-34)+' q-4,0 -4,4','thin gold',null);
+  ST.D(leaf,ST.circ(x1-11,HY,3),'hair goldl',null,null,{fill:'var(--t1)'});
+  ST.D(leaf,ST.circ(x1-11,HY+12,1.6)+' M'+(x1-11)+','+(HY+13)+' v3','hair gold',null);
   /* kopaci plech a panty */
   ST.D(leaf,R(x+8,684,W-16,12,1),'thin gold',null,null,{fill:'rgba(200,164,92,.12)'});
-  [386,521,650].forEach(function(py){ST.D(leaf,R(x1-6,py-10,7,20,2),'thin gold',null);ST.D(leaf,'M'+(x1-6)+','+py+' h7','hair goldl',null)});
+  [386,521,650].forEach(function(py){ST.D(leaf,R(x-1,py-10,7,20,2),'thin gold',null);ST.D(leaf,'M'+(x-1)+','+py+' h7','hair goldl',null)});
   /* stin, jak se kridlo nataci od svetla */
   dk=el('path',{d:R(x,Y0,W,Y1-Y0),fill:'#000',opacity:0},leaf);
   /* hrana kridla (tloustka), viditelna pri otevreni */
@@ -92,7 +92,7 @@ DOORS.forEach(function(d,i){
     var a=o*ANG,c=Math.cos(a),s=Math.sin(a);
     leaf.setAttribute('transform',o>0?'translate('+hx+','+HY+') scale('+c.toFixed(4)+','+(1-.06*s).toFixed(4)+') translate('+(-hx)+','+(-HY)+')':'');
     dk.setAttribute('opacity',(s*.5).toFixed(3));
-    var fe=hx-W*c,t=9*s,h0=HY-(HY-Y0)*(1-.06*s),h1=HY+(Y1-HY)*(1-.06*s);
+    var fe=hx+W*c,t=-9*s,h0=HY-(HY-Y0)*(1-.06*s),h1=HY+(Y1-HY)*(1-.06*s);
     edge.setAttribute('d',o>.01?'M'+(fe-t).toFixed(1)+','+(h0+2).toFixed(1)+' L'+fe.toFixed(1)+','+h0.toFixed(1)+' L'+fe.toFixed(1)+','+h1.toFixed(1)+' L'+(fe-t).toFixed(1)+','+(h1-2).toFixed(1)+' Z':'');
     spill.setAttribute('opacity',(o*(d.inside?.9:.4)).toFixed(3));beam.setAttribute('opacity',(o*(d.inside?.45:.15)).toFixed(3));
   });
