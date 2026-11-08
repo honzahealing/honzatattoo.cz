@@ -320,6 +320,11 @@ grad('clGlv','linearGradient',{x1:0,y1:0,x2:0,y2:1},[[0,'#2a2a30',1],[.35,'#1212
 grad('clSkinH','linearGradient',{x1:0,y1:0,x2:0,y2:1},[[0,'#2c2626',1],[.5,'#1d1a1a',1],[1,'#100e0e',1]]);
 var LIGHT=[-.3,-.95],fid=0;
 /* retez clanku [x,y,polomer] od zakladu ke spicce -> uzavreny obrys s kulatou spickou */
+function chainOpen(Pp){var n=Pp.length,Lp=[],Rp=[],i;
+  for(i=0;i<n;i++){var a=Pp[Math.max(0,i-1)],b=Pp[Math.min(n-1,i+1)],tx=b[0]-a[0],ty=b[1]-a[1],l=Math.sqrt(tx*tx+ty*ty)||1;tx/=l;ty/=l;
+    Lp.push([Pp[i][0]-ty*Pp[i][2],Pp[i][1]+tx*Pp[i][2]]);Rp.push([Pp[i][0]+ty*Pp[i][2],Pp[i][1]-tx*Pp[i][2]]);Pp[i].t=[tx,ty]}
+  var e=Pp[n-1],t=e.t,cap=[];for(i=1;i<6;i++){var an=Math.PI/2-i*Math.PI/6,c=Math.cos(an),sn=Math.sin(an);cap.push([e[0]+(-t[1]*c+t[0]*sn)*e[2],e[1]+(t[0]*c+t[1]*sn)*e[2]])}
+  return cr(Lp.concat(cap,Rp.reverse()),false)}
 function chain(Pp){
   var n=Pp.length,Lp=[],Rp=[],i;
   for(i=0;i<n;i++){var a=Pp[Math.max(0,i-1)],b=Pp[Math.min(n-1,i+1)],tx=b[0]-a[0],ty=b[1]-a[1],l=Math.sqrt(tx*tx+ty*ty)||1;tx/=l;ty/=l;
@@ -349,14 +354,15 @@ function finger(par,pts,o){o=o||{};var g=G(par),d=chain(pts),s=o.side||litSide(p
   Q(inn,edge(pts,-s,1.02),{fill:'none',stroke:GOLD,'stroke-width':2.2,opacity:o.bounce==null?.22:o.bounce,'stroke-linecap':'round'});
   Q(inn,edge(pts,s,.42),{fill:'none',stroke:GL,'stroke-width':pts[1][2]*.55,opacity:.1,'stroke-linecap':'round'});
   /* ostry odlesk nitrilu prerusovany v kloubech */
-  for(var i=0;i<n-1;i++){var a=pts[i],b=pts[i+1],m0=[a[0]+(b[0]-a[0])*.18,a[1]+(b[1]-a[1])*.18,a[2]],m1=[a[0]+(b[0]-a[0])*.82,a[1]+(b[1]-a[1])*.82,b[2]];
+  if(o.plain){var e0=pts[n-1];Q(inn,ST.ellipse(e0[0],e0[1]-e0[2]*.2,e0[2]*.8,e0[2]*.55),{fill:'#FFF6DF',opacity:.07});Q(inn,ST.ellipse(e0[0]+e0[2]*.2,e0[1]+e0[2]*.6,e0[2]*.9,e0[2]*.4),{fill:GOLD,opacity:.12})}
+  for(var i=0;i<n-1&&!o.plain;i++){var a=pts[i],b=pts[i+1],m0=[a[0]+(b[0]-a[0])*.18,a[1]+(b[1]-a[1])*.18,a[2]],m1=[a[0]+(b[0]-a[0])*.82,a[1]+(b[1]-a[1])*.82,b[2]];
     Q(inn,edge([m0,m1],s,.5),{fill:'none',stroke:'#FFF6DF','stroke-width':1.3,opacity:.55-.1*i,'stroke-linecap':'round'})}
   /* bulka kloubu a vrasky */
-  for(var j=1;j<n-1;j++){crease(inn,pts[j],pts[j+1],pts[j][2],j===1?3:2,.9);
+  for(var j=1;j<n-1&&!o.plain;j++){crease(inn,pts[j],pts[j+1],pts[j][2],j===1?3:2,.9);
     var k=pts[j],t=k.t;Q(inn,'M'+f1(k[0]+s*t[1]*k[2]*.5-t[0]*k[2]*.3)+','+f1(k[1]-s*t[0]*k[2]*.5-t[1]*k[2]*.3)+' q'+f1(t[0]*k[2]*.3+s*t[1]*k[2]*.1)+','+f1(t[1]*k[2]*.3-s*t[0]*k[2]*.1)+' '+f1(t[0]*k[2]*.6)+','+f1(t[1]*k[2]*.6),{fill:'none',stroke:'#FFF6DF','stroke-width':1.6,opacity:.35,'stroke-linecap':'round'})}
   /* bříško: odlesk na spicce */
   var e=pts[n-1],te=e.t;el('ellipse',{cx:f1(e[0]+te[0]*e[2]*.35+s*te[1]*e[2]*.25),cy:f1(e[1]+te[1]*e[2]*.35-s*te[0]*e[2]*.25),rx:f1(e[2]*.35),ry:f1(e[2]*.18),fill:'#FFF6DF',opacity:.18,transform:'rotate('+f1(Math.atan2(te[1],te[0])/R)+' '+f1(e[0]+te[0]*e[2]*.35)+' '+f1(e[1]+te[1]*e[2]*.35)+')'},inn);
-  el('path',{d:d,fill:'none',stroke:'rgba(231,221,199,.58)','stroke-width':1.5,'stroke-linejoin':'round'},g);
+  el('path',{d:chainOpen(pts),fill:'none',stroke:'rgba(231,221,199,.5)','stroke-width':1.4,'stroke-linejoin':'round','stroke-linecap':'round'},g);
   return g;
 }
 /* plocha ruky (hrbet, dlan): vypln, vnitrni kresba pres callback, obrys */
@@ -385,146 +391,119 @@ function cuff(par,p1,p2,dir){var nx=dir[0]*10,ny=dir[1]*10;
   line(par,'M'+f1(p1[0]+nx*.5)+','+f1(p1[1]+ny*.5)+' Q'+f1((p1[0]+p2[0])/2+nx*1.3)+','+f1((p1[1]+p2[1])/2+ny*1.3)+' '+f1(p2[0]+nx*.5)+','+f1(p2[1]+ny*.5),'#FFF6DF',1.2,.4);
 }
 
-/* ---------- leva ruka: lezi naplocho vlevo od motivu, prsty napinaji kuzi, palec stahuje dolu ----------
-   meritko stylizovane (~25 jednotek na cm): hrbet je lichobeznik, kloubni rada siroka asi jako 4 prsty */
-var LG=G(FR),LGi=G(LG),LGw=G(LGi);ST.closeParts.glove=LG;
-var towel=null;
-(function(){
-  var g=G(LGw,{transform:'translate(44,0)'});
-  /* mekke stiny dlane a prstu na kuzi (svetlo shora vlevo -> stin vpravo dolu) */
-  [[420,392,120,74,22],[548,438,70,18,8],[560,474,64,16,12],[548,370,60,16,-6],[520,330,50,14,-12],[440,520,56,20,44]].forEach(function(s){el('ellipse',{cx:s[0]+12,cy:s[1]+14,rx:s[2],ry:s[3],fill:'url(#clShadowSoft)',opacity:.8,transform:'rotate('+s[4]+' '+(s[0]+12)+' '+(s[1]+14)+')'},g)});
-  /* napnuta kuze: jemne tahove linky od spicek prstu k motivu */
-  line(g,'M 606,420 C 618,421 630,423 642,426 M 610,410 C 622,410 634,411 646,413 M 588,478 C 600,481 612,485 622,490 M 596,354 C 608,356 620,360 630,364 M 470,548 C 474,560 476,572 476,584 M 456,550 C 458,562 458,574 456,586','rgba(231,221,199,.17)',1);
-  /* predlokti tatera (tetovane) a manzeta */
-  forearm(g,[[330,358,54],[120,282,60],[-220,160,70]],57);
-  /* prsty od malicku (nahore) k ukazovaku (dole u palce) */
-  finger(g,[[466,338,14],[510,326,12.6],[538,320,11.6],[556,316,10.6]]);
-  finger(g,[[476,374,15.4],[532,364,14],[568,362,12.8],[592,363,11.8]]);
-  finger(g,[[480,412,16.4],[540,410,14.8],[580,414,13.6],[606,420,12.4]]);
-  finger(g,[[474,450,16],[528,458,14.4],[564,468,13.2],[588,476,12]]);
-  /* hrbet ruky (lichobeznik od kloubu k zapesti) */
-  palm(g,[[460,322],[472,352],[480,392],[484,432],[474,466],[446,480],[404,474],[364,452],[330,420],[322,400],[344,330],[360,312],[412,312]],function(inn){
-    [[466,338],[476,374],[480,412],[474,450]].forEach(function(k,i){
-      line(inn,'M'+(k[0]-8)+','+k[1]+' C'+(k[0]-40)+','+(k[1]-6-i*3)+' '+(k[0]-80)+','+(k[1]-12-i*6)+' '+(k[0]-118)+','+(k[1]-22-i*10),'rgba(231,221,199,.17)',1.1);
-      line(inn,'M'+(k[0]-10)+','+(k[1]-10)+' q9,-2 13,6','#FFF6DF',1.5,.34)});
-    line(inn,'M 356,326 C 392,314 430,314 462,328','#FFF6DF',1.3,.45);
-    line(inn,'M 350,320 C 392,306 432,306 466,322',GL,9,.08);
-    line(inn,'M 352,446 C 384,466 420,476 452,478',GOLD,2,.22);
-    line(inn,'M 346,392 q 10,-8 22,-4 M 350,406 q 12,-6 24,-2 M 344,378 q 10,-8 20,-6 M 404,462 q 8,-9 20,-8','rgba(231,221,199,.18)',.9);
-  });
-  cuff(g,[357,312],[321,410],[-.94,-.34]);
-  /* palec */
-  finger(g,[[345,425,21],[392,478,16.6],[432,516,14.2],[458,538,12.8]]);
-  /* papirovy ubrousek mezi palcem a ukazovakem (jen pri otirani) */
-  towel=G(g,{opacity:0});
-  el('path',{d:cr([[452,486],[512,480],[566,494],[586,524],[566,552],[512,560],[464,546],[446,516]],true),fill:'#BFB6A2',stroke:'rgba(40,30,20,.55)','stroke-width':1.2},towel);
-  line(towel,'M 462,504 C 500,498 540,504 578,520 M 458,532 C 500,528 540,536 574,546 M 520,482 C 524,510 524,536 520,558','rgba(60,45,30,.4)',1.1);
-  el('path',{d:cr([[540,512],[566,518],[576,534],[558,546],[536,538]],true),fill:'#2a2320',opacity:.4},towel);
-  g.insertBefore(towel,g.childNodes[6]);
-})();
-
-/* ---------- strojek (rotacni pero) a prava ruka, drzi ho jako tuzku ----------
-   lokalni souradnice: hrot jehly v 0,0, osa strojku po +x dozadu, +y strana palce.
-   Ukazovak lezi navrchu gripu, palec z boku, prostrednik pod gripem, prstenik a malicek zatocene do dlane. */
+/* ---------- jen prava ruka: tater drzi pen strojek jako velkou tuzku ----------
+   Podle reference (img/about.jpg, navody k drzeni pen strojku): ukazovak lezi navrchu gripu az ke kartridzi,
+   palec svira grip z boku, prostrednik ho podpira zespodu, prstenik a malicek jsou zatocene do dlane
+   a malickova hrana ruky se opira o kuzi klienta (kotva, ze ktere ruka vede linku).
+   Pen: rovny valec ~16 cm, grip ~32 mm s vroubkovanim a pryzovymi krouzky, kartridz s pruhlednym nosem,
+   telo motoru s kroužkem nastaveni zdvihu, bezdratova baterie s displejem napeti. Telo v cerne ochranne folii.
+   lokalni souradnice: hrot jehly v 0,0, osa strojku po +x dozadu, +y strana palce. */
 var MC=G(FR);ST.closeParts.machine=MC;
-var needleG=null,machLift=null,MR=null;
+var needleG=null,needleIn=null,machLift=null,MR=null,led=null,curl=null;
+function nail(par,pts,s,op){var n=pts.length,e=pts[n-1],q=pts[n-2],tx=e[0]-q[0],ty=e[1]-q[1],l=Math.hypot(tx,ty)||1;tx/=l;ty/=l;
+  var nx=-ty*s,ny=tx*s,r=e[2],cx=e[0]-tx*r*.25+nx*r*.38,cy=e[1]-ty*r*.25+ny*r*.38,ang=Math.atan2(ty,tx)/R;
+  Q(par,ST.rect(-r*.62,-r*.3,r*1.15,r*.6,r*.28),{transform:'translate('+f1(cx)+','+f1(cy)+') rotate('+f1(ang)+')',fill:'#FFF6DF',opacity:op||.07,stroke:'rgba(255,246,223,.28)','stroke-width':.8})}
 (function(){
-  el('ellipse',{cx:112,cy:-92,rx:150,ry:13,fill:'url(#clShadowSoft)',opacity:.85,transform:'rotate(-52 112 -92)'},MC);
-  el('ellipse',{cx:226,cy:-300,rx:170,ry:105,fill:'url(#clShadowSoft)',opacity:.7,transform:'rotate(-52 226 -300)'},MC);
-  machLift=G(MC);MR=G(machLift,{transform:'rotate(-52)'});var M=G(MR,{transform:'scale(.9)'});
-  /* zadni prsty: malicek, prstenik (zatocene), prostrednik pod gripem */
-  finger(M,[[244,-140,16],[204,-150,15],[180,-138,13.6],[188,-120,12]]);
-  finger(M,[[258,-106,18],[204,-116,16.6],[176,-98,15],[184,-80,13.4]]);
-  finger(M,[[270,-66,19.5],[204,-72,17.6],[158,-54,15.8],[132,-30,14.4]]);
-  /* --- strojek --- */
-  var mg=G(M);
+  /* stiny strojku a ruky na kuzi */
+  el('ellipse',{cx:120,cy:-100,rx:160,ry:12,fill:'url(#clShadowSoft)',opacity:.85,transform:'rotate(-52 120 -100)'},MC);
+  el('ellipse',{cx:236,cy:-300,rx:180,ry:110,fill:'url(#clShadowSoft)',opacity:.72,transform:'rotate(-52 236 -300)'},MC);
+  machLift=G(MC);MR=G(machLift,{transform:'rotate(-52)'});var M=G(MR,{transform:'scale(1.04)'});
+  /* Ruka je kreslena z boku palce (jako na fotce img/about.jpg): -y = horni strana, +y = ke kuzi.
+     Poradi odzadu: hrbet a dlan, zatocene prsty, prostrednik pod gripem, strojek v jamce, ukazovak navrchu, palec nejbliz. */
+  curl=G(M);var body=G(M);
+  /* kontaktni stin: zatoceny malicek a hrana dlane lezi na kuzi */
+  Q(M,ST.ellipse(236,176,54,15),{fill:'url(#clShadowSoft)',opacity:.95,transform:'rotate(30 236 176)'});
+  var mid=[[276,58,19],[216,58,17.5],[168,42,16],[134,26,14.5]];
+  /* ===== PEN STROJEK ===== */
+  /* skutecny pen je zavality: delka asi petinasobek prumeru gripu (cca 16 cm / 32 mm) */
+  var mg=G(M,{transform:'scale(1,1.42)'});
+  /* jehla: hrot venku, uvnitr nosu vidět svazek jehel a tyc */
   needleG=G(mg);
-  line(needleG,'M 0,0 L 9,0',GL,1.8,.95);line(needleG,'M 9,-.5 L 30,-.5 M 9,.5 L 30,.5','#FFF6DF',.7,.45);
-  Q(mg,'M 6,-2.2 C 13,-4 22,-7.5 30,-9 L 30,9 C 22,7.5 13,4 6,2.2 Z',{fill:'rgba(231,221,199,.10)',stroke:'rgba(231,221,199,.6)','stroke-width':1.1});
-  line(mg,'M 9,-2 C 16,-3.8 23,-6.4 29,-7.4','#FFF6DF',1,.6);
-  /* cartridge: pruhledna, membrana, rebra */
-  Q(mg,ST.rect(30,-13,48,26,4),{fill:'rgba(231,221,199,.08)',stroke:'rgba(231,221,199,.55)','stroke-width':1.1});
-  var rb='';for(var i=0;i<5;i++)rb+='M '+(37+i*8)+',-13 V 13 ';line(mg,rb,'rgba(231,221,199,.22)',.8);
-  line(mg,'M 32,-8.5 H 76','#FFF6DF',1.2,.4);line(mg,'M 30,0 H 78',GL,.6,.35);
-  Q(mg,ST.rect(76,-17,8,34,2.5),{fill:'#1a1a1f',stroke:'rgba(231,221,199,.5)','stroke-width':1});
-  Q(mg,ST.rect(84,-19,6,38,2),{fill:'#3a2f1c',stroke:GOLD,'stroke-width':1});
-  /* grip: vroubkovany, mirne prohnuty, pryzovy krouzek */
-  var gp='M 90,-20 C 118,-18.4 146,-18.4 176,-20.6 L 176,20.6 C 146,18.4 118,18.4 90,20 Z';
-  Q(mg,gp,{fill:'#121216',stroke:'rgba(231,221,199,.55)','stroke-width':1.2});
-  var kn='';for(var x=94;x<176;x+=6){kn+='M '+x+',-19 l 9,38 M '+(x+9)+',-19 l -9,38 '}
-  var kg=G(mg,{'clip-path':clipOf(gp)});line(kg,kn,'rgba(231,221,199,.15)',.7);
-  Q(kg,'M 90,-20 L 176,-20 L 176,-6 L 90,-6 Z',{fill:'#FFF6DF',opacity:.06});
-  line(mg,'M 93,-13.5 C 118,-12.6 146,-12.6 174,-14.4','#FFF6DF',1.6,.32);
-  Q(mg,ST.rect(98,-20.6,6,41.2,2),{fill:'#0a0a0c',stroke:'rgba(231,221,199,.45)','stroke-width':.9});
-  /* telo motoru v ochranne folii */
-  Q(mg,ST.rect(176,-22,124,44,6),{fill:'#0e0e11',stroke:'rgba(231,221,199,.5)','stroke-width':1.2});
-  Q(mg,ST.rect(179,-21.4,5,42.8,1),{fill:'#3a2f1c',stroke:GOLD,'stroke-width':.8});
-  line(mg,'M 210,-21 V 21 M 214,-21 V 21','rgba(231,221,199,.2)',.8);
-  line(mg,'M 232,5 C 246,-5 262,-7 278,-3 M 240,3 l 3,-7 M 249,0 l 3,-7 M 258,-2 l 3,-6 M 267,-3 l 3,-5 M 244,4 l 2,5 M 253,2 l 2,5 M 262,0 l 2,5',GOLD,.8,.55);
-  var fol='M 170,-26 C 200,-28 240,-25 270,-27 C 286,-28 298,-26 306,-27 L 309,27 C 298,25 286,28 270,26 C 240,24 200,28 170,26 Z';
+  line(needleG,'M 0,0 L 8,0',GL,2,.95);Q(needleG,ST.circ(0,0,1.4),{fill:'#FFF6DF',opacity:.9});
+  needleIn=G(mg);line(needleIn,'M 8,-.8 L 62,-.8 M 8,.8 L 62,.8','#FFF6DF',.7,.5);line(needleIn,'M 62,0 L 84,0',GL,2.2,.4);
+  /* nos kartridze: pruhledny kuzel s odleskem */
+  var nose='M 5,-2.6 C 14,-4.6 28,-9 42,-12.2 L 42,12.2 C 28,9 14,4.6 5,2.6 Z';
+  Q(mg,nose,{fill:'rgba(231,221,199,.09)',stroke:'rgba(231,221,199,.62)','stroke-width':1.1});
+  line(mg,'M 9,-2.4 C 18,-4.4 30,-7.8 40,-10','#FFF6DF',1.1,.65);line(mg,'M 12,3 C 22,5.6 32,8.4 40,10','rgba(0,0,0,.5)',1);
+  /* telo kartridze: pruhledne, rebra, membrana, barevny zadni kroužek */
+  Q(mg,ST.rect(42,-14.5,44,29,3),{fill:'rgba(231,221,199,.07)',stroke:'rgba(231,221,199,.55)','stroke-width':1.1});
+  var rb='';for(var i=0;i<5;i++)rb+='M '+(48+i*7.5)+',-14.5 V 14.5 ';line(mg,rb,'rgba(231,221,199,.2)',.8);
+  line(mg,'M 44,-10 H 84','#FFF6DF',1.2,.42);Q(mg,ST.ellipse(76,0,2.6,9),{fill:'rgba(200,164,92,.25)',stroke:GOLD,'stroke-width':.6});
+  Q(mg,ST.rect(84,-16,7,32,2),{fill:'#3a2f1c',stroke:GOLD,'stroke-width':1});
+  /* grip: hlinikovy, prohnuty v pase, krizove vroubkovani, dva pryzove krouzky */
+  var gp='M 91,-20.5 C 118,-18.2 152,-18.2 182,-20.5 L 182,20.5 C 152,18.2 118,18.2 91,20.5 Z';
+  Q(mg,gp,{fill:'#131317',stroke:'rgba(231,221,199,.58)','stroke-width':1.2});
+  var kn='';for(var x=96;x<182;x+=5.5){kn+='M '+x+',-19 l 8,38 M '+(x+8)+',-19 l -8,38 '}
+  var kg=G(mg,{'clip-path':clipOf(gp)});line(kg,kn,'rgba(231,221,199,.15)',.65);
+  Q(kg,'M 90,-21 L 183,-21 L 183,-8 L 90,-8 Z',{fill:'#FFF6DF',opacity:.07});Q(kg,'M 90,9 L 183,9 L 183,21 L 90,21 Z',{fill:'#000',opacity:.4});
+  line(mg,'M 94,-14 C 120,-12.6 152,-12.6 179,-14.4','#FFF6DF',1.6,.34);
+  [[101,6],[166,6]].forEach(function(r){Q(mg,ST.rect(r[0],-20.2,r[1],40.4,2),{fill:'#08080a',stroke:'rgba(231,221,199,.4)','stroke-width':.8});line(mg,'M '+(r[0]+1)+',-15 h '+(r[1]-2),'#FFF6DF',1,.18)});
+  /* lemovany prechod grip / telo (stribrny) */
+  Q(mg,ST.rect(182,-20,9,40,1.5),{fill:'#2a2a30',stroke:'rgba(231,221,199,.6)','stroke-width':1});line(mg,'M 183,-15 h 7','#FFF6DF',1.2,.5);
+  /* telo motoru */
+  var bd=ST.rect(191,-18.5,110,37,3);
+  Q(mg,bd,{fill:'#0f0f12',stroke:'rgba(231,221,199,.52)','stroke-width':1.2});
+  line(mg,'M 193,-12 H 299','#FFF6DF',2,.18);line(mg,'M 193,12 H 299','#000',3,.5);
+  /* kroužek nastaveni zdvihu (mosaz, vroubky) a stupnice */
+  Q(mg,ST.rect(258,-19.5,16,39,2),{fill:'#3a2f1c',stroke:GOLD,'stroke-width':1});
+  var kr='';for(var y=-17;y<18;y+=3)kr+='M 259,'+y+' h 14 ';line(mg,kr,GL,.6,.45);
+  var sc='';for(var k=0;k<7;k++)sc+='M '+(278+k*3)+',-18.5 v '+(k%3?3:5)+' ';line(mg,sc,GL,.6,.6);
+  /* ryti na tele: pirko (Honzuv pozitivni motiv) */
+  line(mg,'M 208,6 C 222,-4 236,-6 250,-2 M 215,4 l 3,-6 M 223,1 l 3,-6 M 231,-1 l 3,-5 M 239,-2 l 3,-5 M 219,5 l 2,5 M 227,3 l 2,5 M 235,1 l 2,4',GOLD,.8,.55);
+  /* ochranna folie (barrier bag) pres telo: zmackana, leskla */
+  var fol='M 186,-24 C 210,-26 240,-23 262,-25 C 290,-27 306,-24 318,-26 L 321,26 C 306,24 290,27 262,25 C 240,23 210,26 186,24 Z';
   Q(mg,fol,{fill:'rgba(231,221,199,.05)',stroke:'rgba(231,221,199,.3)','stroke-width':1});
-  var rr=rng(91),cz='';for(var j=0;j<18;j++){var cx=178+rr()*124,cy=-23+rr()*46,l=6+rr()*16,an=(rr()-.5)*1.4;cz+='M '+f1(cx)+','+f1(cy)+' l '+f1(Math.cos(an)*l)+','+f1(Math.sin(an)*l*.35)+' '}
-  line(mg,cz,'#FFF6DF',.8,.24);line(mg,'M 180,-15 C 220,-17 260,-15 300,-17','#FFF6DF',2.2,.16);
-  Q(mg,'M 300,-18 C 311,-18 317,-11 317,0 C 317,11 311,18 300,18 Z',{fill:'#16161a',stroke:'rgba(231,221,199,.5)','stroke-width':1.1});
-  Q(mg,ST.rect(317,-7,14,14,2),{fill:'#1a1a1f',stroke:'rgba(231,221,199,.45)','stroke-width':1});
-  /* kabel odchazi pod rukou dozadu */
-  var cb='M 331,0 C 380,2 420,24 480,54 C 560,92 700,110 900,90';
-  line(mg,cb,'rgba(231,221,199,.45)',9);line(mg,cb,'#0b0b0d',6.4);line(mg,'M 331,-2 C 380,0 420,21 480,51 C 560,89 700,107 900,87','#FFF6DF',1,.25);
-  /* --- hrbet ruky --- */
-  palm(M,[[282,-2],[300,14],[336,30],[380,40],[440,44],[484,36],[500,20],[504,-40],[496,-104],[450,-140],[370,-156],[296,-158],[256,-156],[236,-146],[234,-128],[248,-118],[252,-102],[250,-88],[262,-78],[268,-62],[268,-48],[278,-36],[280,-18]],function(inn){
-    [[276,-22],[270,-66],[258,-106],[244,-140]].forEach(function(k,i){
-      var td='M'+(k[0]+10)+','+k[1]+' C'+(k[0]+70)+','+(k[1]+i*2)+' '+(k[0]+140)+','+(k[1]+i*8)+' '+(k[0]+210)+','+(k[1]+10+i*12);
-      line(inn,td,GL,7,.07);line(inn,td,'#FFF6DF',1.2,.26);
-      line(inn,'M'+(k[0]+4)+','+(k[1]-13)+' q8,9 0,22','#FFF6DF',1.7,.36);
-      Q(inn,ST.ellipse(k[0]+6,k[1],13,11),{fill:'#FFF6DF',opacity:.045})});
-    [-44,-88,-124].forEach(function(y,i){line(inn,'M 290,'+(y+2)+' C 360,'+(y+6+i*2)+' 430,'+(y+10+i*6)+' 490,'+(y+18+i*10),'#000',9,.45)});
-    line(inn,'M 250,-156 C 330,-170 430,-160 498,-110',GL,11,.08);Q(inn,ST.ellipse(380,-90,90,40),{fill:GL,opacity:.035,transform:'rotate(8 380 -90)'});
-    line(inn,'M 258,-154 C 340,-166 430,-156 492,-110','#FFF6DF',1.4,.45);
-    line(inn,'M 300,16 C 360,38 420,48 480,46',GOLD,2.4,.22);
-    line(inn,'M 298,8 C 316,16 336,26 352,32','#000',7,.7);
-    line(inn,'M 456,-60 q 14,-5 24,3 M 462,-34 q 14,-5 24,3 M 452,-90 q 14,-6 24,0 M 320,-150 q 9,-9 21,-7 M 356,-160 q 9,-9 21,-7','rgba(231,221,199,.18)',.9);
+  var rr=rng(91),cz='';for(var j=0;j<20;j++){var cx=192+rr()*124,cy=-22+rr()*44,l=6+rr()*15,an=(rr()-.5)*1.4;cz+='M '+f1(cx)+','+f1(cy)+' l '+f1(Math.cos(an)*l)+','+f1(Math.sin(an)*l*.35)+' '}
+  line(mg,cz,'#FFF6DF',.8,.24);line(mg,'M 192,-16 C 230,-18 280,-16 318,-18','#FFF6DF',2.4,.15);
+  /* bezdratova baterie: displej s napetim a tlacitko */
+  Q(mg,ST.rect(301,-19.5,54,39,4),{fill:'#16161b',stroke:'rgba(231,221,199,.55)','stroke-width':1.1});
+  Q(mg,ST.rect(311,-8,28,16,2),{fill:'#050507',stroke:'rgba(231,221,199,.4)','stroke-width':.8});
+  led=el('text',{x:325,y:5,transform:'scale(1,.704)','font-size':12,'text-anchor':'middle','font-family':"'Outfit',sans-serif",fill:GL,'font-weight':500},mg);led.textContent='8.5';
+  Q(mg,ST.circ(347,0,3.4),{fill:'#3a2f1c',stroke:GOLD,'stroke-width':.9});
+  Q(mg,'M 355,-17 C 362,-17 366,-10 366,0 C 366,10 362,17 355,17 Z',{fill:'#1d1d22',stroke:'rgba(231,221,199,.5)','stroke-width':1});
+  line(mg,'M 303,-14 H 353','#FFF6DF',1.4,.3);
+  /* --- ruka z boku: hrbet nahore stoupa k zapesti, dole thenar a hrana dlane --- */
+  palm(body,[[244,-40],[252,-62],[268,-70],[290,-70],[350,-80],[414,-84],[452,-74],[462,-20],[460,30],[432,62],[382,98],[324,138],[282,160],[252,160],[236,132],[238,80],[234,30],[238,-10]],function(inn){
+    /* slacha ukazovaku a natazeny hrbet, svaly thenaru, vrasky rukavice */
+    /* modelace: svetlo lampy na hrbetu, stin na dlani, bulka kloubu ukazovaku */
+    Q(inn,ST.ellipse(330,-40,120,46),{fill:GL,opacity:.06,transform:'rotate(-6 330 -40)'});Q(inn,ST.ellipse(340,-56,80,18),{fill:'#FFF6DF',opacity:.05});
+    Q(inn,'M 236,90 C 300,110 380,80 470,20 L 470,200 L 236,200 Z',{fill:'#000',opacity:.35});
+    Q(inn,ST.ellipse(262,-60,16,10),{fill:'#FFF6DF',opacity:.08});line(inn,'M 252,-64 q 10,-8 22,-4','#FFF6DF',1.6,.5);
+    line(inn,'M 262,-56 C 320,-68 380,-74 446,-72',GL,9,.07);line(inn,'M 266,-58 C 322,-70 382,-76 444,-74','#FFF6DF',1.4,.45);
+    line(inn,'M 270,-40 C 330,-48 390,-52 440,-50','#FFF6DF',1,.14);
+    line(inn,'M 296,22 C 320,6 360,0 410,8',GL,6,.06);
+    line(inn,'M 300,60 C 330,80 360,96 392,96','#000',10,.4);
+    line(inn,'M 260,120 C 290,132 320,130 350,120',GOLD,2.4,.22);
+    line(inn,'M 420,-50 q 10,-3 18,3 M 424,-20 q 10,-3 18,3 M 424,12 q 10,-3 18,3 M 330,-74 q 8,-6 18,-4','rgba(231,221,199,.18)',.9);
   });
-  cuff(M,[496,30],[502,-112],[1,.05]);
-  forearm(M,[[566,-42,74],[760,-40,82],[1000,-34,90]],73);
+  cuff(body,[452,-80],[462,36],[1,.06]);
+  forearm(body,[[510,-22,124],[740,-30,132],[1000,-38,140]],73);
+  /* zatoceny malicek a prstenik (vidime zakladni clanek a ohnuty kloub), prostrednik podpira grip zespodu */
+  finger(curl,[[276,140,16.5],[250,176,16],[232,184,16]],{plain:1});
+  finger(curl,[[276,104,18.5],[244,142,17.5],[222,148,17]],{plain:1});
+  finger(curl,mid);nail(curl,mid,1,.05);
+  /* strojek lezi v jamce mezi palcem a ukazovakem, pres hranu hrbetu ruky */
+  M.appendChild(mg);
   /* palec z boku gripu a ukazovak navrchu */
-  finger(M,[[350,60,27],[226,50,20],[156,34,17.5],[114,20,16]]);
-  finger(M,[[276,-22,20.5],[198,-12,18.5],[142,-7,16.8],[102,-5,15]]);
+  var idx=[[268,-48,19],[198,-40,17.5],[148,-32,16],[108,-24,14.5]];finger(M,idx);nail(M,idx,-1,.09);
+  var thb=[[318,24,27],[248,18,22],[188,11,19.5],[140,6,17.5]];finger(M,thb);nail(M,thb,-1,.1);
+  /* prsty tlaci do gripu: jemne vrasky rukavice na brisku ukazovaku a palce */
+  line(M,'M 140,0 q 6,3 12,1 M 152,-1 q 6,3 12,1 M 112,-12 q 5,-3 10,-2','rgba(231,221,199,.2)',.8);
   el('circle',{cx:6,cy:6,r:3.2,fill:'#2a2320',opacity:.8},MC);el('circle',{cx:5,cy:5,r:1.1,fill:'#FFF6DF',opacity:.6},MC);
 })();
 
 /* ==========================================================
-   5. PREBYTECNA BARVA A OTIRANI
-   kolem cerstvych linek zustava tmavy film barvy; levá ruka ho obcas setre ubrouskem
+   5. ZIVOT: jehla kmita uvnitr kartridze, ruka dycha, zapesti sleduje hrot, displej baterie
    ========================================================== */
-var WIPES=[[8.4,8.54],[8.78,8.92],[9.5,9.62]],haze=null;
-function wipeK(T){for(var i=0;i<WIPES.length;i++){var w=WIPES[i];if(T>w[0]&&T<w[1])return Math.sin(Math.PI*(T-w[0])/(w[1]-w[0]))}return 0}
-function hazeAmt(T){var st=8.1,i;for(i=0;i<WIPES.length;i++)if(T>=WIPES[i][1])st=WIPES[i][1];
-  for(i=0;i<WIPES.length;i++){var w=WIPES[i];if(T>w[0]&&T<w[1]){var ps=i?WIPES[i-1][1]:8.1;return ST.clamp((w[0]-ps)/.3)*ST.clamp(1-(T-w[0])/(w[1]-w[0])*1.4)}}
-  return ST.clamp((T-st)/.3)}
-function buildHaze(){if(haze||!ST.tm)return;var m=ST.tm;haze=G(m.g);m.g.insertBefore(haze,m.g.firstChild);haze.items=[];
-  m.items.forEach(function(it,i){if(i>=15)return;var e=el('path',{d:it.e.getAttribute('d'),fill:'none',stroke:'#140f0d','stroke-width':9,'stroke-linecap':'round','stroke-linejoin':'round',pathLength:1},haze);haze.items.push({e:e,src:it.e})})}
-
-/* ==========================================================
-   6. ZIVOT: jehla vibruje, ruce dychaji a sleduji hrot, otirani
-   ========================================================== */
-var gx=0,gy=0,rotS=-52;
-ST.fade(LG,7.75,8.0,1,9.62,9.76);
+var rotS=-52;
 ST.on(function(T,time){
   if(T<7.6||T>10.95)return;
-  buildHaze();
-  var tip=ST.closeTip,tx=0,ty=0,tattoo=T>8.1&&T<9.5,br=ST.reduce?0:Math.sin(time*.0021);
-  if(tip&&tattoo){tx=Math.max(-8,Math.min(8,(tip.x-760)*.04));ty=Math.max(-8,Math.min(8,(tip.y-470)*.04))}
-  gx+=(tx-gx)*.08;gy+=(ty-gy)*.08;
-  LGi.setAttribute('transform','translate('+(gx+br*1.5).toFixed(2)+','+(gy+br*2).toFixed(2)+')');
-  /* otirani: ruka s ubrouskem prejede pres motiv a zpet */
-  var w=wipeK(T),sway=ST.reduce?0:Math.sin(time*.018)*w*18;
-  LGw.setAttribute('transform',w>0?'translate('+(w*210+sway).toFixed(1)+','+(w*20-Math.abs(sway)*.3).toFixed(1)+')':'');
-  if(towel)towel.setAttribute('opacity',Math.min(1,w*3).toFixed(3));
-  if(haze){var h=hazeAmt(T)*(T<9.55?1:0);haze.setAttribute('opacity',(h*.42).toFixed(3));
-    if(h>0)for(var i=0;i<haze.items.length;i++){var it=haze.items[i];it.e.style.strokeDasharray='1 1';it.e.style.strokeDashoffset=it.src.style.strokeDashoffset;it.e.style.visibility=it.src.style.visibility}}
-  if(needleG&&!ST.reduce){var v=tattoo?Math.sin(time*.11)*1.6:0;needleG.setAttribute('transform','translate('+v.toFixed(2)+',0)')}
-  /* zapesti se natoci podle polohy hrotu (prirozene drzeni) */
-  if(MR&&tip){var rt=-52+Math.max(-7,Math.min(7,(tip.x-760)*.04))-Math.max(-4,Math.min(4,(tip.y-470)*.02));rotS+=(rt-rotS)*.06;MR.setAttribute('transform','rotate('+rotS.toFixed(2)+')')}
+  var tip=ST.closeTip,tattoo=T>8.1&&T<9.5,pack=T>9.02&&T<9.5,br=ST.reduce?0:Math.sin(time*.0021);
+  if(needleG&&!ST.reduce){var v=tattoo?Math.sin(time*.11)*1.8:0;needleG.setAttribute('transform','translate('+v.toFixed(2)+',0)');needleIn.setAttribute('transform','translate('+v.toFixed(2)+',0)')}
+  /* zapesti se natoci podle polohy hrotu (prirozene drzeni), prsty opory se lehce posouvaji po kuzi */
+  if(MR&&tip){var rt=-52+Math.max(-7,Math.min(7,(tip.x-760)*.04))-Math.max(-4,Math.min(4,(tip.y-470)*.02))+(pack&&!ST.reduce?Math.sin(time*.006)*2.5:0);rotS+=(rt-rotS)*.06;MR.setAttribute('transform','rotate('+rotS.toFixed(2)+')')}
+  if(curl&&!ST.reduce)curl.setAttribute('transform','translate('+(br*1.2).toFixed(2)+','+(Math.sin(time*.0017)*1.2).toFixed(2)+')');
+  if(led){var lv=tattoo?(8.4+.1*Math.round(Math.sin(time*.0007))).toFixed(1):'8.5';if(led.textContent!==lv)led.textContent=lv}
   if(machLift){var lift=ST.closeLift||0;machLift.setAttribute('transform','translate('+(lift*8).toFixed(1)+','+(-lift*14+br*1.2).toFixed(1)+')')}
 });
 });

@@ -427,8 +427,8 @@ function sitMix(T,t0,t1,from,to){
 var tatSpot=[2881,521];
 function clientAt(T,time){
   var R0=function(p,x){return resolve(p,1,x)},st;
-  if(T<2.02)st=walkSeg(T,.3,1.9,-1000,750);
-  else if(T<2.95)st=walkSeg(T,2.02,2.95,750,1330);
+  if(T<2.06)st=walkSeg(T,.3,1.9,-1000,812);
+  else if(T<2.95)st=walkSeg(T,2.06,2.95,812,1330);
   else if(T<4.35){
     var p=idle(STAND,time,1),r=R0(p,1330);
     var g1=ext(STAND,{aF:{fk:1,a1:34,el:52,wr:-20},hF:'open'}),g2=ext(STAND,{aF:{fk:0,tx:12,ty:-238,abs:150},hF:'flat',headT:-4});
@@ -459,13 +459,13 @@ function clientAt(T,time){
     if(T>10.92)r4=mixR(R0(idle(STAND,time,1),2790),R0(look,2790),ss(10.95,11.2,T)*(1-ss(11.32,11.5,T)));
     st={x:2790,face:1,p:r4};
   }
-  else if(T<12.04)st=walkSeg(T,11.5,11.98,2790,3372);
-  else if(T<12.5)st=walkSeg(T,12.04,12.5,3372,3900);
+  else if(T<12.12)st=walkSeg(T,11.5,11.96,2790,3436);
+  else if(T<12.55)st=walkSeg(T,12.12,12.55,3436,3900);
   else{var up=ext(STAND,{headT:-15,lean:-1});st={x:3900,face:1,p:mixR(R0(idle(STAND,time,1),3900),R0(idle(up,time,1),3900),ss(12.5,12.8,T))}}
   /* ruka na klice dveri */
   if(ST.doorHandle){
-    if(T>1.7&&T<2.3){var hd=ST.doorHandle(0,T);st.p=reachArm(st.p,st.x,hd[0],hd[1],ss(1.78,1.92,T)*(1-ss(2.1,2.22,T)))}
-    if(T>11.75&&T<12.3){var hd2=ST.doorHandle(1,T);st.p=reachArm(st.p,st.x,hd2[0],hd2[1],ss(11.86,11.98,T)*(1-ss(12.1,12.2,T)))}
+    if(T>1.7&&T<2.3){var hd=ST.doorHandle(0,T);st.p=reachArm(st.p,st.x,hd[0],hd[1],ss(1.78,1.9,T)*(1-ss(2.06,2.16,T)))}
+    if(T>11.75&&T<12.3){var hd2=ST.doorHandle(1,T);st.p=reachArm(st.p,st.x,hd2[0],hd2[1],ss(11.84,11.95,T)*(1-ss(12.08,12.16,T)))}
   }
   st.rolled=T>7.35&&T<10.95;
   st.mark=ss(10.55,10.9,T);

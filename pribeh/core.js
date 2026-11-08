@@ -95,6 +95,7 @@ var WI={
   prace:{iw:450,ih:600,src:'img/tattoo_work.jpg',st:'mat'},
   poseidon:{iw:337,ih:600,src:'img/tattoo7.jpg',st:'black'},
   postava:{iw:413,ih:600,src:'img/tattoo4.jpg',st:'black'},
+  portret:{iw:600,ih:1067,src:'img/about.jpg',st:'mat'},
   omne:{card:1,tag:'O MNĚ',t:['Tetuji výhradně','*pozitivní* motivy'],b:['Každé tetování je pro mě','forma umění a výraz krásy.']},
   styl:{card:1,tag:'STYL',t:['Estetika a','*pozitivní energie*'],b:['Realismus · Zvířata · Portréty','Květiny · Nápisy · Barvy']},
   filo:{card:1,tag:'FILOZOFIE',t:['Tělo je plátno.','Jehla je *štětec.*'],b:['A výsledek: příběh navždy.']},
@@ -110,9 +111,9 @@ function tc(c){c.top=1;return c}
 function it(o,w,h){o.w=w;o.h=h||(o.iw?w*o.ih/o.iw:w);o.m=FM[o.card?'card':o.cert?'cert':o.st];return o}
 /* steny: [x0, x1, horni hrana, skupiny] ; skupina = sloupce, sloupec = obrazy shora dolu */
 var WALLS=[
-  {x0:2572,x1:3330,top:258,gap:12,groups:[
+  {x0:2572,x1:3398,top:258,gap:12,groups:[
     [[it(WI.omne,58,60),it(WI.styl,58,60)],[it(GAL[1],96)],tc([it(WI.prace,56),it(WI.filo,56,40),it(WI.rem,56,50)])],
-    [[it(PH,100)],[it(WI.postava,44),it(WI.poseidon,40)]]]},
+    [[it(PH,100)],[it(WI.postava,44),it(WI.poseidon,40)],tc([it(WI.portret,46)])]]},
   {x0:988,x1:1774,top:258,gap:12,groups:[
     [[it(WI.s4,64,44),it(WI.lev,64)],[it(GAL[5],124)],[it(WI.s2,62,44),it(GAL[3],62)]],
     [[it(GAL[4],54),it(WI.s3,54,40)],[it(WI.andel,82)]],
