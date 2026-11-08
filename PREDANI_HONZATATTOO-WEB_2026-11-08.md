@@ -88,7 +88,7 @@ Jen Honziho slova z vláken 6. až 8. 11.:
 
 - **Zvířata:** žádné kočky, psi ani jiná chlupatá zvířata v kresbě (alergie).
 - **Motivy:** jen pozitivní motivy na zdech, v oknech a v tetování. Žádné mandaly, lebky, dýky ani násilí.
-- **Jméno nástroje:** nepsat ho do názvů větví ani do předávacích dokumentů.
+- **Jméno nástroje:** nepsat ho do názvů větví, do předávacích dokumentů ani do commitů. Commity bez podpisových řádků na konci zprávy; autor `honzahealing <jankoblertattoo@gmail.com>` (nastavit `git config user.name` a `user.email` v repozitáři, výchozí autor kontejneru je jiný). Historie `main` i `pribeh-na-scroll` je od toho očištěná (8. 11., s Honziho souhlasem).
 
 ## Otevřené
 
