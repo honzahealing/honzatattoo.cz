@@ -3,8 +3,8 @@
 
 ## Novinky 7. 11. 2026 (verze 5) — čti první
 
-- **Větev:** práce je teď na `claude/beautiful-volta-qqu59n` (vychází z `pribeh-na-scroll`). Pull request zatím není.
-- **Náhled verze 5:** nový artefakt https://claude.ai/artifact/Ad3FTgi6YvGuDd8C9t3Z8q (starý odkaz z verze 4 zůstal beze změny). Publikace: `build_site.py <scratchpad>/site/index.html --artifact`, `<title>` na „Honza Tattoo · Příběh“, publikovat stejný soubor se soubory `img/*`.
+- **Větev:** práce je teď na pracovní větev vlákna (vychází z `pribeh-na-scroll`). Pull request zatím není.
+- **Náhled verze 5:** nový artefakt artefakt Ad3FTgi6YvGuDd8C9t3Z8q (starý odkaz z verze 4 zůstal beze změny). Publikace: `build_site.py <scratchpad>/site/index.html --artifact`, `<title>` na „Honza Tattoo · Příběh“, publikovat stejný soubor se soubory `img/*`.
 - **Nový modul `pribeh/doors.js`:** obě dveře (křídlo s panty, klikou a sklem, otočení kolem pantu, osvětlený otvor, světlo na chodník). `ST.doorOpen(i,T)`, `ST.doorHandle(i,T)`. Staré křídlo ve `studio.js` je odstraněné, cedule HONZA TATTOO je zvednutá nad hlavu.
 - **Průchod dveřmi:** klientka zastaví (x 750, T 1,9), sáhne na kliku, dveře se otevřou (T 1,98–2,24), projde, zavřou se za ní (2,52–2,86). Odchod: dojde k x 3372, klika, dveře 2 se otevřou (11,98–12,2), vyjde ven. Honza stojí na x 3296.
 - **Ruce v detailu (`close.js`, oddíl 4–6):** přepsané od základu: správné pořadí prstů (palec, ukazovák … malíček), články s klouby, nitrilový lesk, manžeta, tetované předloktí tatéra, pravá ruka drží strojek jako tužku (ukazovák nahoře, palec z boku, prostředník pod gripem, prsteník a malíček zatočené). Přibylo otírání ubrouskem (T 8,4; 8,78; 9,5) a film barvy kolem čerstvých linek.
@@ -44,7 +44,7 @@ Repozitář `honzahealing/honzatattoo.cz`, větev **`pribeh-na-scroll`**, posled
 | 61943 | `preview.html` | Náhled nového webu s filmem anděla. Příběh do něj vkládá build, soubor sám zůstal beze změny. |
 | 69050 | `index.html` | Živý web. **Nesahat**, příběh na něm není. |
 
-Náhled pro Honziho je artefakt https://claude.ai/artifact/Uh7SnyB1vDteRY2dQgzCDV, **verze 4**. Je to složený `preview-pribeh.html` s obrázky z `img/`. Publikace: `build_site.py <scratchpad>/site/index.html --artifact`, v něm nahradit `<title>` za „Honza Tattoo · Příběh“ a publikovat na stejné `url` se soubory `img/*.jpg` a `img/*.webp`. Honzi verzi 4 ještě neviděl.
+Náhled pro Honziho je artefakt artefakt Uh7SnyB1vDteRY2dQgzCDV, **verze 4**. Je to složený `preview-pribeh.html` s obrázky z `img/`. Publikace: `build_site.py <scratchpad>/site/index.html --artifact`, v něm nahradit `<title>` za „Honza Tattoo · Příběh“ a publikovat na stejné `url` se soubory `img/*.jpg` a `img/*.webp`. Honzi verzi 4 ještě neviděl.
 
 **Mrtvé:**
 - první jednosouborový `pribeh.html` (minimalistická kresba tuší, zamítnuto 6. 11.), zůstal jen v historii gitu
