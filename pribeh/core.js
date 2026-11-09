@@ -456,23 +456,27 @@ function render(time){
   /* lampa: stmivani okoli */
   var lamp=ST.lamp(T),lp=toScreen(2866,500),dim=$('dimmer');
   dim.style.opacity=lamp;
-  if(lamp>0)dim.style.background='radial-gradient(circle at '+lp.x.toFixed(0)+'px '+lp.y.toFixed(0)+'px, transparent 0, transparent '+(130*cam.s).toFixed(0)+'px, rgba(4,5,7,.62) '+(520*cam.s).toFixed(0)+'px)';
+  /* pri najezdu do detailu okoli ruky ztmavne, aby se pod detailem neprolinal zbytek studia */
+  var zd=ss(7.52,7.8,T)*(1-ss(10.74,11.02,T));
+  if(lamp>0){if(zd>0)lp=toScreen(lerp(2866,ZW0[0]-22,zd),lerp(500,ZW0[1],zd));
+    dim.style.background='radial-gradient(circle at '+lp.x.toFixed(0)+'px '+lp.y.toFixed(0)+'px, transparent 0, transparent '+(lerp(130,14,zd)*cam.s).toFixed(0)+'px, rgba(4,5,7,'+lerp(.62,.985,zd).toFixed(3)+') '+(lerp(520,40,zd)*cam.s).toFixed(0)+'px)'}
 
   /* detail ruky */
-  var cl=$('close'),co=ss(7.72,8.05,T)*(1-ss(10.6,10.9,T));
+  /* nejdriv plynule nabehne podklad s predloktim (zakryje svet), teprve potom kresba nad nim */
+  var cl=$('close'),co=ss(7.9,8.1,T)*(1-ss(10.56,10.74,T)),bo=ss(7.78,8.04,T)*(1-ss(10.64,10.92,T));
   /* detail se pri najezdu zvetsuje spolu se svetem */
   var ctr=cam.zu>0&&cam.zu<1?'translate('+cam.ctx.toFixed(2)+','+cam.cty.toFixed(2)+') scale('+cam.cz.toFixed(5)+')':'';
   if(ctr!==ST._ctr){ST._ctr=ctr;$('closeScene').setAttribute('transform',ctr);if(ST.closeBack)ST.closeBack.setAttribute('transform',ctr)}
   cl.style.opacity=co;cl.style.visibility=co<=0?'hidden':'visible';
-  var cb=$('closeBg');cb.style.opacity=co;cb.style.visibility=co<=0?'hidden':'visible';
-  var wh=co>=.999?'none':'';if(world.style.display!==wh)world.style.display=wh;
-  if(co>0){
+  var cb=$('closeBg');cb.style.opacity=bo;cb.style.visibility=bo<=0?'hidden':'visible';
+  var wh=bo>=.999?'none':'';if(world.style.display!==wh)world.style.display=wh;
+  if(bo>0){
     var tk=ss(8.1,9.0,T),tip=setMotif(ST.tm,tk),pk=lin(9.02,9.5,T);
     packMotif(ST.tm,pk);if(ST.tm.glow)ST.tm.glow.setAttribute('opacity',(ss(9.6,10.45,T)*.7).toFixed(3));
-    if(ST.tm.stencil)ST.tm.stencil.setAttribute('opacity',(ss(7.75,8.0,T)*(1-ss(9.35,9.7,T))*.9).toFixed(3));
+    if(ST.tm.stencil)ST.tm.stencil.setAttribute('opacity',(ss(7.9,8.1,T)*(1-ss(9.35,9.7,T))*.9).toFixed(3));
     ST.red.setAttribute('opacity',(ss(8.6,9.5,T)*(1-ss(9.8,10.35,T))).toFixed(3));
     ST.film.setAttribute('opacity',(ss(9.6,9.72,T)*(1-ss(9.98,10.3,T))).toFixed(3));
-    var mOn=ss(7.95,8.15,T)*(1-ss(9.5,9.66,T)),mach=ST.closeParts.machine;
+    var mOn=ss(7.98,8.16,T)*(1-ss(9.5,9.66,T)),mach=ST.closeParts.machine;
     var tq=null;
     if(tip&&tip.e.getPointAtLength){var pt=tip.e.getPointAtLength(tip.len),M=$('closeScene').getCTM().inverse().multiply(tip.e.getCTM());tq=pt.matrixTransform(M);
       /* jehla pracuje na miste i pri zastavenem scrollu: kmita podel linky */
