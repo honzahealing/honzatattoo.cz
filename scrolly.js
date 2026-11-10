@@ -130,7 +130,7 @@ function layout(){
   timeline();
   buildLUT();
 
-  ANGEL=(mobile?4.2:5)*H;X=.8*H;L=(mobile?2.1:2.4)*H;XG=(mobile?1.3:1.6)*H;
+  ANGEL=(mobile?4.2:5)*H;X=.8*H;L=(mobile?2.1:2.4)*H;XG=(mobile?1.5:1.9)*H;
   for(var i=0;i<shots.length;i++){
     var sh=shots[i];
     if(sh.img.naturalWidth){sh.iw=sh.img.naturalWidth;sh.ih=sh.img.naturalHeight}

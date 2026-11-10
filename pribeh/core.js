@@ -450,14 +450,19 @@ function updateCam(time){
     cam.x=Ax-lerp(b0x,b1x,ez)/sZ;cam.y=Ay-lerp(b0y,b1y,ez)/sZ;cam.s=sZ;
   }
   var gc=ST.galCam;
-  if(gc){var A=GAL[gc.a],B=GAL[gc.b],ca=camFor(A,gc.ra),cb=camFor(B,gc.rb),e=sm5(gc.k);
-    /* oblouk: oddaleni, az je videt velky kus studia (cela vyska mistnosti), prelet a priblizeni */
-    var path=flyPath([ca.x,ca.y,vw/ca.s],[cb.x,cb.y,vw/cb.s],vw<vh?1.05:1.3),fp=path(e),wm=path(.5)[2],asp=vw/vh;
-    var dxf=Math.abs(ca.x-cb.x),wPeak=Math.min(1900,Math.max(wm,(vw<vh?700:820)*asp,dxf+(vw<vh?260:700))),bell=Math.sin(Math.PI*e);bell*=bell;
-    var wv=fp[2]*Math.pow(wPeak/wm,bell);
-    cam.s=vw/wv;cam.x=fp[0];cam.y=fp[1]+(455-fp[1])*bell*clamp((wv-200)/500);
+  if(gc){var A=GAL[gc.a],B=GAL[gc.b],ca=camFor(A,gc.ra),cb=camFor(B,gc.rb),t=clamp(gc.k),asp=vw/vh;
+    /* oblouk: oddalit, az je videt velky kus studia, v oddaleni preletet k dalsi fotce a priblizit.
+       Sirka zaberu se meni v logaritmu (stejne vnimana rychlost zoomu), posun bezi hlavne v oddaleni. */
+    var w0=vw/ca.s,w1=vw/cb.s,dxf=Math.abs(ca.x-cb.x),por=vw<vh,
+        /* na vysku mene oddaleni, aby mistnost nebyla jen uzky pruh */
+        wPeak=por?Math.min(560,Math.max(380,dxf*.5+260)):Math.min(2300,Math.max(900*asp,dxf+760)),
+        up=sm5(lin(0,.4,t)),dn=sm5(lin(.6,1,t)),pan=sm5(lin(.16,.84,t)),hold=up*(1-dn),
+        lw=Math.log(w0)*(1-up)+Math.log(wPeak)*hold+Math.log(w1)*dn,wv=Math.exp(lw);
+    cam.s=vw/wv;
+    /* pri oddalovani zustava fotka, ze ktere kamera vyjela, v zaberu; stred se drzi ve vysce mistnosti */
+    cam.x=lerp(ca.x,cb.x,pan);cam.y=lerp(lerp(ca.y,cb.y,pan),por?480:455,hold*clamp((wv-200)/(por?200:500)));
     /* zaber nesmi vyjet za okraj budovy studia */
-    var hwv=wv/2,lo=930+hwv,hi=3400-hwv;if(lo<hi)cam.x+=(clamp((cam.x-lo)/(hi-lo))*(hi-lo)+lo-cam.x)*bell;
+    var hwv=wv/2,lo=930+hwv,hi=3400-hwv;if(lo<hi)cam.x+=(clamp((cam.x-lo)/(hi-lo))*(hi-lo)+lo-cam.x)*hold;
   }
   if(ST.debug.cam){var dc=ST.debug.cam;cam.x=dc[0];cam.y=dc[1];cam.s=Math.min(vw/dc[2],vh/dc[3])}
   else if(!reduce){cam.x+=Math.sin(time*.00031)*2.2;cam.y+=Math.cos(time*.00027)*1.6}
@@ -483,12 +488,12 @@ function render(time){
   var lamp=ST.lamp(T),lp=toScreen(2866,500),dim=$('dimmer');
   dim.style.opacity=lamp;
   /* pri najezdu do detailu okoli ruky ztmavne, aby se pod detailem neprolinal zbytek studia */
-  var zd=ss(7.5,7.8,T)*(1-ss(10.76,11.04,T));
+  var zd=ss(7.5,7.8,T)*(1-ss(10.86,11.1,T));
   if(lamp>0){if(zd>0)lp=toScreen(lerp(2866,ZW0[0]-22,zd),lerp(500,ZW0[1],zd));
     var r0=lerp(130*cam.s,0,zd),r1=lerp(520*cam.s,Math.max(vw,vh)*.02,zd*zd);
     dim.style.background=zd>=.999?'rgb(4,5,7)':'radial-gradient(circle at '+lp.x.toFixed(0)+'px '+lp.y.toFixed(0)+'px, transparent 0, transparent '+r0.toFixed(0)+'px, rgba(4,5,7,'+lerp(.62,1,zd).toFixed(3)+') '+Math.max(r0+2,r1).toFixed(0)+'px)'}
   /* nejdriv plynule nabehne podklad s predloktim (zakryje svet), teprve potom kresba nad nim */
-  var cl=$('close'),co=ss(7.9,8.1,T)*(1-ss(10.54,10.7,T)),bo=ss(7.74,7.9,T)*(1-ss(10.7,10.88,T));
+  var cl=$('close'),co=ss(7.9,8.1,T)*(1-ss(10.54,10.7,T)),bo=ss(7.68,7.84,T)*(1-ss(10.78,10.94,T));
   /* detail se pri najezdu zvetsuje spolu se svetem */
   var ctr=cam.zu>0&&cam.zu<1?'translate('+cam.ctx.toFixed(2)+','+cam.cty.toFixed(2)+') scale('+cam.cz.toFixed(5)+')':'';
   if(ctr!==ST._ctr){ST._ctr=ctr;$('closeScene').setAttribute('transform',ctr);if(ST.closeBack)ST.closeBack.setAttribute('transform',ctr)}
