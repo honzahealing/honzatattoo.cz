@@ -666,12 +666,13 @@ function windowZ(){
   winFar=G(vg);winNear=G(vg);
   FO(winFar,X(ART.moon.a,2230,356,.2,0,1),'f-goldl',.8,.3,.6);
   /* Zizkovsky vysilac v dalce: tri tubusy (dva nizsi, jeden hlavni), tri kabiny, technicka plosina a antena */
-  D(winFar,'M2190.8,500 V374 H2196.6 V500Z','thin t2',.3,.7);D(winFar,'M2182.4,500 V394 H2185.8 V500Z M2186.6,500 V392 H2190 V500Z','thin t2',.3,.7);
-  D(winFar,'M2193.7,374 V322 M2192.2,367 H2195.2 M2192.6,359 H2194.8 M2191.6,350 H2195.8 M2192.8,340 H2194.6','hair',.3,.7);
-  D(winFar,R(2181.2,390.4,10,2.6,.8),'hair t2',.3,.7);
-  [[449.6,5,24],[443.6,6.4,25.6],[423,8.4,25.6]].forEach(function(p){D(winFar,R(2189.6-p[2]/2,p[0]-p[1]/2,p[2],p[1],p[1]*.38),'thin t2',.3,.7)});
-  FO(winFar,'M2179,448.8 h21.2 v1.6 h-21.2Z M2178.6,442.6 h22 v2 h-22Z M2178.6,421.8 h22 v2.4 h-22Z','f-gold',.85,.4,.8);
-  winBlink=el('path',{d:cir(2193.7,321,1.8),'class':'f-goldl',opacity:0},winFar);
+  var winTw=G(winFar,'translate(-27,0)');
+  D(winTw,'M2190.8,500 V374 H2196.6 V500Z','thin t2',.3,.7);D(winTw,'M2182.4,500 V394 H2185.8 V500Z M2186.6,500 V392 H2190 V500Z','thin t2',.3,.7);
+  D(winTw,'M2193.7,374 V322 M2192.2,367 H2195.2 M2192.6,359 H2194.8 M2191.6,350 H2195.8 M2192.8,340 H2194.6','hair',.3,.7);
+  D(winTw,R(2181.2,390.4,10,2.6,.8),'hair t2',.3,.7);
+  [[449.6,5,24],[443.6,6.4,25.6],[423,8.4,25.6]].forEach(function(p){D(winTw,R(2189.6-p[2]/2,p[0]-p[1]/2,p[2],p[1],p[1]*.38),'thin t2',.3,.7)});
+  FO(winTw,'M2179,448.8 h21.2 v1.6 h-21.2Z M2178.6,442.6 h22 v2 h-22Z M2178.6,421.8 h22 v2.4 h-22Z','f-gold',.85,.4,.8);
+  winBlink=el('path',{d:cir(2193.7,321,1.8),'class':'f-goldl',opacity:0},winTw);
   var rf=rng(9),sx=2060,sky=['M2060,500 V480'];
   while(sx<2310){var w=10+rf()*16,h=476+rf()*16;sky.push(' H'+n1(sx)+' V'+n1(h)+' H'+n1(sx+w));sx+=w;if(rf()<.3)sky.push(' l3,-5 l3,5')}
   D(winFar,sky.join('')+' V500Z','thin t1 dim',.35,.75);

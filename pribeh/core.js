@@ -174,9 +174,14 @@ function flyLUT(ca,cb){
       B=Math.max(0,Math.log(wP)-(l0+l1)/2),N=160,P=[0],i,acc=0,prev=Math.exp(l0);
   for(i=1;i<=N;i++){var u=i/N,w=Math.exp(l0+(l1-l0)*u+B*Math.sin(Math.PI*u));acc+=(w+prev)/2;prev=w;P.push(acc)}
   for(i=0;i<=N;i++)P[i]/=acc;
+  /* vyrovnani tempa: tabulka U prevadi cas na polohu na draze tak, aby se obraz na obrazovce hybal rovnomerneji
+     (bez toho let u fotek sviha a uprostred skoro stoji) */
+  var M=[0],dxw=Math.hypot(cb.x-ca.x,cb.y-ca.y),lwp=l0,ma=0;
+  for(i=1;i<=N;i++){var u2=i/N,lw2=l0+(l1-l0)*u2+B*Math.sin(Math.PI*u2);ma+=Math.abs(lw2-lwp)*vw*.5+(P[i]-P[i-1])*dxw*vw/Math.exp((lw2+lwp)/2);lwp=lw2;M.push(ma)}
+  var U=[0],j=0;for(i=1;i<=N;i++){var tg=i/N*ma;while(j<N-1&&M[j+1]<tg)j++;U.push((j+(tg-M[j])/((M[j+1]-M[j])||1))/N)}
   /* v oddaleni se zaber posune tak, aby zustal uvnitr studia */
   var mid=(ca.x+cb.x)/2,lo=900+wP/2,hi=3410-wP/2,Xw=lo<hi?Math.min(hi,Math.max(lo,mid)):2155;
-  return flyC={key:key,l0:l0,l1:l1,B:B,P:P,N:N,off:Xw-mid,por:por}}
+  return flyC={key:key,l0:l0,l1:l1,B:B,P:P,U:U,N:N,off:Xw-mid,por:por}}
 var camX,camY,camW,camH;
 function buildCam(){var kt=KEYS.map(function(k){return k[0]});
   camX=monotone(kt,KEYS.map(function(k){return k[1]}));camY=monotone(kt,KEYS.map(function(k){return k[2]}));
@@ -464,7 +469,7 @@ function updateCam(time){
   }
   var gc=ST.galCam;
   if(gc){var A=GAL[gc.a],B=GAL[gc.b],ca=camFor(A,gc.ra),cb=camFor(B,gc.rb),F=flyLUT(ca,cb),t=clamp(gc.k),
-        u=t*t*(3-2*t),f=u*F.N,i0=Math.min(F.N-1,Math.floor(f)),pp=F.P[i0]+(F.P[i0+1]-F.P[i0])*(f-i0),sb=Math.sin(Math.PI*u),g2=sb*sb;
+        e0=t*t*(3-2*t),fe=e0*F.N,ie=Math.min(F.N-1,Math.floor(fe)),u=lerp(e0,F.U[ie]+(F.U[ie+1]-F.U[ie])*(fe-ie),.55),f=u*F.N,i0=Math.min(F.N-1,Math.floor(f)),pp=F.P[i0]+(F.P[i0+1]-F.P[i0])*(f-i0),sb=Math.sin(Math.PI*u),g2=sb*sb;
     /* jedna hladka krivka bez zastaveni: sirka zaberu je oblouk v logaritmu, posun bezi stalou rychlosti na obrazovce */
     cam.s=vw/Math.exp(F.l0+(F.l1-F.l0)*u+F.B*sb);
     cam.x=lerp(ca.x,cb.x,pp)+F.off*g2;cam.y=lerp(lerp(ca.y,cb.y,pp),F.por?480:455,g2*clamp(F.B/1.5));
@@ -485,10 +490,10 @@ function render(time){
   ST._keep=!!ST.hasHero&&Tt>=ST.N-.004;
   updateCam(time);
   /* spodek obrazu: kresba pod chodnikem se plynule ztraci do tmy (zadna ostra hrana) */
-  var ffd=ST._ff||(ST._ff=story.querySelector('.floorfade')),gyp=(718-cam.y)*cam.s+vh/2;
+  var ffd=ST._ff||(ST._ff=story.querySelector('.floorfade')),gyp=(712-cam.y)*cam.s+vh/2;
   if(gyp<vh&&!ST.galCam){var fk=cam.s,fb=gyp.toFixed(0)+'|'+fk.toFixed(3);
     if(fb!==ST._ffb){ST._ffb=fb;ffd.style.display='';ffd.style.top=gyp.toFixed(0)+'px';ffd.style.height='auto';ffd.style.bottom='0';
-      ffd.style.background='linear-gradient(to bottom,rgba(13,14,17,0) 0,rgba(13,14,17,.42) '+(24*fk).toFixed(0)+'px,rgba(13,14,17,.82) '+(56*fk).toFixed(0)+'px,rgba(13,14,17,.97) '+(110*fk).toFixed(0)+'px,#0D0E11 '+(170*fk).toFixed(0)+'px)'}}
+      ffd.style.background='linear-gradient(to bottom,rgba(13,14,17,0) 0,rgba(13,14,17,.34) '+(14*fk).toFixed(0)+'px,rgba(13,14,17,.72) '+(30*fk).toFixed(0)+'px,rgba(13,14,17,.93) '+(46*fk).toFixed(0)+'px,#0D0E11 '+(66*fk).toFixed(0)+'px)'}}
   else if(ST._ffb!=='x'){ST._ffb='x';ffd.style.display='none'}
   var i,k;
   for(i=0;i<draws.length;i++){var d=draws[i];k=ss(d.t0,d.t1,T);if(Math.abs(k-d.k)<1e-4)continue;d.k=k;
@@ -558,7 +563,7 @@ function render(time){
     var ov=1-ss(13.25,13.85,T);['grain','vig','ffade'].forEach(function(k){if(!ST._ov)ST._ov={grain:$('grain'),vig:story.querySelector('.vignette'),ffade:story.querySelector('.floorfade')};ST._ov[k].style.opacity=k==='grain'?(.07*ov):ov});
     /* pri najezdu do fotky a pri letu po galerii postavy a popredi nezakryvaji obrazy */
     var lf=ST.galCam?0:1-ss(.55,.92,cam.pz||0);['front','fore','fig','light'].forEach(function(n){var v=n==='light'&&ST.galCam?1:lf,e=$('L-'+n);if(e&&e._o!==v){e._o=v;e.style.opacity=v}});
-    var fl=!!ST.galCam;[['far',fl],['mid',fl],['fore',fl],['fig',fl],['front',fl],['sky',fl&&cam.y0>232]].forEach(function(q){var e=$('L-'+q[0]);if(e&&e._h!==q[1]){e._h=q[1];e.style.visibility=q[1]?'hidden':''}});
+    var fl=!!ST.galCam;[['far',fl],['mid',fl],['fore',fl],['fig',fl],['front',fl],['sky',fl]].forEach(function(q){var e=$('L-'+q[0]);if(e&&e._h!==q[1]){e._h=q[1];e.style.visibility=q[1]?'hidden':''}});
     var sh=$('stShade');if(sh&&!ST.galCam)sh.style.opacity=ss(13.5,14,T).toFixed(3);
     var gone=Tt>=ST.N-.004,sg=$('stage'),gm=!!ST.galCam&&gone;
     if(gm!==ST._gm){ST._gm=gm;sg.classList.toggle('gal',gm)}
