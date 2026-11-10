@@ -164,6 +164,19 @@ function monotone(xs,ys){
     return (2*t3-3*t2+1)*ys[k]+(t3-2*t2+t)*h*m[k]+(-2*t3+3*t2)*ys[k+1]+(t3-t2)*h*m[k+1];
   };
 }
+/* let mezi fotkami: tabulka posunu (posun je umerny sirce zaberu, takze na obrazovce bezi stalou rychlosti) */
+var flyC=null;
+function flyLUT(ca,cb){
+  var key=[ca.x,ca.y,ca.s,cb.x,cb.y,cb.s,vw,vh].map(function(v){return Math.round(v*100)}).join(',');
+  if(flyC&&flyC.key===key)return flyC;
+  var l0=Math.log(vw/ca.s),l1=Math.log(vw/cb.s),por=vw<vh,dxf=Math.abs(ca.x-cb.x),
+      wP=por?Math.min(560,Math.max(380,dxf*.5+260)):Math.min(2300,Math.max(900*vw/vh,dxf+760)),
+      B=Math.max(0,Math.log(wP)-(l0+l1)/2),N=160,P=[0],i,acc=0,prev=Math.exp(l0);
+  for(i=1;i<=N;i++){var u=i/N,w=Math.exp(l0+(l1-l0)*u+B*Math.sin(Math.PI*u));acc+=(w+prev)/2;prev=w;P.push(acc)}
+  for(i=0;i<=N;i++)P[i]/=acc;
+  /* v oddaleni se zaber posune tak, aby zustal uvnitr studia */
+  var mid=(ca.x+cb.x)/2,lo=900+wP/2,hi=3410-wP/2,Xw=lo<hi?Math.min(hi,Math.max(lo,mid)):2155;
+  return flyC={key:key,l0:l0,l1:l1,B:B,P:P,N:N,off:Xw-mid,por:por}}
 var camX,camY,camW,camH;
 function buildCam(){var kt=KEYS.map(function(k){return k[0]});
   camX=monotone(kt,KEYS.map(function(k){return k[1]}));camY=monotone(kt,KEYS.map(function(k){return k[2]}));
@@ -317,11 +330,11 @@ ST.start=function(){
     ST.bm=buildMotif(el('g',{transform:'translate(0,-45) scale(.6)'},el('g',{'clip-path':'url(#boardClip)'},ST.slots.board)),{cls:'sk',skin:'var(--t1)',fills:true})}
   /* detail ruky */
   var cs=$('closeScene');ST.closeBack=ST.closeBack||el('g',{},cs);
-  var motifG=el('g',{transform:'translate(760,532) scale(.8)'},cs);
+  var motifG=el('g',{transform:'translate(760,546) scale(.7)'},cs);
   ST.closeFront=ST.closeFront||el('g',{},cs);
-  ST.red=el('ellipse',{cx:760,cy:470,rx:240,ry:175,fill:'url(#gRed)',opacity:0});cs.insertBefore(ST.red,motifG);
+  ST.red=el('ellipse',{cx:760,cy:498,rx:212,ry:166,fill:'url(#gRed)',opacity:0});cs.insertBefore(ST.red,motifG);
   ST.tm=buildMotif(motifG,{cls:'tt',skin:'var(--skin)',gold:true,stencil:true});
-  ST.film=el('path',{d:ST.rect(556,296,408,368,48),fill:'url(#gFilm)',stroke:'rgba(231,221,199,.22)','stroke-width':1.5,opacity:0},cs);
+  ST.film=el('path',{d:ST.rect(590,320,340,356,44),fill:'url(#gFilm)',stroke:'rgba(231,221,199,.22)','stroke-width':1.5,opacity:0},cs);
   cs.appendChild(ST.closeFront);
   if(!ST.closeParts.machine){var mg=el('g',{},ST.closeFront);el('path',{d:'M0,0 L120,-190','class':'ink bold'},mg);ST.closeParts.machine=mg}
   ST.needle=el('circle',{r:16,fill:'url(#gNeedle)',opacity:0},cs);
@@ -378,7 +391,7 @@ ST.start=function(){
     var gl=P2(g,'M'+x+','+(y+h*.55)+' L'+(x+w*.45)+','+y+' L'+(x+w*.62)+','+y+' L'+x+','+(y+h*.75)+'Z',{fill:'#FFF6DF',opacity:.06});P.gl=gl;}
   /* tepla zare od svetylek na zdi za velkymi obrazy */
   var galL=el('g',{},ST.L.room);ST.L.room.insertBefore(galL,ST.L.room.firstChild);
-  WALLITEMS.forEach(function(P){var g=ST.section(galL,P.x-40,P.x+P.w+40),tv=ST.seenAt(P.x-P.m-20);ST.fade(g,tv-.22,tv+.16,1);
+  WALLITEMS.forEach(function(P){var g=ST.section(galL,P.x-40,P.x+P.w+40);
     if(P.light)P2(g,ST.ellipse(P.x+P.w/2,P.y+P.h*.35,P.w*.95,P.h*.75),{fill:'url(#gGlow)',opacity:.45});
     if(P.card)card(g,P);else if(P.cert)cert(g,P);else photo(g,P)});
   ST.on(function(T){var gc=ST.galCam,k=gc?0:photoZoom(T);GAL.forEach(function(P,i){var o=i===0?.06*(1-k):.06;if(gc&&(i===gc.a||i===gc.b)){var e=i===gc.a?1-gc.k:gc.k;o=.06*(1-ss(.6,1,e))}if(P.gl._o!==o){P.gl._o=o;P.gl.setAttribute('opacity',o.toFixed(3))}})});
@@ -450,19 +463,11 @@ function updateCam(time){
     cam.x=Ax-lerp(b0x,b1x,ez)/sZ;cam.y=Ay-lerp(b0y,b1y,ez)/sZ;cam.s=sZ;
   }
   var gc=ST.galCam;
-  if(gc){var A=GAL[gc.a],B=GAL[gc.b],ca=camFor(A,gc.ra),cb=camFor(B,gc.rb),t=clamp(gc.k),asp=vw/vh;
-    /* oblouk: oddalit, az je videt velky kus studia, v oddaleni preletet k dalsi fotce a priblizit.
-       Sirka zaberu se meni v logaritmu (stejne vnimana rychlost zoomu), posun bezi hlavne v oddaleni. */
-    var w0=vw/ca.s,w1=vw/cb.s,dxf=Math.abs(ca.x-cb.x),por=vw<vh,
-        /* na vysku mene oddaleni, aby mistnost nebyla jen uzky pruh */
-        wPeak=por?Math.min(560,Math.max(380,dxf*.5+260)):Math.min(2300,Math.max(900*asp,dxf+760)),
-        up=sm5(lin(0,.4,t)),dn=sm5(lin(.6,1,t)),pan=sm5(lin(.16,.84,t)),hold=up*(1-dn),
-        lw=Math.log(w0)*(1-up)+Math.log(wPeak)*hold+Math.log(w1)*dn,wv=Math.exp(lw);
-    cam.s=vw/wv;
-    /* pri oddalovani zustava fotka, ze ktere kamera vyjela, v zaberu; stred se drzi ve vysce mistnosti */
-    cam.x=lerp(ca.x,cb.x,pan);cam.y=lerp(lerp(ca.y,cb.y,pan),por?480:455,hold*clamp((wv-200)/(por?200:500)));
-    /* zaber nesmi vyjet za okraj budovy studia */
-    var hwv=wv/2,lo=930+hwv,hi=3400-hwv;if(lo<hi)cam.x+=(clamp((cam.x-lo)/(hi-lo))*(hi-lo)+lo-cam.x)*hold;
+  if(gc){var A=GAL[gc.a],B=GAL[gc.b],ca=camFor(A,gc.ra),cb=camFor(B,gc.rb),F=flyLUT(ca,cb),t=clamp(gc.k),
+        u=t*t*(3-2*t),f=u*F.N,i0=Math.min(F.N-1,Math.floor(f)),pp=F.P[i0]+(F.P[i0+1]-F.P[i0])*(f-i0),sb=Math.sin(Math.PI*u),g2=sb*sb;
+    /* jedna hladka krivka bez zastaveni: sirka zaberu je oblouk v logaritmu, posun bezi stalou rychlosti na obrazovce */
+    cam.s=vw/Math.exp(F.l0+(F.l1-F.l0)*u+F.B*sb);
+    cam.x=lerp(ca.x,cb.x,pp)+F.off*g2;cam.y=lerp(lerp(ca.y,cb.y,pp),F.por?480:455,g2*clamp(F.B/1.5));
   }
   if(ST.debug.cam){var dc=ST.debug.cam;cam.x=dc[0];cam.y=dc[1];cam.s=Math.min(vw/dc[2],vh/dc[3])}
   else if(!reduce){cam.x+=Math.sin(time*.00031)*2.2;cam.y+=Math.cos(time*.00027)*1.6}
@@ -472,11 +477,19 @@ function updateCam(time){
   for(var i=0;i<planes.length;i++){var p=planes[i],ex=p.ax+(cam.x-p.ax)*p.f,ey=p.ay+(cam.y-p.ay)*p.f;p.ex=ex;
     p.g.setAttribute('transform','translate('+(vw/2).toFixed(1)+','+(vh/2).toFixed(1)+') scale('+cam.s.toFixed(4)+') translate('+(-ex).toFixed(1)+','+(-ey).toFixed(1)+')')}
   for(var j=0;j<sections.length;j++){var s=sections[j],ex2=s.p?s.p.ex:cam.x,v=s.x1>ex2-hw-150&&s.x0<ex2+hw+150;
+    if(ST._keep&&s.p&&s.p.f===1)v=s.x1>860&&s.x0<3500;
     if(v!==s.vis){s.vis=v;s.g.style.display=v?'':'none'}}
 }
 
 function render(time){
+  ST._keep=!!ST.hasHero&&Tt>=ST.N-.004;
   updateCam(time);
+  /* spodek obrazu: kresba pod chodnikem se plynule ztraci do tmy (zadna ostra hrana) */
+  var ffd=ST._ff||(ST._ff=story.querySelector('.floorfade')),gyp=(718-cam.y)*cam.s+vh/2;
+  if(gyp<vh&&!ST.galCam){var fk=cam.s,fb=gyp.toFixed(0)+'|'+fk.toFixed(3);
+    if(fb!==ST._ffb){ST._ffb=fb;ffd.style.display='';ffd.style.top=gyp.toFixed(0)+'px';ffd.style.height='auto';ffd.style.bottom='0';
+      ffd.style.background='linear-gradient(to bottom,rgba(13,14,17,0) 0,rgba(13,14,17,.42) '+(24*fk).toFixed(0)+'px,rgba(13,14,17,.82) '+(56*fk).toFixed(0)+'px,rgba(13,14,17,.97) '+(110*fk).toFixed(0)+'px,#0D0E11 '+(170*fk).toFixed(0)+'px)'}}
+  else if(ST._ffb!=='x'){ST._ffb='x';ffd.style.display='none'}
   var i,k;
   for(i=0;i<draws.length;i++){var d=draws[i];k=ss(d.t0,d.t1,T);if(Math.abs(k-d.k)<1e-4)continue;d.k=k;
     d.e.style.strokeDashoffset=(1-k);d.e.style.visibility=k<=0?'hidden':'visible';if(d.fill)d.e.style.fillOpacity=k}
@@ -545,10 +558,11 @@ function render(time){
     var ov=1-ss(13.25,13.85,T);['grain','vig','ffade'].forEach(function(k){if(!ST._ov)ST._ov={grain:$('grain'),vig:story.querySelector('.vignette'),ffade:story.querySelector('.floorfade')};ST._ov[k].style.opacity=k==='grain'?(.07*ov):ov});
     /* pri najezdu do fotky a pri letu po galerii postavy a popredi nezakryvaji obrazy */
     var lf=ST.galCam?0:1-ss(.55,.92,cam.pz||0);['front','fore','fig','light'].forEach(function(n){var v=n==='light'&&ST.galCam?1:lf,e=$('L-'+n);if(e&&e._o!==v){e._o=v;e.style.opacity=v}});
+    var fl=!!ST.galCam;[['far',fl],['mid',fl],['fore',fl],['fig',fl],['front',fl],['sky',fl&&cam.y0>232]].forEach(function(q){var e=$('L-'+q[0]);if(e&&e._h!==q[1]){e._h=q[1];e.style.visibility=q[1]?'hidden':''}});
     var sh=$('stShade');if(sh&&!ST.galCam)sh.style.opacity=ss(13.5,14,T).toFixed(3);
     var gone=Tt>=ST.N-.004,sg=$('stage'),gm=!!ST.galCam&&gone;
     if(gm!==ST._gm){ST._gm=gm;sg.classList.toggle('gal',gm)}
-    sg.style.opacity=gone&&!gm?0:1;sg.style.pointerEvents=gone?'none':'';
+    sg.style.opacity=gone&&!gm?0:1;sg.style.visibility=gone&&!gm?'hidden':'';sg.style.pointerEvents=gone?'none':'';
     var ve=$('stVeil');
     if(gm){var gk=ST.galCam,out=1-ss(0,.35,gk.k),inn=ss(.65,1,gk.k);
       /* stin na koncich letu odpovida filmu: andel ma .sc-shade (35 %), ostatni zabery .sc-veil */
@@ -595,7 +609,9 @@ function frame(ts){
   var dt=Math.min(64,ts-(lastTs||ts));lastTs=ts;
   if(ST.debug.T!=null)T=ST.debug.T;
   else{Tt=targetT();if(reduce)T=Tt;else{var f=1-Math.exp(-dt/150);T+=(Tt-T)*f;if(Math.abs(Tt-T)<.0005)T=Tt}}
-  render(ts);lastT=T;ST.T=T;
+  var idle=ST.debug.T==null&&!!ST.hasHero&&Tt>=ST.N-.004&&T>=ST.N-.0006&&!ST.galCam;
+  if(!(idle&&ST._idle))render(ts);
+  ST._idle=idle;lastT=T;ST.T=T;
   requestAnimationFrame(frame);
 }
 })();

@@ -8,18 +8,14 @@ var el=ST.el,R=ST.rect,rng=ST.rng,ss=ST.ss,PI=Math.PI,sin=Math.sin,cos=Math.cos;
 var Z=[1.9,3.0];
 function zone(a,b){Z=[a,b]}
 function zx(x){if(x<2040)zone(1.9,3.0);else if(x<2600)zone(4.8,6.0);else if(x<3420)zone(6.3,7.3);else zone(10.8,11.5)}
-/* casovani: prvek se dokresli tesne pred tim, nez jeho misto vjede do zaberu (ST.seenAt), takze v zaberu neni prazdna zed.
-   x = poloha prvku (z prvni souradnice cesty). Mimo budovu nebo u pevnych zon (kour) plati cas zony. */
-var ZFIX={'6.1,6.7':1},OUTX=0;
-function px0(d){var m=/M\s*(-?[\d.]+)/.exec(d);return m?+m[1]:null}
-function tt(a,b,x){a=a||0;b=b==null?1:b;
-  if(x!=null&&x>600&&x<3700&&!ZFIX[Z.join(',')]&&ST.seenAt){var tv=ST.seenAt(x-24);return [tv-.36+a*.16,tv-.22+b*.36]}
-  if(x!=null)OUTX++;
-  return [Z[0]+(Z[1]-Z[0])*a,Z[0]+(Z[1]-Z[0])*b]}
-function D(g,d,c,a,b,o){var t=tt(a,b,px0(d));return ST.D(g,d,c,t[0],t[1],o)}
+/* Studio se pri scrollu nedokresluje: vsechno je nakreslene od zacatku (Honzi 10. 11. 2026).
+   Vyjimkou jsou jen deje pribehu s vlastnim casem (para u pultu, krouzek v kalendari, lampa). */
+var ZFIX={'6.1,6.7':1},STAT=[-2,-1];
+function tt(a,b){a=a||0;b=b==null?1:b;if(ZFIX[Z.join(',')])return [Z[0]+(Z[1]-Z[0])*a,Z[0]+(Z[1]-Z[0])*b];return STAT}
+function D(g,d,c,a,b,o){var t=tt(a,b);return t===STAT?ST.D(g,d,c,null,null,o):ST.D(g,d,c,t[0],t[1],o)}
 function FILL(g,d,c,a,b,o){var p=D(g,d,c,a,b,o);p.style.stroke='none';return p}
-function FO(g,d,c,max,a,b,at){var e=el('path',{d:d,'class':c},g),t=tt(a,b,px0(d));if(at)for(var k in at)e.setAttribute(k,at[k]);ST.fade(e,t[0],t[1],max);return e}
-function TX(g,s,x,y,sz,c,a,b,mx,at){var e=el('text',{x:x,y:y,'class':c||'f-line','font-size':sz,'text-anchor':'middle'},g),t=tt(a,b,x);e.textContent=s;if(at)for(var k in at)e.setAttribute(k,at[k]);ST.fade(e,t[0],t[1],mx==null?1:mx);return e}
+function FO(g,d,c,max,a,b,at){var e=el('path',{d:d,'class':c},g),t=tt(a,b);if(at)for(var k in at)e.setAttribute(k,at[k]);if(t===STAT)e.setAttribute('opacity',max);else ST.fade(e,t[0],t[1],max);return e}
+function TX(g,s,x,y,sz,c,a,b,mx,at){var e=el('text',{x:x,y:y,'class':c||'f-line','font-size':sz,'text-anchor':'middle'},g),t=tt(a,b);e.textContent=s;if(at)for(var k in at)e.setAttribute(k,at[k]);if(t===STAT)e.setAttribute('opacity',mx==null?1:mx);else ST.fade(e,t[0],t[1],mx==null?1:mx);return e}
 function G(p,tf){return el('g',tf?{transform:tf}:null,p)}
 function n1(v){return Math.round(v*10)/10}
 function cir(cx,cy,r){var k=.5523*r;return 'M'+n1(cx+r)+','+n1(cy)+' C'+n1(cx+r)+','+n1(cy+k)+' '+n1(cx+k)+','+n1(cy+r)+' '+n1(cx)+','+n1(cy+r)+' C'+n1(cx-k)+','+n1(cy+r)+' '+n1(cx-r)+','+n1(cy+k)+' '+n1(cx-r)+','+n1(cy)+' C'+n1(cx-r)+','+n1(cy-k)+' '+n1(cx-k)+','+n1(cy-r)+' '+n1(cx)+','+n1(cy-r)+' C'+n1(cx+k)+','+n1(cy-r)+' '+n1(cx+r)+','+n1(cy-k)+' '+n1(cx+r)+','+n1(cy)+'Z'}
@@ -669,11 +665,13 @@ function windowZ(){
   var sf=winStars=el('path',{d:st.join(' '),'class':'f-line'},vg);ST.fade(sf,t[0],t[1]+.1,.7);
   winFar=G(vg);winNear=G(vg);
   FO(winFar,X(ART.moon.a,2230,356,.2,0,1),'f-goldl',.8,.3,.6);
-  D(winFar,'M2186,500 L2189,350 H2191 L2194,500Z','thin t2',.3,.7);D(winFar,'M2190,350 V318 M2186,330 H2194 M2188,342 H2192','hair',.3,.7);
-  [[432,8,13],[404,7,10.5],[381,5.5,8]].forEach(function(p){D(winFar,ell(2190,p[0],p[1],p[2]),'thin t2',.3,.7);D(winFar,'M'+(2190-p[1]+2)+','+p[0]+' H'+(2190+p[1]-2),'hair',.3,.7)});
-  d=[];for(k=0;k<9;k++)d.push('M'+(2186+(k%3)*3.6)+','+(425+Math.floor(k/3)*5.5)+' h1.6v2.4h-1.6Z');
-  FO(winFar,d.join(''),'f-gold',.85,.4,.8);
-  winBlink=el('path',{d:cir(2190,320,1.8),'class':'f-goldl',opacity:0},winFar);
+  /* Zizkovsky vysilac v dalce: tri tubusy (dva nizsi, jeden hlavni), tri kabiny, technicka plosina a antena */
+  D(winFar,'M2190.8,500 V374 H2196.6 V500Z','thin t2',.3,.7);D(winFar,'M2182.4,500 V394 H2185.8 V500Z M2186.6,500 V392 H2190 V500Z','thin t2',.3,.7);
+  D(winFar,'M2193.7,374 V322 M2192.2,367 H2195.2 M2192.6,359 H2194.8 M2191.6,350 H2195.8 M2192.8,340 H2194.6','hair',.3,.7);
+  D(winFar,R(2181.2,390.4,10,2.6,.8),'hair t2',.3,.7);
+  [[449.6,5,24],[443.6,6.4,25.6],[423,8.4,25.6]].forEach(function(p){D(winFar,R(2189.6-p[2]/2,p[0]-p[1]/2,p[2],p[1],p[1]*.38),'thin t2',.3,.7)});
+  FO(winFar,'M2179,448.8 h21.2 v1.6 h-21.2Z M2178.6,442.6 h22 v2 h-22Z M2178.6,421.8 h22 v2.4 h-22Z','f-gold',.85,.4,.8);
+  winBlink=el('path',{d:cir(2193.7,321,1.8),'class':'f-goldl',opacity:0},winFar);
   var rf=rng(9),sx=2060,sky=['M2060,500 V480'];
   while(sx<2310){var w=10+rf()*16,h=476+rf()*16;sky.push(' H'+n1(sx)+' V'+n1(h)+' H'+n1(sx+w));sx+=w;if(rf()<.3)sky.push(' l3,-5 l3,5')}
   D(winFar,sky.join('')+' V500Z','thin t1 dim',.35,.75);
@@ -1154,6 +1152,7 @@ var gl2;
 extraPass();
 
 /* ---------- hledacky: drobnosti, ktere o Honzovi neco rikaji ---------- */
+var fishG=null,fishB=[],crysG=null;
 (function(){
   var g,d,k;
   /* filmova klapka oprená o zed nad radiatorem (Honza je i reziser) */
@@ -1170,9 +1169,26 @@ extraPass();
   D(g,'M2386,689 Q2396,693 2406,689','hair gold',.74,1);D(g,'M2400,683 L2418,672','thin t3',.76,1);D(g,cir(2419,671.4,2),'hair t3',.76,1);
   D(g,ell(2366,695.6,10,4.2),'thin t3',.72,1);D(g,ell(2365,688,7.4,3.4),'thin t2',.74,1);D(g,ell(2366.4,682.2,5,2.6),'thin t3',.76,1);D(g,ell(2365.6,677.6,3,1.9),'hair t2',.78,1);
   FILL(g,ell(2366,695.6,10,4.2),'hair',.74,1,{fill:HF});
-  /* v tetovacim koute: na policce pod lampou maly nacrtnik s papouskem a hrnek s nakreslenym srdickem */
+  /* gumova kachnicka na okraji umyvadla */
   zone(6.3,7.3);g=sec('room',3);
-  D(g,'M3108,596 L3126,592 L3128,600 L3110,604Z','thin t2',.8,1);D(g,'M3113,598.6 q3,-3.4 6,-1.2 q2,1.6 4,-.8','hair gold',.84,1);
+  FILL(g,'M3275,592.4 C3273,585 3280,583 3285,585 C3288,586 3290,584 3292,581.6 C3293.4,587 3291,592.4 3287,592.4Z '+cir(3278.6,580.8,3.7),'f-gold',.8,1).setAttribute('class','f-gold');
+  D(g,'M3275,592.4 C3273,585 3280,583 3285,585 C3288,586 3290,584 3292,581.6 C3293.4,587 3291,592.4 3287,592.4Z '+cir(3278.6,580.8,3.7)+' M3281,588 q3,2.4 6,0','hair',.8,1);
+  FILL(g,'M3275.2,580.6 l-3.8,1 l3.6,1.4Z','hair',.8,1).setAttribute('class','f-goldl');FILL(g,cir(3277.6,579.8,.6),'hair',.8,1).setAttribute('class','f-bg');
+  /* kudlanka na listu fikusu u dveri */
+  D(g,'M3391,457 L3401,450.6 L3405.4,444 M3405.4,444 l3.2,-1.2 l-1,3.4Z M3401.6,450 l4.4,2.2 l1.2,-4.4 M3398.4,452.2 l2.6,4.6 M3394.6,454.6 l-1,5.4 M3392.4,456 l-4.4,3.2 M3406.6,442.4 l1.6,-3.2 M3407.8,442.8 l3,-2.4','hair goldl',.8,1);
+  /* cekarna: policka s akvarkem (rybka plave) a krystalem */
+  zone(1.9,3.0);g=sec('room',0);
+  D(g,R(1084,514,86,5,1),'ink t3',.8,1);D(g,'M1094,519 V533 L1106,519 M1160,519 V533 L1148,519','thin',.8,1);
+  D(g,'M1101,488 C1093,493 1093,510 1103,514 H1121 C1131,510 1131,493 1123,488Z','thin t1',.8,1);
+  FILL(g,'M1096.6,496 Q1112,499 1127.4,496 C1129.6,503 1127,511 1121,514 H1103 C1097,511 1094.4,503 1096.6,496Z','hair',.8,1).setAttribute('fill','rgba(111,134,160,.2)');
+  FILL(g,'M1099,510 Q1112,506.6 1125,510 L1121,514 H1103Z','hair',.8,1,{fill:STIP});
+  D(g,'M1099.6,488 H1124.4 M1096.6,496 Q1112,499 1127.4,496','hair',.8,1);D(g,'M1120,512 q-2.4,-6 .8,-10 M1122,512 q2.4,-5 .4,-9 M1104,512 q-1.4,-4 .6,-7','hair dim',.8,1);
+  D(g,'M1099,493 q-1.6,6 1,12','hair goldl',.8,1);
+  fishG=G(g);el('path',{d:'M-4.4,0 C-2,-2.8 2.4,-2.8 4.6,0 C2.4,2.8 -2,2.8 -4.4,0Z M-4,0 l-3.4,-2.6 v5.2Z','class':'f-gold'},fishG);el('path',{d:cir(2.6,-.5,.5),'class':'f-bg'},fishG);
+  fishB=[0,1,2].map(function(){return el('path',{d:cir(0,0,.8),'class':'ink hair',opacity:0},g)});
+  crysG=el('path',{d:cir(1150,502,20),fill:'url(#gGlow)',opacity:.5},sec('light',0));
+  D(g,'M1141,514 L1144,499 L1148,494 L1151.4,500 L1152.6,514Z M1152,514 L1154,503 L1158,500 L1161,505 L1160,514Z M1135.6,514 L1137.6,506 L1140.4,504 L1142.4,514Z','thin t2',.8,1);
+  D(g,'M1148,494 V514 M1144,499 L1151.4,500 M1158,500 V514 M1140.4,504 V514','hair goldl',.8,1);
 })();
 
 /* ---------- ambientni animace ---------- */
@@ -1181,6 +1197,10 @@ var smoke=[],dust=[];
   var gl=sec('light',3);for(i=0;i<16;i++)dust.push(el('path',{d:cir(0,0,.9),'class':'f-goldl',opacity:0},gl))})();
 function tf(e,s){e.setAttribute('transform',s)}
 ST.on(function(T,time,cam){
+  if(fishG&&cam.x0<1200&&cam.x1>1040){var ft=ST.reduce?0:time,fxx=Math.sin(ft*.0008)*8,fd=Math.cos(ft*.0008)>=0?1:-1;
+    fishG.setAttribute('transform','translate('+n1(1112+fxx)+','+n1(504+Math.sin(ft*.0021)*1.6)+') scale('+fd+',1)');
+    for(var fb=0;fb<3;fb++){var bq=((ft*.00035+fb*.33)%1);fishB[fb].setAttribute('transform','translate('+n1(1105+fb*4+Math.sin(ft*.003+fb)*1)+','+n1(510-bq*12)+')');fishB[fb].setAttribute('opacity',ST.reduce?0:n1(.7*(1-bq)))}
+    crysG.setAttribute('opacity',n1(.38+.2*Math.sin(ft*.0016)))}
   var ph=ST.reduce?0:time,i,lamp=ST.lamp(T);
   /* houpani rostlin, lustru, zaclon, korouhvicky */
   for(i=0;i<SW.length;i++){var s=SW[i];if(s.px<cam.x0-260||s.px>cam.x1+260)continue;
@@ -1225,5 +1245,4 @@ ST.on(function(T,time,cam){
     if(ST.disp){var vs=['12.5','12.6','12.5','12.4'],vv=vs[Math.floor(ph/1300)%4];if(ST.disp.textContent!==vv)ST.disp.textContent=vv}
   }
 });
-ST._studioOutX=OUTX;
 });
