@@ -111,11 +111,13 @@ function tc(c){c.top=1;return c}
 function it(o,w,h){o.w=w;o.h=h||(o.iw?w*o.ih/o.iw:w);o.m=FM[o.card?'card':o.cert?'cert':o.st];return o}
 /* steny: [x0, x1, horni hrana, skupiny] ; skupina = sloupce, sloupec = obrazy shora dolu */
 var WALLS=[
-  {x0:2572,x1:3398,top:258,gap:12,groups:[
-    [[it(WI.omne,58,60),it(WI.styl,58,60)],[it(GAL[1],96)],tc([it(WI.prace,56),it(WI.filo,56,40),it(WI.rem,56,50)])],
-    [[it(PH,100)],[it(WI.postava,44),it(WI.poseidon,40)],tc([it(WI.portret,46)])]]},
+  /* prava stena (tetovaci kout): obrazy konci nad operadlem kresla, nastennou lampou a polici s lahvickami */
+  {x0:2574,x1:3396,top:258,gap:12,groups:[
+    [[it(WI.omne,54,54),it(WI.styl,54,54)],[it(GAL[1],86)],tc([it(WI.prace,52),it(WI.filo,52,38),it(WI.rem,52,46)])],
+    [[it(PH,94)],[it(WI.postava,42),it(WI.poseidon,38)],tc([it(WI.portret,44)])]]},
+  /* leva stena (cekarna a stul): sloupec nad monsterou je zaveseny shora, aby do nej listy nezasahovaly */
   {x0:988,x1:1774,top:258,gap:12,groups:[
-    [[it(WI.s4,64,44),it(WI.lev,64)],[it(GAL[5],124)],[it(WI.s2,62,44),it(GAL[3],62)]],
+    [[it(WI.s4,64,44),it(WI.lev,64)],[it(GAL[5],124)],tc([it(WI.s2,58,40),it(GAL[3],58)])],
     [[it(GAL[4],54),it(WI.s3,54,40)],[it(WI.andel,82)]],
     [[it(GAL[2],96)],[it(WI.s1,64,44),it(WI.cert,64,64)]]]}];
 var WALLITEMS=[];

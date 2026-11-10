@@ -13,6 +13,8 @@ const file = path.resolve(__dirname, '../../pribeh.html');
 (async () => {
   const b = await chromium.launch();
   const p = await b.newPage({ viewport: { width: +w, height: +h } });
+  /* ambientni pohyb zmrazeny na jednom case: snimek je vzdy stejny a neslozi se ze dvou ruznych faze pohybu */
+  await p.addInitScript(() => { const r = window.requestAnimationFrame.bind(window); window.requestAnimationFrame = f => r(() => f(5000)); });
   const errs = [];
   p.on('pageerror', e => errs.push('pageerror: ' + e.message));
   p.on('console', m => { if (m.type() === 'error') errs.push(m.text()); });
