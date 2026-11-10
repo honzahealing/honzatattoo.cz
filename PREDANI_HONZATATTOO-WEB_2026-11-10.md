@@ -2,20 +2,20 @@
 
 ## Kanonické soubory
 
-Repozitář `honzahealing/honzatattoo.cz`, větev **`pribeh-na-scroll`** obsahuje verzi 8. **Verze 9 (10. 11. 2026) je na pracovní větvi vlákna z 10. 11.** (jediná větev se sedmi commity nad `pribeh-na-scroll`, název jí přidělilo prostředí); do `pribeh-na-scroll` ji přesunout až s Honziho souhlasem. Pull request není a `main` je beze změn. Velikosti platí pro verzi 9.
+Repozitář `honzahealing/honzatattoo.cz`, větev **`pribeh-na-scroll`** obsahuje verzi 8. **Verze 9 (10. 11. 2026) je na pracovní větvi vlákna z 10. 11.** (jediná větev se sedmi commity nad `pribeh-na-scroll`, název jí přidělilo prostředí); do `pribeh-na-scroll` ji přesunout až s Honziho souhlasem. Pull request není a `main` je beze změn. Velikosti platí pro verzi 10 (druhé kolo 10. 11.).
 
 | Bajty | Soubor | K čemu |
 |---|---|---|
-| 83597 | `preview-pribeh.html` | **Hlavní mustr:** `preview.html` s příběhem před filmem s andělem. Generuje ho build, ručně needitovat. |
+| 83794 | `preview-pribeh.html` | **Hlavní mustr:** `preview.html` s příběhem před filmem s andělem. Generuje ho build, ručně needitovat. |
 | 7793 | `pribeh.html` | Samotný příběh (značkování, slouží k ladění a ke snímkům) |
-| 13774 | `pribeh/style.css` | Styly příběhu, na konci podklady pro čitelnost písma a `.st-veil`, `.stage.gal` pro galerii |
-| 43238 | `pribeh/core.js` | Jádro: kamera (`KEYS`, `ST.N = 14`), nájezd do detailu ruky, motiv papouška, bubliny (`BUB`), kroky (`STEPS`), **galerie na zdi** (`GAL`, `WI`, `WALLS`, `layoutWall`), nájezd do fotky anděla (`photoZoom`, T 13,15–14), let po zdi (`ST.gallery.fly`) |
-| 123349 | `pribeh/street.js` | Ulice Žižkova: obloha, Žižkovský vysílač (`buildTower`), tramvaj T3 (`buildTram`), činžáky, příběhy v oknech (`SCENES`, `windowScene`, ambient `amb.scn`) |
-| 109409 | `pribeh/studio.js` | Budova a interiér studia. `ST.galleryWall = true` vypíná staré kreslené rámečky, zrcadlo, klíče, polaroidy a závěsná světla na stěnách galerie |
-| 7164 | `pribeh/doors.js` | Obě dveře: křídlo s panty vlevo a klikou vpravo, otevírá se dovnitř, osvětlený otvor, `ST.doorOpen(i,T)`, `ST.doorHandle(i,T)` |
-| 24640 | `pribeh/close.js` | Detail předloktí, **10. 11. celý přepsaný**: kůže se světlem lampy, opěrka, kalíšky s barvami, jediná ruka v rukavici s Pen strojkem (oddíl 4, měřítko podle `img/ja-u-prace.webp`, grip asi pětina šířky předloktí), život ruky (oddíl 5). Strojek bez displeje a bez nápisu |
+| 13971 | `pribeh/style.css` | Styly příběhu, na konci podklady pro čitelnost písma a `.st-veil`, `.stage.gal` pro galerii |
+| 45164 | `pribeh/core.js` | Jádro: kamera (`KEYS`, `ST.N = 14`), nájezd do detailu ruky, motiv papouška, bubliny (`BUB`), kroky (`STEPS`), **galerie na zdi** (`GAL`, `WI`, `WALLS`, `layoutWall`), nájezd do fotky anděla (`photoZoom`, T 13,15–14), let po zdi (`ST.gallery.fly`) |
+| 123599 | `pribeh/street.js` | Ulice Žižkova: obloha, Žižkovský vysílač (`buildTower`), tramvaj T3 (`buildTram`), činžáky, příběhy v oknech (`SCENES`, `windowScene`, ambient `amb.scn`) |
+| 109971 | `pribeh/studio.js` | Budova a interiér studia. `ST.galleryWall = true` vypíná staré kreslené rámečky, zrcadlo, klíče, polaroidy a závěsná světla na stěnách galerie |
+| 7934 | `pribeh/doors.js` | Obě dveře: křídlo s panty vlevo a klikou vpravo, otevírá se dovnitř, osvětlený otvor, `ST.doorOpen(i,T)`, `ST.doorHandle(i,T)` |
+| 24892 | `pribeh/close.js` | Detail předloktí, **10. 11. celý přepsaný**: kůže se světlem lampy, opěrka, kalíšky s barvami, jediná ruka v rukavici s Pen strojkem (oddíl 4, měřítko podle `img/ja-u-prace.webp`, grip asi pětina šířky předloktí), život ruky (oddíl 5). Strojek bez displeje a bez nápisu |
 | 51774 | `pribeh/chars.js` | Postavy Honza a klientka: kostra, chůze, oblečení, stíny na zemi, sáhnutí na kliku (`reachArm`) |
-| 30465 | `pribeh/audio.js` | Generativní chill jazz a hlasy. Zvuk je výchozí zapnutý, spustí se při prvním doteku, kliknutí nebo klávese, v úvodu výzva „Klepněte kamkoli a hraje hudba“ |
+| 30078 | `pribeh/audio.js` | Generativní chill jazz a hlasy. Zvuk je výchozí zapnutý, spustí se při prvním doteku, kliknutí nebo klávese, v úvodu výzva „Klepněte kamkoli a hraje hudba“ |
 | 14200 | `scrolly.js` | Film s andělem. S příběhem před sebou (`afterStory`, `gal`) dělá mezi záběry let po zdi studia (`XG`, `pose`, `shotRect`, `angelRect`) a texty úvodu anděla nabíhají až po nájezdu |
 | 4639 | `scrolly.css` | Styly filmu (beze změny) |
 | 61943 | `preview.html` | Náhled webu s filmem, načítá `scrolly.*?v=16`. Příběh do něj vkládá build |
@@ -25,7 +25,7 @@ Repozitář `honzahealing/honzatattoo.cz`, větev **`pribeh-na-scroll`** obsahuj
 | 1156 | `pribeh/dev/siteshot.js` | Snímky složeného webu i s filmem: `node pribeh/dev/siteshot.js $PWD/preview-pribeh.html <prefix> 1440 900 13.97 h0 h5.6` (hN = N obrazovek za koncem příběhu) |
 | 3668 | `pribeh/dev/build_site.py` | Složí web: `python3 pribeh/dev/build_site.py preview-pribeh.html`, s `--artifact` jeden soubor pro náhled |
 
-**Náhled pro Honziho:** artefakt https://claude.ai/artifact/3xqedLNY3xePQ9RkMdV38D (verze 9). Publikace:
+**Náhled pro Honziho:** artefakt https://claude.ai/artifact/3xqedLNY3xePQ9RkMdV38D (verze 10). Publikace:
 1. `python3 pribeh/dev/build_site.py <scratchpad>/site/index.html --artifact`
 2. v souboru nahradit `<title>` za „Honza Tattoo · Příběh“
 3. publikovat se soubory `img/*.jpg` a `img/*.webp` (mapa `img/x` → `img/x`)
@@ -51,6 +51,17 @@ Co se ve verzi 9 změnilo:
 - **Ulice (`street.js`):** vysílač o 14 % větší, noční nasvícení v trikolóře (`st_tri`), okna schodiště, záře a postavičky v kabinách; střechy panoramatu s vikýři, krytinou, zábradlím a satelity.
 - **Nové easter eggy:** plakát „ZTRATIL SE · ARA“ na sloupu na začátku a papoušek na drátě mezi vlaštovkami na konci; horkovzdušný balon se srdcem; kráter ve tvaru srdce na měsíci; filmová klapka nad radiátorem; tibetská miska a vyvážené kamínky u okna; srdíčko na utěrce a pihy do srdce v detailu ruky.
 
+### Verze 10 (10. 11., druhé kolo po Honziho snímcích)
+
+Honzi k verzi 9: „nájezdy do fotek na zdi jsou výborné“. Opraveno podle jeho čtyř snímků a pokynů:
+- **Prázdné místo vpravo a fotky „v prostoru“ na širokém okně:** studio i obrazy se dokreslují podle toho, kdy jejich místo vjede do záběru (`ST.seenAt(x)` v `core.js`, počítá se ze skutečného poměru stran okna; `tt()` ve `studio.js` bere polohu z první souřadnice cesty). Ulice za studiem se na širokém okně dokreslí dřív (`ES`, `E()` ve `street.js`). Po změně velikosti okna se časy nepřepočítají (jen po novém načtení).
+- **Za otevřenými dveřmi bylo vidět město:** otvor dveří 1 má neprůhledný podklad s tapetou, obložením, podlahou a lampou (`doors.js`).
+- **Ruka pohybující se v pozadí při nájezdu do detailu:** okolí zhasne úplně (`zd`), svět se schová (`display:none`) a detail se otevře kruhovou clonou z místa tetování (`mk`, maska na `#close` a `#closeBg`), která roste s nájezdem.
+- **Prsteník a malíček se ohýbaly obráceně:** nově zatočené do dlaně (`close.js`, `curlG`).
+- **Let mezi fotkami:** oblouk s větším oddálením (`gc` v `updateCam`: oddálit do 40 %, přelet 16 až 84 %, přiblížit od 60 %), na počítači je vidět celé studio; na výšku menší oddálení. Let je delší (`XG` 1,9 obrazovky, mobil 1,5).
+- **Zvuk:** hlasy postav vypnuté (`synth = null`), repliky jen psané. Pryč je šum vinylu, lupání, bzučení strojku a metličky; hraje jen hudba.
+- **Písmo bublin:** Outfit (jako zbytek webu) místo kurzívy Cormorant.
+
 ## Technický stav
 
 - **Prohlížeč:** Playwright přes `require('playwright')`, `chromium.launch()` bez cesty. Bez GPU, časy snímků jsou pesimistické. Na skutečném telefonu neměřeno.
@@ -73,6 +84,9 @@ Jen Honziho slova z vláken 6. až 8. 11.:
   - Ruka s bílým hadříkem pryč, zůstane jen ruka, která tetuje.
   - Strojek typu Pen a jeho držení podle skutečnosti.
 - **Hudba** musí hrát rovnou.
+- **Zvuk (10. 11.):** žádný hlas Honzy ani klientky, „bude to jenom psané“. Žádný šum na pozadí mimo hudbu.
+- **Písmo v přímé řeči (10. 11.):** původní bylo „ošklivý font“, má být hezké a podobné vizuálu webu.
+- **Lety mezi fotkami (10. 11.):** oblouk s větším oddálením, aby bylo víc vidět studio. Nájezdy do fotek jsou „výborné“, neměnit.
 - **Písmo** musí být dobře vidět (podkreslit nebo podsvítit).
 - **Konec:** přechod do anděla jako nájezd do fotky. „Působí to super, jak se najede do té fotky na zdi.“
 - **Texty u anděla** vrátit.
@@ -105,10 +119,6 @@ Jen Honziho slova z vláken 6. až 8. 11.:
 
 ## Otevřené
 
-- **Hlasy postav:** Honzi pořád nevybral cestu.
-  1. Namluví repliky sám plus ženský hlas.
-  2. ElevenLabs přes jeho klíč.
-  3. Edge TTS, jen pro mustr.
 - **Texty „O mně“:** otázka bez odpovědi, jestli u anděla myslel i je. Od 24. 9. jsou u fotky z práce.
 - **Nájezdy kamery:** kamera vjíždí jen do 6 fotek filmu (anděl, já u práce, 4 styly). Ostatní obrazy jsou vidět při přeletech. Nabídnuto, Honzi neodpověděl.
 - **Moje volby, které Honzi nekomentoval:**
@@ -134,16 +144,18 @@ Jen Honziho slova z vláken 6. až 8. 11.:
 - **Motivy na zdech:** lotos, mandaly a liška odstraněny.
 - **Přechody:** skokové skrývání plánů; nájezd do detailu prolínačkou bez návaznosti.
 - **Otáčení postav:** převrácením siluety, bylo ploché.
-- **Hlasy:** přes `speechSynthesis` jsou oba strojové a mužské.
+- **Hlasy:** přes `speechSynthesis` jsou oba strojové a mužské. 10. 11. Honzi hlasy zrušil úplně.
+- **Šum na pozadí** (vinyl, lupání, bzučení strojku): zrušeno 10. 11.
+- **Kurzíva Cormorant v bublinách:** „ošklivý font“, nahrazeno 10. 11.
+- **Krátké oddálení při letu mezi fotkami** (verze 9): studio jen probliklo.
 
 ## Stav kontrol
 
-**10. 11. 2026**, snímky přes `shot.js` a `siteshot.js`, konzole bez chyb:
-- desktop 1440×900: osa T 0 až 14 po částech (úvod, dveře 1.95–2.3, rozhovor, nájezd do detailu 7.7–8.05, detail 8.15–10.0, výjezd 10.75, dveře 11.92–12.25, konec 12.0–13), obě stěny galerie a zóna u okna bez postav
-- složený web 1440×900: nájezd do anděla (13.4, 13.8, 13.97, h0) a první let (h5.1 až h6.7)
-- mobil 390×844: T 0, 3.4, 7.6, 8.7, 12.8 a první let (h4.6 až h5.3)
-- ostatní lety galerie (2. až 5.): jeden snímek uprostřed každého letu, bez chyb
-- neověřeno: plynulost na skutečném telefonu
+**10. 11. 2026 (verze 10)**, snímky přes `shot.js` a složený web, konzole bez chyb:
+- široké okno 2000×991 (jako Honziho snímky): T 0.7, 1.3, 2.05, 2.2 (dveře), 3.6, 6.5, nájezd do detailu 7.7 až 8.05, 8.6, výjezd 10.8 až 11.3, 11.9
+- složený web 1440×900: první dva lety po krocích, 3. a 4. let uprostřed
+- mobil 390×844: T 1.2, 2.2, 7.86, 8.6 a lety
+- neověřeno: zvuk poslechem (vypnutí hlasů a šumu je ověřené jen v kódu), plynulost na skutečném telefonu, pátý let
 
 ## První krok
 
