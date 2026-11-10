@@ -185,13 +185,16 @@ function seam(el,e){
   el.style.webkitMaskImage=m;el.style.maskImage=m;
 }
 
+/* s letem po zdi: kamera ve fotce se mekce rozjede a mekce dojede (na koncich stoji), aby navazala na let bez trhnuti */
+function warp(k){var a=.1,h=k<a?k*k/(2*a):k>1-a?1-a-(1-k)*(1-k)/(2*a):k-a/2;return h/(1-a)}
+function warpEnd(p){var a=.1,h=p<1-a?p:1-a/2-(1-p)*(1-p)/(2*a);return h/(1-a/2)}
 function renderShot(sh,s,side){
   var life=sh.L+X,u=(s-sh.b)/life,last=sh===shots[shots.length-1],
       vis=u>0&&(u<1||last),k=clamp(u),n=sh.notes.length,o,j,
       /* vlny a texty jen v case, kdy je zaber cely (po prechodu, pred dalsim) */
       kn=clamp((s-sh.b-X)/(sh.L-X));
   /* fotka zustava videt i pod letem po zdi (do pulky letu predchozi, od pulky dalsi), takze pri predani nic neproblikne */
-  if(gal){var o0=sh.b+XG,o1=o0+sh.L;k=kn=clamp((s-o0)/sh.L);vis=s>=o0-XG*.5&&(s<=o1+XG*.5||last)}
+  if(gal){var o0=sh.b+XG,o1=o0+sh.L;k=kn=warp(clamp((s-o0)/sh.L));vis=s>=o0-XG*.5&&(s<=o1+XG*.5||last)}
   if(vis!==sh.vis){sh.vis=vis;sh.el.style.visibility=vis?'visible':'hidden'}
   var amp=[];
   for(j=0;j<n;j++){
@@ -250,7 +253,8 @@ function outgoing(i,s){
 }
 
 function render(s){
-  var p=clamp(s/ANGEL),q=qAt(p),st=state(zoomAt(q),descAt(q)),
+  var p=clamp(s/ANGEL);if(gal)p=warpEnd(p);
+  var q=qAt(p),st=state(zoomAt(q),descAt(q)),
       cam=reduce?state(0,0):st;
 
   if(s<=ANGEL+2+(gal?XG*.5:0)){

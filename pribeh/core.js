@@ -167,7 +167,8 @@ function monotone(xs,ys){
   };
 }
 /* let mezi fotkami: tabulka posunu (posun je umerny sirce zaberu, takze na obrazovce bezi stalou rychlosti) */
-var flyC=null;
+/* FH = usazeni kamery na fotce na zacatku a konci letu (podil letu): v nem se fotka filmu prolne s fotkou na zdi */
+var flyC=null,FH=.03;
 function flyLUT(ca,cb){
   var key=[ca.x,ca.y,ca.s,cb.x,cb.y,cb.s,vw,vh].map(function(v){return Math.round(v*100)}).join(',');
   if(flyC&&flyC.key===key)return flyC;
@@ -471,7 +472,7 @@ function updateCam(time){
     cam.x=Ax-lerp(b0x,b1x,ez)/sZ;cam.y=Ay-lerp(b0y,b1y,ez)/sZ;cam.s=sZ;
   }
   var gc=ST.galCam;
-  if(gc){var A=GAL[gc.a],B=GAL[gc.b],ca=camFor(A,gc.ra),cb=camFor(B,gc.rb),F=flyLUT(ca,cb),t=clamp(gc.k),
+  if(gc){var A=GAL[gc.a],B=GAL[gc.b],ca=camFor(A,gc.ra),cb=camFor(B,gc.rb),F=flyLUT(ca,cb),t=clamp((gc.k-FH)/(1-2*FH)),
         e0=t*t*(3-2*t),fe=e0*F.N,ie=Math.min(F.N-1,Math.floor(fe)),u=lerp(e0,F.U[ie]+(F.U[ie+1]-F.U[ie])*(fe-ie),.55),f=u*F.N,i0=Math.min(F.N-1,Math.floor(f)),pp=F.P[i0]+(F.P[i0+1]-F.P[i0])*(f-i0),sb=Math.sin(Math.PI*u),g2=sb*sb;
     /* jedna hladka krivka bez zastaveni: sirka zaberu je oblouk v logaritmu, posun bezi stalou rychlosti na obrazovce */
     cam.s=vw/Math.exp(F.l0+(F.l1-F.l0)*u+F.B*sb);
@@ -572,9 +573,11 @@ function render(time){
     var sh=$('stShade');if(sh&&!ST.galCam)sh.style.opacity=ss(13.5,14,T).toFixed(3);
     var gone=Tt>=ST.N-.004,sg=$('stage'),gm=!!ST.galCam&&gone;
     if(gm!==ST._gm){ST._gm=gm;sg.classList.toggle('gal',gm)}
-    /* na zacatku a konci letu se scena prolne s fotkou filmu pod ni (obe jsou na stejnem miste) */
-    var gfo=gm?Math.min(ss(0,.045,ST.galCam.k),1-ss(.955,1,ST.galCam.k)):1;
-    sg.style.opacity=gone&&!gm?0:gfo.toFixed(3);sg.style.visibility=gone&&!gm?'hidden':'';sg.style.pointerEvents=gone?'none':'';
+    /* predani mezi filmem a letem: kamera stoji presne na fotce (FH) a scena se prolne s fotkou filmu pod ni;
+       zrno zustava stejne silne jako ve filmu, aby se nezmenil jas */
+    var gfo=gm?Math.min(ss(0,FH,ST.galCam.k),1-ss(1-FH,1,ST.galCam.k)):1;
+    sg.style.opacity=gone&&!gm?0:gfo.toFixed(3);sg.style.visibility=gone&&!gm?'hidden':'';if(gm)ST._ov.grain.style.opacity=.07;
+    sg.style.pointerEvents=gone?'none':'';
     var ve=$('stVeil');
     if(gm){var gk=ST.galCam,out=1-ss(0,.35,gk.k),inn=ss(.65,1,gk.k);
       /* stin na koncich letu odpovida filmu: andel ma .sc-shade (35 %), ostatni zabery .sc-veil */

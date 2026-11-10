@@ -169,4 +169,4 @@ a{color:inherit}
 /* film za andelem: let po zdi galerie mezi fotkami (scena prekryje film) */
 .st-veil{position:absolute;inset:0;pointer-events:none;opacity:0;z-index:3;background:radial-gradient(ellipse at 50% 50%,rgba(7,8,11,0) 35%,rgba(7,8,11,.6) 100%),linear-gradient(180deg,rgba(7,8,11,.35) 0%,rgba(7,8,11,0) 25%,rgba(7,8,11,0) 75%,rgba(7,8,11,.45) 100%)}
 .stage.gal{position:fixed;inset:0;z-index:5}
-.stage.gal>*:not(#world):not(.st-veil):not(.st-shade){visibility:hidden!important;opacity:0!important}
+.stage.gal>*:not(#world):not(.st-veil):not(.st-shade):not(.grain){visibility:hidden!important;opacity:0!important}
