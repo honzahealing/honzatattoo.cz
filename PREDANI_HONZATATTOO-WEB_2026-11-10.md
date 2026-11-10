@@ -2,7 +2,7 @@
 
 ## Kanonické soubory
 
-Repozitář `honzahealing/honzatattoo.cz`, větev **`pribeh-na-scroll`** obsahuje verzi 8. **Verze 9 (10. 11. 2026) je na pracovní větvi `claude/intelligent-dirac-bbkdjc`** (šest commitů nad `pribeh-na-scroll`); do `pribeh-na-scroll` ji přesunout až s Honziho souhlasem. Pull request není a `main` je beze změn. Velikosti platí pro verzi 9.
+Repozitář `honzahealing/honzatattoo.cz`, větev **`pribeh-na-scroll`** obsahuje verzi 8. **Verze 9 (10. 11. 2026) je na pracovní větvi vlákna z 10. 11.** (jediná větev se sedmi commity nad `pribeh-na-scroll`, název jí přidělilo prostředí); do `pribeh-na-scroll` ji přesunout až s Honziho souhlasem. Pull request není a `main` je beze změn. Velikosti platí pro verzi 9.
 
 | Bajty | Soubor | K čemu |
 |---|---|---|
