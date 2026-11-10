@@ -985,13 +985,20 @@ function buildTram(g,TL,num,dl,pass){
   /* kola: oblouky v zastere, kola s pryzovym kroužkem, sroubky */
   var arc='';wheels.forEach(function(cx){arc+='M'+pt(cx-46,-26)+'A46,46 0 0 1 '+pt(cx+46,-26)+'Z'});
   fillp(s,arc,'f-bg');path(s,arc,{'class':'ink thin'});
-  var wd='',inner='';
-  wheels.forEach(function(cx){var cy=-34;wd+=circ(cx,cy,34)+circ(cx,cy,28)+circ(cx,cy,19)+circ(cx,cy,8);
-    for(var a=0;a<12;a++){var an=a*PI/6+.2;inner+=line(cx+cos(an)*10,cy+sin(an)*10,cx+cos(an)*18,cy+sin(an)*18)+circ(cx+cos(an)*23.5,cy+sin(an)*23.5,1.2)}
-    for(var a2=0;a2<36;a2++){var an2=a2*PI/18;tread+=line(cx+cos(an2)*31,cy+sin(an2)*31,cx+cos(an2)*34,cy+sin(an2)*34)}});
+  /* kola se pri jizde otaceji: obruc je pevna, paprsky, srouby a vzorek obvodu jsou ve skupine, ktera se toci kolem stredu */
+  var wd='',whs=[];
+  wheels.forEach(function(cx){var cy=-34;wd+=circ(cx,cy,34)+circ(cx,cy,28)+circ(cx,cy,19)+circ(cx,cy,8)});
   fillp(s,wd,'f-t1');
   fillp(s,wheels.map(function(cx){return circ(cx,-34,34)}).join(''),'f-t1');
-  path(s,wd,{'class':'ink thin'});path(s,inner+tread,{'class':'ink hair'});
+  path(s,wd,{'class':'ink thin'});
+  wheels.forEach(function(cx){var wg=el('g',{transform:'translate('+cx+',-34)'},s),inner='',tr='';
+    for(var a=0;a<12;a++){var an=a*PI/6+.2;inner+=line(cos(an)*10,sin(an)*10,cos(an)*18,sin(an)*18)+circ(cos(an)*23.5,sin(an)*23.5,1.2)}
+    for(var a2=0;a2<36;a2++){var an2=a2*PI/18;tr+=line(cos(an2)*31,sin(an2)*31,cos(an2)*34,sin(an2)*34)}
+    path(wg,inner+tr,{'class':'ink hair'});
+    /* znacka na kole (zaplata brzdy a dva silnejsi paprsky), aby bylo otaceni videt */
+    path(wg,line(0,-9,0,-27)+line(0,9,0,27),{'class':'ink thin'});fillp(wg,circ(0,-23.5,2.6),'f-gold');
+    whs.push({g:wg,x:cx})});
+  g._wheels=whs;
   /* konce kol a zasterovani (pase mezi koly) */
   ink(s,rect(bc[0]+160,-62,TL*.5-bc[0]-250,4)+rect(TL*.5+90,-62,bc[1]-TL*.5-250,4),'hair',dl+.05);
   /* celo (3/4 pohled): sklopene deleny celni sklo, transparent, svetlomet, pozicni svetla, narazník, pluh */
@@ -1663,8 +1670,11 @@ ST.on(function(T,time,cam){
   /* tramvaje: poloha podle scrollu i casu, projizdeji dokola */
   for(k=0;k<trams.length;k++){
     var t=trams[k],u;
-    if(t.end){u=(tm*.045+(T-11)*70)%4400;t.g.setAttribute('transform','translate('+n(4800-u)+',678) scale(.82)')}
-    else{u=(2245+tm*.045+T*160)%3700;t.g.setAttribute('transform','translate('+n(745-u)+',678) scale(.82)')}
+    var dist=t.end?tm*.045+(T-11)*70:2245+tm*.045+T*160;
+    if(t.end){u=dist%4400;t.g.setAttribute('transform','translate('+n(4800-u)+',678) scale(.82)')}
+    else{u=dist%3700;t.g.setAttribute('transform','translate('+n(745-u)+',678) scale(.82)')}
+    /* kola se odvaluji po koleji: uhel = ujeta draha / polomer (jede doleva, toci se proti smeru hodin) */
+    var wh=t.g._wheels,wa=-(dist/.82/34)*180/PI%360;if(wh)for(var wi=0;wi<wh.length;wi++)wh[wi].g.setAttribute('transform','translate('+wh[wi].x+',-34) rotate('+n(wa)+')');
   }
   /* vysilac: plynule dosazeni vpravo od textu Kontakt v zaveru, na mobilu mensi */
   if(amb.tower){

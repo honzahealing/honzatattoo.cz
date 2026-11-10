@@ -138,7 +138,9 @@ function layoutWall(W){
 WALLS.forEach(layoutWall);
 ST.gal=GAL;ST.galCam=null;
 /* film zavola pri prechodu mezi zabery: a, b = index fotky, k = 0..1, ra, rb = obdelnik fotky na obrazovce {L,T,W} na koncich */
-ST.gallery={fly:function(a,b,k,ra,rb){ST.galCam=a==null?null:{a:a,b:b,k:k,ra:ra,rb:rb}}};
+/* Film vola fly() ve svem snimku; pribeh se prekresli hned ve stejnem snimku (zadne zpozdeni o snimek pri vjezdu do fotky a vyjezdu z ni). */
+ST.gallery={fly:function(a,b,k,ra,rb){var had=ST.galCam;ST.galCam=a==null?null:{a:a,b:b,k:k,ra:ra,rb:rb};
+  if((had||ST.galCam)&&story){render(performance.now());ST._sync=1}}};
 function camFor(ph,r){var sc=r.W/ph.w;return {s:sc,x:ph.x+(vw/2-r.L)/sc,y:ph.y+(vh/2-r.T)/sc}}
 function photoZoom(T){return ss(13.15,14,T)}
 /* plynuly rozjezd i dojezd (nulova rychlost i zrychleni na koncich) */
@@ -400,6 +402,7 @@ ST.start=function(){
     if(P.light)P2(g,ST.ellipse(P.x+P.w/2,P.y+P.h*.35,P.w*.95,P.h*.75),{fill:'url(#gGlow)',opacity:.45});
     if(P.card)card(g,P);else if(P.cert)cert(g,P);else photo(g,P)});
   ST.on(function(T){var gc=ST.galCam,k=gc?0:photoZoom(T);GAL.forEach(function(P,i){var o=i===0?.06*(1-k):.06;if(gc&&(i===gc.a||i===gc.b)){var e=i===gc.a?1-gc.k:gc.k;o=.06*(1-ss(.6,1,e))}if(P.gl._o!==o){P.gl._o=o;P.gl.setAttribute('opacity',o.toFixed(3))}})});
+  ST._pre=WALLITEMS.filter(function(P){return P.src}).map(function(P){var im=new Image();im.src=P.src;if(im.decode)im.decode().catch(function(){});return im});
   buildUI();
   size();T=Tt=ST.debug.T!=null?ST.debug.T:targetT();
   addEventListener('resize',size);
@@ -475,7 +478,9 @@ function updateCam(time){
     cam.x=lerp(ca.x,cb.x,pp)+F.off*g2;cam.y=lerp(lerp(ca.y,cb.y,pp),F.por?480:455,g2*clamp(F.B/1.5));
   }
   if(ST.debug.cam){var dc=ST.debug.cam;cam.x=dc[0];cam.y=dc[1];cam.s=Math.min(vw/dc[2],vh/dc[3])}
-  else if(!reduce){cam.x+=Math.sin(time*.00031)*2.2;cam.y+=Math.cos(time*.00027)*1.6}
+  /* jemne pohupovani kamery: na obrazovce vzdy jen par pixelu; pri letu po galerii a pri najezdu do fotky zadne,
+     jinak by fotka na zdi nesedela na fotku z filmu a pri predani by poskocila */
+  else if(!reduce&&!gc){var ja=(1-(cam.pz||0))*Math.min(1,1.4/cam.s);cam.x+=Math.sin(time*.00031)*2.2*ja;cam.y+=Math.cos(time*.00027)*1.6*ja}
   cam.vw=vw;cam.vh=vh;cam.T=T;
   var hw=vw/2/cam.s,hh=vh/2/cam.s;
   cam.x0=cam.x-hw;cam.x1=cam.x+hw;cam.y0=cam.y-hh;cam.y1=cam.y+hh;
@@ -567,7 +572,9 @@ function render(time){
     var sh=$('stShade');if(sh&&!ST.galCam)sh.style.opacity=ss(13.5,14,T).toFixed(3);
     var gone=Tt>=ST.N-.004,sg=$('stage'),gm=!!ST.galCam&&gone;
     if(gm!==ST._gm){ST._gm=gm;sg.classList.toggle('gal',gm)}
-    sg.style.opacity=gone&&!gm?0:1;sg.style.visibility=gone&&!gm?'hidden':'';sg.style.pointerEvents=gone?'none':'';
+    /* na zacatku a konci letu se scena prolne s fotkou filmu pod ni (obe jsou na stejnem miste) */
+    var gfo=gm?Math.min(ss(0,.045,ST.galCam.k),1-ss(.955,1,ST.galCam.k)):1;
+    sg.style.opacity=gone&&!gm?0:gfo.toFixed(3);sg.style.visibility=gone&&!gm?'hidden':'';sg.style.pointerEvents=gone?'none':'';
     var ve=$('stVeil');
     if(gm){var gk=ST.galCam,out=1-ss(0,.35,gk.k),inn=ss(.65,1,gk.k);
       /* stin na koncich letu odpovida filmu: andel ma .sc-shade (35 %), ostatni zabery .sc-veil */
@@ -615,7 +622,7 @@ function frame(ts){
   if(ST.debug.T!=null)T=ST.debug.T;
   else{Tt=targetT();if(reduce)T=Tt;else{var f=1-Math.exp(-dt/150);T+=(Tt-T)*f;if(Math.abs(Tt-T)<.0005)T=Tt}}
   var idle=ST.debug.T==null&&!!ST.hasHero&&Tt>=ST.N-.004&&T>=ST.N-.0006&&!ST.galCam;
-  if(!(idle&&ST._idle))render(ts);
+  if(ST._sync)ST._sync=0;else if(!(idle&&ST._idle))render(ts);
   ST._idle=idle;lastT=T;ST.T=T;
   requestAnimationFrame(frame);
 }

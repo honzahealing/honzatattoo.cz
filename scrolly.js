@@ -190,7 +190,8 @@ function renderShot(sh,s,side){
       vis=u>0&&(u<1||last),k=clamp(u),n=sh.notes.length,o,j,
       /* vlny a texty jen v case, kdy je zaber cely (po prechodu, pred dalsim) */
       kn=clamp((s-sh.b-X)/(sh.L-X));
-  if(gal){var o0=sh.b+XG,o1=o0+sh.L;k=kn=clamp((s-o0)/sh.L);vis=s>=o0-1&&(s<=o1+1||last)}
+  /* fotka zustava videt i pod letem po zdi (do pulky letu predchozi, od pulky dalsi), takze pri predani nic neproblikne */
+  if(gal){var o0=sh.b+XG,o1=o0+sh.L;k=kn=clamp((s-o0)/sh.L);vis=s>=o0-XG*.5&&(s<=o1+XG*.5||last)}
   if(vis!==sh.vis){sh.vis=vis;sh.el.style.visibility=vis?'visible':'hidden'}
   var amp=[];
   for(j=0;j<n;j++){
@@ -252,7 +253,7 @@ function render(s){
   var p=clamp(s/ANGEL),q=qAt(p),st=state(zoomAt(q),descAt(q)),
       cam=reduce?state(0,0):st;
 
-  if(s<=ANGEL+2){
+  if(s<=ANGEL+2+(gal?XG*.5:0)){
     heroLayer.style.visibility='visible';
     slide(heroLayer,shots.length&&!reduce&&!gal?-ease((s-shots[0].b)/X)*H:0);
     img.style.transform='translate3d('+cam.sx.toFixed(1)+'px,'+cam.sy.toFixed(1)+'px,0) rotate('+cam.rot.toFixed(3)+'deg) scale('+cam.z.toFixed(4)+') translate3d('+(-cam.fx).toFixed(1)+'px,'+(-cam.fy).toFixed(1)+'px,0)';
