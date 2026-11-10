@@ -142,7 +142,8 @@ Jen Honziho slova z vláken 6. až 8. 11.:
 - desktop 1440×900: osa T 0 až 14 po částech (úvod, dveře 1.95–2.3, rozhovor, nájezd do detailu 7.7–8.05, detail 8.15–10.0, výjezd 10.75, dveře 11.92–12.25, konec 12.0–13), obě stěny galerie a zóna u okna bez postav
 - složený web 1440×900: nájezd do anděla (13.4, 13.8, 13.97, h0) a první let (h5.1 až h6.7)
 - mobil 390×844: T 0, 3.4, 7.6, 8.7, 12.8 a první let (h4.6 až h5.3)
-- neověřeno: ostatní lety galerie po prodloužení `XG`, plynulost na skutečném telefonu
+- ostatní lety galerie (2. až 5.): jeden snímek uprostřed každého letu, bez chyb
+- neověřeno: plynulost na skutečném telefonu
 
 ## První krok
 
