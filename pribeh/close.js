@@ -247,8 +247,10 @@ function finger(par,pts,o){
   L(M,'M452,60 q20,34 4,76 M478,84 q16,30 2,66 M500,112 q10,22 0,50',LINE,1,.24);
   /* --- zatocene prsty (malicek, prstenik) a hrbet ruky --- */
   curlG=G(M);
-  finger(curlG,[[322,176,25],[270,196,23],[240,176,21]],{dark:1});
-  finger(curlG,[[306,132,27],[250,154,25],[218,138,23]],{dark:1});
+  /* prstenik a malicek jsou zatocene do dlane: zakladni clanek miri dopredu a dolu, v kloubu se prst lame
+     a spicka se vraci zpet k dlani (ne nahoru ke strojku). Malicek lezi kloubem na kuzi. */
+  finger(curlG,[[330,150,24],[290,178,23],[262,204,22],[282,226,20],[318,222,18]],{dark:1});
+  finger(curlG,[[308,104,26],[262,132,25],[228,160,24],[244,190,22],[284,192,20]],{dark:1});
   var palm=cr([[262,-100],[300,-96],[352,-76],[410,-36],[462,14],[494,52],[468,120],[420,182],[366,208],[310,204],[272,176],[258,128],[262,60],[258,-10],[250,-66]],true);
   Q(M,palm,{fill:'url(#clGlv)'});
   var pin=G(M,{'clip-path':clipOf(palm)});

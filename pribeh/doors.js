@@ -27,10 +27,17 @@ DOORS.forEach(function(d,i){
   var x=fx(d,X0),x1=x+W,hx=x;
   var sec=function(layer){return ST.section(ST.L[layer],x-60,x1+60)};
   var gRoom=sec('room'),gFront=sec('back'),gLight=sec('light');
-  var all=el('g',{},gRoom);ST.fade(all,d.show[0],d.show[1],1);
+  var tv=ST.seenAt?ST.seenAt(x-30):d.show[0]+.3,show=[tv-.36,tv];
+  var all=el('g',{},gRoom);ST.fade(all,show[0],show[1],1);
   /* otvor za kridlem: dvere 1 = teply interier, dvere 2 = nocni ulice */
+  /* otvor je neprůhledny: za otevrenymi dvermi je videt studio (tapeta, oblozeni, podlaha), ne ulice za domem */
+  if(d.inside){el('path',{d:R(x,Y0,W,Y1-Y0),fill:'#15161A'},all);el('path',{d:R(x,Y0,W,Y1-Y0),fill:'url(#stipple)',opacity:.8},all);
+    el('path',{d:R(x,603,W,97),fill:'#1D1E23'},all);el('path',{d:'M'+x+',668 H'+x1+' V700 H'+x+'Z',fill:'#272830'},all)}
   el('path',{d:R(x,Y0,W,Y1-Y0),fill:d.inside?'url(#gDoorIn)':'url(#gDoorOut)'},all);
   if(d.inside){
+    ST.D(all,'M'+x+',603 H'+x1+' M'+x+',609 H'+x1+' M'+(x+8)+',616 h30 v46 h-30Z M'+(x+46)+',616 h30 v46 h-30Z','hair dim',null);
+    ST.D(all,'M'+(x+62)+',600 V470 M'+(x+52)+',470 h20 M'+(x+56)+',470 q6,-16 12,0 M'+(x+52)+',600 h20','hair dim',null);
+    ST.D(all,'M'+(x+34)+',431 q5,-7 10,0 q5,7 10,0 M'+(x+36)+',444 h16','hair gold',null);
     /* pohled dovnitr: kus podlahy, lampa, ram na zdi */
     ST.D(all,'M'+x+',668 H'+x1+' M'+x+',684 L'+(x+20)+',668 M'+(x+40)+',700 L'+(x+48)+',668 M'+(x1-6)+',700 L'+(x1-14)+',668','hair dim',null);
     ST.D(all,R(x+30,420,28,36),'hair dim',null);ST.D(all,'M'+(x+20)+',362 V384 M'+(x+12)+',384 h16 l-4,8 h-8Z','hair dim',null);
@@ -78,7 +85,7 @@ DOORS.forEach(function(d,i){
   /* hrana kridla (tloustka), viditelna pri otevreni */
   var edge=el('path',{d:'','class':'ink thin t2'},all);
   /* --- obklad zarubne na strane ulice --- */
-  var cx=d.inside?x-13:x1+4,fr=el('g',{},gFront);ST.fade(fr,d.show[0],d.show[1],1);
+  var cx=d.inside?x-13:x1+4,fr=el('g',{},gFront);ST.fade(fr,show[0],show[1],1);
   ST.D(fr,R(cx,348,13,Y1-348),'ink t2',null);ST.D(fr,'M'+(cx+4)+',354 V'+(Y1-4)+' M'+(cx+9)+',354 V'+(Y1-4),'hair',null);
   ST.D(fr,R(d.inside?x-17:x-6,338,W+29,14,2),'ink t3',null);ST.D(fr,'M'+(d.inside?x-12:x-1)+',345 H'+(d.inside?x1+6:x1+18),'hair',null);
   ST.D(fr,R(cx-2,Y1-18,17,18),'thin t3',null);

@@ -124,7 +124,7 @@ function createEngine(ctx, seed) {
   var vhp = ctx.createBiquadFilter(); vhp.type = 'highpass'; vhp.frequency.value = 600;
   var vlp = ctx.createBiquadFilter(); vlp.type = 'lowpass'; vlp.frequency.value = 2800;
   var vg = ctx.createGain(); vg.gain.value = 0.014;
-  vSrc.connect(vhp); vhp.connect(vlp); vlp.connect(vg); vg.connect(sum); vSrc.start();
+  /* sum vinylu, lupani a bzuceni strojku jsou vypnute (Honzi 10. 11. 2026): hraje jen hudba */
   var clickBus = ctx.createGain(); clickBus.gain.value = 1; clickBus.connect(sum);
 
   /* bzučení tetovacího strojku: 100 Hz + harmonické, jemná modulace, jen v detailu */
@@ -299,8 +299,6 @@ function createEngine(ctx, seed) {
     }
 
     /* metličky: swish na 2 a 4, ride v swingu (ding, ding-a-ding) */
-    if (!off && (beat === 1 || beat === 3)) swish(t, 0.8 + rnd() * 0.3, BEAT * 0.95);
-    if (!off && beat === 0 && rnd() < 0.4) swish(t, 0.3, BEAT * 1.1);
     if ([0, 2, 3, 4, 6, 7].indexOf(pos) >= 0)
       ride(t + (rnd() - 0.5) * 0.008, pos === 3 || pos === 7 ? 0.55 : (pos === 2 || pos === 6 ? 0.8 : 0.9) * (0.85 + rnd() * 0.3));
   }
@@ -313,7 +311,6 @@ function createEngine(ctx, seed) {
       n++;
     }
     while (nextClick < until) {                              // vinylové klikání, ~1,3 za sekundu
-      if (now == null || nextClick >= now) crackle(nextClick, 0.03 + rnd() * 0.07);
       nextClick += -Math.log(1 - rnd()) / 1.3;
     }
   };
@@ -322,7 +319,7 @@ function createEngine(ctx, seed) {
   E.react = function (T, at) {
     var detail = T > 7.8 && T < 10.8, hum = T > 8.1 && T < 9.5;
     storyG.gain.setTargetAtTime(detail ? 0.65 : 1, at, 0.8);
-    humG.gain.setTargetAtTime(hum ? 0.05 : 0, at, 0.5);
+    humG.gain.setTargetAtTime(0, at, 0.5);
   };
   E.duck = function (on, at) { speechG.gain.setTargetAtTime(on ? 0.6 : 1, at, on ? 0.2 : 0.7); };
   E.fade = function (to, sec, at) {                        // lineární fade hlavní hlasitosti
@@ -341,7 +338,7 @@ ST.audioLab = { createEngine: createEngine, MASTER: MASTER, BPM: BPM, CHORDS: CH
 /* =====================================================================
    HLASY (Web Speech API)
    ===================================================================== */
-var synth = (typeof window.speechSynthesis !== 'undefined' && typeof window.SpeechSynthesisUtterance !== 'undefined') ? window.speechSynthesis : null;
+var synth = null;   /* hlasy postav jsou vypnute (Honzi 10. 11. 2026): repliky jsou jen psane */
 var V = ST.voices = { supported: !!synth, count: 0, c: null, h: null, calls: 0, last: '', list: [] };
 var voiceC = null, voiceH = null, pitchC = 1, pitchH = 1, rateC = 1, rateH = 1;
 var duckTimer = 0;
@@ -400,7 +397,7 @@ function primeSpeech() {            // Safari / iOS: první speak musí být v g
 }
 function stopSpeech() { try { if (synth) synth.cancel(); } catch (e) {} unduck(); }
 
-if (typeof ST.onSay === 'function') ST.onSay(function (kdo, text) { speak(kdo, text); });
+
 
 /* =====================================================================
    OVLÁDÁNÍ: stav, tlačítko, scheduler
