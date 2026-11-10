@@ -522,9 +522,9 @@ function honzaAt(T,time){
     if(T>10.9){r4=R0(idle(STAND,time,1),2985,-1);var g4=ext(STAND,{aF:{fk:1,a1:30,el:56,wr:-22},hF:'open'});r4=mixR(r4,R0(g4,2985,-1),ss(11.3,11.45,T)*(1-ss(11.7,11.9,T)))}
     st={x:2985,face:-1,p:r4};
   }
-  else if(T<12.15){st=walkSeg(T,11.72,12.15,2985,3296,null,null,1);st.face=lerp(-1,1,ss(11.68,11.82,T))}
+  else if(T<12.15){st=walkSeg(T,11.72,12.15,2985,3352,null,null,1);st.face=lerp(-1,1,ss(11.68,11.82,T))}
   else{var wave=function(t){return ext(STAND,{headT:-3,aF:{fk:1,a1:158,el:18+16*Math.sin(time*.006),wr:-10},hF:'open'})};
-    st={x:3296,face:1,p:mixR(R0(idle(STAND,time,1),3296,1),R0(wave(T),3296,1),ss(12.2,12.45,T))}}
+    st={x:3352,face:1,p:mixR(R0(idle(STAND,time,1),3352,1),R0(wave(T),3352,1),ss(12.2,12.45,T))}}
   st.op=ss(1.9,2.4,T);
   st.glove=T>7.62&&T<10.72;
   st.pencil=(T<2.95?1-ss(2.86,2.95,T):0)+ss(4.86,5.0,T)*(1-ss(5.86,6.0,T));

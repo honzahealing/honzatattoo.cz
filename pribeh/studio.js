@@ -699,7 +699,7 @@ function windowZ(){
   d=[];for(k=0;k<4;k++)d.push(R(2118,609+k*21.4,12,3,1),R(2232,609+k*21.4,12,3,1));D(g,d.join(''),'hair',.25,.65);
   d=[];for(k=0;k<4;k++)d.push(ST.wline(2076,2170,613+k*21.4+8,.7,22,rng(k+30)),ST.wline(2190,2284,613+k*21.4+8,.7,22,rng(k+40)));D(g,d.join(' '),'hair faint',.3,.7);
   FILL(g,R(2068,664,224,28),'hair',.3,.7,{fill:HF});
-  vase(g,2092,596,36,58,.4,.8,1);dried(g,2092,538,13,31,82,-1,.45,.9);
+  vase(g,2092,596,32,50,.4,.8,1);dried(g,2092,546,7,31,40,-1,.45,.9);
   D(g,R(2150,578,62,18,1),'thin t2',.5,.85);D(g,R(2156,566,52,12,1),'thin t3',.5,.85);D(g,'M2154,586 H2208 M2160,572 H2204','hair gold',.55,.85);
   D(g,'M2172,566 L2174,556 H2190 L2192,566Z','thin t3',.55,.9);D(g,ell(2182,540,7,12)+ell(2171,548,4,8)+ell(2193,548,4,8),'thin t2',.6,.95);D(g,'M2182,530 V550 M2171,543 V553 M2193,543 V553','hair',.65,.95);
   frame(g,2254,550,38,46,'sprig',.6,.95);
@@ -713,7 +713,7 @@ function windowZ(){
   d=[];[2470,2488,2506,2524].forEach(function(bx){d.push('M'+bx+',520 V506 Q'+(bx+6)+',500 '+(bx+12)+',506 V520Z')});D(g,d.join(' '),'thin t3',.65,.95);
   var pt=potos(g,2530,360,.6,1,3);ST.potos=pt;
   /* podlaha: velka vaza, kos */
-  vase(g,2368,700,58,118,.5,.9,1);dried(g,2368,584,17,52,130,-1,.55,1);D(g,'M2352,640 H2386 M2350,668 H2386','hair gold',.6,.95);
+  vase(g,2436,700,44,82,.5,.9,1);dried(g,2436,620,10,52,60,-1,.55,1);D(g,'M2422,654 H2450 M2421,672 H2452','hair gold',.6,.95);
   D(g,'M2480,700 L2472,646 H2546 L2540,700Z','ink t3',.6,.95);
   d=[];for(k=0;k<5;k++)d.push('M'+n1(2473.2+k*1.3)+','+(654+k*9)+' H'+n1(2545-k*1.3));D(g,d.join(' '),'hair',.65,.95);
   d=[];for(k=0;k<9;k++)d.push('M'+(2478+k*8)+',646 L'+(2480+k*7.4)+',700');D(g,d.join(' '),'hair faint',.65,.95);
@@ -1145,6 +1145,28 @@ function extraPass(){
 }
 var gl2;
 extraPass();
+
+/* ---------- hledacky: drobnosti, ktere o Honzovi neco rikaji ---------- */
+(function(){
+  var g,d,k;
+  /* filmova klapka oprená o zed nad radiatorem (Honza je i reziser) */
+  zone(1.9,3.0);g=sec('room',1);
+  D(g,'M1980,524 L2020,524 L2020,554 L1980,554Z','thin t2',.75,1);
+  D(g,'M1979,523 L2019,512 L2021,518 L1981,529Z','thin t3',.78,1);
+  d=[];for(k=0;k<5;k++)d.push('M'+n1(1984+k*8)+','+n1(527.6-k*2.2)+' l5,-5.6');D(g,d.join(' '),'thin goldl',.8,1);
+  D(g,'M1984,533 H2016 M1984,540 H2004 M2008,540 H2016 M1984,547 H1998 M2002,547 H2016','hair',.82,1);
+  D(g,cir(1981,526,1.3),'hair gold t1',.82,1);
+  /* tibetska miska s palickou a vyvazene kaminky na podlaze u okna (masaze, energie) */
+  zone(4.8,6.0);g=sec('room',2);
+  D(g,ell(2396,696,15,3.4),'hair t1',.7,1);
+  D(g,'M2382,684 Q2384,696 2396,696 Q2408,696 2410,684Z','thin t3',.7,1);D(g,ell(2396,684,14,3.2),'thin gold t1',.72,1);
+  D(g,'M2386,689 Q2396,693 2406,689','hair gold',.74,1);D(g,'M2400,683 L2418,672','thin t3',.76,1);D(g,cir(2419,671.4,2),'hair t3',.76,1);
+  D(g,ell(2366,695.6,10,4.2),'thin t3',.72,1);D(g,ell(2365,688,7.4,3.4),'thin t2',.74,1);D(g,ell(2366.4,682.2,5,2.6),'thin t3',.76,1);D(g,ell(2365.6,677.6,3,1.9),'hair t2',.78,1);
+  FILL(g,ell(2366,695.6,10,4.2),'hair',.74,1,{fill:HF});
+  /* v tetovacim koute: na policce pod lampou maly nacrtnik s papouskem a hrnek s nakreslenym srdickem */
+  zone(6.3,7.3);g=sec('room',3);
+  D(g,'M3108,596 L3126,592 L3128,600 L3110,604Z','thin t2',.8,1);D(g,'M3113,598.6 q3,-3.4 6,-1.2 q2,1.6 4,-.8','hair gold',.84,1);
+})();
 
 /* ---------- ambientni animace ---------- */
 var smoke=[],dust=[];

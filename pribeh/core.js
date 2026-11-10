@@ -141,6 +141,17 @@ ST.gal=GAL;ST.galCam=null;
 ST.gallery={fly:function(a,b,k,ra,rb){ST.galCam=a==null?null:{a:a,b:b,k:k,ra:ra,rb:rb}}};
 function camFor(ph,r){var sc=r.W/ph.w;return {s:sc,x:ph.x+(vw/2-r.L)/sc,y:ph.y+(vh/2-r.T)/sc}}
 function photoZoom(T){return ss(13.15,14,T)}
+/* plynuly rozjezd i dojezd (nulova rychlost i zrychleni na koncich) */
+function sm5(t){t=clamp(t);return t*t*t*(t*(t*6-15)+10)}
+/* let kamery mezi dvema zabery [stred x, stred y, sirka zaberu]: oddaleni, prelet a priblizeni v jednom plynulem
+   oblouku se stalou vnimanou rychlosti (van Wijk a Nuij, Smooth and efficient zooming and panning) */
+function flyPath(p0,p1,rho){
+  var x0=p0[0],y0=p0[1],w0=p0[2],dx=p1[0]-x0,dy=p1[1]-y0,w1=p1[2],d2=dx*dx+dy*dy,r2=rho*rho,r4=r2*r2;
+  if(d2<1e-6){var S0=Math.log(w1/w0)/rho;return function(t){return [x0+t*dx,y0+t*dy,w0*Math.exp(rho*t*S0)]}}
+  var d1=Math.sqrt(d2),b0=(w1*w1-w0*w0+r4*d2)/(2*w0*r2*d1),b1=(w1*w1-w0*w0-r4*d2)/(2*w1*r2*d1),
+      q0=Math.log(Math.sqrt(b0*b0+1)-b0),q1=Math.log(Math.sqrt(b1*b1+1)-b1),S=(q1-q0)/rho,c0=Math.cosh(q0),s0=Math.sinh(q0);
+  return function(t){if(t<=0)return [x0,y0,w0];if(t>=1)return [p1[0],p1[1],w1];
+    var a=rho*t*S+q0,u=w0/(r2*d1)*(c0*Math.tanh(a)-s0);return [x0+u*dx,y0+u*dy,w0*c0/Math.cosh(a)]}}
 function monotone(xs,ys){
   var n=xs.length,d=[],m=[],i;
   for(i=0;i<n-1;i++)d[i]=(ys[i+1]-ys[i])/(xs[i+1]-xs[i]);
@@ -410,11 +421,11 @@ function updateCam(time){
   cam.x=camX(T);cam.y=camY(T);cam.s=Math.min(vw/w,vh/h);
   if(vw<vh){cam.s*=1.5;cam.y=ST.GY-.17*vh/cam.s+(cam.y-470)*.4}
   /* najezd do detailu a zpet: z kamery casove osy do kamery, ve ktere detail sedi presne na svetove predlokti */
-  var zi=ss(7.5,8.25,T),zo=1-ss(10.45,11.05,T),zu=T<9.5?zi:zo;cam.zu=zu;
+  var zi=sm5(lin(7.46,8.3,T)),zo=1-sm5(lin(10.4,11.1,T)),zu=T<9.5?zi:zo;cam.zu=zu;
   if(zu>0&&ST.closeVB){
     var vb=ST.closeVB,q=Math.max(vw/vb[2],vh/vb[3]),ox=(vw-vb[2]*q)/2,oy=(vh-vb[3]*q)/2,sF=ZK*q;
     var fx=ZW0[0]-((ZC0[0]-vb[0])*q+ox-vw/2)/sF,fy=ZW0[1]-((ZC0[1]-vb[1])*q+oy-vh/2)/sF;
-    var e=zu*zu*(3-2*zu),sN=cam.s*Math.pow(sF/cam.s,e);
+    var e=zu,sN=cam.s*Math.pow(sF/cam.s,e);
     var a0x=(ZW0[0]-cam.x)*cam.s,a0y=(ZW0[1]-cam.y)*cam.s,a1x=(ZW0[0]-fx)*sF,a1y=(ZW0[1]-fy)*sF;
     cam.x=ZW0[0]-lerp(a0x,a1x,e)/sN;cam.y=ZW0[1]-lerp(a0y,a1y,e)/sN;cam.s=sN;
     cam.cz=cam.s/(ZK*q);
@@ -426,14 +437,16 @@ function updateCam(time){
     var hs=Math.max(vw/PH.iw,vh/PH.ih),rw=PH.iw*hs,rh=PH.ih*hs,hox=(vw-rw)/2,hoy=Math.min(0,Math.max(vh-rh,vh*.28-.29*rh));
     var sP=rw/PH.w,Ax=PH.x+PH.w/2,Ay=PH.y+PH.h/2;
     var b0x=(Ax-cam.x)*cam.s,b0y=(Ay-cam.y)*cam.s,b1x=hox+rw/2-vw/2,b1y=hoy+rh/2-vh/2;
-    var ez=pz*pz*(3-2*pz),sZ=cam.s*Math.pow(sP/cam.s,ez);
+    var ez=sm5(lin(13.12,14,T)),sZ=cam.s*Math.pow(sP/cam.s,ez);
     cam.x=Ax-lerp(b0x,b1x,ez)/sZ;cam.y=Ay-lerp(b0y,b1y,ez)/sZ;cam.s=sZ;
   }
   var gc=ST.galCam;
-  if(gc){var A=GAL[gc.a],B=GAL[gc.b],ca=camFor(A,gc.ra),cb=camFor(B,gc.rb),e=gc.k*gc.k*(3-2*gc.k);
-    var dx=Math.abs((A.x+A.w/2)-(B.x+B.w/2)),sOut=Math.min(vw/Math.max(520,dx+460),vh/520),bb=Math.pow(Math.sin(Math.PI*e),.75);
-    cam.s=Math.exp(lerp(Math.log(ca.s),Math.log(cb.s),e)*(1-bb)+Math.log(sOut)*bb);
-    var w=ss(.12,.88,e);cam.x=lerp(ca.x,cb.x,w);cam.y=lerp(ca.y,cb.y,w)+(1-Math.abs(2*e-1))*0;
+  if(gc){var A=GAL[gc.a],B=GAL[gc.b],ca=camFor(A,gc.ra),cb=camFor(B,gc.rb),e=sm5(gc.k);
+    /* oddaleni jen tak daleko, aby zaber zustal na zdi studia (na vysku uzsi) */
+    var fp=flyPath([ca.x,ca.y,vw/ca.s],[cb.x,cb.y,vw/cb.s],vw<vh?1.05:1.3)(e),wMax=Math.min(1500,(vw<vh?430:560)*vw/vh),wv=fp[2];
+    if(wv>wMax*.5){var bell=Math.sin(Math.PI*e);bell*=bell;wv=wv+(wMax*Math.tanh(wv/wMax)-wv)*bell}
+    /* stred zaberu se pri oddaleni drzi ve vysce obrazu, ne na strope nebo podlaze */
+    var yb=Math.sin(Math.PI*e);cam.s=vw/wv;cam.x=fp[0];cam.y=fp[1]+(350-fp[1])*yb*yb*clamp((wv-200)/600);
   }
   if(ST.debug.cam){var dc=ST.debug.cam;cam.x=dc[0];cam.y=dc[1];cam.s=Math.min(vw/dc[2],vh/dc[3])}
   else if(!reduce){cam.x+=Math.sin(time*.00031)*2.2;cam.y+=Math.cos(time*.00027)*1.6}
@@ -559,7 +572,7 @@ function render(time){
 function frame(ts){
   var dt=Math.min(64,ts-(lastTs||ts));lastTs=ts;
   if(ST.debug.T!=null)T=ST.debug.T;
-  else{Tt=targetT();if(reduce)T=Tt;else{var f=1-Math.exp(-dt/110);T+=(Tt-T)*f;if(Math.abs(Tt-T)<.0005)T=Tt}}
+  else{Tt=targetT();if(reduce)T=Tt;else{var f=1-Math.exp(-dt/150);T+=(Tt-T)*f;if(Math.abs(Tt-T)<.0005)T=Tt}}
   render(ts);lastT=T;ST.T=T;
   requestAnimationFrame(frame);
 }
