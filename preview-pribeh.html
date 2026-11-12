@@ -291,6 +291,45 @@ nav{padding:16px 24px}.nk{display:none}.hb{display:flex}
 }
 </style>
 <link rel="stylesheet" href="scrolly.css?v=16">
+<style>
+/* ===== v14 (12. 11. 2026): horni lista nenapadna jako lista kroku v pribehu; kontakt v ramu v designu studia ===== */
+nav,nav.sc{padding:16px clamp(16px,4vw,48px) 26px;background:linear-gradient(180deg,rgba(8,9,12,.9) 0,rgba(8,9,12,.55) 55%,rgba(8,9,12,0) 100%);backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:none}
+.nl{font-size:1.3rem;text-shadow:0 1px 12px rgba(0,0,0,.9)}
+@media(min-width:769px){.nk{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;width:min(420px,40vw)}}
+.nk a,nav.sc .nk a{display:block;font-size:.6rem;font-weight:500;letter-spacing:.2em;color:rgba(231,221,199,.62);padding:10px 0 0;border-top:1px solid rgba(231,221,199,.26);text-shadow:0 1px 8px rgba(0,0,0,.9);white-space:nowrap}
+.nk a::after{top:-1.5px;bottom:auto;left:0;height:2px;width:0;background:var(--gold);transition:width .4s var(--ease)}
+.nk a:hover,.nk a.active,nav.sc .nk a:hover{color:var(--gold-light)}
+.nk a:hover::after,.nk a.active::after{width:100%;left:0}
+.hb span{width:24px;height:1px}
+.announce-bar,.announce-bar.sc{top:0!important;z-index:1001;background:none;border:0;backdrop-filter:none;-webkit-backdrop-filter:none;padding:23px 16px 0;pointer-events:none}
+.announce-bar p{font-size:.56rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:rgba(231,221,199,.58);text-shadow:0 1px 8px rgba(0,0,0,.9)}
+.announce-dot{width:5px;height:5px;margin-right:10px}
+@media(max-width:1380px){.announce-bar,.announce-bar.sc{padding-top:54px}}
+@media(max-width:768px){.announce-bar p{font-size:.5rem;letter-spacing:.16em}}
+.scroll-progress{height:1px;opacity:.8}
+.mm{background:rgba(9,10,13,.97)}.mm a{color:#E7DDC7}
+/* kontakt: konec webu, obraz v ramu na zdi studia */
+.contact{background-color:#101115;background-image:radial-gradient(rgba(231,221,199,.12) 1px,transparent 1.5px);background-size:22px 22px;color:#E7DDC7;padding:clamp(90px,11vw,150px) clamp(14px,5vw,60px) clamp(70px,9vw,120px)}
+.contact::before{content:'';position:absolute;left:50%;top:clamp(50px,calc(11vw - 40px),110px);width:150px;height:40px;margin-left:-75px;pointer-events:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 150 40'%3E%3Cpath d='M12,40 L75,6 L138,40' fill='none' stroke='%23E7DDC7' stroke-opacity='.45' stroke-width='1'/%3E%3Ccircle cx='75' cy='5' r='3.2' fill='%2315161A' stroke='%23C8A45C' stroke-width='1.2'/%3E%3C/svg%3E") center/contain no-repeat}
+.contact-grid{position:relative;max-width:1060px;gap:clamp(30px,5vw,64px);padding:clamp(30px,5vw,68px);background:#131418;border:1.5px solid rgba(231,221,199,.8);box-shadow:8px 12px 0 rgba(0,0,0,.38),0 30px 80px rgba(0,0,0,.45)}
+.contact-grid::before{content:'';position:absolute;inset:6px;border:1px solid rgba(200,164,92,.7);pointer-events:none}
+.contact-grid::after{content:'';position:absolute;inset:13px;border:1px solid rgba(232,213,163,.28);pointer-events:none}
+.contact .stg{color:var(--gold-light)}.contact .stt{color:#F3EBDA}.contact .stp{color:rgba(231,221,199,.72)}
+.contact-form label{color:rgba(231,221,199,.62)}
+.contact-form input,.contact-form select,.contact-form textarea{background:#0D0E11;border:1px solid rgba(231,221,199,.24);border-radius:0;color:#E7DDC7}
+.contact-form input::placeholder,.contact-form textarea::placeholder{color:rgba(231,221,199,.34)}
+.contact-form select option{background:#131418;color:#E7DDC7}
+.contact-form input:focus,.contact-form select:focus,.contact-form textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,164,92,.14)}
+.fg-counter{color:rgba(231,221,199,.4)}
+.contact .btn-gold{color:#16120B;border-radius:40px;font-size:.72rem;letter-spacing:.2em;padding:15px 30px}
+.contact .btn-gold:hover{background:var(--gold-light);border-color:var(--gold-light)}
+.form-notice{background:rgba(200,164,92,.08);color:var(--gold-light);border-radius:0}
+.ci-icon{background:none;border:1px solid rgba(200,164,92,.45);filter:grayscale(1) brightness(1.5)}
+.ci h4{color:#F3EBDA}.ci p{color:rgba(231,221,199,.68)}.ci a{color:var(--gold-light)}.ci a:hover{color:var(--gold)}
+.ci p span{color:rgba(231,221,199,.45)!important}
+footer{background:#0B0C0F;border-top:1px solid rgba(231,221,199,.14);color:rgba(231,221,199,.4);letter-spacing:.06em}
+@media(max-width:768px){.contact-grid::after{display:none}}
+</style>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 /* Layout: jeden svitek. Sticky scena na celou obrazovku, scroll posouva kameru po dlouhe kresbe tusem (svet ~ 7000 x 900 jednotek). */
@@ -494,16 +533,13 @@ body:not(.in-story) #story .top .snd{background:rgba(12,15,20,.78);padding:9px 1
 <ul class="nk">
 <li><a href="#about">O mně</a></li>
 <li><a href="#styles">Styl</a></li>
-<li><a href="#gallery">Galerie</a></li>
-<li><a href="#process">Proces</a></li>
 <!-- <li><a href="#reviews">Reference</a></li> -->
-<li><a href="#faq">FAQ</a></li>
 <li><a href="#contact">Kontakt</a></li>
 </ul>
 <button class="hb" id="hb"><span></span><span></span><span></span></button>
 </nav>
 <div class="mm" id="mm">
-<a href="#about" onclick="cm()">O mně</a><a href="#styles" onclick="cm()">Styl</a><a href="#gallery" onclick="cm()">Galerie</a><a href="#process" onclick="cm()">Proces</a><!-- <a href="#reviews" onclick="cm()">Reference</a> --><a href="#faq" onclick="cm()">FAQ</a><a href="#contact" onclick="cm()">Kontakt</a>
+<a href="#about" onclick="cm()">O mně</a><a href="#styles" onclick="cm()">Styl</a><!-- <a href="#reviews" onclick="cm()">Reference</a> --><a href="#contact" onclick="cm()">Kontakt</a>
 </div>
 
 <!-- HERO / FILM - scroll scena: najeti na hlavu andela, vlna po tele s texty o mne, pak prolinani do zaberu (ja u prace, 4 styly) -->
@@ -676,24 +712,7 @@ body:not(.in-story) #story .top .snd{background:rgba(12,15,20,.78);padding:9px 1
 </section>
 
 <!-- GALLERY -->
-<section class="gallery" id="gallery">
-<div class="gallery-header">
-<div class="stg rv">Portfolio</div>
-<h2 class="stt rv d1">Vybrané <em>práce</em></h2>
-<div class="stl rv d2"></div>
-</div>
-<div class="gallery-grid">
-<div class="gallery-item rd d1" data-lightbox data-caption="Black &amp; grey — anděl"><img src="img/tattoo3.jpg" alt="Tetování anděl" loading="lazy"></div>
-<div class="gallery-item rd d2" data-lightbox data-caption="Lev &amp; kočka"><img src="img/tattoo2.jpg" alt="Tetování lev" loading="lazy"></div>
-<div class="gallery-item rd d3" data-lightbox data-caption="Drak — barevný backpiece"><img src="img/tattoo_main.jpg" alt="Tetování drak" loading="lazy"></div>
-<div class="gallery-item rd d1" data-lightbox data-caption="Hroch"><img src="img/tattoo1.jpg" alt="Tetování hroch" loading="lazy"></div>
-<div class="gallery-item rd d2" data-lightbox data-caption="Poseidón"><img src="img/tattoo7.jpg" alt="Tetování Poseidón" loading="lazy"></div>
-<div class="gallery-item rd d3" data-lightbox data-caption="Poseidón s modrou"><img src="img/tattoo6.jpg" alt="Tetování Poseidón modrý" loading="lazy"></div>
-<div class="gallery-item rd d1" data-lightbox data-caption="Postavička"><img src="img/tattoo4.jpg" alt="Tetování postavička" loading="lazy"></div>
-<div class="gallery-item rd d2" data-lightbox data-caption="Abstraktní erby"><img src="img/tattoo5.jpg" alt="Tetování erby" loading="lazy"></div>
-<div class="gallery-item rd d3" data-lightbox data-caption="Při práci"><img src="img/tattoo_work.jpg" alt="Honza při tetování" loading="lazy"></div>
-</div>
-</section>
+
 
 <!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox">
@@ -706,24 +725,7 @@ body:not(.in-story) #story .top .snd{background:rgba(12,15,20,.78);padding:9px 1
 </div>
 
 <!-- PROCESS - 7 steps -->
-<section class="process" id="process">
-<div class="process-bg"></div>
-<div class="process-header">
-<div class="stg rv">Jak to funguje</div>
-<h2 class="stt rv d1">Od nápadu k <em>realitě</em></h2>
-<div class="stl rv d2"></div>
-<p class="stp rv d3">Sedm kroků, na jejichž konci je tetování přesně podle vašich představ.</p>
-</div>
-<div class="process-steps">
-<div class="p-step"><div class="p-content"><h3 class="p-title">První kontakt</h3><p class="p-text">Napíšete mi svou představu — motiv, velikost, umístění. Klidně přiložte reference.</p></div><div class="p-num">1</div><div class="p-empty"></div></div>
-<div class="p-step"><div class="p-empty"></div><div class="p-num">2</div><div class="p-content"><h3 class="p-title">Konzultace</h3><p class="p-text">Probereme detaily, doladíme představu a domluvíme se na stylu a umístění.</p></div></div>
-<div class="p-step"><div class="p-content"><h3 class="p-title">Návrh</h3><p class="p-text">Připravím unikátní design na míru. Pošlu vám náhled k odsouhlasení.</p></div><div class="p-num">3</div><div class="p-empty"></div></div>
-<div class="p-step"><div class="p-empty"></div><div class="p-num">4</div><div class="p-content"><h3 class="p-title">Záloha &amp; termín</h3><p class="p-text">Po odsouhlasení návrhu potvrdíte termín zálohou. Vše domluvené předem.</p></div></div>
-<div class="p-step"><div class="p-content"><h3 class="p-title">Tetování</h3><p class="p-text">V klidu a pohodě v mém studiu na Žižkově. Precizní práce, která předčí očekávání.</p></div><div class="p-num">5</div><div class="p-empty"></div></div>
-<div class="p-step"><div class="p-empty"></div><div class="p-num">6</div><div class="p-content"><h3 class="p-title">Péče &amp; hojení</h3><p class="p-text">Dostanete podrobný návod k péči. Jsem k dispozici pro dotazy po celou dobu.</p></div></div>
-<div class="p-step"><div class="p-content"><h3 class="p-title">Hotovo!</h3><p class="p-text">Tetování je zahojené a vypadá skvěle. Pokud budete chtít pokračovat — jsem tu.</p></div><div class="p-num">7</div><div class="p-empty"></div></div>
-</div>
-</section>
+
 
 <!-- text z puvodni marquee (nepouziva se): 100% spokojených klientů ✦ Individuální přístup ✦ Profesionální péče ✦ Přátelská atmosféra ✦ -->
 
@@ -759,24 +761,7 @@ body:not(.in-story) #story .top .snd{background:rgba(12,15,20,.78);padding:9px 1
 <!-- text z puvodni marquee (nepouziva se): Odpovědi na vaše otázky ✦ Péče o tetování ✦ Příprava na sezení ✦ Platba & záloha ✦ Konzultace zdarma ✦ -->
 
 <!-- FAQ - 9 items -->
-<section class="faq" id="faq">
-<div class="faq-header">
-<div class="stg rv">Časté otázky</div>
-<h2 class="stt rv d1">Vše, co potřebujete <em>vědět</em></h2>
-<div class="stl rv d2"></div>
-</div>
-<div class="faq-list">
-<div class="faq-item rv d1"><button class="faq-q"><span>Jak probíhá objednání tetování?</span><span class="faq-icon">+</span></button><div class="faq-a"><p>Napište mi přes kontaktní formulář s popisem motivu, umístěním a přibližnou velikostí. Ozvu se s dostupnými termíny a připravím cenovou nabídku.</p></div></div>
-<div class="faq-item rv d2"><button class="faq-q"><span>Bolí tetování?</span><span class="faq-icon">+</span></button><div class="faq-a"><p>Záleží na místě a individuální citlivosti. Většina klientů to popisuje jako snesitelné. Během sezení si povídáme a čas rychle utíká.</p></div></div>
-<div class="faq-item rv d3"><button class="faq-q"><span>Jak se připravit na tetování?</span><span class="faq-icon">+</span></button><div class="faq-a"><p>Den předem se vyspěte, přijďte najedení a hydratovaní. Nekonzumujte alkohol minimálně 24 hodin předem. Oblečte si pohodlné oblečení.</p></div></div>
-<div class="faq-item rv d4"><button class="faq-q"><span>Jak dlouho trvá jedno sezení?</span><span class="faq-icon">+</span></button><div class="faq-a"><p>Malé tetování zvládneme za 1–2 hodiny. Větší projekty mohou trvat 3–5 hodin, případně se rozdělí do více sezení.</p></div></div>
-<div class="faq-item rv d5"><button class="faq-q"><span>Jak pečovat o čerstvé tetování?</span><span class="faq-icon">+</span></button><div class="faq-a"><p>Po sezení dostanete podrobný návod. Základem je: udržovat čistotu, nanášet hojivou mast, vyhnout se slunci, bazénům a lázním po dobu 2–3 týdnů.</p></div></div>
-<div class="faq-item rv d6"><button class="faq-q"><span>Mohu přijít s vlastním návrhem?</span><span class="faq-icon">+</span></button><div class="faq-a"><p>Určitě — většina klientů přichází s vlastní představou a já ji dotáhnu do finální podoby. Tetuji výhradně pozitivní motivy.</p></div></div>
-<div class="faq-item rv"><button class="faq-q"><span>Jaké platební metody přijímáte?</span><span class="faq-icon">+</span></button><div class="faq-a"><p>Hotovost nebo převod na účet. Termín potvrzujete zálohou, která se odečítá z finální ceny. Cenu i výši zálohy vám napíšu po konzultaci.</p></div></div>
-<div class="faq-item rv"><button class="faq-q"><span>Děláte i jiné styly než ty čtyři hlavní?</span><span class="faq-icon">+</span></button><div class="faq-a"><p>Ano! Kromě black &amp; grey, zvířat, abstraktu a colour dělám i nápisy, květinové motivy, portréty, design a další. Jediné omezení — tetuji výhradně pozitivní motivy se světlou energií.</p></div></div>
-<div class="faq-item rv"><button class="faq-q"><span>Mohu přijít na konzultaci osobně?</span><span class="faq-icon">+</span></button><div class="faq-a"><p>Samozřejmě. Pokud chcete motiv probrat osobně, domluvíme se na termínu konzultace v mém studiu na Žižkově. Konzultace je nezávazná a zdarma.</p></div></div>
-</div>
-</section>
+
 
 <!-- text z puvodni marquee (nepouziva se): Napište mi ✦ honza@honzatattoo.cz ✦ Praha — Žižkov ✦ Termíny včetně víkendů ✦ Těším se na spolupráci ✦ -->
 

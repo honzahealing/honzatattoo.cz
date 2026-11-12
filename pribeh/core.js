@@ -173,7 +173,8 @@ function flyLUT(ca,cb){
   var key=[ca.x,ca.y,ca.s,cb.x,cb.y,cb.s,vw,vh].map(function(v){return Math.round(v*100)}).join(',');
   if(flyC&&flyC.key===key)return flyC;
   var l0=Math.log(vw/ca.s),l1=Math.log(vw/cb.s),por=vw<vh,dxf=Math.abs(ca.x-cb.x),
-      wP=por?Math.min(560,Math.max(380,dxf*.5+260)):Math.min(2300,Math.max(900*vw/vh,dxf+760)),
+      /* 12. 11.: o neco mensi oddaleni nez ve verzi 11 (Honzi: porad hodne vzdalene, ale plynulejsi) */
+      wP=por?Math.min(520,Math.max(360,dxf*.45+250)):Math.min(1750,Math.max(700*vw/vh,dxf*.8+560)),
       B=Math.max(0,Math.log(wP)-(l0+l1)/2),N=160,P=[0],i,acc=0,prev=Math.exp(l0);
   for(i=1;i<=N;i++){var u=i/N,w=Math.exp(l0+(l1-l0)*u+B*Math.sin(Math.PI*u));acc+=(w+prev)/2;prev=w;P.push(acc)}
   for(i=0;i<=N;i++)P[i]/=acc;
@@ -473,7 +474,7 @@ function updateCam(time){
   }
   var gc=ST.galCam;
   if(gc){var A=GAL[gc.a],B=GAL[gc.b],ca=camFor(A,gc.ra),cb=camFor(B,gc.rb),F=flyLUT(ca,cb),t=clamp((gc.k-FH)/(1-2*FH)),
-        e0=t*t*(3-2*t),fe=e0*F.N,ie=Math.min(F.N-1,Math.floor(fe)),u=lerp(e0,F.U[ie]+(F.U[ie+1]-F.U[ie])*(fe-ie),.55),f=u*F.N,i0=Math.min(F.N-1,Math.floor(f)),pp=F.P[i0]+(F.P[i0+1]-F.P[i0])*(f-i0),sb=Math.sin(Math.PI*u),g2=sb*sb;
+        e0=t*t*(3-2*t),fe=e0*F.N,ie=Math.min(F.N-1,Math.floor(fe)),u=lerp(e0,F.U[ie]+(F.U[ie+1]-F.U[ie])*(fe-ie),.7),f=u*F.N,i0=Math.min(F.N-1,Math.floor(f)),pp=F.P[i0]+(F.P[i0+1]-F.P[i0])*(f-i0),sb=Math.sin(Math.PI*u),g2=sb*sb;
     /* jedna hladka krivka bez zastaveni: sirka zaberu je oblouk v logaritmu, posun bezi stalou rychlosti na obrazovce */
     cam.s=vw/Math.exp(F.l0+(F.l1-F.l0)*u+F.B*sb);
     cam.x=lerp(ca.x,cb.x,pp)+F.off*g2;cam.y=lerp(lerp(ca.y,cb.y,pp),F.por?480:455,g2*clamp(F.B/1.5));
