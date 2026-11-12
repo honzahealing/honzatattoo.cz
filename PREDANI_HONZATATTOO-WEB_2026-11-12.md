@@ -18,14 +18,14 @@ Repozitář `honzahealing/honzatattoo.cz`, větev **`pribeh-na-scroll`** obsahuj
 | 30078 | `pribeh/audio.js` | Generativní chill jazz a hlasy. Zvuk je výchozí zapnutý, spustí se při prvním doteku, kliknutí nebo klávese, v úvodu výzva „Klepněte kamkoli a hraje hudba“ |
 | 14674 | `scrolly.js` | Film s andělem. S příběhem před sebou (`afterStory`, `gal`) dělá mezi záběry let po zdi studia (`XG`, `pose`, `shotRect`, `angelRect`) a texty úvodu anděla nabíhají až po nájezdu |
 | 4639 | `scrolly.css` | Styly filmu (beze změny) |
-| 61943 | `preview.html` | Náhled webu s filmem, načítá `scrolly.*?v=16`. Příběh do něj vkládá build |
+| 59145 | `preview.html` | Náhled webu s filmem, načítá `scrolly.*?v=16`. Příběh do něj vkládá build |
 | 69050 | `index.html` | Živý web. **Nesahat**, příběh na něm není |
 | 7584 | `pribeh/dev/CONTRACT.md` | Smlouva modulů (souřadnice, API, časová osa). Dát každému pomocníkovi |
 | 1867 | `pribeh/dev/shot.js` | Snímky příběhu: `node pribeh/dev/shot.js <prefix> 1440 900 "T" "T@x,y,w,h" [--q=nochars=1]`. Ambientní pohyb je při snímání zmrazený (stejný snímek pokaždé) |
 | 1156 | `pribeh/dev/siteshot.js` | Snímky složeného webu i s filmem: `node pribeh/dev/siteshot.js $PWD/preview-pribeh.html <prefix> 1440 900 13.97 h0 h5.6` (hN = N obrazovek za koncem příběhu) |
 | 3668 | `pribeh/dev/build_site.py` | Složí web: `python3 pribeh/dev/build_site.py preview-pribeh.html`, s `--artifact` jeden soubor pro náhled |
 
-**Náhled pro Honziho:** artefakt https://claude.ai/artifact/3xqedLNY3xePQ9RkMdV38D (verze 13). Publikace:
+**Náhled pro Honziho:** artefakt https://claude.ai/artifact/3xqedLNY3xePQ9RkMdV38D (verze 14). Publikace:
 1. `python3 pribeh/dev/build_site.py <scratchpad>/site/index.html --artifact`
 2. v souboru nahradit `<title>` za „Honza Tattoo · Příběh“
 3. publikovat se soubory `img/*.jpg` a `img/*.webp` (mapa `img/x` → `img/x`)
@@ -103,12 +103,13 @@ Honziho slova:
 5. Sekce FAQ (`#faq`) pryč, „vše se řekne ve scrollytelling“.
 6. Kontaktní formulář (`#contact`) má být konec hned po doscrollování poslední fotky, „v nějakém rámu“ a má odpovídat designu webu.
 
-Stav:
-- 1 horní lišta: ZBÝVÁ
-- 2 oblouky: ZBÝVÁ
-- 3 až 5 sekce pryč (i odkazy v menu): ZBÝVÁ
-- 6 kontakt v rámu: ZBÝVÁ
-- náhled (artefakt) a snímky: ZBÝVÁ
+Stav (12. 11. večer):
+- 1 horní lišta: HOTOVO. Styl je v bloku `<style>` s komentářem „v14“ na konci hlavičky `preview.html`: průhledný přechod místo pruhu, odkazy jako lišta kroků (linka nahoře, drobné písmo), pruh „Přijímám nové rezervace“ jako drobný text v řádku lišty (pod 1380 px pod ní). Mobilní menu je tmavé.
+- 2 oblouky: HOTOVO v první verzi. `flyLUT` v `core.js`: menší oddálení (`700*vw/vh`, `dxf*.8+560`, strop 1750), vyrovnání tempa `.7`, let delší (`XG` 2,1 obrazovky, mobil 1,6). Honzi to ještě neviděl, může chtít doladit.
+- 3 až 5 sekce pryč: HOTOVO. Z `preview.html` smazané `#gallery`, `#process`, `#faq` i jejich odkazy v menu. Skripty těch sekcí v souboru zůstaly (jsou ošetřené na chybějící prvky), dají se vyčistit později. Lightbox zůstal v kódu nepoužitý.
+- 6 kontakt v rámu: HOTOVO. Tmavá zeď s tečkami, trojitý rám jako obraz na zdi, drát s hřebíkem, tmavá pole formuláře; navazuje hned na konec filmu.
+- náhled: publikován jako verze 14 na stejném odkazu.
+- ZBÝVÁ: Honziho posouzení. Nevyčištěné zbytky CSS a JS smazaných sekcí v `preview.html`. Snímky jen 1440×900 a 390×844 (lišta, let, konec filmu, kontakt, patička), bez chyb v konzoli.
 
 ## Technický stav
 
