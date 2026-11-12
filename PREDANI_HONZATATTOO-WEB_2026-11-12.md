@@ -91,6 +91,25 @@ Honzi k verzi 11: „Oblouky při přechodu mezi obrazy jsou dobré.“ Opraveno
 - **Průchod dveřmi, oprava verze 12:** ve verzi 12 šla postava za oběma sloupky, to bylo špatně. Honzi: postava jde zleva doprava **před levým sloupkem a překladem a za pravým sloupkem**, u obou dveří. V popředí (`front`) je proto jen pravý sloupek (`post(frF,…)` v `doors.js`).
 - **Letadlo s plachtou:** vrtulové letadlo táhne červenou vlnící se plachtu s nápisem „USMĚJ SE, ŽIŽKOVE“ a srdcem (`amb.banner` ve `street.js`). Letí doleva, kolo trvá asi 93 s, při načtení je na volné obloze v úvodu. Na výšku letí výš (nad nadpisem) a je větší. Text nápisu je moje volba, Honzi chtěl „nějaký veselý název“ a „trochu červené barvy“.
 
+### ROZPRACOVÁNO: zadání z 12. 11. večer (verze 14)
+
+Honzimu došel limit, práce se má dát navázat. Stav každého bodu se přepisuje tady (HOTOVO / ZBÝVÁ). Všechno se dělá v `preview.html` (zdroj webu, `index.html` nesahat), `scrolly.css`, `pribeh/core.js`; po změně `python3 pribeh/dev/build_site.py preview-pribeh.html`.
+
+Honziho slova:
+1. Lišta dole v animaci (kroky 1 až 7, tenké linky, drobné písmo) se mu líbí. Horní lišta webu (`nav#nb` a pruh „Přijímám nové rezervace“ `.announce-bar`) se mu nelíbí: „udělej ji krásnou a nenápadnou tak, jako v animaci“.
+2. Oblouky mezi fotkami na zdi „jsou možná moc vzdálené“: mají zůstat hodně vzdálené, ale plynulejší.
+3. Sekce Portfolio (`#gallery`) pryč, fotky jsou na zdi.
+4. Sekce „Od nápadu k realitě“ (`#process`) pryč, je ve scrollytellingu.
+5. Sekce FAQ (`#faq`) pryč, „vše se řekne ve scrollytelling“.
+6. Kontaktní formulář (`#contact`) má být konec hned po doscrollování poslední fotky, „v nějakém rámu“ a má odpovídat designu webu.
+
+Stav:
+- 1 horní lišta: ZBÝVÁ
+- 2 oblouky: ZBÝVÁ
+- 3 až 5 sekce pryč (i odkazy v menu): ZBÝVÁ
+- 6 kontakt v rámu: ZBÝVÁ
+- náhled (artefakt) a snímky: ZBÝVÁ
+
 ## Technický stav
 
 - **Prohlížeč:** Playwright přes `require('playwright')`, `chromium.launch()` bez cesty. Bez GPU, časy snímků jsou pesimistické. Na skutečném telefonu neměřeno.
