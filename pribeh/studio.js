@@ -308,11 +308,12 @@ function facade(){
   TX(gS,'HONZA',740,461,17,'label',.6,1,1,{'letter-spacing':2});TX(gS,'TATTOO',740,472.5,8.6,'label',.65,1,1,{'letter-spacing':4.2});
   FO(gS,star4(699,469,3.4),'f-gold',.9,.7,1);FO(gS,star4(781,469,3.4),'f-gold',.9,.7,1);
   /* tabulky */
-  D(g,R(727,257,66,24,3),'ink t2',.5,1);D(g,R(730,260,60,18,2),'hair goldl',.5,1);
-  D(g,cir(731,262,1)+cir(789,262,1)+cir(731,276,1)+cir(789,276,1),'hair goldl',.6,1);
-  TX(g,'PRAHA 3',760,267,4.4,'f-goldl',.6,1,.8);TX(g,'TÁBORITSKÁ',760,275.5,8.2,'f-goldl',.6,1,1,{'letter-spacing':.5});
-  D(gN,R(738,292,30,22,3),'thin t2 goldl',.5,1);D(gN,R(742,296,22,14,2),'hair goldl',.6,1);TX(gN,'1284',753,306.6,8.6,'f-goldl',.6,1,1);
-  D(gN,R(772,297,20,16,2),'thin t3 gold',.5,1);TX(gN,'17',782,308.6,8.6,'f-gold',.6,1,1);
+  /* misto cedule s nazvem ulice: stukovy medailon se sluncem a listky (Honzi 12. 11.: venku jen cedule HONZA TATTOO) */
+  D(g,ell(760,269,28,12.5),'ink t2',.5,1);D(g,ell(760,269,24,9.4),'hair goldl',.5,1);art(g,'sun',760,269,.15,0,1,.6,1,'hair goldl','hair goldl');
+  D(g,'M731,269 q-9,-7 -15,0 q6,7 15,0 M716,269 h15 M789,269 q9,-7 15,0 q-6,7 -15,0 M789,269 h15','hair goldl',.6,1);
+  /* misto cisel domu: dve ozdobne kachle */
+  D(gN,'M753,291 l12,12 l-12,12 l-12,-12Z','thin t2 goldl',.5,1);D(gN,'M753,296.5 l6.5,6.5 l-6.5,6.5 l-6.5,-6.5Z M753,299.6 v6.8 M749.6,303 h6.8','hair goldl',.6,1);
+  D(gN,'M782,295 l9,9 l-9,9 l-9,-9Z','thin t3 gold',.5,1);D(gN,cir(782,304,2.2),'hair gold',.6,1);
   /* zvonek */
   D(g,R(773,516,20,48,3),'thin solid gold',.6,1);d=[];for(k=0;k<3;k++)d.push(cir(783,527+k*14,2.6));
   D(g,d.join(' '),'thin gold',.7,1);d=[];for(k=0;k<3;k++)d.push('M776,'+(532+k*14)+' h14');D(g,d.join(' '),'hair',.7,1);
@@ -516,19 +517,25 @@ function books(g,x0,x1,yb,seed,hmin,hmax,A,B){
   FILL(g,shade.join(''),'hair',A,B,{fill:HF});
   D(g,bands.join(' '),'hair',A,B);D(g,gold.join(' ')+' '+dots.join(' '),'hair gold',A,B);D(g,lab.join(''),'hair dim',A,B);D(g,ttl.join(' '),'hair dim',A,B);
 }
+/* lahvicky tetovacich barev: mackaci lahvicka se spickou, kazda jine barvy, s etiketou (Honzi 12. 11.: ne lahve s alkoholem) */
+var INKC=['#B8452F','#3F78A0','#D2A848','#4C7A56','#8A5AA0','#D8763A','#C95F86','#E7DDC7','#2F9A9A','#7A4B2E'];
 function bottles(g,x0,x1,yb,seed,A,B,hs){hs=hs||1;
-  var r=rng(seed),x=x0,pl=[],gd=[],lb=[],cap=[],lq=[],gl=[],tk=[];
-  while(x<x1-6){var w=8+r()*8,h=(18+r()*22)*hs;if(x+w>x1)break;
-    var d='M'+n1(x)+','+yb+' V'+n1(yb-h*.62)+' Q'+n1(x)+','+n1(yb-h*.7)+' '+n1(x+w*.32)+','+n1(yb-h*.76)+' V'+n1(yb-h)+' H'+n1(x+w*.68)+' V'+n1(yb-h*.76)+' Q'+n1(x+w)+','+n1(yb-h*.7)+' '+n1(x+w)+','+n1(yb-h*.62)+' V'+yb+'Z';
-    (r()<.4?gd:pl).push(d);cap.push('M'+n1(x+w*.28)+','+n1(yb-h-3)+' h'+n1(w*.44)+' v3');
-    lb.push('M'+n1(x+1)+','+n1(yb-h*.5)+' h'+n1(w-2)+' v'+n1(h*.2)+' h'+n1(2-w)+'Z');lq.push('M'+n1(x+1.2)+','+n1(yb-h*.58)+' H'+n1(x+w-1.2));
-    gl.push('M'+n1(x+w*.2)+','+n1(yb-h*.3)+' V'+n1(yb-h*.58)+' M'+n1(x+w*.36)+','+n1(yb-h*.84)+' V'+n1(yb-h*.95));
-    tk.push('M'+n1(x+2.4)+','+n1(yb-h*.42)+' h'+n1(w-4.8)+' M'+n1(x+2.4)+','+n1(yb-h*.36)+' h'+n1((w-4.8)*.6));
-    x+=w+1.5+r()*5}
-  D(g,pl.join(''),'thin t2',A,B);D(g,gd.join(''),'thin gold t1',A,B);D(g,cap.join(' '),'thin',A,B);D(g,lb.join(''),'hair',A,B);D(g,lq.join(' '),'hair dim',A,B);D(g,gl.join(' '),'hair',A,B);D(g,tk.join(' '),'hair dim',A,B);
+  var r=rng(seed),x=x0,k=Math.floor(r()*INKC.length),ol=[],nz=[],lb=[],ll=[],gl=[];
+  while(x<x1-6){var w=8.5+r()*3.5,h=(20+r()*12)*hs,cx=x+w/2;if(x+w>x1)break;
+    var d='M'+n1(x)+','+yb+' V'+n1(yb-h*.66)+' Q'+n1(x)+','+n1(yb-h*.78)+' '+n1(cx-2.2)+','+n1(yb-h*.82)+' V'+n1(yb-h*.88)+' H'+n1(cx+2.2)+' V'+n1(yb-h*.82)+' Q'+n1(x+w)+','+n1(yb-h*.78)+' '+n1(x+w)+','+n1(yb-h*.66)+' V'+yb+'Z';
+    el('path',{d:d,fill:'#15161A'},g);el('path',{d:d,fill:INKC[k%INKC.length],opacity:.8},g);k+=1+Math.floor(r()*3);
+    ol.push(d);nz.push('M'+n1(cx-2.5)+','+n1(yb-h*.88)+' L'+n1(cx-.9)+','+n1(yb-h)+' H'+n1(cx+.9)+' L'+n1(cx+2.5)+','+n1(yb-h*.88)+'Z');
+    lb.push('M'+n1(x+.9)+','+n1(yb-h*.54)+' h'+n1(w-1.8)+' v'+n1(h*.28)+' h'+n1(1.8-w)+'Z');
+    ll.push('M'+n1(x+2.2)+','+n1(yb-h*.45)+' h'+n1(w-4.4)+' M'+n1(x+2.2)+','+n1(yb-h*.37)+' h'+n1((w-4.4)*.6));
+    gl.push('M'+n1(x+w*.2)+','+n1(yb-h*.08)+' V'+n1(yb-h*.22)+' M'+n1(x+w*.2)+','+n1(yb-h*.58)+' V'+n1(yb-h*.66));
+    x+=w+1.6+r()*3.5}
+  el('path',{d:lb.join(''),fill:'#EDE3CC',opacity:.9},g);el('path',{d:ll.join(' '),fill:'none',stroke:'#15161A','stroke-width':.6},g);
+  el('path',{d:nz.join(''),fill:'#0d0d10'},g);
+  D(g,ol.join(''),'thin',A,B);D(g,nz.join(''),'hair',A,B);D(g,gl.join(' '),'hair goldl',A,B);
 }
 /* inkoustove lahvicky s kapatkem a etiketou s kvetinou (tetovaci kout) */
 function inkBottles(g,x0,x1,yb,seed,A,B){
+  return bottles(g,x0,x1,yb,seed,A,B,1.05);
   var r=rng(seed),x=x0,bd=[],gd=[],nz=[],lb=[],fl=[],gl=[],lq=[];
   while(x<x1-8){var w=9+r()*4,h=24+r()*10,cx=x+w/2;if(x+w>x1)break;
     var d='M'+n1(x)+','+yb+' V'+n1(yb-h*.62)+' Q'+n1(x)+','+n1(yb-h*.78)+' '+n1(cx-2.4)+','+n1(yb-h*.84)+' V'+n1(yb-h*.9)+' H'+n1(cx+2.4)+' V'+n1(yb-h*.84)+' Q'+n1(x+w)+','+n1(yb-h*.78)+' '+n1(x+w)+','+n1(yb-h*.62)+' V'+yb+'Z';
@@ -644,9 +651,10 @@ function calendar(){
   var cr=[];
   for(var dd=1;dd<=30;dd++){var col=(dd+5)%7,row=Math.floor((dd+5)/7),cx=1938+(col+.5)*12,cy=429+row*6.76+4.9;
     TX(g,String(dd),cx,cy,4.4,col>=5?'f-gold':'f-line',.65,1,col>=5?.95:.8);
-    if(dd>=2&&dd<=5)cr.push('M'+n1(cx-3.6)+','+n1(cy-4.6)+' L'+n1(cx+3.6)+','+n1(cy+.4))}
+    if(dd===1)cr.push('M'+n1(cx-3.6)+','+n1(cy-4.6)+' L'+n1(cx+3.6)+','+n1(cy+.4))}
   D(g,cr.join(' '),'hair gold',.7,1);
-  var pc=[],cx0=1980,cy0=429+3*6.76+3.4;for(i=0;i<=30;i++){var a=(-110+i*12.6)*PI/180,m=1+.1*i/30;pc.push(n1(cx0+cos(a)*7.4*m)+','+n1(cy0+sin(a)*4.4*m))}
+  /* termin tetovani: 2. 11. */
+  var pc=[],cx0=1944,cy0=429+1*6.76+3.4;for(i=0;i<=30;i++){var a=(-110+i*12.6)*PI/180,m=1+.1*i/30;pc.push(n1(cx0+cos(a)*7.4*m)+','+n1(cy0+sin(a)*4.4*m))}
   ST.D(g,'M'+pc.join(' L'),'thin gold',6.12,6.42);
   D(g,R(1992,476,30,26,1),'thin t3',.7,1);D(g,'M1996,484 h20 M1996,490 h15 M1996,496 h21','hair',.75,1);D(g,R(2002,472,10,6,1),'hair gold',.75,1);
 }

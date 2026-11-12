@@ -105,7 +105,7 @@ var WI={
   s3:{card:1,tag:'SPECIALIZACE · 03',t:['*Abstrakt*'],b:['Geometrie, flow a tvar']},
   s1:{card:1,tag:'SPECIALIZACE · 01',t:['Black & *Grey*'],b:['Jemné přechody a hloubka']},
   cert:{cert:1}};
-var FM={gold:9,wood:8,mat:11,black:5,card:4,cert:7,panel:1};
+var FM={gold:9,wood:8,mat:11,black:5,card:4,cert:7,panel:8};
 /* kontaktni formular webu jako posledni obraz na zdi: ram ma pomer stran ramu formulare (.contact-grid), kamera do nej na konci filmu vleti */
 var CTG=document.querySelector('.contact-grid'),CTW=1060;
 if(CTG){var cr0=CTG.getBoundingClientRect();CTW=cr0.width||1060;WI.kontakt={panel:1,asp:Math.max(.6,Math.min(2.3,Math.min(cr0.height||900,innerHeight)/CTW))};GAL.push(WI.kontakt)}
@@ -145,7 +145,9 @@ ST.gal=GAL;ST.galCam=null;
 ST.gallery={fly:function(a,b,k,ra,rb){var had=ST.galCam;ST.galCam=a==null?null:{a:a,b:b,k:k,ra:ra,rb:rb};
   if((had||ST.galCam)&&story){render(performance.now());ST._sync=1}}};
 function camFor(ph,r){var sc=r.W/ph.w;return {s:sc,x:ph.x+(vw/2-r.L)/sc,y:ph.y+(vh/2-r.T)/sc}}
-function photoZoom(T){return ss(13.15,14,T)}
+/* ZE = cas, kdy kamera dojede do fotky andela; od ZE do konce se scena prolne s filmem pod ni (obe stoji na stejnem miste) */
+var ZE=13.93;
+function photoZoom(T){return ss(13.15,ZE,T)}
 /* plynuly rozjezd i dojezd (nulova rychlost i zrychleni na koncich) */
 function sm5(t){t=clamp(t);return t*t*t*(t*(t*6-15)+10)}
 /* let kamery mezi dvema zabery [stred x, stred y, sirka zaberu]: oddaleni, prelet a priblizeni v jednom plynulem
@@ -341,12 +343,17 @@ ST.start=function(){
   if(ST.slots.board){var bcp=el('clipPath',{id:'boardClip'},ST.defs);el('rect',{x:-205,y:-246,width:410,height:324},bcp);
     ST.bm=buildMotif(el('g',{transform:'translate(0,-45) scale(.6)'},el('g',{'clip-path':'url(#boardClip)'},ST.slots.board)),{cls:'sk',skin:'var(--t1)',fills:true})}
   /* detail ruky */
+  var FB0="'Outfit',system-ui,sans-serif";
   var cs=$('closeScene');ST.closeBack=ST.closeBack||el('g',{},cs);
   var motifG=el('g',{transform:'translate(760,546) scale(.7)'},cs);
   ST.closeFront=ST.closeFront||el('g',{},cs);
   ST.red=el('ellipse',{cx:760,cy:498,rx:212,ry:166,fill:'url(#gRed)',opacity:0});cs.insertBefore(ST.red,motifG);
   ST.tm=buildMotif(motifG,{cls:'tt',skin:'var(--skin)',gold:true,stencil:true});
   ST.film=el('path',{d:ST.rect(590,320,340,356,44),fill:'url(#gFilm)',stroke:'rgba(231,221,199,.22)','stroke-width':1.5,opacity:0},cs);
+  /* popisek: ctverec pres papouska je ochranna folie */
+  ST.filmT=el('g',{opacity:0},cs);el('path',{d:'M931,352 H962',fill:'none',stroke:'#E8D5A3','stroke-width':1.4},ST.filmT);el('circle',{cx:931,cy:352,r:3,fill:'#E8D5A3'},ST.filmT);
+  var ft1=el('text',{x:972,y:357,'font-size':17,'font-family':FB0,'font-weight':500,'letter-spacing':3.4,fill:'#E8D5A3'},ST.filmT);ft1.textContent='OCHRANNÁ FÓLIE';
+  var ft2=el('text',{x:972,y:381,'font-size':14.5,'font-family':FB0,'font-weight':300,fill:'rgba(231,221,199,.78)'},ST.filmT);ft2.textContent='první dny chrání čerstvé tetování';
   cs.appendChild(ST.closeFront);
   if(!ST.closeParts.machine){var mg=el('g',{},ST.closeFront);el('path',{d:'M0,0 L120,-190','class':'ink bold'},mg);ST.closeParts.machine=mg}
   ST.needle=el('circle',{r:16,fill:'url(#gNeedle)',opacity:0},cs);
@@ -380,13 +387,15 @@ ST.start=function(){
   }
   function txt(g,x,y,sz,str,o){o=o||{};var t=el('text',{x:x,y:y,'font-size':sz,'text-anchor':'middle','font-family':o.f||FD,fill:o.c||'#E7DDC7','letter-spacing':o.ls||0,'font-weight':o.w||400},g);
     str.split('*').forEach(function(part,i){if(!part)return;var sp=el('tspan',{},t);sp.textContent=part;if(i%2){sp.setAttribute('font-style','italic');sp.setAttribute('fill','#C8A45C')}});return t}
+  /* karta s textem: cely blok textu je svisle i vodorovne na stredu karty */
   function card(g,c){var x=c.x,y=c.y,w=c.w,h=c.h,cx=x+w/2;frameBox(g,x,y,w,h,'black',c.m);
     P2(g,ST.rect(x,y,w,h,0),{fill:'#131418'});P2(g,ST.rect(x+2.5,y+2.5,w-5,h-5,0),{'class':'ink hair gold',opacity:.7});
-    var ts=Math.min(w*.115,8.4),ty=y+h*.2,tl=c.t.length,by;
-    txt(g,cx,ty,Math.min(2.9,w*.05),c.tag,{f:FB,c:'#E8D5A3',ls:.55,w:500});
-    var y1=ty+ts*1.25+(tl===1?ts*.2:0);c.t.forEach(function(l,i){txt(g,cx,y1+i*ts*1.08,tl===1?ts*1.25:ts,l)});
-    by=y1+(tl-1)*ts*1.08+ts*.55;P2(g,'M'+(cx-7)+','+by+' h14',{'class':'ink hair gold'});
-    c.b.forEach(function(l,i){txt(g,cx,by+4.6+i*3.3,2.3,l,{f:FB,c:'rgba(231,221,199,.62)',w:300})});}
+    var tg=Math.min(2.9,w*.05),ts=Math.min(w*.115,8.4),tl=c.t.length,tz=tl===1?ts*1.25:ts,nb=c.b.length,
+        H=tg+ts*.55+tl*tz*1.08-tz*.28+ts*.5+4.2+(nb-1)*3.3+.6,y0=y+(h-H)/2,y1=y0+tg+ts*.55+tz*.8,by=y1+(tl-1)*tz*1.08+ts*.5;
+    txt(g,cx+.28,y0+tg,tg,c.tag,{f:FB,c:'#E8D5A3',ls:.55,w:500});
+    c.t.forEach(function(l,i){txt(g,cx,y1+i*tz*1.08,tz,l)});
+    P2(g,'M'+(cx-7)+','+by+' h14',{'class':'ink hair gold'});
+    c.b.forEach(function(l,i){txt(g,cx,by+4.2+i*3.3,2.3,l,{f:FB,c:'rgba(231,221,199,.62)',w:300})});}
   function cert(g,c){var x=c.x,y=c.y,w=c.w,h=c.h,cx=x+w/2;frameBox(g,x,y,w,h,'wood',c.m);
     P2(g,ST.rect(x,y,w,h,0),{fill:'#1b1a18'});P2(g,ST.rect(x+3,y+3,w-6,h-6,0),{'class':'ink hair goldl',opacity:.7});
     txt(g,cx,y+13,5.4,'Osvědčení',{c:'#E8D5A3',w:500});txt(g,cx,y+19,2.3,'O ZDRAVOTNÍ ZPŮSOBILOSTI',{f:FB,c:'rgba(231,221,199,.55)',ls:.3});
@@ -410,8 +419,8 @@ ST.start=function(){
     P2(g,ST.rect(x+6*u,y+6*u,w-12*u,h-12*u,0),{fill:'none',stroke:'rgba(200,164,92,.7)','stroke-width':1,'vector-effect':NS2});
     P2(g,ST.rect(x+13*u,y+13*u,w-26*u,h-26*u,0),{fill:'none',stroke:'rgba(232,213,163,.28)','stroke-width':1,'vector-effect':NS2});
     /* z dalky je videt, ze je to obraz s napisem; pri najezdu naznak zmizi a objevi se skutecny formular */
-    var hg=el('g',{},g),ty=y+Math.min(h*.22,w*.3);P.hint=hg;
-    txt(hg,cx,ty,w*.05,'KONTAKT',{f:FB,c:'#E8D5A3',ls:.5,w:500});txt(hg,cx,ty+w*.17,w*.14,'Napište *mi*');
+    var hg=el('g',{},g),ty=y+(h-w*.82)/2+w*.06;P.hint=hg;
+    txt(hg,cx+.25,ty,w*.05,'KONTAKT',{f:FB,c:'#E8D5A3',ls:.5,w:500});txt(hg,cx,ty+w*.17,w*.14,'Napište *mi*');
     P2(hg,'M'+(cx-w*.1)+','+(ty+w*.25)+' h'+(w*.2),{'class':'ink hair gold'});
     P2(hg,'M'+(x+w*.2)+','+(ty+w*.38)+' h'+(w*.6)+' M'+(x+w*.2)+','+(ty+w*.48)+' h'+(w*.6)+' M'+(x+w*.2)+','+(ty+w*.58)+' h'+(w*.38),{'class':'ink hair dim'});
     P2(hg,ST.rect(cx-w*.17,ty+w*.68,w*.34,w*.085,w*.042),{fill:'#C8A45C',opacity:.85})}
@@ -486,7 +495,7 @@ function updateCam(time){
     var hs=Math.max(vw/PH.iw,vh/PH.ih),rw=PH.iw*hs,rh=PH.ih*hs,hox=(vw-rw)/2,hoy=Math.min(0,Math.max(vh-rh,vh*.28-.29*rh));
     var sP=rw/PH.w,Ax=PH.x+PH.w/2,Ay=PH.y+PH.h/2;
     var b0x=(Ax-cam.x)*cam.s,b0y=(Ay-cam.y)*cam.s,b1x=hox+rw/2-vw/2,b1y=hoy+rh/2-vh/2;
-    var ez=sm5(lin(13.12,14,T)),sZ=cam.s*Math.pow(sP/cam.s,ez);
+    var ez=sm5(lin(13.12,ZE,T)),sZ=cam.s*Math.pow(sP/cam.s,ez);
     cam.x=Ax-lerp(b0x,b1x,ez)/sZ;cam.y=Ay-lerp(b0y,b1y,ez)/sZ;cam.s=sZ;
   }
   var gc=ST.galCam;
@@ -504,7 +513,7 @@ function updateCam(time){
   var hw=vw/2/cam.s,hh=vh/2/cam.s;
   cam.x0=cam.x-hw;cam.x1=cam.x+hw;cam.y0=cam.y-hh;cam.y1=cam.y+hh;
   for(var i=0;i<planes.length;i++){var p=planes[i],ex=p.ax+(cam.x-p.ax)*p.f,ey=p.ay+(cam.y-p.ay)*p.f;p.ex=ex;
-    p.g.setAttribute('transform','translate('+(vw/2).toFixed(1)+','+(vh/2).toFixed(1)+') scale('+cam.s.toFixed(4)+') translate('+(-ex).toFixed(1)+','+(-ey).toFixed(1)+')')}
+    p.g.setAttribute('transform','translate('+(vw/2).toFixed(1)+','+(vh/2).toFixed(1)+') scale('+cam.s.toFixed(4)+') translate('+(-ex).toFixed(3)+','+(-ey).toFixed(3)+')')}
   for(var j=0;j<sections.length;j++){var s=sections[j],ex2=s.p?s.p.ex:cam.x,v=s.x1>ex2-hw-150&&s.x0<ex2+hw+150;
     if(ST._keep&&s.p&&s.p.f===1)v=s.x1>860&&s.x0<3500;
     if(v!==s.vis){s.vis=v;s.g.style.display=v?'':'none'}}
@@ -513,6 +522,9 @@ function updateCam(time){
 function render(time){
   ST._keep=!!ST.hasHero&&Tt>=ST.N-.004;
   updateCam(time);
+  /* vykon: kdyz je cely zaber uvnitr studia, obloha a domy za zdi se nekresli (jsou zakryte) */
+  var ins=!ST.galCam&&cam.x0>905&&cam.x1<3405&&cam.y0>246&&cam.y1<790;
+  if(ins!==!!ST._ins){ST._ins=ins;['sky','far','mid'].forEach(function(n){var e=$('L-'+n);if(e)e.style.display=ins?'none':''})}
   /* spodek obrazu: kresba pod chodnikem se plynule ztraci do tmy (zadna ostra hrana) */
   var ffd=ST._ff||(ST._ff=story.querySelector('.floorfade')),gyp=(712-cam.y)*cam.s+vh/2;
   if(gyp<vh&&!ST.galCam){var fk=cam.s,fb=gyp.toFixed(0)+'|'+fk.toFixed(3);
@@ -554,7 +566,7 @@ function render(time){
     packMotif(ST.tm,pk);if(ST.tm.glow)ST.tm.glow.setAttribute('opacity',(ss(9.6,10.45,T)*.7).toFixed(3));
     if(ST.tm.stencil)ST.tm.stencil.setAttribute('opacity',(ss(7.9,8.1,T)*(1-ss(9.35,9.7,T))*.9).toFixed(3));
     ST.red.setAttribute('opacity',(ss(8.6,9.5,T)*(1-ss(9.8,10.35,T))).toFixed(3));
-    ST.film.setAttribute('opacity',(ss(9.6,9.72,T)*(1-ss(9.98,10.3,T))).toFixed(3));
+    ST.film.setAttribute('opacity',(ss(9.6,9.72,T)*(1-ss(9.98,10.3,T))).toFixed(3));ST.filmT.setAttribute('opacity',(ss(9.64,9.76,T)*(1-ss(9.98,10.26,T))).toFixed(3));
     var mOn=ss(7.98,8.16,T)*(1-ss(9.5,9.66,T)),mach=ST.closeParts.machine;
     var tq=null;
     if(tip&&tip.e.getPointAtLength){var pt=tip.e.getPointAtLength(tip.len),M=$('closeScene').getCTM().inverse().multiply(tip.e.getCTM());tq=pt.matrixTransform(M);
@@ -584,11 +596,11 @@ function render(time){
   $('steps').style.opacity=1-ss(12.3,12.6,T)*.75;
   /* konec: scena se rozplyne do navazujici fotky andela */
   if(ST.hasHero){
-    var ov=1-ss(13.25,13.85,T);['grain','vig','ffade'].forEach(function(k){if(!ST._ov)ST._ov={grain:$('grain'),vig:story.querySelector('.vignette'),ffade:story.querySelector('.floorfade')};ST._ov[k].style.opacity=k==='grain'?(.07*ov):ov});
+    var ov=1-ss(13.25,13.85,T);['grain','vig','ffade'].forEach(function(k){if(!ST._ov)ST._ov={grain:$('grain'),vig:story.querySelector('.vignette'),ffade:story.querySelector('.floorfade')};ST._ov[k].style.opacity=k==='grain'?.07:ov});
     /* pri najezdu do fotky a pri letu po galerii postavy a popredi nezakryvaji obrazy */
     var lf=ST.galCam?0:1-ss(.55,.92,cam.pz||0);['front','fore','fig','light'].forEach(function(n){var v=n==='light'&&ST.galCam?1:lf,e=$('L-'+n);if(e&&e._o!==v){e._o=v;e.style.opacity=v}});
     var fl=!!ST.galCam;[['far',fl],['mid',fl],['fore',fl],['fig',fl],['front',fl],['sky',fl]].forEach(function(q){var e=$('L-'+q[0]);if(e&&e._h!==q[1]){e._h=q[1];e.style.visibility=q[1]?'hidden':''}});
-    var sh=$('stShade');if(sh&&!ST.galCam)sh.style.opacity=ss(13.5,14,T).toFixed(3);
+    var sh=$('stShade');if(sh&&!ST.galCam)sh.style.opacity=ss(13.5,ZE,T).toFixed(3);
     /* konec pribehu: scena zmizi, az kdyz plynuly cas T dojede na konec (ne uz ve chvili, kdy tam dojel scroll).
        Do te doby je scena pripnuta na obrazovku (fix) a film pod ni ceka na zacatku; pak se probudi (udalost scroll). */
     var past=Tt>=ST.N-.004,fwd=past&&T<ST.N-.0006&&!ST.galCam,gone=past&&!fwd,sg=$('stage'),gm=!!ST.galCam&&gone;
@@ -597,7 +609,10 @@ function render(time){
     /* predani mezi filmem a letem: kamera stoji presne na fotce (FH) a scena se prolne s fotkou filmu pod ni;
        zrno zustava stejne silne jako ve filmu, aby se nezmenil jas */
     var gfo=gm?(GAL[ST.galCam.b].panel?ss(0,FH,ST.galCam.k):Math.min(ss(0,FH,ST.galCam.k),1-ss(1-FH,1,ST.galCam.k))):1;
-    sg.style.opacity=gone&&!gm?0:gfo.toFixed(3);sg.style.visibility=gone&&!gm?'hidden':'';if(gm)ST._ov.grain.style.opacity=.07;
+    var eo=gm?gfo:1-ss(ZE,ST.N,T);
+    sg.style.opacity=gone&&!gm?0:eo.toFixed(3);sg.style.visibility=gone&&!gm?'hidden':'';
+    /* pred pristanim v ramu s kontaktem zrno zmizi (formular zadne nema), jinak drzi jas filmu */
+    if(gm)ST._ov.grain.style.opacity=GAL[ST.galCam.b].panel?(.07*(1-ss(.7,.92,ST.galCam.k))).toFixed(3):.07;
     sg.style.pointerEvents=gone?'none':'';
     var ve=$('stVeil');
     if(gm){var gk=ST.galCam,out=1-ss(0,.35,gk.k),inn=GAL[gk.b].panel?0:ss(.65,1,gk.k);
@@ -605,7 +620,7 @@ function render(time){
       $('stShade').style.opacity=(gk.a===0?.35*out:0).toFixed(3);
       ve.style.opacity=Math.max(gk.a===0?0:out,inn).toFixed(3);
     }else if(ve&&ve.style.opacity!=='0')ve.style.opacity='0';
-    document.body.classList.toggle('in-story',Tt<ST.N-.01);
+    document.body.classList.toggle('in-story',!gone&&T<ZE);
     $('steps').style.opacity=(1-ss(12.3,12.6,T)*.75)*(1-ss(12.9,13.2,T));
   }
 

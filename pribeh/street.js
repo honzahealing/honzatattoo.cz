@@ -179,7 +179,7 @@ function buildSky(){
   var bsh=el('path',{fill:'none',stroke:'#C9705E','stroke-width':1,opacity:.7},bn);
   var bcp=el('path',{id:'st_banP',fill:'none',stroke:'none'},bn);
   var btx=el('text',{'class':'label','font-size':14,'letter-spacing':1.3,dy:4.8},bn);btx.style.fontFamily='var(--font-display)';btx.style.fontWeight=600;btx.style.fill='#F6EEDC';
-  var btp=el('textPath',{href:'#st_banP',startOffset:'5%'},btx);btp.setAttributeNS('http://www.w3.org/1999/xlink','xlink:href','#st_banP');btp.textContent='USMĚJ SE, ŽIŽKOVE';
+  var btp=el('textPath',{href:'#st_banP',startOffset:'5%'},btx);btp.setAttributeNS('http://www.w3.org/1999/xlink','xlink:href','#st_banP');btp.textContent='AHOJ, VÍTEJ A SCROLLUJ';
   var bht=el('path',{d:'M0,-2 c-2,-4 -8,-1.4 -5.6,2.4 l5.6,5.6 l5.6,-5.6 c2.4,-3.8 -3.6,-6.4 -5.6,-2.4Z','class':'f-goldl'},bn);
   amb.banner={g:bn,s:bns,rope:brope,cl:bcl,sh:bsh,cp:bcp,prop:bprop,ht:bht,nl:bnl};
   var moonState='';
@@ -996,8 +996,7 @@ function buildTram(g,TL,num,dl,pass){
   dots(s,rv,1.6,.55);
   /* cislo linky a cil na boku, zahlavi dvou odpornikovych krabic */
   var sp2=ST.rect(TL*.205,-346,118,34,4);fillp(s,sp2,'f-bg');path(s,sp2,{'class':'ink thin gold'});
-  var tx=el('text',{x:TL*.205+22,y:-318,'class':'label','text-anchor':'middle','font-size':26,'font-weight':600},s);tx.textContent=num;tx.style.fontFamily='var(--font-display)';
-  var td=el('text',{x:TL*.205+70,y:-320,'class':'label','text-anchor':'middle','font-size':9.5,'letter-spacing':1.5,opacity:.85},s);td.textContent='SPOJOVACÍ';td.style.fontFamily='var(--font-display)';
+  var tx=el('text',{x:TL*.205+59,y:-320.5,'class':'label','text-anchor':'middle','font-size':26,'font-weight':600},s);tx.textContent=num;tx.style.fontFamily='var(--font-display)';
   var lg=el('text',{x:TL*.5,y:-151,'class':'label','text-anchor':'middle','font-size':14,'letter-spacing':6,opacity:.55},s);lg.textContent='DOPRAVNÍ PODNIK HL. M. PRAHY';lg.style.fontFamily='var(--font-display)';
   /* kola: oblouky v zastere, kola s pryzovym kroužkem, sroubky */
   var arc='';wheels.forEach(function(cx){arc+='M'+pt(cx-46,-26)+'A46,46 0 0 1 '+pt(cx+46,-26)+'Z'});
@@ -1033,8 +1032,7 @@ function buildTram(g,TL,num,dl,pass){
   /* stirace */
   ink(s,M(-52,-184)+'L-26,-262M'+pt(-26,-184)+'L-8,-250'+M(-52,-184)+'h4M'+pt(-26,-184)+'h4','hair goldl',dl+.06);
   var tb=ST.rect(-56,-338,50,26,4);fillp(s,tb,'f-bg');ink(s,tb,'thin gold',dl+.05);
-  var t1=el('text',{x:-48,y:-318,'class':'label','text-anchor':'middle','font-size':17,'font-weight':600},s);t1.textContent=num;t1.style.fontFamily='var(--font-display)';
-  var t2=el('text',{x:-25,y:-320,'class':'label','text-anchor':'middle','font-size':6.4,'letter-spacing':.5,opacity:.9},s);t2.textContent='SPOJOVACÍ';t2.style.fontFamily='var(--font-display)';
+  var t1=el('text',{x:-31,y:-319,'class':'label','text-anchor':'middle','font-size':17,'font-weight':600},s);t1.textContent=num;t1.style.fontFamily='var(--font-display)';
   ink(s,rect(-70,-110,74,13)+M(-70,-103)+'h74'+rect(-78,-100,10,6)+M(-62,-97)+'v-12M'+pt(-40,-97)+'v-12M'+pt(-18,-97)+'v-12'+rect(-44,-134,24,5)+M(-56,-176)+'h48','hair',dl+.08);
   fillp(s,rect(-70,-110,74,13),'f-t3');ink(s,rect(-70,-110,74,13),'thin',dl+.08);
   /* pluh */
@@ -1633,6 +1631,8 @@ function buildMid(){
   SHIFT=0;CTX.end=false;
 }
 
+/* predmet zvetseny kolem sveho stredu na zemi (kolo, kos, lavicka byly proti postave male) */
+function big(g,x,gy,k){return el('g',{transform:'translate('+x+','+gy+') scale('+k+') translate('+(-x)+','+(-gy)+')'},g)}
 function buildBack(end){
   CTX.end=end;
   var back=ST.L.back,g0=end?3556:-1900,g1=end?5800:758,ch=end?[g0,4250,4950,g1]:[g0,-1200,-500,200,g1],i;
@@ -1646,9 +1646,9 @@ function buildBack(end){
     buildTree(back,-470,697,1.0,71,.3,{glow:[40,10],parrot:[70,55],leaf:-70,house:[10,105]});
     buildTree(back,-1180,697,.85,72,.4,{n:30,leaf:30});
     streetDetail(sect(back,-300,0),-100,.3,RNG(3));groundEggs(back,100,200,.4,130,null,null);groundEggs(back,-440,-380,.4,null,-410,null);groundEggs(back,-130,-50,.4,null,null,-90);
-    buildBin(back,-250,697,.3);buildBin2(back,10,697,.3);
-    buildBench(back,330,697,.2);
-    buildBike(back,606,697,.3);
+    buildBin(big(back,-250,697,1.5),-250,697,.3);buildBin2(big(back,10,697,1.5),10,697,.3);
+    buildBench(big(back,352,697,1.5),352,697,.2);
+    buildBike(big(back,622,697,1.5),622,697,.3);
     buildPigeons(back,420,697,.4,3,1);buildPigeons(back,-130,697,.4,2);
     buildLamp(back,560,697,.1,true);buildColumn(back,222,697,.2,5);
     /* hledacky na chodniku: papirova lodicka v louzi, sipka kridou ke studiu */
@@ -1660,9 +1660,9 @@ function buildBack(end){
   }else{
     buildTree(back,4730,697,.8,81,.4,{n:30,heart:[-6,70],plane:[96,40],leaf:-30,house:[-18,95]});
     buildTree(back,5060,697,.95,82,.6,{n:34});
-    buildBin(back,3620,697,.3);buildBin2(back,4075,697,.35);
-    buildBench(back,4330,697,.4);
-    buildBike(back,3745,697,.4);
+    buildBin(big(back,3620,697,1.5),3620,697,.3);buildBin2(big(back,4075,697,1.5),4075,697,.35);
+    buildBench(big(back,4330,697,1.5),4330,697,.4);
+    buildBike(big(back,3765,697,1.5),3765,697,.4);
     buildPigeons(back,4460,697,.5,3);
     streetDetail(sect(back,3600,3800),3690,.3,RNG(4));groundEggs(back,4150,4210,.5,null,4180,null);groundEggs(back,4570,4650,.5,null,null,4610);
     buildLamp(back,3700,697,.15,true,440);buildColumn(back,4960,697,.5,9);
@@ -1727,12 +1727,12 @@ ST.on(function(T,time,cam){
   if(amb.banner&&vis(amb.banner)){var bq=amb.banner,tb=ST.reduce?30000:time,bxp=3400-((tb*.03+1250)%2800),bpor=cam.vw<cam.vh*.9,byp=(bpor?-385:146)+sin(tb*.0007)*6;
     /* na vysku leti vys (nad nadpisem) a je vetsi, aby byl napis citelny */
     bq.g.setAttribute('transform','translate('+n(bxp)+','+n(byp)+') scale('+(bpor?1.9:1.14)+')');
-    var bx0=64,bW=206,bH=13,bN=10,btop='',bbot='',bcen='',bi,bye=5,by0=5,byh=5;
+    var bx0=64,bW=262,bH=13,bN=10,btop='',bbot='',bcen='',bi,bye=5,by0=5,byh=5;
     for(bi=0;bi<=bN;bi++){var bu=bi/bN,bxx=bx0+bW*bu,byy=5+(ST.reduce?0:sin(bu*5.2-tb*.006)*(1+4.5*bu));
       btop+=(bi?'L':'M')+pt(bxx,byy-bH);bbot='L'+pt(bxx,byy+bH)+bbot;bcen+=(bi?'L':'M')+pt(bxx,byy);if(!bi)by0=byy;if(bi===bN)bye=byy;if(bi===bN-1)byh=byy}
     bq.cl.setAttribute('d',btop+'L'+pt(bx0+bW-10,bye)+bbot+'Z');bq.sh.setAttribute('d',btop.replace(/(-?[\d.]+),(-?[\d.]+)/g,function(m,a,b){return a+','+n(+b+3)}));
     bq.cp.setAttribute('d',bcen);bq.rope.setAttribute('d','M38,-1 L'+pt(bx0,by0-bH)+'M38,-1 L'+pt(bx0,by0+bH));
-    bq.ht.setAttribute('transform','translate('+n(bx0+bW*.9-2)+','+n(byh)+')');
+    bq.ht.setAttribute('transform','translate('+n(bx0+bW*.925)+','+n(byh)+')');
     bq.prop.setAttribute('opacity',ST.reduce?.8:(((time>>5)&1)?.25:.85));bq.nl.setAttribute('opacity',ST.reduce?1:(((time%1400)<240)?1:.25))}
   if(amb.hot&&vis(amb.hot)){amb.hot.g.setAttribute('transform','translate('+n(sin(time*.00007)*90)+','+n(sin(time*.0005)*5)+')');amb.hot.f.setAttribute('opacity',(.55+.45*sin(time*.004)).toFixed(2))}
   if(amb.ufo&&vis(amb.ufo)){amb.ufo.g.setAttribute('transform','translate('+n(sin(time*.0004)*14)+','+n(sin(time*.0011)*3)+')');

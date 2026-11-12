@@ -7,6 +7,14 @@ var afterStory=!!document.getElementById('story');
 var gal=afterStory&&!reduce,XG=0;
 /* kontakt jako posledni obraz na zdi: po posledni fotce jeste jeden let, na jehoz konci ram na zdi prejde do skutecneho formulare */
 var contact=gal?document.getElementById('contact'):null,cgrid=contact?contact.querySelector('.contact-grid'):null,hasC=!!cgrid,C0=0,cOff=0,preFix=false;
+/* pozadi sekce kontaktu = presna kopie zdi studia v miste a meritku pristani (tapeta s teckami), aby se pri prechodu nic nezmenilo */
+var cBg=false;
+function cBgSet(){var B=ST.gal[ST.gal.length-1],r=cRect(),u=r.W/B.w,t=11*u,X0=r.L-B.x*u,Y0=r.T-B.y*u;
+  function dot(cx,cy,rad,op){var c='rgba(231,221,199,';return 'radial-gradient(circle at '+(cx*u).toFixed(2)+'px '+(cy*u).toFixed(2)+'px,'+c+op+') 0,'+c+op+') '+(rad*u-.5).toFixed(2)+'px,'+c+'0) '+(rad*u+.5).toFixed(2)+'px)'}
+  contact.style.backgroundColor='#15161A';contact.style.backgroundImage=dot(2,3,.7,.3)+','+dot(7.5,8,.6,.25)+','+dot(9,1.5,.5,.2);
+  contact.style.backgroundSize=t.toFixed(3)+'px '+t.toFixed(3)+'px';
+  contact.style.backgroundPosition=(((X0%t)+t)%t).toFixed(2)+'px '+(((Y0%t)+t)%t).toFixed(2)+'px';
+  cgrid.style.boxShadow='8px 12px 0 rgba(0,0,0,.38)';contact.classList.add('c-pic');cBg=true}
 function cRect(){var g=cgrid.getBoundingClientRect(),c=contact.getBoundingClientRect();return {L:g.left,T:g.top-c.top,W:g.width}}
 
 var stage=root.querySelector('.sc-stage'),
@@ -145,6 +153,7 @@ function layout(){
   if(gal)dist=shots.length?shots[shots.length-1].b+XG+shots[shots.length-1].L:ANGEL;
   else dist=shots.length?shots[shots.length-1].b+shots[shots.length-1].L+X:ANGEL;
   C0=dist;
+  cBg=false;
   if(hasC){dist+=XG;contact.style.marginTop=(-H)+'px';contact.style.minHeight=H+'px';contact.style.zIndex=3}
   root.style.height=(dist+H)+'px';
   /* kotvy menu (O mne, Styl) = misto, kde je zaber uz cely prolnuty */
@@ -300,8 +309,9 @@ function render(s){
   if(fade)fade.style.opacity=hasC?0:ss(dist-.6*H,dist,s).toFixed(3);
   if(window.ST)ST.filmS=s;
   /* cestou zpet do pribehu: dokud se film plynule nevrati na zacatek, drzi se na obrazovce */
-  var pre=gal&&s>1&&root.getBoundingClientRect().top>0;if(pre!==preFix){preFix=pre;stage.classList.toggle('sc-fix',pre)}
+  var rt0=root.getBoundingClientRect().top,pre=gal&&rt0>0&&(s>1||rt0<H*.3);if(pre!==preFix){preFix=pre;stage.classList.toggle('sc-fix',pre)}
   /* kontakt: pri pristani letu je pripnuty presne na ramu na zdi a prolne se pres nej; potom se uvolni a scrolluje normalne */
+  if(hasC&&!cBg&&window.ST&&ST.gal&&ST.gal.length>shots.length+1)cBgSet();
   if(hasC){var ck=(s-C0)/XG,co=ss(.95,1,ck),nat=root.getBoundingClientRect().top+dist;
     if(s<dist-.5)cOff=-nat;else{cOff*=.8;if(Math.abs(cOff)<.5)cOff=0}
     contact.style.opacity=co.toFixed(3);contact.style.visibility=co>.001?'visible':'hidden';contact.style.pointerEvents=co>.99?'':'none';
