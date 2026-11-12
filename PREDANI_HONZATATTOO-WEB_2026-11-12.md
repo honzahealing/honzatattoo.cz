@@ -13,7 +13,7 @@ Repozitář `honzahealing/honzatattoo.cz`, větev **`pribeh-na-scroll`** obsahuj
 | 129918 | `pribeh/street.js` | Ulice Žižkova: obloha, Žižkovský vysílač (`buildTower`), tramvaj T3 (`buildTram`), činžáky, příběhy v oknech (`SCENES`, `windowScene`, ambient `amb.scn`) |
 | 113638 | `pribeh/studio.js` | Budova a interiér studia. `ST.galleryWall = true` vypíná staré kreslené rámečky, zrcadlo, klíče, polaroidy a závěsná světla na stěnách galerie |
 | 7978 | `pribeh/doors.js` | Obě dveře: křídlo s panty vlevo a klikou vpravo, otevírá se dovnitř, osvětlený otvor, `ST.doorOpen(i,T)`, `ST.doorHandle(i,T)` |
-| 7200 | `pribeh/facade.js` | Uliční fasáda studia, která se po vstupu klientky rozplyne (verze 17) |
+| 11588 | `pribeh/facade.js` | Uliční fasáda studia, která se po vstupu klientky rozplyne (verze 17) |
 | 25224 | `pribeh/close.js` | Detail předloktí, **10. 11. celý přepsaný**: kůže se světlem lampy, opěrka, kalíšky s barvami, jediná ruka v rukavici s Pen strojkem (oddíl 4, měřítko podle `img/ja-u-prace.webp`, grip asi pětina šířky předloktí), život ruky (oddíl 5). Strojek bez displeje a bez nápisu |
 | 51774 | `pribeh/chars.js` | Postavy Honza a klientka: kostra, chůze, oblečení, stíny na zemi, sáhnutí na kliku (`reachArm`) |
 | 30078 | `pribeh/audio.js` | Generativní chill jazz a hlasy. Zvuk je výchozí zapnutý, spustí se při prvním doteku, kliknutí nebo klávese, v úvodu výzva „Klepněte kamkoli a hraje hudba“ |
@@ -26,7 +26,7 @@ Repozitář `honzahealing/honzatattoo.cz`, větev **`pribeh-na-scroll`** obsahuj
 | 1156 | `pribeh/dev/siteshot.js` | Snímky složeného webu i s filmem: `node pribeh/dev/siteshot.js $PWD/preview-pribeh.html <prefix> 1440 900 13.97 h0 h5.6` (hN = N obrazovek za koncem příběhu) |
 | 3676 | `pribeh/dev/build_site.py` | Složí web: `python3 pribeh/dev/build_site.py preview-pribeh.html`, s `--artifact` jeden soubor pro náhled |
 
-**Náhled pro Honziho:** artefakt https://claude.ai/artifact/3xqedLNY3xePQ9RkMdV38D (verze 17). Publikace:
+**Náhled pro Honziho:** artefakt https://claude.ai/artifact/3xqedLNY3xePQ9RkMdV38D (verze 18). Publikace:
 1. `python3 pribeh/dev/build_site.py <scratchpad>/site/index.html --artifact`
 2. v souboru nahradit `<title>` za „Honza Tattoo · Příběh“
 3. publikovat se soubory `img/*.jpg` a `img/*.webp` (mapa `img/x` → `img/x`)
@@ -159,6 +159,14 @@ Honziho zadání: na tramvaji místo „Spojovací“ napsat „Lipanská“; sk
 - Kontakt po přistání jede se stejným vyhlazeným scrollem (`cOff = scrollY - max(Ys, yD)`), bez skoku při uvolnění.
 
 Ověřeno 13. 11.: fasáda T 1.3 až 2.95 na 1440×900 a 1.6, 2.45 na mobilu; přistání v kontaktu na obou velikostech; složený web T 0.2 a 1.7; konzole bez chyb. Neověřeno: na skutečném zařízení.
+
+### Verze 18 (13. 11.)
+
+Honzi k fasádě z verze 17: „musí být mnohem dekorativnější a linie musí zmizet mnohem rychleji po vstupu, prakticky okamžitě“. Hotovo v `pribeh/facade.js`:
+- **Výzdoba:** římsa se zubořezem a vejcovcem, vlys s rozvilinami, kanelované pilastry s hlavicemi, oblouková okna s archivoltou, zlatým klenákem, vějířem nadsvětlíku a růžicemi ve cviklech, parapety s konzolami, festony pod okny, bosovaný sokl. Mezi okny štukové rámy s vykrojenými rohy: slunce ve vavřínovém věnci se stuhou, lucerna na kované konzole, popínavá růže na treláži.
+- **Zmizení:** všechna pole najednou od T 2,2 (dívka je právě za dveřmi), linky do 0,035 a plocha do 0,05 jednotky T, tedy asi 40 px scrollu. Interiér se začne kreslit od T 2,17.
+
+Ověřeno: 1440×900, T 1.5 (dva výřezy), 1.95, 2.19, 2.225, 2.26; konzole bez chyb. Mobil po této úpravě neověřen.
 
 ## Technický stav
 
