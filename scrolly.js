@@ -140,6 +140,8 @@ function layout(){
   footY=Math.min(FOOT.y,1-(H*(1-anchorY)+40)/(rh*Z));
   timeline();
   buildLUT();
+  /* rychlost priblizovani na zacatku filmu (zmena ln meritka na 1 px scrollu): pribeh na ni na konci navaze */
+  if(gal){var d0=40,p0=warpEnd(d0/((mobile?4.2:5)*H));window.__filmRate=Math.log(state(zoomAt(qAt(p0)),descAt(qAt(p0))).z)/d0}
 
   ANGEL=(mobile?4.2:5)*H;X=.8*H;L=(mobile?2.1:2.4)*H;XG=(mobile?1.6:2.1)*H;
   for(var i=0;i<shots.length;i++){
@@ -163,9 +165,9 @@ function layout(){
 var target=0,cur=0,raf=0;
 
 function progress(){
-  /* s pribehem pred filmem: film stoji na zacatku, dokud pribeh plynule nedojede do fotky andela */
-  if(gal&&window.ST&&ST.T<ST.N-.0006)return 0;
   var r=root.getBoundingClientRect();
+  /* s pribehem pred filmem ridi film stejny vyhlazeny scroll jako pribeh (ST.Ys) */
+  if(gal&&window.ST&&ST.Ys!=null)return Math.min(dist,Math.max(0,ST.Ys-(r.top+window.scrollY)));
   return Math.min(dist,Math.max(0,-r.top));
 }
 
@@ -312,10 +314,11 @@ function render(s){
   var rt0=root.getBoundingClientRect().top,pre=gal&&rt0>0&&(s>1||rt0<H*.3);if(pre!==preFix){preFix=pre;stage.classList.toggle('sc-fix',pre)}
   /* kontakt: pri pristani letu je pripnuty presne na ramu na zdi a prolne se pres nej; potom se uvolni a scrolluje normalne */
   if(hasC&&!cBg&&window.ST&&ST.gal&&ST.gal.length>shots.length+1)cBgSet();
-  if(hasC){var ck=(s-C0)/XG,co=ss(.95,1,ck),nat=root.getBoundingClientRect().top+dist;
-    if(s<dist-.5)cOff=-nat;else{cOff*=.8;if(Math.abs(cOff)<.5)cOff=0}
+  if(hasC){var ck=(s-C0)/XG,co=ss(.95,1,ck),ysm=(window.ST&&ST.Ys!=null)?ST.Ys:window.scrollY;
+    /* pred pristanim je kontakt pripnuty na ram na zdi, po pristani jede s vyhlazenym scrollem (zadny skok pri uvolneni) */
+    cOff=window.scrollY-Math.max(ysm,rt0+window.scrollY+dist);if(Math.abs(cOff)<.05)cOff=0;
     contact.style.opacity=co.toFixed(3);contact.style.visibility=co>.001?'visible':'hidden';contact.style.pointerEvents=co>.99?'':'none';
-    contact.style.transform=co>.001&&cOff?'translate3d(0,'+cOff.toFixed(1)+'px,0)':''}
+    contact.style.transform=co>.001&&cOff?'translate3d(0,'+cOff.toFixed(2)+'px,0)':''}
 
   if(bar)bar.style.width=(dist?s/dist*100:0).toFixed(2)+'%';
 }
@@ -324,16 +327,18 @@ function tick(){
   cur+=(target-cur)*.12;
   if(Math.abs(target-cur)<.5)cur=target;
   render(cur);
-  raf=(cur!==target||(hasC&&cOff&&cur>=dist-.5))?requestAnimationFrame(tick):0;
+  raf=cur!==target?requestAnimationFrame(tick):0;
 }
 
 function onScroll(){
+  if(gal&&window.ST&&ST.Ys!=null)return;   /* film krokuje pribeh (window.__film) */
   target=progress();
   if(reduce){cur=target;render(cur);return}
   if(!raf)raf=requestAnimationFrame(tick);
 }
 
 var ready=false;
+if(gal)window.__film=function(){if(!ready)return;target=cur=progress();render(cur)};
 function refresh(){layout();target=cur=progress();render(cur)}
 function init(){
   if(ready)return;ready=true;

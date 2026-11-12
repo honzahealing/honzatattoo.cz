@@ -146,7 +146,7 @@ ST.gallery={fly:function(a,b,k,ra,rb){var had=ST.galCam;ST.galCam=a==null?null:{
   if((had||ST.galCam)&&story){render(performance.now());ST._sync=1}}};
 function camFor(ph,r){var sc=r.W/ph.w;return {s:sc,x:ph.x+(vw/2-r.L)/sc,y:ph.y+(vh/2-r.T)/sc}}
 /* ZE = cas, kdy kamera dojede do fotky andela; od ZE do konce se scena prolne s filmem pod ni (obe stoji na stejnem miste) */
-var ZE=13.93;
+var ZE=14,Ys=null;
 function photoZoom(T){return ss(13.15,ZE,T)}
 /* plynuly rozjezd i dojezd (nulova rychlost i zrychleni na koncich) */
 function sm5(t){t=clamp(t);return t*t*t*(t*(t*6-15)+10)}
@@ -431,7 +431,7 @@ ST.start=function(){
     P2(hg,'M'+(x+w*.2)+','+(ty+w*.38)+' h'+(w*.6)+' M'+(x+w*.2)+','+(ty+w*.48)+' h'+(w*.6)+' M'+(x+w*.2)+','+(ty+w*.58)+' h'+(w*.38),{'class':'ink hair dim'});
     P2(hg,ST.rect(cx-w*.17,ty+w*.68,w*.34,w*.085,w*.042),{fill:'#C8A45C',opacity:.85})}
   /* tepla zare od svetylek na zdi za velkymi obrazy */
-  var galL=el('g',{},ST.L.room);ST.L.room.insertBefore(galL,ST.L.room.firstChild);
+  var galL=ST.galL=el('g',{},ST.L.room);ST.L.room.insertBefore(galL,ST.L.room.firstChild);
   WALLITEMS.forEach(function(P){var g=ST.section(galL,P.x-40,P.x+P.w+40);
     if(P.light)P2(g,ST.ellipse(P.x+P.w/2,P.y+P.h*.35,P.w*.95,P.h*.75),{fill:'url(#gGlow)',opacity:.45});
     if(P.card)card(g,P);else if(P.cert)cert(g,P);else if(P.panel)panel(g,P);else photo(g,P)});
@@ -502,7 +502,9 @@ function updateCam(time){
     var hs=Math.max(vw/PH.iw,vh/PH.ih),rw=PH.iw*hs,rh=PH.ih*hs,hox=(vw-rw)/2,hoy=Math.min(0,Math.max(vh-rh,vh*.28-.29*rh));
     var sP=rw/PH.w,Ax=PH.x+PH.w/2,Ay=PH.y+PH.h/2;
     var b0x=(Ax-cam.x)*cam.s,b0y=(Ay-cam.y)*cam.s,b1x=hox+rw/2-vw/2,b1y=hoy+rh/2-vh/2;
-    var ez=sm5(lin(13.12,ZE,T)),sZ=cam.s*Math.pow(sP/cam.s,ez);
+    /* zoom do fotky nekonci zastavenim: na konci ma stejnou rychlost priblizovani, jakou film zacina (window.__filmRate),
+       takze pohyb pres hranu pribeh/film plynule pokracuje */
+    var zu=lin(13.12,ST.N,T),zL=Math.max(.2,Math.log(sP/cam.s)),zm=Math.max(0,Math.min(1.2,(window.__filmRate||0)*unit*(ST.N-13.12)/zL)),ez=(zm-2)*zu*zu*zu+(3-zm)*zu*zu,sZ=cam.s*Math.pow(sP/cam.s,ez);
     cam.x=Ax-lerp(b0x,b1x,ez)/sZ;cam.y=Ay-lerp(b0y,b1y,ez)/sZ;cam.s=sZ;
   }
   var gc=ST.galCam;
@@ -616,7 +618,7 @@ function render(time){
     /* predani mezi filmem a letem: kamera stoji presne na fotce (FH) a scena se prolne s fotkou filmu pod ni;
        zrno zustava stejne silne jako ve filmu, aby se nezmenil jas */
     var gfo=gm?(GAL[ST.galCam.b].panel?ss(0,FH,ST.galCam.k):Math.min(ss(0,FH,ST.galCam.k),1-ss(1-FH,1,ST.galCam.k))):1;
-    var eo=gm?gfo:1-ss(ZE,ST.N,T);
+    var eo=gm?gfo:1-ss(ST.N-12/unit,ST.N,T);
     sg.style.opacity=gone&&!gm?0:eo.toFixed(3);sg.style.visibility=gone&&!gm?'hidden':'';
     /* pred pristanim v ramu s kontaktem zrno zmizi (formular zadne nema), jinak drzi jas filmu */
     if(gm)ST._ov.grain.style.opacity=GAL[ST.galCam.b].panel?(.07*(1-ss(.7,.92,ST.galCam.k))).toFixed(3):.07;
@@ -666,7 +668,11 @@ function render(time){
 function frame(ts){
   var dt=Math.min(64,ts-(lastTs||ts));lastTs=ts;
   if(ST.debug.T!=null)T=ST.debug.T;
-  else{Tt=targetT();/* cestou zpet z filmu: pribeh ceka, dokud se film plynule nevrati na zacatek */if(ST.hasHero&&ST.filmS>1)Tt=ST.N;if(reduce)T=Tt;else{var f=1-Math.exp(-dt/150);T+=(Tt-T)*f;if(Math.abs(Tt-T)<.0005)T=Tt}}
+  else{Tt=targetT();
+    /* jeden vyhlazeny scroll (Ys) pro pribeh i film: na hrane se nerozejdou a pohyb plynule pokracuje */
+    if(reduce||Ys==null){Ys=scrollY}else{var f=1-Math.exp(-dt/150);Ys+=(scrollY-Ys)*f;if(Math.abs(scrollY-Ys)<.3)Ys=scrollY}
+    T=clamp((Ys-story.offsetTop)/(story.offsetHeight-vh))*ST.N;ST.Ys=Ys;
+    if(window.__film&&Ys!==ST._ysF){ST._ysF=Ys;window.__film()}}
   var idle=ST.debug.T==null&&!!ST.hasHero&&Tt>=ST.N-.004&&T>=ST.N-.0006&&!ST.galCam;
   if(ST._sync)ST._sync=0;else if(!(idle&&ST._idle))render(ts);
   ST._idle=idle;lastT=T;ST.T=T;

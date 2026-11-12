@@ -1200,6 +1200,9 @@ var fishG=null,fishB=[],crysG=null;
   D(g,'M1148,494 V514 M1144,499 L1151.4,500 M1158,500 V514 M1140.4,504 V514','hair goldl',.8,1);
 })();
 
+/* interier (vrstva room) pro fasadu: dokud je fasada cela, nekresli se */
+ST.studioIn=[0,1,2,3].map(function(i){return sec('room',i)});
+
 /* ---------- ambientni animace ---------- */
 var smoke=[],dust=[];
 (function(){var gs=sec('back',3);zone(6.1,6.7);for(var i=0;i<4;i++)smoke.push(FO(gs,'M0,0 C-8,-10 8,-18 0,-30 C-6,-40 8,-46 2,-58','ink thin faint',.9,.9,1));

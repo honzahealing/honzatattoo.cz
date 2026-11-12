@@ -19,19 +19,20 @@ css += '''
 #story *{box-sizing:border-box}
 #hero{position:relative;z-index:1}
 #nb,.announce-bar{transition:opacity .5s}
-.in-story #nb,.in-story .announce-bar,.in-story .mm,.in-story #sticky-cta,.in-story #btt,.in-story #scroll-progress{opacity:0!important;pointer-events:none!important}
+.in-story #sticky-cta,.in-story #btt,.in-story #scroll-progress{opacity:0!important;pointer-events:none!important}
 #sticky-cta,#btt,#scroll-progress{transition:opacity .5s}
 #hero{background:#0C0F14}
 #hero::before{content:'';position:absolute;left:0;right:0;bottom:100%;height:40vh;background:#0C0F14;pointer-events:none}
-/* po pribehu zustane jen tlacitko zvuku vpravo dole */
-body:not(.in-story) #story .top{top:auto;bottom:calc(90px + env(safe-area-inset-bottom,0px));left:auto;right:16px;padding:0}
-body:not(.in-story) #story .top .logo,body:not(.in-story) #story .top .top-cta{display:none}
-body:not(.in-story) #story .top .snd{background:rgba(12,15,20,.78);padding:9px 14px;border-radius:22px;margin:0;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+/* horni lista webu je videt uz behem pribehu (pri predani do filmu se nahore nic nemeni); z hlavicky pribehu zustava jen tlacitko zvuku vpravo dole */
+#story .top{top:auto;bottom:calc(90px + env(safe-area-inset-bottom,0px));left:auto;right:16px;padding:0}
+#story .top::before{display:none}
+#story .top .logo,#story .top .top-cta{display:none}
+#story .top .snd{background:rgba(12,15,20,.78);padding:9px 14px;border-radius:22px;margin:0;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 '''
 mark = re.search(r'<section class="story" id="story".*?</section>\s*<!--[^>]*-->\s*<section class="sr".*?</section>', story, re.S).group(0)
 mark = mark.replace('href="index.html#contact"', 'href="#contact"').replace('href="index.html"', 'href="#hero"')
 fonts = '<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">\n'
-mods = ['core', 'street', 'studio', 'doors', 'close', 'chars', 'audio']
+mods = ['core', 'street', 'studio', 'doors', 'facade', 'close', 'chars', 'audio']
 if inline:
     js = ''.join('<script>\n' + (root / f'pribeh/{m}.js').read_text().replace('</script', '<\\/script') + '\n</script>\n' for m in mods)
 else:
