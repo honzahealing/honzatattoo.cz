@@ -120,6 +120,22 @@ Honzi k verzi 14: finální sekce s formulářem je vizuálně „super“, ale 
 
 Ověřeno 12. 11.: rychlý skok scrollu přes konec příběhu (stavy `T`, `filmS`, scéna) na 1440×900; let do kontaktu po krocích na 1440×900 a 390×844 (rám formuláře při prolnutí stojí na místě: L a T se nemění), konzole bez chyb. Neověřeno: na skutečném zařízení.
 
+### ROZPRACOVÁNO: zadání z 12. 11. v noci (verze 16)
+
+Honziho slova, stav se přepisuje tady:
+1. Nápis na plachtě letadla není dobrý, má tam být jen „ahoj, vítej a scrolluj“.
+2. Tramvaj: devítku vycentrovat, nepsat „Spojovací“.
+3. Venku jen cedule HONZA TATTOO. Cedule s adresou (Praha 3, Táboritská) pryč, nahradit dekorací. Cedule s čísly (1284, 17) pryč, nahradit dekorací.
+4. Všechny cedule na zdi s nápisy: nápisy vycentrovat.
+5. Kalendář: datum 2. 11.
+6. Na poličkách místo lahví s alkoholem tetovací barvy, různobarevné.
+7. Po tetování napsat, že čtverec přes papouška je ochranná fólie.
+8. Kolo, koš a lavička venku jsou proti postavě ženy neúměrně malé.
+9. Vjezd do fotky anděla pořád hodně skáče.
+10. Vjezd do rámu s kontaktem: nesmí se změnit pozadí mimo rám, vjezd nesmí poskočit, „dokonale plynulé a vše musí sedět přesně na svém místě“.
+
+Stav: vše ZBÝVÁ (doplňuje se níže).
+
 ## Technický stav
 
 - **Prohlížeč:** Playwright přes `require('playwright')`, `chromium.launch()` bez cesty. Bez GPU, časy snímků jsou pesimistické. Na skutečném telefonu neměřeno.
