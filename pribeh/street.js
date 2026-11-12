@@ -165,6 +165,23 @@ function buildSky(){
   el('path',{d:'M'+pt(cx+109,cy2-83.5)+'q6,-9 12,0','class':'ink hair goldl'},uf);
   var ul=el('path',{d:dot(cx+108,cy2-81)+dot(cx+115,cy2-80)+dot(cx+122,cy2-81),'class':'ink gold'},uf);ul.style.strokeWidth=2;
   amb.ufo={g:uf,l:ul,s:ms};
+  /* hledacka: vrtulove letadlo tahne cervenou plachtu s napisem (leti doleva, plachta se vlni) */
+  var bns=sect(g,X0-400,X1+800),bn=el('g',{},bns),bpl=el('g',{transform:'scale(1.25)'},bn);
+  var bfu='M-24,1 C-22,-5 -14,-7 -4,-7 L10,-5 L24,-3 L27,-12 L31,-12 L30,2 C20,5 -6,7 -20,5 Z';
+  fillp(bpl,bfu,'f-t3');
+  path(bpl,bfu+'M-16,-4.4 h9 v4 h-10.4 Z M-13,-9.4 L8,-10.4 L10,-8.2 L-13,-7.4 Z M-12,5.4 l-2,5 M-4,6 l1,4.6 M24,-3 L30.6,-1.6',{'class':'ink hair'});
+  fillp(bpl,circ(-14,12,2.3)+circ(-3,12,2.3),'f-bg');path(bpl,circ(-14,12,2.3)+circ(-3,12,2.3),{'class':'ink hair'});
+  fillp(bpl,'M-16,-4.4 h9 v4 h-10.4 Z','f-gold',{opacity:.75});
+  var bprop=el('path',{d:'M-25.6,-8.6 V10.6','class':'ink thin'},bpl);
+  var bnl=el('path',{d:dot(-2,-10.6),'class':'ink gold'},bpl);bnl.style.strokeWidth=2.6;
+  var brope=el('path',{'class':'ink hair'},bn);
+  var bcl=el('path',{fill:'#8E3229',stroke:'var(--line)','stroke-width':1.1,'stroke-linejoin':'round'},bn);
+  var bsh=el('path',{fill:'none',stroke:'#C9705E','stroke-width':1,opacity:.7},bn);
+  var bcp=el('path',{id:'st_banP',fill:'none',stroke:'none'},bn);
+  var btx=el('text',{'class':'label','font-size':14,'letter-spacing':1.3,dy:4.8},bn);btx.style.fontFamily='var(--font-display)';btx.style.fontWeight=600;btx.style.fill='#F6EEDC';
+  var btp=el('textPath',{href:'#st_banP',startOffset:'5%'},btx);btp.setAttributeNS('http://www.w3.org/1999/xlink','xlink:href','#st_banP');btp.textContent='USMĚJ SE, ŽIŽKOVE';
+  var bht=el('path',{d:'M0,-2 c-2,-4 -8,-1.4 -5.6,2.4 l5.6,5.6 l5.6,-5.6 c2.4,-3.8 -3.6,-6.4 -5.6,-2.4Z','class':'f-goldl'},bn);
+  amb.banner={g:bn,s:bns,rope:brope,cl:bcl,sh:bsh,cp:bcp,prop:bprop,ht:bht,nl:bnl};
   var moonState='';
   ST.on(function(T,time,cam){
     var por=cam.vw<cam.vh*.9,st=por?'p':'d';
@@ -1707,6 +1724,16 @@ ST.on(function(T,time,cam){
     var bx=900+((time*b.sp+b.off)%2800),by=b.y+sin(time*.0006+k)*8;
     b.g.setAttribute('transform','translate('+n(bx)+','+n(by)+') scale('+n(b.sc)+','+n(b.sc*sin(time*b.fl+k)*.9)+')')}
   if(amb.boat&&vis(amb.boat))amb.boat.g.setAttribute('transform','translate('+n(sin(time*.0011)*2.4)+',0) rotate('+n(sin(time*.0017)*3)+' 299 729)');
+  if(amb.banner&&vis(amb.banner)){var bq=amb.banner,tb=ST.reduce?30000:time,bxp=3400-((tb*.03+1250)%2800),bpor=cam.vw<cam.vh*.9,byp=(bpor?-385:146)+sin(tb*.0007)*6;
+    /* na vysku leti vys (nad nadpisem) a je vetsi, aby byl napis citelny */
+    bq.g.setAttribute('transform','translate('+n(bxp)+','+n(byp)+') scale('+(bpor?1.9:1.14)+')');
+    var bx0=64,bW=206,bH=13,bN=10,btop='',bbot='',bcen='',bi,bye=5,by0=5,byh=5;
+    for(bi=0;bi<=bN;bi++){var bu=bi/bN,bxx=bx0+bW*bu,byy=5+(ST.reduce?0:sin(bu*5.2-tb*.006)*(1+4.5*bu));
+      btop+=(bi?'L':'M')+pt(bxx,byy-bH);bbot='L'+pt(bxx,byy+bH)+bbot;bcen+=(bi?'L':'M')+pt(bxx,byy);if(!bi)by0=byy;if(bi===bN)bye=byy;if(bi===bN-1)byh=byy}
+    bq.cl.setAttribute('d',btop+'L'+pt(bx0+bW-10,bye)+bbot+'Z');bq.sh.setAttribute('d',btop.replace(/(-?[\d.]+),(-?[\d.]+)/g,function(m,a,b){return a+','+n(+b+3)}));
+    bq.cp.setAttribute('d',bcen);bq.rope.setAttribute('d','M38,-1 L'+pt(bx0,by0-bH)+'M38,-1 L'+pt(bx0,by0+bH));
+    bq.ht.setAttribute('transform','translate('+n(bx0+bW*.9-2)+','+n(byh)+')');
+    bq.prop.setAttribute('opacity',ST.reduce?.8:(((time>>5)&1)?.25:.85));bq.nl.setAttribute('opacity',ST.reduce?1:(((time%1400)<240)?1:.25))}
   if(amb.hot&&vis(amb.hot)){amb.hot.g.setAttribute('transform','translate('+n(sin(time*.00007)*90)+','+n(sin(time*.0005)*5)+')');amb.hot.f.setAttribute('opacity',(.55+.45*sin(time*.004)).toFixed(2))}
   if(amb.ufo&&vis(amb.ufo)){amb.ufo.g.setAttribute('transform','translate('+n(sin(time*.0004)*14)+','+n(sin(time*.0011)*3)+')');
     amb.ufo.l.setAttribute('opacity',(.4+.6*(((time%900)<450)?1:.2)).toFixed(2))}

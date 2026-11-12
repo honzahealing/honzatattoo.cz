@@ -1,8 +1,8 @@
-# PŘEDÁNÍ: honzatattoo.cz, web s příběhem na scroll / 2026-11-10
+# PŘEDÁNÍ: honzatattoo.cz, web s příběhem na scroll / 2026-11-12
 
 ## Kanonické soubory
 
-Repozitář `honzahealing/honzatattoo.cz`, větev **`pribeh-na-scroll`** obsahuje verzi 8. **Verze 9 (10. 11. 2026) je na pracovní větvi vlákna z 10. 11.** (jediná větev se sedmi commity nad `pribeh-na-scroll`, název jí přidělilo prostředí); do `pribeh-na-scroll` ji přesunout až s Honziho souhlasem. Pull request není a `main` je beze změn. Velikosti platí pro verzi 12 (čtvrté kolo 10. 11.).
+Repozitář `honzahealing/honzatattoo.cz`, větev **`pribeh-na-scroll`** obsahuje verzi 8. **Verze 9 až 13 (10. až 12. 11. 2026) jsou na pracovní větvi vlákna z 10. 11.** (jediná větev se sedmi commity nad `pribeh-na-scroll`, název jí přidělilo prostředí); do `pribeh-na-scroll` ji přesunout až s Honziho souhlasem. Pull request není a `main` je beze změn. Velikosti platí pro verzi 13 (12. 11.).
 
 | Bajty | Soubor | K čemu |
 |---|---|---|
@@ -10,9 +10,9 @@ Repozitář `honzahealing/honzatattoo.cz`, větev **`pribeh-na-scroll`** obsahuj
 | 7793 | `pribeh.html` | Samotný příběh (značkování, slouží k ladění a ke snímkům) |
 | 13983 | `pribeh/style.css` | Styly příběhu, na konci podklady pro čitelnost písma a `.st-veil`, `.stage.gal` pro galerii |
 | 48331 | `pribeh/core.js` | Jádro: kamera (`KEYS`, `ST.N = 14`), nájezd do detailu ruky, motiv papouška, bubliny (`BUB`), kroky (`STEPS`), **galerie na zdi** (`GAL`, `WI`, `WALLS`, `layoutWall`), nájezd do fotky anděla (`photoZoom`, T 13,15–14), let po zdi (`ST.gallery.fly`) |
-| 126697 | `pribeh/street.js` | Ulice Žižkova: obloha, Žižkovský vysílač (`buildTower`), tramvaj T3 (`buildTram`), činžáky, příběhy v oknech (`SCENES`, `windowScene`, ambient `amb.scn`) |
+| 129560 | `pribeh/street.js` | Ulice Žižkova: obloha, Žižkovský vysílač (`buildTower`), tramvaj T3 (`buildTram`), činžáky, příběhy v oknech (`SCENES`, `windowScene`, ambient `amb.scn`) |
 | 112737 | `pribeh/studio.js` | Budova a interiér studia. `ST.galleryWall = true` vypíná staré kreslené rámečky, zrcadlo, klíče, polaroidy a závěsná světla na stěnách galerie |
-| 7873 | `pribeh/doors.js` | Obě dveře: křídlo s panty vlevo a klikou vpravo, otevírá se dovnitř, osvětlený otvor, `ST.doorOpen(i,T)`, `ST.doorHandle(i,T)` |
+| 7978 | `pribeh/doors.js` | Obě dveře: křídlo s panty vlevo a klikou vpravo, otevírá se dovnitř, osvětlený otvor, `ST.doorOpen(i,T)`, `ST.doorHandle(i,T)` |
 | 25224 | `pribeh/close.js` | Detail předloktí, **10. 11. celý přepsaný**: kůže se světlem lampy, opěrka, kalíšky s barvami, jediná ruka v rukavici s Pen strojkem (oddíl 4, měřítko podle `img/ja-u-prace.webp`, grip asi pětina šířky předloktí), život ruky (oddíl 5). Strojek bez displeje a bez nápisu |
 | 51774 | `pribeh/chars.js` | Postavy Honza a klientka: kostra, chůze, oblečení, stíny na zemi, sáhnutí na kliku (`reachArm`) |
 | 30078 | `pribeh/audio.js` | Generativní chill jazz a hlasy. Zvuk je výchozí zapnutý, spustí se při prvním doteku, kliknutí nebo klávese, v úvodu výzva „Klepněte kamkoli a hraje hudba“ |
@@ -25,7 +25,7 @@ Repozitář `honzahealing/honzatattoo.cz`, větev **`pribeh-na-scroll`** obsahuj
 | 1156 | `pribeh/dev/siteshot.js` | Snímky složeného webu i s filmem: `node pribeh/dev/siteshot.js $PWD/preview-pribeh.html <prefix> 1440 900 13.97 h0 h5.6` (hN = N obrazovek za koncem příběhu) |
 | 3668 | `pribeh/dev/build_site.py` | Složí web: `python3 pribeh/dev/build_site.py preview-pribeh.html`, s `--artifact` jeden soubor pro náhled |
 
-**Náhled pro Honziho:** artefakt https://claude.ai/artifact/3xqedLNY3xePQ9RkMdV38D (verze 12). Publikace:
+**Náhled pro Honziho:** artefakt https://claude.ai/artifact/3xqedLNY3xePQ9RkMdV38D (verze 13). Publikace:
 1. `python3 pribeh/dev/build_site.py <scratchpad>/site/index.html --artifact`
 2. v souboru nahradit `<title>` za „Honza Tattoo · Příběh“
 3. publikovat se soubory `img/*.jpg` a `img/*.webp` (mapa `img/x` → `img/x`)
@@ -86,6 +86,11 @@ Honzi k verzi 11: „Oblouky při přechodu mezi obrazy jsou dobré.“ Opraveno
   Změřeno: kamera na koncích letu sedí na fotku filmu s posunem 0 px a měřítkem 1,0000; rozdíl sousedních snímků kolem předání do 2 z 255.
 - **Kola tramvaje se otáčejí** podle ujeté dráhy (odvalování bez prokluzu, `g._wheels` ve `street.js`), na kole je zlatá značka, aby bylo otáčení vidět.
 
+### Verze 13 (12. 11.)
+
+- **Průchod dveřmi, oprava verze 12:** ve verzi 12 šla postava za oběma sloupky, to bylo špatně. Honzi: postava jde zleva doprava **před levým sloupkem a překladem a za pravým sloupkem**, u obou dveří. V popředí (`front`) je proto jen pravý sloupek (`post(frF,…)` v `doors.js`).
+- **Letadlo s plachtou:** vrtulové letadlo táhne červenou vlnící se plachtu s nápisem „USMĚJ SE, ŽIŽKOVE“ a srdcem (`amb.banner` ve `street.js`). Letí doleva, kolo trvá asi 93 s, při načtení je na volné obloze v úvodu. Na výšku letí výš (nad nadpisem) a je větší. Text nápisu je moje volba, Honzi chtěl „nějaký veselý název“ a „trochu červené barvy“.
+
 ## Technický stav
 
 - **Prohlížeč:** Playwright přes `require('playwright')`, `chromium.launch()` bez cesty. Bez GPU, časy snímků jsou pesimistické. Na skutečném telefonu neměřeno.
@@ -113,7 +118,8 @@ Jen Honziho slova z vláken 6. až 8. 11.:
 - **Lety mezi fotkami (10. 11.):** oblouk s větším oddálením, aby bylo víc vidět studio. Nájezdy do fotek jsou „výborné“, neměnit. Oddálení ve verzi 10 je „krásně daleko“. Let „nesmí se nikde stavit, zaseknout“, „všechno musí být dokonale plynulé“.
 - **Studio (10. 11.):** uvnitř se při scrollu nemá nic dokreslovat. Za dveřmi stejná barva jako celé studio. Za oknem žižkovská věž.
 - **Easter eggy (10. 11.):** chce jich víc.
-- **Dveře (10. 11.):** postava musí projít skrze rám, ne vně rámu, při příchodu i odchodu.
+- **Dveře (10. a 12. 11.):** postava musí projít skrze rám: zleva doprava před levým a horním rámem a za pravým rámem, u předních i zadních dveří.
+- **Obloha (12. 11.):** letadlo táhne plachtu s veselým nápisem, plachta má trochu červené.
 - **Tramvaj (10. 11.):** kolečka se mají při jízdě otáčet vhodnou rychlostí.
 - **Oblouky mezi obrazy (verze 11):** „jsou dobré“, neměnit jejich tvar.
 - **Písmo** musí být dobře vidět (podkreslit nebo podsvítit).
@@ -183,12 +189,11 @@ Jen Honziho slova z vláken 6. až 8. 11.:
 
 ## Stav kontrol
 
-**10. 11. 2026 (verze 12)**, konzole bez chyb:
-- 1440×900: průchod oběma dveřmi ve výřezu (T 1.98, 2.2, 2.34, 12.0, 12.2, 12.32), předání film/let u prvního letu měřené po krocích 4 až 30 px, kola tramvaje (úhel odpovídá dráze)
-- mobil 390×844: T 2.2, 12.1, konec anděla, střed prvního letu, začátek druhé fotky
-- z verze 11 platí: široké okno 2000×991 a celá osa
-- neověřeno: zvuk poslechem, plynulost na skutečném počítači a telefonu, předání u 3. až 5. letu (stejný kód)
-- pozor při měření: bezhlavý prohlížeč kreslí pomalu, po skoku scrollu je potřeba čekat asi 2 s, jinak snímek zachytí film v půli dojezdu
+**12. 11. 2026 (verze 13)**, konzole bez chyb:
+- 1440×900: průchod oběma dveřmi ve výřezu (T 1.96, 2.14, 2.3, 11.98, 12.16, 12.3), obloha s letadlem v úvodu (T 0) a na konci (T 13), složený web T 0.3 a 2.2
+- mobil 390×844: obloha v úvodu
+- z verzí 11 a 12 platí: celá osa, lety, předání film/let
+- neověřeno: zvuk poslechem, plynulost na skutečném počítači a telefonu
 
 ## První krok
 

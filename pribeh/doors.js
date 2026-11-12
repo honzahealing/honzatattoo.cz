@@ -82,13 +82,14 @@ DOORS.forEach(function(d,i){
   /* hrana kridla (tloustka), viditelna pri otevreni */
   var edge=el('path',{d:'','class':'ink thin t2'},all);
   /* --- obklad zarubne na strane ulice --- */
-  /* ram dveri: oba sloupky jsou i v popredi pred postavami, takze postava prochazi skrz ram (zajde za sloupek),
-     ne pred nim. Kopie v zadni vrstve zustava kvuli letu po galerii, kdy je popredi schovane. */
+  /* ram dveri: postava jde zleva doprava PRED levym sloupkem a prekladem a ZA pravym sloupkem (Honzi 12. 11. 2026).
+     Proto je v popredi pred postavami jen pravy sloupek; levy sloupek a preklad jsou za postavou.
+     Kopie praveho sloupku v zadni vrstve zustava kvuli letu po galerii, kdy je popredi schovane. */
   var cx=d.inside?x-13:x1+4,cx2=d.inside?x1:x-13,fr=el('g',{},gFront),frF=el('g',{},ST.section(ST.L.front,x-60,x1+60));
   function post(g,c){ST.D(g,R(c,348,13,Y1-348),'ink t2',null);ST.D(g,'M'+(c+4)+',354 V'+(Y1-4)+' M'+(c+9)+',354 V'+(Y1-4),'hair',null);ST.D(g,R(c-2,Y1-18,17,18),'thin t3',null);ST.D(g,R(c-2,348,17,8,1),'thin t3',null)}
   post(fr,cx);post(fr,cx2);
   ST.D(fr,R(d.inside?x-17:x-17,338,W+34,14,2),'ink t3',null);ST.D(fr,'M'+(x-12)+',345 H'+(x1+12),'hair',null);
-  post(frF,cx);post(frF,cx2);
+  post(frF,d.inside?cx2:cx);
   /* svetlo z otevrenych dveri na chodniku */
   var spill=el('path',{d:ST.ellipse(d.inside?x-10:x1+20,Y1+2,110,16),fill:'url(#gDoorSpill)',opacity:0},gLight);
   var beam=el('path',{d:d.inside?'M'+x+','+Y0+' L'+x+','+Y1+' L'+(x-120)+','+(Y1+18)+' Z':'M'+x1+','+Y0+' L'+x1+','+Y1+' L'+(x1+110)+','+(Y1+18)+' Z',fill:'url(#gCone)',opacity:0},gLight);
