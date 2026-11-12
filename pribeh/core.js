@@ -105,10 +105,13 @@ var WI={
   s3:{card:1,tag:'SPECIALIZACE · 03',t:['*Abstrakt*'],b:['Geometrie, flow a tvar']},
   s1:{card:1,tag:'SPECIALIZACE · 01',t:['Black & *Grey*'],b:['Jemné přechody a hloubka']},
   cert:{cert:1}};
-var FM={gold:9,wood:8,mat:11,black:5,card:4,cert:7};
+var FM={gold:9,wood:8,mat:11,black:5,card:4,cert:7,panel:1};
+/* kontaktni formular webu jako posledni obraz na zdi: ram ma pomer stran ramu formulare (.contact-grid), kamera do nej na konci filmu vleti */
+var CTG=document.querySelector('.contact-grid'),CTW=1060;
+if(CTG){var cr0=CTG.getBoundingClientRect();CTW=cr0.width||1060;WI.kontakt={panel:1,asp:Math.max(.6,Math.min(2.3,Math.min(cr0.height||900,innerHeight)/CTW))};GAL.push(WI.kontakt)}
 /* sloupec zaveseny od horni linie (pod nim je na zdi volno) */
 function tc(c){c.top=1;return c}
-function it(o,w,h){o.w=w;o.h=h||(o.iw?w*o.ih/o.iw:w);o.m=FM[o.card?'card':o.cert?'cert':o.st];return o}
+function it(o,w,h){o.w=w;o.h=h||(o.iw?w*o.ih/o.iw:w);o.m=FM[o.card?'card':o.cert?'cert':o.panel?'panel':o.st];return o}
 /* steny: [x0, x1, horni hrana, skupiny] ; skupina = sloupce, sloupec = obrazy shora dolu */
 var WALLS=[
   /* prava stena (tetovaci kout): obrazy konci nad operadlem kresla, nastennou lampou a polici s lahvickami */
@@ -119,7 +122,7 @@ var WALLS=[
   {x0:988,x1:1774,top:258,gap:12,groups:[
     [[it(WI.s4,64,44),it(WI.lev,64)],[it(GAL[5],124)],tc([it(WI.s2,58,40),it(GAL[3],58)])],
     [[it(GAL[4],54),it(WI.s3,54,40)],[it(WI.andel,82)]],
-    [[it(GAL[2],96)],[it(WI.s1,64,44),it(WI.cert,64,64)]]]}];
+    [[it(GAL[2],96)],[it(WI.s1,64,44),WI.kontakt?it(WI.kontakt,64,64*WI.kontakt.asp):it(WI.cert,64,64)]]]}];
 var WALLITEMS=[];
 function layoutWall(W){
   var G=W.gap,gs=W.groups.map(function(gr){var cols=gr.cols||gr;
@@ -398,12 +401,26 @@ ST.start=function(){
     if(P.light){P2(g,'M'+(x+w/2-w*.18)+','+(y-m-4)+' h'+(w*.36)+' l-3,5 h'+(-(w*.36-6))+' Z',{'class':'ink hair gold t1'});
       P2(g,'M'+(x+w/2)+','+(y-m-4)+' v-6',{'class':'ink hair gold'});}
     var gl=P2(g,'M'+x+','+(y+h*.55)+' L'+(x+w*.45)+','+y+' L'+(x+w*.62)+','+y+' L'+x+','+(y+h*.75)+'Z',{fill:'#FFF6DF',opacity:.06});P.gl=gl;}
+  /* ram s kontaktnim formularem: stejne cary a barvy jako .contact-grid v CSS (u = jednotek sveta na 1 px pri pristani) */
+  function panel(g,P){var x=P.x,y=P.y,w=P.w,h=P.h,u=w/CTW,cx=x+w/2,NS2='non-scaling-stroke';
+    P2(g,ST.rect(x+8*u,y+12*u,w,h,0),{fill:'#000',opacity:.38});
+    P2(g,'M'+(cx-63*u)+','+y+' L'+cx+','+(y-34*u)+' L'+(cx+63*u)+','+y,{fill:'none',stroke:'rgba(231,221,199,.45)','stroke-width':1,'vector-effect':NS2});
+    P2(g,ST.circ(cx,y-35*u,3.2*u),{fill:'#15161A',stroke:'#C8A45C','stroke-width':1.2,'vector-effect':NS2});
+    P2(g,ST.rect(x,y,w,h,0),{fill:'#131418',stroke:'rgba(231,221,199,.8)','stroke-width':1.5,'vector-effect':NS2});
+    P2(g,ST.rect(x+6*u,y+6*u,w-12*u,h-12*u,0),{fill:'none',stroke:'rgba(200,164,92,.7)','stroke-width':1,'vector-effect':NS2});
+    P2(g,ST.rect(x+13*u,y+13*u,w-26*u,h-26*u,0),{fill:'none',stroke:'rgba(232,213,163,.28)','stroke-width':1,'vector-effect':NS2});
+    /* z dalky je videt, ze je to obraz s napisem; pri najezdu naznak zmizi a objevi se skutecny formular */
+    var hg=el('g',{},g),ty=y+Math.min(h*.22,w*.3);P.hint=hg;
+    txt(hg,cx,ty,w*.05,'KONTAKT',{f:FB,c:'#E8D5A3',ls:.5,w:500});txt(hg,cx,ty+w*.17,w*.14,'Napište *mi*');
+    P2(hg,'M'+(cx-w*.1)+','+(ty+w*.25)+' h'+(w*.2),{'class':'ink hair gold'});
+    P2(hg,'M'+(x+w*.2)+','+(ty+w*.38)+' h'+(w*.6)+' M'+(x+w*.2)+','+(ty+w*.48)+' h'+(w*.6)+' M'+(x+w*.2)+','+(ty+w*.58)+' h'+(w*.38),{'class':'ink hair dim'});
+    P2(hg,ST.rect(cx-w*.17,ty+w*.68,w*.34,w*.085,w*.042),{fill:'#C8A45C',opacity:.85})}
   /* tepla zare od svetylek na zdi za velkymi obrazy */
   var galL=el('g',{},ST.L.room);ST.L.room.insertBefore(galL,ST.L.room.firstChild);
   WALLITEMS.forEach(function(P){var g=ST.section(galL,P.x-40,P.x+P.w+40);
     if(P.light)P2(g,ST.ellipse(P.x+P.w/2,P.y+P.h*.35,P.w*.95,P.h*.75),{fill:'url(#gGlow)',opacity:.45});
-    if(P.card)card(g,P);else if(P.cert)cert(g,P);else photo(g,P)});
-  ST.on(function(T){var gc=ST.galCam,k=gc?0:photoZoom(T);GAL.forEach(function(P,i){var o=i===0?.06*(1-k):.06;if(gc&&(i===gc.a||i===gc.b)){var e=i===gc.a?1-gc.k:gc.k;o=.06*(1-ss(.6,1,e))}if(P.gl._o!==o){P.gl._o=o;P.gl.setAttribute('opacity',o.toFixed(3))}})});
+    if(P.card)card(g,P);else if(P.cert)cert(g,P);else if(P.panel)panel(g,P);else photo(g,P)});
+  ST.on(function(T){var gc=ST.galCam,k=gc?0:photoZoom(T);GAL.forEach(function(P,i){if(P.hint){var ho=gc&&gc.b===i?1-ss(.5,.82,gc.k):1;if(P._ho!==ho){P._ho=ho;P.hint.setAttribute('opacity',ho.toFixed(3))}return}var o=i===0?.06*(1-k):.06;if(gc&&(i===gc.a||i===gc.b)){var e=i===gc.a?1-gc.k:gc.k;o=.06*(1-ss(.6,1,e))}if(P.gl._o!==o){P.gl._o=o;P.gl.setAttribute('opacity',o.toFixed(3))}})});
   ST._pre=WALLITEMS.filter(function(P){return P.src}).map(function(P){var im=new Image();im.src=P.src;if(im.decode)im.decode().catch(function(){});return im});
   buildUI();
   size();T=Tt=ST.debug.T!=null?ST.debug.T:targetT();
@@ -572,15 +589,18 @@ function render(time){
     var lf=ST.galCam?0:1-ss(.55,.92,cam.pz||0);['front','fore','fig','light'].forEach(function(n){var v=n==='light'&&ST.galCam?1:lf,e=$('L-'+n);if(e&&e._o!==v){e._o=v;e.style.opacity=v}});
     var fl=!!ST.galCam;[['far',fl],['mid',fl],['fore',fl],['fig',fl],['front',fl],['sky',fl]].forEach(function(q){var e=$('L-'+q[0]);if(e&&e._h!==q[1]){e._h=q[1];e.style.visibility=q[1]?'hidden':''}});
     var sh=$('stShade');if(sh&&!ST.galCam)sh.style.opacity=ss(13.5,14,T).toFixed(3);
-    var gone=Tt>=ST.N-.004,sg=$('stage'),gm=!!ST.galCam&&gone;
+    /* konec pribehu: scena zmizi, az kdyz plynuly cas T dojede na konec (ne uz ve chvili, kdy tam dojel scroll).
+       Do te doby je scena pripnuta na obrazovku (fix) a film pod ni ceka na zacatku; pak se probudi (udalost scroll). */
+    var past=Tt>=ST.N-.004,fwd=past&&T<ST.N-.0006&&!ST.galCam,gone=past&&!fwd,sg=$('stage'),gm=!!ST.galCam&&gone;
+    if(fwd!==!!ST._fwd){if(ST._fwd&&!fwd)setTimeout(function(){dispatchEvent(new Event('scroll'))},0);ST._fwd=fwd;sg.classList.toggle('fix',fwd)}
     if(gm!==ST._gm){ST._gm=gm;sg.classList.toggle('gal',gm)}
     /* predani mezi filmem a letem: kamera stoji presne na fotce (FH) a scena se prolne s fotkou filmu pod ni;
        zrno zustava stejne silne jako ve filmu, aby se nezmenil jas */
-    var gfo=gm?Math.min(ss(0,FH,ST.galCam.k),1-ss(1-FH,1,ST.galCam.k)):1;
+    var gfo=gm?(GAL[ST.galCam.b].panel?ss(0,FH,ST.galCam.k):Math.min(ss(0,FH,ST.galCam.k),1-ss(1-FH,1,ST.galCam.k))):1;
     sg.style.opacity=gone&&!gm?0:gfo.toFixed(3);sg.style.visibility=gone&&!gm?'hidden':'';if(gm)ST._ov.grain.style.opacity=.07;
     sg.style.pointerEvents=gone?'none':'';
     var ve=$('stVeil');
-    if(gm){var gk=ST.galCam,out=1-ss(0,.35,gk.k),inn=ss(.65,1,gk.k);
+    if(gm){var gk=ST.galCam,out=1-ss(0,.35,gk.k),inn=GAL[gk.b].panel?0:ss(.65,1,gk.k);
       /* stin na koncich letu odpovida filmu: andel ma .sc-shade (35 %), ostatni zabery .sc-veil */
       $('stShade').style.opacity=(gk.a===0?.35*out:0).toFixed(3);
       ve.style.opacity=Math.max(gk.a===0?0:out,inn).toFixed(3);
@@ -624,7 +644,7 @@ function render(time){
 function frame(ts){
   var dt=Math.min(64,ts-(lastTs||ts));lastTs=ts;
   if(ST.debug.T!=null)T=ST.debug.T;
-  else{Tt=targetT();if(reduce)T=Tt;else{var f=1-Math.exp(-dt/150);T+=(Tt-T)*f;if(Math.abs(Tt-T)<.0005)T=Tt}}
+  else{Tt=targetT();/* cestou zpet z filmu: pribeh ceka, dokud se film plynule nevrati na zacatek */if(ST.hasHero&&ST.filmS>1)Tt=ST.N;if(reduce)T=Tt;else{var f=1-Math.exp(-dt/150);T+=(Tt-T)*f;if(Math.abs(Tt-T)<.0005)T=Tt}}
   var idle=ST.debug.T==null&&!!ST.hasHero&&Tt>=ST.N-.004&&T>=ST.N-.0006&&!ST.galCam;
   if(ST._sync)ST._sync=0;else if(!(idle&&ST._idle))render(ts);
   ST._idle=idle;lastT=T;ST.T=T;

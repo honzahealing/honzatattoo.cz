@@ -5,6 +5,9 @@ var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 var afterStory=!!document.getElementById('story');
 /* galerie: s pribehem pred filmem visi vsechny fotky na zdi studia a mezi zabery kamera preleti po zdi (kresli pribeh) */
 var gal=afterStory&&!reduce,XG=0;
+/* kontakt jako posledni obraz na zdi: po posledni fotce jeste jeden let, na jehoz konci ram na zdi prejde do skutecneho formulare */
+var contact=gal?document.getElementById('contact'):null,cgrid=contact?contact.querySelector('.contact-grid'):null,hasC=!!cgrid,C0=0,cOff=0,preFix=false;
+function cRect(){var g=cgrid.getBoundingClientRect(),c=contact.getBoundingClientRect();return {L:g.left,T:g.top-c.top,W:g.width}}
 
 var stage=root.querySelector('.sc-stage'),
     heroLayer=root.querySelector('.sc-hero'),
@@ -141,6 +144,8 @@ function layout(){
   }
   if(gal)dist=shots.length?shots[shots.length-1].b+XG+shots[shots.length-1].L:ANGEL;
   else dist=shots.length?shots[shots.length-1].b+shots[shots.length-1].L+X:ANGEL;
+  C0=dist;
+  if(hasC){dist+=XG;contact.style.marginTop=(-H)+'px';contact.style.minHeight=H+'px';contact.style.zIndex=3}
   root.style.height=(dist+H)+'px';
   /* kotvy menu (O mne, Styl) = misto, kde je zaber uz cely prolnuty */
   for(var id in anchors){var a=document.getElementById(id),sh2=shots[anchors[id]];if(a&&sh2)a.style.top=(sh2.b+(gal?XG:X))+'px'}
@@ -149,6 +154,8 @@ function layout(){
 var target=0,cur=0,raf=0;
 
 function progress(){
+  /* s pribehem pred filmem: film stoji na zacatku, dokud pribeh plynule nedojede do fotky andela */
+  if(gal&&window.ST&&ST.T<ST.N-.0006)return 0;
   var r=root.getBoundingClientRect();
   return Math.min(dist,Math.max(0,-r.top));
 }
@@ -283,13 +290,22 @@ function render(s){
   if(gal&&window.ST&&ST.gallery){var fl=null;
     for(i=0;i<shots.length;i++){var b0=shots[i].b;if(s>b0&&s<b0+XG){fl=i;break}}
     if(fl!=null)ST.gallery.fly(fl,fl+1,(s-shots[fl].b)/XG,fl?shotRect(shots[fl-1],1):angelRect(),shotRect(shots[fl],0));
+    else if(hasC&&s>C0&&s<dist&&ST.gal&&ST.gal.length>shots.length+1)ST.gallery.fly(shots.length,shots.length+1,(s-C0)/XG,shotRect(shots[shots.length-1],1),cRect());
     else ST.gallery.fly(null);
   }
   sideL.style.opacity=side.l.toFixed(3);
   sideR.style.opacity=side.r.toFixed(3);
 
   /* na konci filmu dotmava, at dalsi sekce navaze */
-  if(fade)fade.style.opacity=ss(dist-.6*H,dist,s).toFixed(3);
+  if(fade)fade.style.opacity=hasC?0:ss(dist-.6*H,dist,s).toFixed(3);
+  if(window.ST)ST.filmS=s;
+  /* cestou zpet do pribehu: dokud se film plynule nevrati na zacatek, drzi se na obrazovce */
+  var pre=gal&&s>1&&root.getBoundingClientRect().top>0;if(pre!==preFix){preFix=pre;stage.classList.toggle('sc-fix',pre)}
+  /* kontakt: pri pristani letu je pripnuty presne na ramu na zdi a prolne se pres nej; potom se uvolni a scrolluje normalne */
+  if(hasC){var ck=(s-C0)/XG,co=ss(.95,1,ck),nat=root.getBoundingClientRect().top+dist;
+    if(s<dist-.5)cOff=-nat;else{cOff*=.8;if(Math.abs(cOff)<.5)cOff=0}
+    contact.style.opacity=co.toFixed(3);contact.style.visibility=co>.001?'visible':'hidden';contact.style.pointerEvents=co>.99?'':'none';
+    contact.style.transform=co>.001&&cOff?'translate3d(0,'+cOff.toFixed(1)+'px,0)':''}
 
   if(bar)bar.style.width=(dist?s/dist*100:0).toFixed(2)+'%';
 }
@@ -298,7 +314,7 @@ function tick(){
   cur+=(target-cur)*.12;
   if(Math.abs(target-cur)<.5)cur=target;
   render(cur);
-  raf=cur!==target?requestAnimationFrame(tick):0;
+  raf=(cur!==target||(hasC&&cOff&&cur>=dist-.5))?requestAnimationFrame(tick):0;
 }
 
 function onScroll(){
