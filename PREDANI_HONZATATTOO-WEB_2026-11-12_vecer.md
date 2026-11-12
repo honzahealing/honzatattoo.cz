@@ -1,0 +1,162 @@
+# PŘEDÁNÍ: honzatattoo.cz, web s příběhem na scroll / 2026-11-12 večer
+
+## Kanonické soubory
+
+Repozitář `honzahealing/honzatattoo.cz`. **Verze 19 je na pracovní větvi vlákna z 10. až 12. 11.** Je to jediná vzdálená větev, která obsahuje commit `b05be62` (`git branch -r --contains b05be62`); název jí přidělilo prostředí. Větev `pribeh-na-scroll` zůstává na verzi 8 a `main` je beze změn. Pull request není. Velikosti v bajtech platí pro verzi 19.
+
+| Bajty | Soubor | K čemu |
+|---|---|---|
+| 81276 | `preview-pribeh.html` | **Hlavní mustr:** celý web (příběh, film s andělem, kontakt). Generuje ho build, ručně needitovat |
+| 59303 | `preview.html` | Zdroj webu bez příběhu: horní lišta, film s andělem (`#hero`), kontakt (`#contact`), patička. Styl lišty a kontaktu je v bloku `<style>` s komentářem „v14“ na konci hlavičky. Sekce Portfolio, Proces a FAQ jsou smazané, jejich CSS a JS v souboru zůstaly nepoužité |
+| 7834 | `pribeh.html` | Samotný příběh (ladění a snímky). Bez kontaktu, proto na zdi místo rámu s kontaktem visí osvědčení |
+| 14054 | `pribeh/style.css` | Styly příběhu |
+| 53897 | `pribeh/core.js` | Jádro: kamera (`KEYS`, `ST.N = 14`), jeden vyhlazený scroll `ST.Ys`, galerie na zdi (`GAL`, `WI`, `WALLS`, `card`, `panel`), let mezi fotkami (`flyLUT`, `gc` v `updateCam`), nájezd do anděla (`ez`, `ZE`), detail ruky, popisek fólie (`ST.filmT`), bubliny (`BUB`), kroky (`STEPS`) |
+| 129920 | `pribeh/street.js` | Ulice: obloha, letadlo s plachtou (`amb.banner`), Žižkovský vysílač (`buildTower`), tramvaj (`buildTram`, kola `g._wheels`), činžáky, příběhy v oknech, kolo, koše, lavička (`big`) |
+| 113638 | `pribeh/studio.js` | Budova a interiér studia, kalendář, poličky s tetovacími barvami (`bottles`), okno s vysílačem, easter eggy. Nic se při scrollu nedokresluje (`tt()` vrací `STAT`) |
+| 11588 | `pribeh/facade.js` | Uliční fasáda studia, která po vstupu klientky zmizí |
+| 7978 | `pribeh/doors.js` | Obě dveře. Postava jde před levým sloupkem a překladem a za pravým |
+| 25224 | `pribeh/close.js` | Detail tetování: předloktí, ruka v rukavici, Pen strojek bez nápisu, kalíšky s barvami |
+| 51774 | `pribeh/chars.js` | Postavy Honza a klientka |
+| 30078 | `pribeh/audio.js` | Generativní hudba. Hlasy, šum vinylu, lupání, bzučení strojku a metličky jsou vypnuté |
+| 17862 | `scrolly.js` | Film s andělem. S příběhem před sebou ho krokuje příběh (`window.__film`), mezi záběry let po zdi (`XG`, `warp`, `warpEnd`), na konci let do rámu s kontaktem (`hasC`, `cRect`, `cBgSet`) |
+| 4639 | `scrolly.css` | Styly filmu |
+| 69050 | `index.html` | Živý web. **Nesahat**, příběh na něm není |
+| 3676 | `pribeh/dev/build_site.py` | Složí web: `python3 pribeh/dev/build_site.py preview-pribeh.html`; s `--artifact` jeden soubor pro náhled |
+| 1867 | `pribeh/dev/shot.js` | Snímky příběhu: `node pribeh/dev/shot.js <prefix> 1440 900 "T" "T@x,y,w,h" [--q=nochars=1]`. Ambientní pohyb je při snímání zmrazený |
+| 1156 | `pribeh/dev/siteshot.js` | Snímky složeného webu: `node pribeh/dev/siteshot.js $PWD/preview-pribeh.html <prefix> 1440 900 13.97 h0 h5.6` (hN = N obrazovek za koncem příběhu) |
+| 7584 | `pribeh/dev/CONTRACT.md` | Původní smlouva modulů (souřadnice, API). Časová osa a pravidlo „každý modul jen svůj soubor“ v ní už neplatí přesně |
+
+**Náhled pro Honziho:** artefakt https://claude.ai/artifact/3xqedLNY3xePQ9RkMdV38D (verze 19). Publikace:
+1. `python3 pribeh/dev/build_site.py <scratchpad>/site/index.html --artifact`
+2. v souboru nahradit `<title>` za „Honza Tattoo · Příběh“
+3. publikovat. Obrázky `img/*.jpg` a `img/*.webp` (mapa `img/x` → `img/x`) jsou u artefaktu už nahrané.
+4. Z jiného vlákna jde na stejný odkaz publikovat jen po přečtení celého živého souboru (asi 6800 řádků, drahé). Levnější je nový artefakt s obrázky a nový odkaz zapsat sem.
+
+**Mrtvé:**
+- `archiv/PREDANI_HONZATATTOO-WEB_2026-11-12.md` (ranní předání téhož dne, verze 9 až 18 po vrstvách; verze 17 a 18 jsou v něm chybně datované 13. 11.), `archiv/PREDANI_HONZATATTOO-WEB_2026-11-08.md`, `archiv/PREDANI_HONZATATTOO-WEB_2026-11-07.md`
+- starší náhledy `Ad3FTgi6YvGuDd8C9t3Z8q` (verze 8) a `Uh7SnyB1vDteRY2dQgzCDV`
+- větev `claude/beautiful-volta-qqu59n` (starší historie, obsah je v `pribeh-na-scroll`)
+- měřicí skripty a snímky ve scratchpadu (kontejner je dočasný)
+
+## Kde jsme
+
+Hotová a publikovaná je verze 19 (12. 11. večer). Web je jeden souvislý scroll: příběh (ulice, fasáda, studio, detail tetování, odchod), nájezd do fotky anděla, film s lety po zdi studia mezi fotkami, let do rámu s kontaktním formulářem, patička. Poslední Honziho pokyn (vrátit na tramvaj „Spojovací“ místo „Lipanská“) je proveden; fasádu z verze 18 Honzi ještě nekomentoval.
+
+## Technický stav
+
+- **Jeden vyhlazený scroll.** `frame()` v `core.js` počítá `ST.Ys` a z něj čas příběhu `T`; film se s příběhem neřídí vlastní smyčkou, krokuje ho `window.__film`. Bez toho se příběh a film na hraně rozcházely.
+- **Nájezd do anděla.** Zoom končí rychlostí, kterou film začíná (`window.__filmRate`, kubická křivka `ez`), prolnutí scény je posledních 12 px. Když real scroll přeběhne konec dřív než `T`, scéna zůstane připnutá (`.stage.fix`), cestou zpět je připnutý film (`.sc-fix`).
+- **Let mezi fotkami.** Jedna křivka: šířka záběru je oblouk v logaritmu, posun úměrný šířce, tabulka `U` vyrovnává tempo. Na koncích letu krátké usazení (`FH = .03`), ve kterém se fotka na zdi prolne s fotkou filmu; film ve fotce měkce dojíždí (`warp`). Při letu se nekreslí obloha, domy, postavy a popředí. Pohupování kamery je při letu vypnuté (dřív dělalo u fotky posun o desítky pixelů).
+- **Kontakt.** Rám na zdi (`WI.kontakt`, `panel()`) má poměr stran rámu formuláře. Sekce `#contact` má `margin-top:-100vh`, při přistání je připnutá na rám a prolne se; její pozadí je kopie tapety studia v místě a měřítku přistání (`cBgSet`). Bez příběhu nebo při omezeném pohybu je kontakt obyčejná sekce.
+- **Fasáda.** `facade.js`, vrstva `front`, x 903 až 2016, mizí od T 2,2 během 0,05 jednotky T. Do T 2,17 se interiér (`ST.studioIn`) a obrazy (`ST.galL`) nekreslí.
+- **Časování studia.** Po změně velikosti okna se časy ulice za studiem (`ES`, `ST.seenAt`) nepřepočítají, jen po novém načtení.
+- **Horní lišta** webu je vidět už během příběhu; z hlavičky příběhu zůstalo jen tlačítko zvuku vpravo dole (`build_site.py`).
+- **Formulář** odesílá na zástupnou adresu `https://formspree.io/f/NOVY_ENDPOINT`. Na ostrý web doplnit skutečnou.
+- **Snímky klamou dvakrát.** Zmenšený snímek celé obrazovky vypadá, jako by přes postavy prosvítaly obrazy; vrstvy kontrolovat jen na výřezech 1:1. Bezhlavý prohlížeč kreslí pomalu: po skoku scrollu čekat asi 2 s, jinak snímek zachytí pohyb v půli.
+- **Výkon:** svět má asi 6900 prvků. Čas snímku bez grafické karty: film 25 ms, let 32 ms. Na skutečném zařízení neměřeno.
+- **Hudba:** prohlížeč nepustí zvuk bez gesta, samotné kolečko myši se nepočítá.
+- **Commity:** autor `honzahealing <jankoblertattoo@gmail.com>`, bez podpisových řádků.
+
+## Rozhodnuto
+
+Jen Honziho slova z vláken 6. až 12. 11.
+
+**Celek**
+- Detail: postavy, město a studio „promakané, precizní“. Každá vrstva tam, kde má být, vrstva za ní nesmí být vidět.
+- Všechno „dokonale plynulé“, nic se nesmí „stavit, zaseknout“.
+- Easter eggy: chtěl jich víc (10. 11.).
+- V klidu se má pořád něco hýbat. Noční Žižkov, barvy a hudba se líbí.
+
+**Ulice**
+- Žižkovský vysílač přesně jako ve skutečnosti. Tramvaj klasická pražská, kola se při jízdě otáčejí. Na tabuli devítka a „Spojovací“ (12. 11. večer vráceno z „Lipanská“).
+- Venku jen cedule HONZA TATTOO; cedule s adresou a s čísly pryč, nahradit dekorací.
+- Letadlo táhne plachtu s nápisem „ahoj, vítej a scrolluj“, plachta má trochu červené.
+- Kolo, koš a lavička nesmí být proti postavě ženy malé.
+- Fasáda: interiér se odhalí, až dívka vejde. Do té doby zeď s dekoracemi a okny, skrz okna rozmazaně vidět dovnitř. Fasáda „mnohem dekorativnější“, linie po vstupu zmizí „prakticky okamžitě“.
+- Spodní okraj obrazu nesmí být ostře oddělený.
+
+**Dveře**
+- Otočení křídla kolem pantu, ne průchod „jako duch“. Postava jde zleva doprava před levým a horním rámem a za pravým rámem, u předních i zadních dveří. Za otevřenými dveřmi je vidět studio ve stejné barvě jako zbytek.
+
+**Studio**
+- Uvnitř se při scrollu nic nedokresluje.
+- Všechny fotky jako obrazy na zdi (9 tetování, obě fotky u práce, portrét, karty webu), bez překryvů, různé velikosti. Nápisy na cedulích vycentrované.
+- Za oknem žižkovská věž. Kalendář: datum 2. 11. Na poličkách tetovací barvy různých barev, ne lahve s alkoholem.
+
+**Postavy**
+- Honza podle fotek, bez culíku, bez zástěry. Klientka má delší vlasy. Postavy „trochu lepší“ než ve verzi 8.
+
+**Detail tetování**
+- Jen ruka, která tetuje; žádná ruka s hadříkem. Strojek typu Pen, bez nápisu a displeje. Prsty, které strojek nesvírají, se ohýbají do dlaně.
+- Motiv papoušek, vystředěný, nesmí se dotýkat ruky. Návrh se dělá v počítači.
+- Po tetování popisek, že čtverec přes papouška je ochranná fólie.
+- Při nájezdu do detailu se v pozadí nesmí objevit pohybující se ruka.
+
+**Zvuk a text**
+- Hudba hraje rovnou. Žádný hlas Honzy ani klientky, repliky jen psané. Žádný šum mimo hudbu.
+- Písmo v bublinách hezké, podobné vizuálu webu. Písmo všude dobře čitelné.
+
+**Film a lety**
+- Konec příběhu je nájezd do fotky anděla; texty u anděla zůstávají. Přechod do anděla musí být dokonale plynulý.
+- Mezi záběry oblouk nad studiem a vjezd do další fotky. Nájezdy do fotek „výborné“. Oblouky hodně vzdálené, ale plynulé; při vjezdu do fotky a výjezdu z ní nesmí nic probliknout ani poskočit.
+
+**Web kolem**
+- Horní lišta krásná a nenápadná jako lišta kroků v animaci.
+- Sekce Portfolio, „Od nápadu k realitě“ a FAQ pryč.
+- Kontakt: z posledního tetování obloukem do dalšího obrazu, ve kterém je formulář. Při vjezdu se nesmí změnit pozadí mimo rám a nic nesmí poskočit. Vzhled sekce s formulářem je „super“.
+
+## Citlivé, dodržovat
+
+- **Zvířata:** žádné kočky, psi ani jiná chlupatá zvířata v kresbě.
+- **Motivy:** jen pozitivní. Žádné mandaly, lebky, dýky ani násilí.
+- **Jméno nástroje:** nepsat ho do předávacích dokumentů ani do commitů a nezakládat větve s ním v názvu. Commity bez podpisových řádků.
+
+## Otevřené
+
+- **Přesun do `pribeh-na-scroll`:** nabídnuto několikrát, Honzi neodpověděl. Bez jeho ano tam nepushovat.
+- **Nasazení** na živý web (`index.html`) a pull request nejsou rozhodnuté.
+- **Fasáda verze 18:** Honzi ji neviděl nebo nekomentoval. Mobil po ní neověřen. Rozmazaný vnitřek v oknech jsou kreslené siluety, ne skutečné rozostření. Na konci příběhu fasáda není (řez jako dřív).
+- **Lety po změně z 12. 11.** (menší oddálení, delší let): Honzi je výslovně nekomentoval.
+- **Dojezd kamery uvnitř fotek** (`warp`): přidal jsem ho kvůli předání, Honzi o něj nežádal.
+- **Při letu je nad střechou tma bez hvězd** (kvůli výkonu).
+- **Moje volby bez komentáře:**
+  - easter eggy: plakát „Ztratil se ara“ a „Nalezen“, papoušek na drátě, balon se srdcem, srdce na měsíci, souhvězdí srdce, klapka, tibetská miska, kamínky, akvárko s rybkou, krystal, gumová kachnička, kudlanka na fikusu, lodička v louži, šipka křídou, tenisky na drátě, náramek s pírkem, pihy do srdce, srdíčko na utěrce
+  - barvy postav (zelená bunda, hořčicová šála), hodinky a přívěsek
+  - vysílač v trikolóře a větší
+  - rám kontaktu visí místo osvědčení; medailon a kachle místo cedulí
+  - metličky v hudbě vypnuté spolu se šumem
+  - nápis „Přijímám nové rezervace“ jako drobný text v liště
+- **Úklid:** nepoužité CSS a JS smazaných sekcí v `preview.html`.
+- **Texty „O mně“:** stará otázka bez odpovědi, jestli je chce u anděla; jsou u fotky z práce.
+
+## Zamítnuto a proč
+
+- **Detail ruky z verze 8:** „opravdu špatně udělaný“ (malá ruka, šedá kůže, displej na strojku).
+- **Levá ruka s ubrouskem:** „vypadá špatně“.
+- **Hlasy** přes `speechSynthesis` i jakékoli jiné: zrušeno. **Šum** vinylu, lupání, bzučení: zrušeno.
+- **Kurzíva Cormorant v bublinách:** „ošklivý font“.
+- **Dokreslování studia při scrollu** (i varianta podle polohy kamery): nechce žádné.
+- **Zlatý průhled do dveří; věž s kuličkami za oknem** (vypadala jako z jiného města).
+- **Postava za oběma sloupky dveří** (verze 12) i **postava před celým rámem** (dřív): obojí špatně.
+- **Let s prodlevou uprostřed** (oddálit, podržet, přiblížit): působil jako zastavení. **Krátké oddálení** (verze 9): studio jen probliklo. **Oddálení z verze 11:** „možná moc vzdálené“.
+- **Nájezd do anděla se zastavením před fotkou** a **dva oddělené dojezdy scrollu:** skákalo to (opravováno třikrát, viz Technický stav).
+- **Kontakt jako obyčejná sekce pod filmem** a **kontakt s vlastním tečkovaným pozadím:** chtěl let do rámu a nezměněné pozadí.
+- **Fasáda s postupným rozplýváním zleva doprava a jednoduchou výzdobou** (verze 17).
+- **Nápis na plachtě „Usměj se, Žižkove“; „Lipanská“ na tramvaji; devítka sama uprostřed tabule.**
+- **Béžový pruh „Přijímám nové rezervace“ a tmavá plná horní lišta.**
+- **Ostrá linie pod chodníkem.**
+- **Lahve na poličkách** (vypadaly jako alkohol). **Malé kolo, koš a lavička.**
+- **Z dřívějška:** panáčci z čar, drdol a zástěra u Honzy, lotos, mandaly, liška, kočka, prolínačky mezi plány, otáčení postav převrácením siluety.
+
+## Stav kontrol
+
+12. 11. 2026, bezhlavý prohlížeč, konzole bez chyb:
+- verze 19 (jen změna textu na tramvaji): složený web 1440×900, T 0.3 a konec filmu
+- verze 18: fasáda na 1440×900, T 1.5, 1.95, 2.19, 2.225, 2.26
+- verze 17: nájezd do anděla při plynulém scrollu po 14 px na snímek (šířka fotky roste bez zastavení: 1388, 1424, film 1445, 1482); přistání v kontaktu na 1440×900 a 390×844 (rám stojí na místě); fasáda na mobilu T 1.6 a 2.45
+- verze 16: předání film a let, rozdíl sousedních snímků do 2 z 255
+- neověřeno: plynulost na skutečném počítači a telefonu, zvuk poslechem, plachta s novým textem na snímku
+
+## První krok
+
+Přečti si Honziho nové zadání a před každou úpravou nafoť dotčené místo přes `shot.js` (příběh) nebo `siteshot.js` (film a kontakt), výřez 1:1.

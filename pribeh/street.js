@@ -997,7 +997,7 @@ function buildTram(g,TL,num,dl,pass){
   /* cislo linky a cil na boku, zahlavi dvou odpornikovych krabic */
   var sp2=ST.rect(TL*.205,-346,118,34,4);fillp(s,sp2,'f-bg');path(s,sp2,{'class':'ink thin gold'});
   var tx=el('text',{x:TL*.205+22,y:-318,'class':'label','text-anchor':'middle','font-size':26,'font-weight':600},s);tx.textContent=num;tx.style.fontFamily='var(--font-display)';
-  var td=el('text',{x:TL*.205+70,y:-320,'class':'label','text-anchor':'middle','font-size':9.5,'letter-spacing':1.5,opacity:.85},s);td.textContent='LIPANSKÁ';td.style.fontFamily='var(--font-display)';
+  var td=el('text',{x:TL*.205+70,y:-320,'class':'label','text-anchor':'middle','font-size':9.5,'letter-spacing':1.5,opacity:.85},s);td.textContent='SPOJOVACÍ';td.style.fontFamily='var(--font-display)';
   var lg=el('text',{x:TL*.5,y:-151,'class':'label','text-anchor':'middle','font-size':14,'letter-spacing':6,opacity:.55},s);lg.textContent='DOPRAVNÍ PODNIK HL. M. PRAHY';lg.style.fontFamily='var(--font-display)';
   /* kola: oblouky v zastere, kola s pryzovym kroužkem, sroubky */
   var arc='';wheels.forEach(function(cx){arc+='M'+pt(cx-46,-26)+'A46,46 0 0 1 '+pt(cx+46,-26)+'Z'});
@@ -1034,7 +1034,7 @@ function buildTram(g,TL,num,dl,pass){
   ink(s,M(-52,-184)+'L-26,-262M'+pt(-26,-184)+'L-8,-250'+M(-52,-184)+'h4M'+pt(-26,-184)+'h4','hair goldl',dl+.06);
   var tb=ST.rect(-56,-338,50,26,4);fillp(s,tb,'f-bg');ink(s,tb,'thin gold',dl+.05);
   var t1=el('text',{x:-48,y:-318,'class':'label','text-anchor':'middle','font-size':17,'font-weight':600},s);t1.textContent=num;t1.style.fontFamily='var(--font-display)';
-  var t2=el('text',{x:-25,y:-320,'class':'label','text-anchor':'middle','font-size':6.4,'letter-spacing':.5,opacity:.9},s);t2.textContent='LIPANSKÁ';t2.style.fontFamily='var(--font-display)';
+  var t2=el('text',{x:-25,y:-320,'class':'label','text-anchor':'middle','font-size':6.4,'letter-spacing':.5,opacity:.9},s);t2.textContent='SPOJOVACÍ';t2.style.fontFamily='var(--font-display)';
   ink(s,rect(-70,-110,74,13)+M(-70,-103)+'h74'+rect(-78,-100,10,6)+M(-62,-97)+'v-12M'+pt(-40,-97)+'v-12M'+pt(-18,-97)+'v-12'+rect(-44,-134,24,5)+M(-56,-176)+'h48','hair',dl+.08);
   fillp(s,rect(-70,-110,74,13),'f-t3');ink(s,rect(-70,-110,74,13),'thin',dl+.08);
   /* pluh */
