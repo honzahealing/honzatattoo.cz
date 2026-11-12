@@ -351,9 +351,15 @@ ST.start=function(){
   ST.tm=buildMotif(motifG,{cls:'tt',skin:'var(--skin)',gold:true,stencil:true});
   ST.film=el('path',{d:ST.rect(590,320,340,356,44),fill:'url(#gFilm)',stroke:'rgba(231,221,199,.22)','stroke-width':1.5,opacity:0},cs);
   /* popisek: ctverec pres papouska je ochranna folie */
-  ST.filmT=el('g',{opacity:0},cs);el('path',{d:'M931,352 H962',fill:'none',stroke:'#E8D5A3','stroke-width':1.4},ST.filmT);el('circle',{cx:931,cy:352,r:3,fill:'#E8D5A3'},ST.filmT);
-  var ft1=el('text',{x:972,y:357,'font-size':17,'font-family':FB0,'font-weight':500,'letter-spacing':3.4,fill:'#E8D5A3'},ST.filmT);ft1.textContent='OCHRANNÁ FÓLIE';
-  var ft2=el('text',{x:972,y:381,'font-size':14.5,'font-family':FB0,'font-weight':300,fill:'rgba(231,221,199,.78)'},ST.filmT);ft2.textContent='první dny chrání čerstvé tetování';
+  ST.filmT=el('g',{opacity:0},cs);
+  /* na sirku vpravo od folie, na vysku (uzky zaber) nad folii */
+  var fa=ST.filmTa=el('g',{},ST.filmT),fb=ST.filmTb=el('g',{},ST.filmT),FC='#E8D5A3';
+  el('path',{d:'M931,352 H962',fill:'none',stroke:FC,'stroke-width':1.4},fa);el('circle',{cx:931,cy:352,r:3,fill:FC},fa);
+  el('text',{x:972,y:357,'font-size':17,'font-family':FB0,'font-weight':500,'letter-spacing':3.4,fill:FC},fa).textContent='OCHRANNÁ FÓLIE';
+  el('text',{x:972,y:381,'font-size':14.5,'font-family':FB0,'font-weight':300,fill:'rgba(231,221,199,.78)'},fa).textContent='první dny chrání čerstvé tetování';
+  el('path',{d:'M760,292 V318',fill:'none',stroke:FC,'stroke-width':1.4},fb);el('circle',{cx:760,cy:320,r:3,fill:FC},fb);
+  el('text',{x:761.7,y:258,'font-size':17,'font-family':FB0,'font-weight':500,'letter-spacing':3.4,fill:FC,'text-anchor':'middle'},fb).textContent='OCHRANNÁ FÓLIE';
+  el('text',{x:760,y:281,'font-size':14.5,'font-family':FB0,'font-weight':300,fill:'rgba(231,221,199,.82)','text-anchor':'middle'},fb).textContent='první dny chrání čerstvé tetování';
   cs.appendChild(ST.closeFront);
   if(!ST.closeParts.machine){var mg=el('g',{},ST.closeFront);el('path',{d:'M0,0 L120,-190','class':'ink bold'},mg);ST.closeParts.machine=mg}
   ST.needle=el('circle',{r:16,fill:'url(#gNeedle)',opacity:0},cs);
@@ -465,6 +471,7 @@ function size(){
   if(asp<1.25){var w=asp<.8?720:900,h=w/asp;vb=(760-w/2)+' '+(470-h/2)+' '+w+' '+h}
   ['close','closeBg'].forEach(function(id){var e=$(id);if(e)e.setAttribute('viewBox',vb)});
   ST.closeVB=vb.split(' ').map(Number);
+  if(ST.filmTa){var nar=ST.closeVB[2]<1100;ST.filmTa.style.display=nar?'none':'';ST.filmTb.style.display=nar?'':'none'}
   /* navazujici sekce s andelem (na webu) prekryva posledni obrazovku pribehu */
   var hero=document.getElementById('hero');if(hero&&(story.compareDocumentPosition(hero)&4))hero.style.marginTop=(-vh)+'px';
 }
