@@ -955,7 +955,7 @@ function archPass(){
   /* trubky v rozich */
   pipeV(897,258,603,.2,.9);pipeV(3406,258,603,.4,.9);
   /* dalsi praskliny s vetvemi (mimo rezervovany obdelnik) */
-  [[1010,330,3],[1260,380,4],[1700,290,5],[1990,300,6],[2330,420,7],[2590,300,8],[2990,330,9],[3400,300,10]].forEach(function(c){zx(c[0]);crackBranch(secAt('back',c[0]),c[0],c[1],c[2],.3,1)});
+  [[1010,330,3],[1260,380,4],/* prasklina u ramu s kontaktem zrusena (pri najezdu do ramu z ni byla velka sipka) */[1990,300,6],[2330,420,7],[2590,300,8],[2990,330,9],[3400,300,10]].forEach(function(c){zx(c[0]);crackBranch(secAt('back',c[0]),c[0],c[1],c[2],.3,1)});
   /* radiator (sloupkovy) pod hodinami */
   zone(1.9,3.0);g=sec('room',1);
   D(g,R(1974,556,56,6,2),'ink t3',.7,1);D(g,R(1974,676,56,6,2),'ink t3',.7,1);

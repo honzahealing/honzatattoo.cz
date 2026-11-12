@@ -6,17 +6,17 @@ Repozitář `honzahealing/honzatattoo.cz`, větev **`pribeh-na-scroll`** obsahuj
 
 | Bajty | Soubor | K čemu |
 |---|---|---|
-| 83806 | `preview-pribeh.html` | **Hlavní mustr:** `preview.html` s příběhem před filmem s andělem. Generuje ho build, ručně needitovat. |
+| 81079 | `preview-pribeh.html` | **Hlavní mustr:** `preview.html` s příběhem před filmem s andělem. Generuje ho build, ručně needitovat. |
 | 7793 | `pribeh.html` | Samotný příběh (značkování, slouží k ladění a ke snímkům) |
-| 13983 | `pribeh/style.css` | Styly příběhu, na konci podklady pro čitelnost písma a `.st-veil`, `.stage.gal` pro galerii |
-| 48331 | `pribeh/core.js` | Jádro: kamera (`KEYS`, `ST.N = 14`), nájezd do detailu ruky, motiv papouška, bubliny (`BUB`), kroky (`STEPS`), **galerie na zdi** (`GAL`, `WI`, `WALLS`, `layoutWall`), nájezd do fotky anděla (`photoZoom`, T 13,15–14), let po zdi (`ST.gallery.fly`) |
+| 14054 | `pribeh/style.css` | Styly příběhu, na konci podklady pro čitelnost písma a `.st-veil`, `.stage.gal` pro galerii |
+| 51184 | `pribeh/core.js` | Jádro: kamera (`KEYS`, `ST.N = 14`), nájezd do detailu ruky, motiv papouška, bubliny (`BUB`), kroky (`STEPS`), **galerie na zdi** (`GAL`, `WI`, `WALLS`, `layoutWall`), nájezd do fotky anděla (`photoZoom`, T 13,15–14), let po zdi (`ST.gallery.fly`) |
 | 129560 | `pribeh/street.js` | Ulice Žižkova: obloha, Žižkovský vysílač (`buildTower`), tramvaj T3 (`buildTram`), činžáky, příběhy v oknech (`SCENES`, `windowScene`, ambient `amb.scn`) |
-| 112737 | `pribeh/studio.js` | Budova a interiér studia. `ST.galleryWall = true` vypíná staré kreslené rámečky, zrcadlo, klíče, polaroidy a závěsná světla na stěnách galerie |
+| 112810 | `pribeh/studio.js` | Budova a interiér studia. `ST.galleryWall = true` vypíná staré kreslené rámečky, zrcadlo, klíče, polaroidy a závěsná světla na stěnách galerie |
 | 7978 | `pribeh/doors.js` | Obě dveře: křídlo s panty vlevo a klikou vpravo, otevírá se dovnitř, osvětlený otvor, `ST.doorOpen(i,T)`, `ST.doorHandle(i,T)` |
 | 25224 | `pribeh/close.js` | Detail předloktí, **10. 11. celý přepsaný**: kůže se světlem lampy, opěrka, kalíšky s barvami, jediná ruka v rukavici s Pen strojkem (oddíl 4, měřítko podle `img/ja-u-prace.webp`, grip asi pětina šířky předloktí), život ruky (oddíl 5). Strojek bez displeje a bez nápisu |
 | 51774 | `pribeh/chars.js` | Postavy Honza a klientka: kostra, chůze, oblečení, stíny na zemi, sáhnutí na kliku (`reachArm`) |
 | 30078 | `pribeh/audio.js` | Generativní chill jazz a hlasy. Zvuk je výchozí zapnutý, spustí se při prvním doteku, kliknutí nebo klávese, v úvodu výzva „Klepněte kamkoli a hraje hudba“ |
-| 14674 | `scrolly.js` | Film s andělem. S příběhem před sebou (`afterStory`, `gal`) dělá mezi záběry let po zdi studia (`XG`, `pose`, `shotRect`, `angelRect`) a texty úvodu anděla nabíhají až po nájezdu |
+| 16315 | `scrolly.js` | Film s andělem. S příběhem před sebou (`afterStory`, `gal`) dělá mezi záběry let po zdi studia (`XG`, `pose`, `shotRect`, `angelRect`) a texty úvodu anděla nabíhají až po nájezdu |
 | 4639 | `scrolly.css` | Styly filmu (beze změny) |
 | 59145 | `preview.html` | Náhled webu s filmem, načítá `scrolly.*?v=16`. Příběh do něj vkládá build |
 | 69050 | `index.html` | Živý web. **Nesahat**, příběh na něm není |
@@ -25,7 +25,7 @@ Repozitář `honzahealing/honzatattoo.cz`, větev **`pribeh-na-scroll`** obsahuj
 | 1156 | `pribeh/dev/siteshot.js` | Snímky složeného webu i s filmem: `node pribeh/dev/siteshot.js $PWD/preview-pribeh.html <prefix> 1440 900 13.97 h0 h5.6` (hN = N obrazovek za koncem příběhu) |
 | 3668 | `pribeh/dev/build_site.py` | Složí web: `python3 pribeh/dev/build_site.py preview-pribeh.html`, s `--artifact` jeden soubor pro náhled |
 
-**Náhled pro Honziho:** artefakt https://claude.ai/artifact/3xqedLNY3xePQ9RkMdV38D (verze 14). Publikace:
+**Náhled pro Honziho:** artefakt https://claude.ai/artifact/3xqedLNY3xePQ9RkMdV38D (verze 15). Publikace:
 1. `python3 pribeh/dev/build_site.py <scratchpad>/site/index.html --artifact`
 2. v souboru nahradit `<title>` za „Honza Tattoo · Příběh“
 3. publikovat se soubory `img/*.jpg` a `img/*.webp` (mapa `img/x` → `img/x`)
@@ -101,7 +101,7 @@ Honziho slova:
 3. Sekce Portfolio (`#gallery`) pryč, fotky jsou na zdi.
 4. Sekce „Od nápadu k realitě“ (`#process`) pryč, je ve scrollytellingu.
 5. Sekce FAQ (`#faq`) pryč, „vše se řekne ve scrollytelling“.
-6. Kontaktní formulář (`#contact`) má být konec hned po doscrollování poslední fotky, „v nějakém rámu“ a má odpovídat designu webu.
+6. Kontaktní formulář (`#contact`) má být konec hned po doscrollování poslední fotky, „v nějakém rámu“ a má odpovídat designu webu. Upřesnění téhož večera: z posledního obrazu s tetováním se má opět vyskočit obloukem a vjet do dalšího obrazu, ve kterém je formulář.
 
 Stav (12. 11. večer):
 - 1 horní lišta: HOTOVO. Styl je v bloku `<style>` s komentářem „v14“ na konci hlavičky `preview.html`: průhledný přechod místo pruhu, odkazy jako lišta kroků (linka nahoře, drobné písmo), pruh „Přijímám nové rezervace“ jako drobný text v řádku lišty (pod 1380 px pod ní). Mobilní menu je tmavé.
@@ -110,6 +110,15 @@ Stav (12. 11. večer):
 - 6 kontakt v rámu: HOTOVO. Tmavá zeď s tečkami, trojitý rám jako obraz na zdi, drát s hřebíkem, tmavá pole formuláře; navazuje hned na konec filmu.
 - náhled: publikován jako verze 14 na stejném odkazu.
 - ZBÝVÁ: Honziho posouzení. Nevyčištěné zbytky CSS a JS smazaných sekcí v `preview.html`. Snímky jen 1440×900 a 390×844 (lišta, let, konec filmu, kontakt, patička), bez chyb v konzoli.
+
+### Verze 15 (12. 11. pozdě večer)
+
+Honzi k verzi 14: finální sekce s formulářem je vizuálně „super“, ale chtěl ji jinak zapojenou. Opraveno:
+- **Kontakt je poslední obraz na zdi.** Po poslední fotce následuje ještě jeden let: oblouk nad studiem a vjezd do rámu „Kontakt · Napište mi“, který visí na levé zdi na místě bývalého osvědčení (`WI.kontakt`, `panel()` v `core.js`, poslední položka `GAL`). Rám na zdi má stejné čáry a barvy jako `.contact-grid`. Na konci letu se skutečná sekce `#contact` připne přesně na rám a prolne se přes něj (`hasC`, `cRect`, `cOff` ve `scrolly.js`; sekce má `margin-top:-100vh` a `z-index:3`), potom se scrolluje formulářem normálně. Bez příběhu nebo při omezeném pohybu je kontakt obyčejná sekce za filmem.
+- **Trhnutí při předání z příběhu do fotky anděla.** Kresba studia mizela podle skutečného scrollu, i když plynulý čas `T` ještě nedojel, takže obraz skočil na konec nájezdu a film pak chvíli stál. Teď scéna zůstane připnutá (`.stage.fix`), dokud `T` nedojede, film do té doby čeká na začátku (`progress()` vrací 0) a pak se plynule rozjede. Cestou zpět příběh čeká, až se film vrátí na začátek (`ST.filmS`, `.sc-fix`).
+- Zrušena jedna prasklina ve zdi vedle rámu s kontaktem (při nájezdu z ní byla velká šedá šipka).
+
+Ověřeno 12. 11.: rychlý skok scrollu přes konec příběhu (stavy `T`, `filmS`, scéna) na 1440×900; let do kontaktu po krocích na 1440×900 a 390×844 (rám formuláře při prolnutí stojí na místě: L a T se nemění), konzole bez chyb. Neověřeno: na skutečném zařízení.
 
 ## Technický stav
 
