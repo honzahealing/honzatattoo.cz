@@ -6,26 +6,27 @@ Repozitář `honzahealing/honzatattoo.cz`, větev **`pribeh-na-scroll`** obsahuj
 
 | Bajty | Soubor | K čemu |
 |---|---|---|
-| 81237 | `preview-pribeh.html` | **Hlavní mustr:** `preview.html` s příběhem před filmem s andělem. Generuje ho build, ručně needitovat. |
-| 7793 | `pribeh.html` | Samotný příběh (značkování, slouží k ladění a ke snímkům) |
+| 81276 | `preview-pribeh.html` | **Hlavní mustr:** `preview.html` s příběhem před filmem s andělem. Generuje ho build, ručně needitovat. |
+| 7834 | `pribeh.html` | Samotný příběh (značkování, slouží k ladění a ke snímkům) |
 | 14054 | `pribeh/style.css` | Styly příběhu, na konci podklady pro čitelnost písma a `.st-veil`, `.stage.gal` pro galerii |
-| 53384 | `pribeh/core.js` | Jádro: kamera (`KEYS`, `ST.N = 14`), nájezd do detailu ruky, motiv papouška, bubliny (`BUB`), kroky (`STEPS`), **galerie na zdi** (`GAL`, `WI`, `WALLS`, `layoutWall`), nájezd do fotky anděla (`photoZoom`, T 13,15–14), let po zdi (`ST.gallery.fly`) |
-| 129525 | `pribeh/street.js` | Ulice Žižkova: obloha, Žižkovský vysílač (`buildTower`), tramvaj T3 (`buildTram`), činžáky, příběhy v oknech (`SCENES`, `windowScene`, ambient `amb.scn`) |
-| 113500 | `pribeh/studio.js` | Budova a interiér studia. `ST.galleryWall = true` vypíná staré kreslené rámečky, zrcadlo, klíče, polaroidy a závěsná světla na stěnách galerie |
+| 53897 | `pribeh/core.js` | Jádro: kamera (`KEYS`, `ST.N = 14`), nájezd do detailu ruky, motiv papouška, bubliny (`BUB`), kroky (`STEPS`), **galerie na zdi** (`GAL`, `WI`, `WALLS`, `layoutWall`), nájezd do fotky anděla (`photoZoom`, T 13,15–14), let po zdi (`ST.gallery.fly`) |
+| 129918 | `pribeh/street.js` | Ulice Žižkova: obloha, Žižkovský vysílač (`buildTower`), tramvaj T3 (`buildTram`), činžáky, příběhy v oknech (`SCENES`, `windowScene`, ambient `amb.scn`) |
+| 113638 | `pribeh/studio.js` | Budova a interiér studia. `ST.galleryWall = true` vypíná staré kreslené rámečky, zrcadlo, klíče, polaroidy a závěsná světla na stěnách galerie |
 | 7978 | `pribeh/doors.js` | Obě dveře: křídlo s panty vlevo a klikou vpravo, otevírá se dovnitř, osvětlený otvor, `ST.doorOpen(i,T)`, `ST.doorHandle(i,T)` |
+| 7200 | `pribeh/facade.js` | Uliční fasáda studia, která se po vstupu klientky rozplyne (verze 17) |
 | 25224 | `pribeh/close.js` | Detail předloktí, **10. 11. celý přepsaný**: kůže se světlem lampy, opěrka, kalíšky s barvami, jediná ruka v rukavici s Pen strojkem (oddíl 4, měřítko podle `img/ja-u-prace.webp`, grip asi pětina šířky předloktí), život ruky (oddíl 5). Strojek bez displeje a bez nápisu |
 | 51774 | `pribeh/chars.js` | Postavy Honza a klientka: kostra, chůze, oblečení, stíny na zemi, sáhnutí na kliku (`reachArm`) |
 | 30078 | `pribeh/audio.js` | Generativní chill jazz a hlasy. Zvuk je výchozí zapnutý, spustí se při prvním doteku, kliknutí nebo klávese, v úvodu výzva „Klepněte kamkoli a hraje hudba“ |
-| 17294 | `scrolly.js` | Film s andělem. S příběhem před sebou (`afterStory`, `gal`) dělá mezi záběry let po zdi studia (`XG`, `pose`, `shotRect`, `angelRect`) a texty úvodu anděla nabíhají až po nájezdu |
+| 17862 | `scrolly.js` | Film s andělem. S příběhem před sebou (`afterStory`, `gal`) dělá mezi záběry let po zdi studia (`XG`, `pose`, `shotRect`, `angelRect`) a texty úvodu anděla nabíhají až po nájezdu |
 | 4639 | `scrolly.css` | Styly filmu (beze změny) |
 | 59303 | `preview.html` | Náhled webu s filmem, načítá `scrolly.*?v=16`. Příběh do něj vkládá build |
 | 69050 | `index.html` | Živý web. **Nesahat**, příběh na něm není |
 | 7584 | `pribeh/dev/CONTRACT.md` | Smlouva modulů (souřadnice, API, časová osa). Dát každému pomocníkovi |
 | 1867 | `pribeh/dev/shot.js` | Snímky příběhu: `node pribeh/dev/shot.js <prefix> 1440 900 "T" "T@x,y,w,h" [--q=nochars=1]`. Ambientní pohyb je při snímání zmrazený (stejný snímek pokaždé) |
 | 1156 | `pribeh/dev/siteshot.js` | Snímky složeného webu i s filmem: `node pribeh/dev/siteshot.js $PWD/preview-pribeh.html <prefix> 1440 900 13.97 h0 h5.6` (hN = N obrazovek za koncem příběhu) |
-| 3668 | `pribeh/dev/build_site.py` | Složí web: `python3 pribeh/dev/build_site.py preview-pribeh.html`, s `--artifact` jeden soubor pro náhled |
+| 3676 | `pribeh/dev/build_site.py` | Složí web: `python3 pribeh/dev/build_site.py preview-pribeh.html`, s `--artifact` jeden soubor pro náhled |
 
-**Náhled pro Honziho:** artefakt https://claude.ai/artifact/3xqedLNY3xePQ9RkMdV38D (verze 16). Publikace:
+**Náhled pro Honziho:** artefakt https://claude.ai/artifact/3xqedLNY3xePQ9RkMdV38D (verze 17). Publikace:
 1. `python3 pribeh/dev/build_site.py <scratchpad>/site/index.html --artifact`
 2. v souboru nahradit `<title>` za „Honza Tattoo · Příběh“
 3. publikovat se soubory `img/*.jpg` a `img/*.webp` (mapa `img/x` → `img/x`)
@@ -147,6 +148,17 @@ Stav: všech 10 bodů HOTOVO a publikováno jako verze 16 (12. 11. v noci). Kde 
 - 10 Kontakt (`scrolly.js` `cBgSet`): pozadí sekce je přesná kopie tapety studia v místě a měřítku přistání (tři vrstvy teček, fáze podle kamery), stín rámu stejný jako na zdi, obsah formuláře nevjíždí ze stran; zrno před přistáním zmizí. Okraj rámu na zdi `FM.panel = 8`, aby na mobilu nevykukovala karta nad ním. Změřeno: rozdíl sousedních snímků při přistání do 3,3 z 255, tečky zdi před přistáním i po něm na stejném místě.
 
 Ověřeno snímky 1440×900 (body 2 až 8, obě předání po krocích) a 390×844 (úvod, fólie), konzole bez chyb. Neověřeno: plachta s novým textem na snímku (jen změna textu a šířky), plynulost na skutečném zařízení.
+
+### Verze 17 (13. 11.)
+
+Honziho zadání: na tramvaji místo „Spojovací“ napsat „Lipanská“; skok do anděla je v místě přechodu pořád neplynulý, „musí být dokonale plynulé“; zkusit, aby se interiér studia odhalil, až dívka vejde (do té doby zeď a fasáda s dekoracemi a okny, skrz okna rozmazaně vidět dovnitř, po vstupu linie zdi postupně zmizí). Hotovo:
+- **Tramvaj:** číslo 9 vlevo a „LIPANSKÁ“ vedle něj na boční i čelní tabuli (`buildTram`).
+- **Fasáda (`pribeh/facade.js`, nový modul, v seznamu modulů v `pribeh.html` i `build_site.py`):** zeď x 903 až 2016 ve vrstvě `front`, devět polí: pět oken (šambrána, římsa, parapet, truhlíky; za sklem rozmazané siluety věšáku, monstery, lampy s displejem, Honzy u stolu a knihovny), mezi nimi medailon, lucerna a popínavka. Od T 2,1 se zleva doprava rozplývá (linky se odkreslí, plocha zmizí, pole po poli do T asi 2,9). Dokud je fasáda celá (T < 2,07), interiér (`ST.studioIn`) a obrazy (`ST.galL`) se nekreslí.
+- **Nájezd do anděla, třetí oprava, jiná příčina:** příběh a film měly každý vlastní dojezd scrollu a kamera před fotkou úplně zastavila. Teď je jeden vyhlazený scroll `ST.Ys` pro oba (`frame()` v `core.js`; film krokuje `window.__film`, vlastní smyčku ve `scrolly.js` s příběhem nepoužívá) a zoom do fotky končí rychlostí, kterou film začíná (`window.__filmRate`, kubická křivka `ez` v `updateCam`). Prolnutí scény je jen posledních 12 px. Změřeno při plynulém scrollu po 14 px na snímek: šířka fotky roste bez zastavení a bez skoku (1388, 1424, pak film 1445, 1482).
+- **Horní lišta webu je vidět už během příběhu** (při předání se nahoře nic nemění); z hlavičky příběhu zůstalo jen tlačítko zvuku vpravo dole (`build_site.py`).
+- Kontakt po přistání jede se stejným vyhlazeným scrollem (`cOff = scrollY - max(Ys, yD)`), bez skoku při uvolnění.
+
+Ověřeno 13. 11.: fasáda T 1.3 až 2.95 na 1440×900 a 1.6, 2.45 na mobilu; přistání v kontaktu na obou velikostech; složený web T 0.2 a 1.7; konzole bez chyb. Neověřeno: na skutečném zařízení.
 
 ## Technický stav
 
