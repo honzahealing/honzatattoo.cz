@@ -105,15 +105,16 @@ function buildSky(){
     }
   }
   /* Mlecna draha: pas ze skvrn a teckovani */
-  var mw=sect(g,X0,X1),mS='',mM='',mB='',t,gs;
+  /* Mlecna draha rozdelena na 6 useku, aby se nekreslily ty mimo zaber (drive jedna sekce se 4600 teckami pres celou sirku) */
+  var mw=sect(g,X0,X1),MWN=6,MWW=(X1-X0)/MWN,mC=[],t,gs,mc;for(mc=0;mc<MWN;mc++)mC.push({S:'',M:'',B:''});
   function cyAt(x){return 150-(x-1500)*.25}
-  for(i=0;i<3000;i++){t=X0+rnd()*(X1-X0);gs=(rnd()+rnd()+rnd()-1.5)*2*75;mS+=dot(t,cyAt(t)+gs)}
-  for(i=0;i<1300;i++){t=X0+rnd()*(X1-X0);gs=(rnd()+rnd()+rnd()-1.5)*2*55;mM+=dot(t,cyAt(t)+gs)}
-  for(i=0;i<330;i++){t=X0+rnd()*(X1-X0);gs=(rnd()+rnd()+rnd()-1.5)*2*38;mB+=dot(t,cyAt(t)+gs)}
+  for(i=0;i<3000;i++){t=X0+rnd()*(X1-X0);gs=(rnd()+rnd()+rnd()-1.5)*2*75;mC[Math.min(MWN-1,Math.floor((t-X0)/MWW))].S+=dot(t,cyAt(t)+gs)}
+  for(i=0;i<1300;i++){t=X0+rnd()*(X1-X0);gs=(rnd()+rnd()+rnd()-1.5)*2*55;mC[Math.min(MWN-1,Math.floor((t-X0)/MWW))].M+=dot(t,cyAt(t)+gs)}
+  for(i=0;i<330;i++){t=X0+rnd()*(X1-X0);gs=(rnd()+rnd()+rnd()-1.5)*2*38;mC[Math.min(MWN-1,Math.floor((t-X0)/MWW))].B+=dot(t,cyAt(t)+gs)}
   [[1900,.5],[1650,.4],[1400,.34]].forEach(function(q,j){
     var a=Math.atan(-.25)*180/PI;
     el('ellipse',{cx:q[0],cy:cyAt(q[0]),rx:1650-j*350,ry:120-j*28,transform:'rotate('+n(a)+' '+q[0]+' '+cyAt(q[0])+')',fill:'url(#stipple)',opacity:q[1]*1.1},mw)});
-  dots(mw,mS,.9,.62);dots(mw,mM,1.4,.75);dots(mw,mB,2.1,.9);
+  mC.forEach(function(q,qi){var ms=sect(g,X0+qi*MWW-40,X0+(qi+1)*MWW+40);dots(ms,q.S,.9,.62);dots(ms,q.M,1.4,.75);dots(ms,q.B,2.1,.9)});
   /* tenke oblaky s rytinovym srafovanim */
   var cl=[[1180,130,420,34,3],[1760,64,360,26,4],[2220,196,460,38,5],[2520,104,330,24,6],[1500,-210,520,40,7],[2050,-520,440,34,8],[1450,-640,380,28,9],[2150,-900,500,38,10],[2740,330,420,34,12],[2880,244,300,24,13]];
   cl.forEach(function(q,j){var s2=sect(g,q[0]-90,q[0]+q[2]+90),cgp=el('g',{},s2);cloudShape(cgp,q[0],q[1],q[2],q[3],q[4]*13);amb.cloud.push({g:cgp,s:s2,a:26+(j%4)*12,f:.00005+(j%3)*.00002,p:j*1.7})});

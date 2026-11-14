@@ -535,7 +535,8 @@ function render(time){
   ST._keep=!!ST.hasHero&&Tt>=ST.N-.004;
   updateCam(time);
   /* vykon: kdyz je cely zaber uvnitr studia, obloha a domy za zdi se nekresli (jsou zakryte) */
-  var ins=!ST.galCam&&cam.x0>905&&cam.x1<3405&&cam.y0>246&&cam.y1<790;
+  /* pri najezdu do anděla (od zs .55) je videt uz jen zed studia s fotkou: obloha a vzdalena mesta se nekresli (jako pri letech po zdi) */
+  var ins=!ST.galCam&&((cam.x0>905&&cam.x1<3405&&cam.y0>246&&cam.y1<790)||(cam.zs||0)>.55);
   if(ins!==!!ST._ins){ST._ins=ins;['sky','far','mid'].forEach(function(n){var e=$('L-'+n);if(e)e.style.display=ins?'none':''})}
   /* spodek obrazu: kresba pod chodnikem se plynule ztraci do tmy (zadna ostra hrana) */
   var ffd=ST._ff||(ST._ff=story.querySelector('.floorfade')),gyp=(712-cam.y)*cam.s+vh/2;
@@ -610,7 +611,9 @@ function render(time){
   if(ST.hasHero){
     var ov=1-ss(12.85,13.75,T);['grain','vig','ffade'].forEach(function(k){if(!ST._ov)ST._ov={grain:$('grain'),vig:story.querySelector('.vignette'),ffade:story.querySelector('.floorfade')};ST._ov[k].style.opacity=k==='grain'?.07:ov});
     /* pri najezdu do fotky a pri letu po galerii postavy a popredi nezakryvaji obrazy */
-    var lf=ST.galCam?0:1-ss(.55,.92,cam.pz||0);['front','fore','fig','light'].forEach(function(n){var v=n==='light'&&ST.galCam?1:lf,e=$('L-'+n);if(e&&e._o!==v){e._o=v;e.style.opacity=v}});
+    /* postavy a popredi se pri najezdu plynule rozplynou driv (zs .3 az .55) a pak se vubec nekresli (display none),
+       stejne jako pri letech po zdi: bez toho trvala kazda snimka ve stredu najezdu 2 az 3x dyl a obraz sekal */
+    var lf=ST.galCam?0:1-ss(.3,.55,cam.zs||0);['front','fore','fig','light'].forEach(function(n){var v=n==='light'&&ST.galCam?1:lf,e=$('L-'+n);if(e&&e._o!==v){e._o=v;e.style.opacity=v;e.style.display=v<=.002?'none':''}});
     var fl=!!ST.galCam;[['far',fl],['mid',fl],['fore',fl],['fig',fl],['front',fl],['sky',fl]].forEach(function(q){var e=$('L-'+q[0]);if(e&&e._h!==q[1]){e._h=q[1];e.style.visibility=q[1]?'hidden':''}});
     var sh=$('stShade');if(sh&&!ST.galCam)sh.style.opacity=ss(13.22,ZE,T).toFixed(3);
     /* konec pribehu: scena zmizi, az kdyz plynuly cas T dojede na konec (ne uz ve chvili, kdy tam dojel scroll).
