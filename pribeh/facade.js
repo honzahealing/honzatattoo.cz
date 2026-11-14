@@ -1,6 +1,6 @@
 /* pribeh/facade.js - ulicni fasada studia.
    Dokud klientka nevejde, je misto rezu budovou videt zed s okny a ozdobami; skrz okna je rozmazane videt dovnitr.
-   Kdyz vejde (T 2,2), plochy zdi zpruhledni a linky se rozpoji na kousky, ktere se zmensuji, az zaniknou (do T asi 2,7).
+   Kdyz vejde (T 2,2), zed zanika zleva doprava: plochy zpruhledni a kazda linka se zkrati od konce k zacatku, az zanikne (do T asi 2,85).
    Fasada je ve vrstve 'front' (pred postavami). Dokud je cela, interier a obrazy za ni se nekresli (vykon). */
 ST.module('facade',function(ST){
 'use strict';
@@ -8,9 +8,17 @@ var el=ST.el,R=ST.rect,ss=ST.ss,X0=903,X1=2016,Y0=240,Y1=700,N=9,BW=(X1-X0)/N,co
 var root=ST.section(ST.L.front,X0-12,X1+12);
 function f1(v){return Math.round(v*10)/10}
 function fill(c,d,f,a){var at={d:d,fill:f};if(a)for(var k in a)at[k]=a[k];return el('path',at,c.g)}
-/* linka: pri zaniku se rozpadne na kousky (dlouhe seg podilu delky), ktere se zmensuji, az zaniknou; kazda zacina o d pozdeji */
-var rnd=ST.rng(7);
-function line(c,d,cls){var p=el('path',{d:d,'class':'ink '+(cls||'thin'),pathLength:1},c.gl);c.lines.push({e:p,d:rnd()*.16,seg:.012+rnd()*.05,k:0});return p}
+/* Zanik fasady = obracene rysovani: kazda linka se zkracuje od sveho konce k zacatku, az zanikne.
+   Vlna bezi zleva doprava (za klientkou): linka na x zacne v case T0+(x-X0)/(X1-X0)*SPAN a zanikne za DUR.
+   Hlavni linky jsou rozdelene na jednotlive tahy (kazdy se zkracuje sam), drobna kresba (hair) zustava po skupinach. */
+var T0=2.2,SPAN=.46,DUR=.15,rnd=ST.rng(7);
+function tAt(x){return T0+Math.max(0,Math.min(1,(x-X0)/(X1-X0)))*SPAN}
+function line(c,d,cls){cls=cls||'thin';
+  var parts=/hair/.test(cls)?[d]:(d.match(/M[^M]*/g)||[d]),first=null;
+  parts.forEach(function(q){var p=el('path',{d:q,'class':'ink '+cls,pathLength:1},c.gl),m=/M\s*(-?[\d.]+)/.exec(q);
+    p.style.strokeDasharray='1 1';p.style.strokeDashoffset=0;
+    c.lines.push({e:p,t:tAt(m?+m[1]:c.x0)+rnd()*.03,k:0});first=first||p});
+  return first}
 /* rozmazane siluety toho, co je za oknem */
 var SIL=[
   function(g,cx,by){/* vesak s kabatem a kloboukem */el('path',{d:'M'+(cx-6)+','+by+' V'+(by-190)+' h12 V'+by+'Z M'+(cx-34)+','+(by-176)+' q34,-26 68,0 l-8,120 h-52Z M'+(cx-26)+','+(by-196)+' h52 v8 h-52Z'},g)},
@@ -26,7 +34,7 @@ function swag(x0,x1,y,dp){var m=(x0+x1)/2,d='M'+f1(x0)+','+y+' Q'+f1(m)+','+(y+d
   for(var i=1;i<6;i++){var t=i/6,xx=x0+(x1-x0)*t,yy=y+1.5+dp*4*t*(1-t)+2;d+=' M'+f1(xx-3)+','+f1(yy)+' q3,5 6,0'}
   return d+' M'+f1(x0)+','+y+' v9 l-3,5 M'+f1(x1)+','+y+' v9 l3,5'}
 for(var b=0;b<N;b++){(function(b){
-  var x0=X0+b*BW,x1=x0+BW,cx=(x0+x1)/2,c={g:el('g',{},root),lines:[],t0:2.2+b*.014,k:-1,o:-1,done:false};c.gl=el('g',{},root);cols.push(c);
+  var x0=X0+b*BW,x1=x0+BW,cx=(x0+x1)/2,c={g:el('g',{},root),lines:[],x0:x0,t0:tAt(x0),t1:tAt(x1)+DUR+.06,k:-1,o:-1,done:false};c.gl=el('g',{},root);cols.push(c);
   var d,k,q;
   /* omitka, rimsa, vlys, sokl */
   fill(c,R(f1(x0-.6),Y0,f1(BW+1.2),Y1-Y0),'#1D1E23');fill(c,R(f1(x0),Y0,f1(BW),Y1-Y0),'url(#hatchFine)',{opacity:.45});
@@ -101,16 +109,14 @@ for(var b=0;b<N;b++){(function(b){
 })(b)}
 var hid=null,ins=null;
 ST.on(function(T){
-  /* zanik fasady po vstupu klientky = obracene rysovani z uvodu webu: plochy rychle zpruhledni,
-     linky se rozpoji na kousky a ty se zmensuji, az zaniknou (kazda linka o chvili jindy) */
-  for(var i=0;i<cols.length;i++){var c=cols[i],o=1-ss(c.t0,c.t0+.1,T),dn=T>c.t0+.44;
+  /* plochy pole zpruhledni, kdyz k nemu vlna dorazi; linky se zkracuji jedna po druhe zleva doprava */
+  for(var i=0;i<cols.length;i++){var c=cols[i],o=1-ss(c.t0-.02,c.t0+.12,T),dn=T>c.t1;
     if(Math.abs(o-c.o)>1e-4){c.o=o;c.g.style.opacity=o;c.g.style.display=o<=0?'none':''}
     if(dn!==c.done){c.done=dn;c.gl.style.display=dn?'none':''}
-    if(dn)continue;
-    for(var j=0;j<c.lines.length;j++){var l=c.lines[j],k=ss(c.t0+l.d,c.t0+l.d+.26,T);if(Math.abs(k-l.k)<1e-4)continue;l.k=k;
-      if(k<=0){l.e.style.strokeDasharray='';l.e.style.visibility='';l.e.style.opacity=''}
-      else if(k>=1)l.e.style.visibility='hidden';
-      else{l.e.style.visibility='';l.e.style.strokeDasharray=((1-k)*l.seg).toFixed(4)+' '+(k*l.seg).toFixed(4);l.e.style.opacity=(1-k*k*.6).toFixed(3)}}}
+    if(dn||T<c.t0-.01&&c.k===0)continue;
+    c.k=T<c.t0-.01?0:1;
+    for(var j=0;j<c.lines.length;j++){var l=c.lines[j],k=ss(l.t,l.t+DUR,T);if(Math.abs(k-l.k)<1e-4)continue;l.k=k;
+      l.e.style.strokeDashoffset=k.toFixed(4);l.e.style.visibility=k>=1?'hidden':''}}
   /* dokud je fasada cela, interier a obrazy za ni se nekresli */
   var h=T<2.17;if(h!==hid){hid=h;ins=ins||(ST.studioIn||[]).concat(ST.galL?[ST.galL]:[]);ins.forEach(function(g){g.style.visibility=h?'hidden':''})}
 });

@@ -2,7 +2,7 @@
 
 ## Kanonické soubory
 
-Repozitář `honzahealing/honzatattoo.cz`. **Verze 20 je na pracovní větvi vlákna z 10. až 14. 11.** Je to jediná vzdálená větev, která obsahuje commit `b05be62` (`git branch -r --contains b05be62`); název jí přidělilo prostředí. Větev `pribeh-na-scroll` zůstává na verzi 8 a `main` je beze změn. Pull request není. Velikosti v bajtech platí pro verzi 20.
+Repozitář `honzahealing/honzatattoo.cz`. **Verze 21 je na pracovní větvi vlákna z 10. až 14. 11.** Je to jediná vzdálená větev, která obsahuje commit `b05be62` (`git branch -r --contains b05be62`); název jí přidělilo prostředí. Větev `pribeh-na-scroll` zůstává na verzi 8 a `main` je beze změn. Pull request není. Velikosti v bajtech platí pro verzi 21.
 
 | Bajty | Soubor | K čemu |
 |---|---|---|
@@ -11,9 +11,9 @@ Repozitář `honzahealing/honzatattoo.cz`. **Verze 20 je na pracovní větvi vl�
 | 7834 | `pribeh.html` | Samotný příběh (ladění a snímky). Bez kontaktu, proto na zdi místo rámu s kontaktem visí osvědčení |
 | 14054 | `pribeh/style.css` | Styly příběhu |
 | 53897 | `pribeh/core.js` | Jádro: kamera (`KEYS`, `ST.N = 14`), jeden vyhlazený scroll `ST.Ys`, galerie na zdi (`GAL`, `WI`, `WALLS`, `card`, `panel`), let mezi fotkami (`flyLUT`, `gc` v `updateCam`), nájezd do anděla (`ez`, `ZE`), detail ruky, popisek fólie (`ST.filmT`), bubliny (`BUB`), kroky (`STEPS`) |
-| 130788 | `pribeh/street.js` | Ulice: obloha, letadlo s plachtou (`amb.banner`), Žižkovský vysílač (`buildTower`), tramvaj (`buildTram`, kola `g._wheels`), činžáky, příběhy v oknech, kolo, koše, lavička (`big`) |
+| 131007 | `pribeh/street.js` | Ulice: obloha, letadlo s plachtou (`amb.banner`), Žižkovský vysílač (`buildTower`), tramvaj (`buildTram`, kola `g._wheels`), činžáky, příběhy v oknech, kolo, koše, lavička (`big`) |
 | 113638 | `pribeh/studio.js` | Budova a interiér studia, kalendář, poličky s tetovacími barvami (`bottles`), okno s vysílačem, easter eggy. Nic se při scrollu nedokresluje (`tt()` vrací `STAT`) |
-| 12242 | `pribeh/facade.js` | Uliční fasáda studia, která po vstupu klientky zmizí |
+| 12538 | `pribeh/facade.js` | Uliční fasáda studia, která po vstupu klientky zmizí |
 | 7978 | `pribeh/doors.js` | Obě dveře. Postava jde před levým sloupkem a překladem a za pravým |
 | 25224 | `pribeh/close.js` | Detail tetování: předloktí, ruka v rukavici, Pen strojek bez nápisu, kalíšky s barvami |
 | 51774 | `pribeh/chars.js` | Postavy Honza a klientka |
@@ -26,7 +26,7 @@ Repozitář `honzahealing/honzatattoo.cz`. **Verze 20 je na pracovní větvi vl�
 | 1156 | `pribeh/dev/siteshot.js` | Snímky složeného webu: `node pribeh/dev/siteshot.js $PWD/preview-pribeh.html <prefix> 1440 900 13.97 h0 h5.6` (hN = N obrazovek za koncem příběhu) |
 | 7584 | `pribeh/dev/CONTRACT.md` | Původní smlouva modulů (souřadnice, API). Časová osa a pravidlo „každý modul jen svůj soubor“ v ní už neplatí přesně |
 
-**Náhled pro Honziho:** artefakt https://claude.ai/artifact/3xqedLNY3xePQ9RkMdV38D (verze 20). Publikace:
+**Náhled pro Honziho:** artefakt https://claude.ai/artifact/3xqedLNY3xePQ9RkMdV38D (verze 21). Publikace:
 1. `python3 pribeh/dev/build_site.py <scratchpad>/site/index.html --artifact`
 2. v souboru nahradit `<title>` za „Honza Tattoo · Příběh“
 3. publikovat. Obrázky `img/*.jpg` a `img/*.webp` (mapa `img/x` → `img/x`) jsou u artefaktu už nahrané.
@@ -40,7 +40,7 @@ Repozitář `honzahealing/honzatattoo.cz`. **Verze 20 je na pracovní větvi vl�
 
 ## Kde jsme
 
-Hotová a publikovaná je verze 20 (14. 11.). Web je jeden souvislý scroll: příběh (ulice, fasáda, studio, detail tetování, odchod), nájezd do fotky anděla, film s lety po zdi studia mezi fotkami, let do rámu s kontaktním formulářem, patička. Poslední tři Honziho pokyny (na tramvaji nechat „Lipanská“, zánik fasády rozpadem linií, okno s červeným světlem) jsou provedené; Honzi verzi 20 ještě neviděl.
+Hotová a publikovaná je verze 21 (14. 11.). Web je jeden souvislý scroll: příběh (ulice, fasáda, studio, detail tetování, odchod), nájezd do fotky anděla, film s lety po zdi studia mezi fotkami, let do rámu s kontaktním formulářem, patička. Poslední Honziho pokyny (zánik fasády zkracováním linií zleva doprava, červené okno o patro výš) jsou provedené; Honzi verzi 21 ještě neviděl.
 
 ## Technický stav
 
@@ -48,7 +48,7 @@ Hotová a publikovaná je verze 20 (14. 11.). Web je jeden souvislý scroll: př
 - **Nájezd do anděla.** Zoom končí rychlostí, kterou film začíná (`window.__filmRate`, kubická křivka `ez`), prolnutí scény je posledních 12 px. Když real scroll přeběhne konec dřív než `T`, scéna zůstane připnutá (`.stage.fix`), cestou zpět je připnutý film (`.sc-fix`).
 - **Let mezi fotkami.** Jedna křivka: šířka záběru je oblouk v logaritmu, posun úměrný šířce, tabulka `U` vyrovnává tempo. Na koncích letu krátké usazení (`FH = .03`), ve kterém se fotka na zdi prolne s fotkou filmu; film ve fotce měkce dojíždí (`warp`). Při letu se nekreslí obloha, domy, postavy a popředí. Pohupování kamery je při letu vypnuté (dřív dělalo u fotky posun o desítky pixelů).
 - **Kontakt.** Rám na zdi (`WI.kontakt`, `panel()`) má poměr stran rámu formuláře. Sekce `#contact` má `margin-top:-100vh`, při přistání je připnutá na rám a prolne se; její pozadí je kopie tapety studia v místě a měřítku přistání (`cBgSet`). Bez příběhu nebo při omezeném pohybu je kontakt obyčejná sekce.
-- **Fasáda.** `facade.js`, vrstva `front`, x 903 až 2016. Plochy jsou ve skupině `c.g`, linky zvlášť v `c.gl`. Zánik od T 2,2: plochy zprůhlední do 0,1 jednotky T; každá linka se o náhodnou chvíli později (`l.d`) rozpadne na kousky (`strokeDasharray`, délka kousku `l.seg`), které se zmenšují, až zaniknou; hotovo kolem T 2,7. Do T 2,17 se interiér (`ST.studioIn`) a obrazy (`ST.galL`) nekreslí.
+- **Fasáda.** `facade.js`, vrstva `front`, x 903 až 2016. Plochy jsou ve skupině `c.g`, linky zvlášť v `c.gl`. Zánik od `T0 = 2.2` běží zleva doprava (`tAt(x)`, `SPAN = .46`): plochy pole zprůhlední, když k němu vlna dorazí, a každá linka se zkrátí od svého konce k začátku (`strokeDashoffset` 0 až 1, `DUR = .15`), tedy obrácené rýsování. Hlavní linky jsou rozdělené na jednotlivé tahy, drobná kresba (`hair`) zůstává po skupinách. Hotovo kolem T 2,85. Do T 2,17 se interiér (`ST.studioIn`) a obrazy (`ST.galL`) nekreslí.
 - **Časování studia.** Po změně velikosti okna se časy ulice za studiem (`ES`, `ST.seenAt`) nepřepočítají, jen po novém načtení.
 - **Horní lišta** webu je vidět už během příběhu; z hlavičky příběhu zůstalo jen tlačítko zvuku vpravo dole (`build_site.py`).
 - **Formulář** odesílá na zástupnou adresu `https://formspree.io/f/NOVY_ENDPOINT`. Na ostrý web doplnit skutečnou.
@@ -73,8 +73,8 @@ Jen Honziho slova z vláken 6. až 12. 11.
 - Letadlo táhne plachtu s nápisem „ahoj, vítej a scrolluj“, plachta má trochu červené.
 - Kolo, koš a lavička nesmí být proti postavě ženy malé.
 - Fasáda: interiér se odhalí, až dívka vejde. Do té doby zeď s dekoracemi a okny, skrz okna rozmazaně vidět dovnitř. Fasáda „mnohem dekorativnější“.
-- Zánik fasády (14. 11.): linie se mají rozpojit a zmenšit, až zaniknou. Stejný princip jako rýsování linií města při vstupu na web, jen obráceně. Ne příliš rychle a ne jednolitě.
-- Easter egg (14. 11.): některé okno s lidmi v domech na pozadí svítí červeným světlem („intimní atmosféra“).
+- Zánik fasády (14. 11.): stejný princip jako rýsování linií města při vstupu na web, jen obráceně. Linie se nemají rozpojovat, mají se zmenšovat „jako z jednoho bodu linie do druhého“, až zaniknou. Zánik běží zleva doprava, protože dívka vchází zleva doprava; zeď se nesmí aktivovat celá zároveň. Ne příliš rychle a ne jednolitě.
+- Easter egg (14. 11.): některé okno s lidmi v domech na pozadí svítí červeným světlem („intimní atmosféra“). Honzi: „super“, okno v domě s květinářstvím má být přesně o patro výš (provedeno).
 - Spodní okraj obrazu nesmí být ostře oddělený.
 
 **Dveře**
@@ -117,8 +117,8 @@ Jen Honziho slova z vláken 6. až 12. 11.
 
 - **Přesun do `pribeh-na-scroll`:** nabídnuto několikrát, Honzi neodpověděl. Bez jeho ano tam nepushovat.
 - **Nasazení** na živý web (`index.html`) a pull request nejsou rozhodnuté.
-- **Fasáda verze 20:** zánik rozpadem linií Honzi ještě neviděl; délka (asi půl jednotky T) a míra rozpadu jsou moje volba. Výzdobu z verze 18 nekomentoval. Mobil po obou úpravách neověřen. Rozmazaný vnitřek v oknech jsou kreslené siluety, ne skutečné rozostření. Na konci příběhu fasáda není (řez jako dřív).
-- **Červené okno:** dvě (jedno v domě s květinářstvím na začátku ulice, jedno na konci), dvojice a srdíčko; umístění a podoba jsou moje volba (`romance` ve `street.js`).
+- **Fasáda verze 21:** zánik zkracováním linií zleva doprava Honzi ještě neviděl; délka vlny a rychlost jedné linky jsou moje volba. Výzdobu z verze 18 nekomentoval. Mobil od verze 18 neověřen. Rozmazaný vnitřek v oknech jsou kreslené siluety, ne skutečné rozostření. Na konci příběhu fasáda není (řez jako dřív).
+- **Druhé červené okno** na konci ulice (`red2` ve `street.js`): moje volba, Honzi mluvil o jednom okně.
 - **Lety po změně z 12. 11.** (menší oddálení, delší let): Honzi je výslovně nekomentoval.
 - **Dojezd kamery uvnitř fotek** (`warp`): přidal jsem ho kvůli předání, Honzi o něj nežádal.
 - **Při letu je nad střechou tma bez hvězd** (kvůli výkonu).
@@ -144,7 +144,7 @@ Jen Honziho slova z vláken 6. až 12. 11.
 - **Let s prodlevou uprostřed** (oddálit, podržet, přiblížit): působil jako zastavení. **Krátké oddálení** (verze 9): studio jen probliklo. **Oddálení z verze 11:** „možná moc vzdálené“.
 - **Nájezd do anděla se zastavením před fotkou** a **dva oddělené dojezdy scrollu:** skákalo to (opravováno třikrát, viz Technický stav).
 - **Kontakt jako obyčejná sekce pod filmem** a **kontakt s vlastním tečkovaným pozadím:** chtěl let do rámu a nezměněné pozadí.
-- **Fasáda s postupným rozplýváním zleva doprava a jednoduchou výzdobou** (verze 17): málo zdobná a pomalá. **Fasáda, která zmizí celá naráz** (verze 18): „až moc rychle“ a „úplně jednolitě“.
+- **Fasáda s postupným rozplýváním zleva doprava a jednoduchou výzdobou** (verze 17): málo zdobná a pomalá. **Fasáda, která zmizí celá naráz** (verze 18): „až moc rychle“ a „úplně jednolitě“. **Linky rozpadlé na kousky, celá zeď najednou** (verze 20): linie se nemají rozpojovat a zánik má jít zleva doprava.
 - **Nápis na plachtě „Usměj se, Žižkove“; „Spojovací“ na tramvaji; devítka sama uprostřed tabule.**
 - **Béžový pruh „Přijímám nové rezervace“ a tmavá plná horní lišta.**
 - **Ostrá linie pod chodníkem.**
@@ -154,7 +154,8 @@ Jen Honziho slova z vláken 6. až 12. 11.
 ## Stav kontrol
 
 Bezhlavý prohlížeč, konzole bez chyb:
-- verze 20 (14. 11.): zánik fasády na 1440×900, T 2.19, 2.27, 2.34, 2.42, 2.52, 2.66; úvod T 0 (plachta „AHOJ, VÍTEJ A SCROLLUJ“, červené okno)
+- verze 21 (14. 11.): zánik fasády na 1440×900, T 2.19, 2.28, 2.38, 2.5, 2.62, 2.8 (vlna jde zleva doprava za dívkou); červené okno ve výřezu úvodu
+- verze 20 (14. 11.): úvod T 0 (plachta „AHOJ, VÍTEJ A SCROLLUJ“)
 - verze 18 (12. 11.): výzdoba fasády T 1.5, 1.95
 - verze 17 (12. 11.): nájezd do anděla při plynulém scrollu po 14 px na snímek (šířka fotky roste bez zastavení: 1388, 1424, film 1445, 1482); přistání v kontaktu na 1440×900 a 390×844 (rám stojí na místě)
 - verze 16 (12. 11.): předání film a let, rozdíl sousedních snímků do 2 z 255

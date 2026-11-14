@@ -1586,17 +1586,19 @@ function G0(g,cx,cy){return el('g',{},g)}
 function romance(g,L,sec){var cx=L.x+L.w/2,b=L.sill;
   el('ellipse',{cx:n(cx),cy:n(L.y+L.h/2),rx:n(L.w*1.25),ry:n(L.h*1.05),fill:'#C8372F',opacity:.16},sec);
   el('ellipse',{cx:n(cx),cy:n(L.y+L.h/2),rx:n(L.w*.85),ry:n(L.h*.75),fill:'#E0463A',opacity:.2},sec);
-  fillp(g,rect(L.x,L.y,L.w,L.h),'',{fill:'#B02A26',opacity:.86});
+  fillp(g,rect(L.x,L.y,L.w,L.h),'',{fill:'#2a0c0d'});fillp(g,rect(L.x,L.y,L.w,L.h),'',{fill:'#B02A26',opacity:.86});
   el('ellipse',{cx:n(cx),cy:n(L.y+L.h*.5),rx:n(L.w*.6),ry:n(L.h*.5),fill:'#F0685A',opacity:.5},g);
   fillp(g,person(cx-4.2,b,29,{hair:1})+person(cx+4.2,b,31),'f-bg');
   var ht=fillp(g,'M'+pt(cx,L.y+8)+'c-1.6,-3 -6,-1 -4.2,1.8l4.2,4.2l4.2,-4.2c1.8,-2.8 -2.6,-4.8 -4.2,-1.8Z','',{fill:'#FFD9CF',opacity:.9});
   amb.scn.push({k:'tw',e:ht,s:g,f:.004})}
 function windowScene(sec,L,dl){
+  var rk=CTX.end?'red2':'red1',red=!amb[rk]&&(CTX.end?L.x>3950:L.x>40);
+  /* cervene okno na zacatku ulice je o patro vys nez puvodne vybrane okno (Honzi 14. 11.) */
+  if(red&&!CTX.end)L={x:L.x,y:L.y-FH,w:L.w,h:L.h,sill:L.sill-FH};
   var cid='st_ws'+(amb.cw++),cp=document.createElementNS(ST.NS,'clipPath');cp.setAttribute('id',cid);
   cp.innerHTML='<rect x="'+n(L.x)+'" y="'+n(L.y)+'" width="'+n(L.w)+'" height="'+n(L.h)+'"/>';ST.defs.appendChild(cp);
   var g=el('g',{'clip-path':'url(#'+cid+')'},sec);appear(g,dl+.22);
-  var rk=CTX.end?'red2':'red1';
-  if(!amb[rk]&&(CTX.end?L.x>3950:L.x>40)){amb[rk]=1;romance(g,L,sec)}else SCENES[SCN_I++%SCENES.length](g,L,dl);
+  if(red){amb[rk]=1;romance(g,L,sec)}else SCENES[SCN_I++%SCENES.length](g,L,dl);
   amb.scn.forEach(function(q){if(!q.s._sec)q.sec=sec});
 }
 var trams=[];
