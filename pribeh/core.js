@@ -479,10 +479,15 @@ function size(){
   ST.closeVB=vb.split(' ').map(Number);
   if(ST.filmTa){var nar=ST.closeVB[2]<1100;ST.filmTa.style.display=nar?'none':'';ST.filmTb.style.display=nar?'':'none'}
   /* navazujici sekce s andelem (na webu) prekryva posledni obrazovku pribehu */
-  var hero=document.getElementById('hero');if(hero&&(story.compareDocumentPosition(hero)&4))hero.style.marginTop=(-vh)+'px';
+  var hero=document.getElementById('hero');
+  /* Za koncem casove osy ma pribeh jeste jednu obrazovku "ocas": scena (sticky) zustane pripnuta, dokud se v ni plynuly cas T a prolnuti
+     s filmem nedokonci. Prohlizec ji drzi sam (sticky se vyhodnocuje hned s posunem), zadna oprava z JS, ktera by o snimek zpozdila
+     a obraz by pri prolnuti poskocil nahoru a dolu (Honzi 14. 11.). Film zacina na stejnem miste jako driv (margin -vh - ocas). */
+  var tl=(hero&&(story.compareDocumentPosition(hero)&4))?vh:0;ST.tail=tl;story.style.height=tl?'calc(1200vh + '+tl+'px)':'';
+  if(tl)hero.style.marginTop=(-vh-tl)+'px';
 }
-function targetT(){var span=story.offsetHeight-vh;return clamp((scrollY-story.offsetTop)/span)*ST.N}
-function scrollToT(t){var span=story.offsetHeight-vh;scrollTo({top:story.offsetTop+t/ST.N*span,behavior:reduce?'auto':'smooth'})}
+function targetT(){var span=story.offsetHeight-vh-(ST.tail||0);return clamp((scrollY-story.offsetTop)/span)*ST.N}
+function scrollToT(t){var span=story.offsetHeight-vh-(ST.tail||0);scrollTo({top:story.offsetTop+t/ST.N*span,behavior:reduce?'auto':'smooth'})}
 ST.scrollToT=scrollToT;
 function toScreen(x,y){return {x:(x-cam.x)*cam.s+vw/2,y:(y-cam.y)*cam.s+vh/2}}
 ST.toScreen=toScreen;
@@ -632,10 +637,9 @@ function render(time){
        ne prepnutim sticky -> fixed. To prepnuti prekreslovalo celou scenu a zpusobilo zaseknuty snimek (69 ms) presne v klidu pred
        startem filmu (Honzi 14. 11.). */
     if(fwd!==!!ST._fwd){if(ST._fwd&&!fwd)setTimeout(function(){dispatchEvent(new Event('scroll'))},0);ST._fwd=fwd}
-    var ov0=fwd?Math.round(Math.max(0,scrollY-(story.offsetTop+story.offsetHeight-vh))):0;
     /* po konci pribehu se scena odsune mimo obrazovku misto visibility/pointer-events: obe vlastnosti se dedi, takze jejich zmena
        prepocitavala styl vsech prvku sceny (31 ms) presne pri predani filmu */
-    var tr0=ov0?'translateY('+ov0+'px)':(gone&&!gm?'translateY(-120%)':'');
+    var tr0=gone&&!gm?'translateY(-120%)':'';
     if(tr0!==ST._tr0){ST._tr0=tr0;sg.style.transform=tr0}
     if(gm!==ST._gm){ST._gm=gm;sg.classList.toggle('gal',gm)}
     /* predani mezi filmem a letem: kamera stoji presne na fotce (FH) a scena se prolne s fotkou filmu pod ni;
@@ -695,7 +699,7 @@ function frame(ts){
   else{Tt=targetT();
     /* jeden vyhlazeny scroll (Ys) pro pribeh i film: na hrane se nerozejdou a pohyb plynule pokracuje */
     if(reduce||Ys==null){Ys=scrollY}else{var f=1-Math.exp(-dt/150);Ys+=(scrollY-Ys)*f;if(Math.abs(scrollY-Ys)<.3)Ys=scrollY}
-    T=clamp((Ys-story.offsetTop)/(story.offsetHeight-vh))*ST.N;ST.Ys=Ys;
+    T=clamp((Ys-story.offsetTop)/(story.offsetHeight-vh-(ST.tail||0)))*ST.N;ST.Ys=Ys;
     if(window.__film&&Ys!==ST._ysF){ST._ysF=Ys;window.__film()}}
   var idle=ST.debug.T==null&&!!ST.hasHero&&Tt>=ST.N-.004&&T>=ST.N-.0006&&!ST.galCam;
   if(ST._sync)ST._sync=0;else if(!(idle&&ST._idle))render(ts);
