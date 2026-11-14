@@ -1593,8 +1593,6 @@ function romance(g,L,sec){var cx=L.x+L.w/2,b=L.sill;
   amb.scn.push({k:'tw',e:ht,s:g,f:.004})}
 function windowScene(sec,L,dl){
   var rk=CTX.end?'red2':'red1',red=!amb[rk]&&(CTX.end?L.x>3950:L.x>40);
-  /* cervene okno na zacatku ulice je o patro vys nez puvodne vybrane okno (Honzi 14. 11.) */
-  if(red&&!CTX.end)L={x:L.x,y:L.y-FH,w:L.w,h:L.h,sill:L.sill-FH};
   var cid='st_ws'+(amb.cw++),cp=document.createElementNS(ST.NS,'clipPath');cp.setAttribute('id',cid);
   cp.innerHTML='<rect x="'+n(L.x)+'" y="'+n(L.y)+'" width="'+n(L.w)+'" height="'+n(L.h)+'"/>';ST.defs.appendChild(cp);
   var g=el('g',{'clip-path':'url(#'+cid+')'},sec);appear(g,dl+.22);

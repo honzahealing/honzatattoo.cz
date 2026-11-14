@@ -1,6 +1,6 @@
 /* pribeh/facade.js - ulicni fasada studia.
    Dokud klientka nevejde, je misto rezu budovou videt zed s okny a ozdobami; skrz okna je rozmazane videt dovnitr.
-   Kdyz vejde (T 2,2), zed zanika zleva doprava: plochy zpruhledni a kazda linka se zkrati od konce k zacatku, az zanikne (do T asi 2,85).
+   Uz kdyz klientka vchazi (T 1,98), zed zanika zleva doprava: plochy zpruhledni a kazda linka se zkrati od konce k zacatku, az zanikne (do T asi 2,85).
    Fasada je ve vrstve 'front' (pred postavami). Dokud je cela, interier a obrazy za ni se nekresli (vykon). */
 ST.module('facade',function(ST){
 'use strict';
@@ -11,7 +11,8 @@ function fill(c,d,f,a){var at={d:d,fill:f};if(a)for(var k in a)at[k]=a[k];return
 /* Zanik fasady = obracene rysovani: kazda linka se zkracuje od sveho konce k zacatku, az zanikne.
    Vlna bezi zleva doprava (za klientkou): linka na x zacne v case T0+(x-X0)/(X1-X0)*SPAN a zanikne za DUR.
    Hlavni linky jsou rozdelene na jednotlive tahy (kazdy se zkracuje sam), drobna kresba (hair) zustava po skupinach. */
-var T0=2.2,SPAN=.46,DUR=.15,rnd=ST.rng(7);
+/* Vlna zacina driv nez klientka dojde k fasade (ta je na x 903 v T 2,22): linka na x je pryc o ~0,07 T drive nez tam klientka dorazi (Honzi 14. 11.: kde postava stoji, ma byt cisto) */
+var T0=1.98,SPAN=.42,DUR=.14,rnd=ST.rng(7);
 function tAt(x){return T0+Math.max(0,Math.min(1,(x-X0)/(X1-X0)))*SPAN}
 function line(c,d,cls){cls=cls||'thin';
   var parts=/hair/.test(cls)?[d]:(d.match(/M[^M]*/g)||[d]),first=null;
@@ -118,6 +119,6 @@ ST.on(function(T){
     for(var j=0;j<c.lines.length;j++){var l=c.lines[j],k=ss(l.t,l.t+DUR,T);if(Math.abs(k-l.k)<1e-4)continue;l.k=k;
       l.e.style.strokeDashoffset=k.toFixed(4);l.e.style.visibility=k>=1?'hidden':''}}
   /* dokud je fasada cela, interier a obrazy za ni se nekresli */
-  var h=T<2.17;if(h!==hid){hid=h;ins=ins||(ST.studioIn||[]).concat(ST.galL?[ST.galL]:[]);ins.forEach(function(g){g.style.visibility=h?'hidden':''})}
+  var h=T<T0-.01;if(h!==hid){hid=h;ins=ins||(ST.studioIn||[]).concat(ST.galL?[ST.galL]:[]);ins.forEach(function(g){g.style.visibility=h?'hidden':''})}
 });
 });
