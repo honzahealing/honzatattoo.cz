@@ -2,7 +2,7 @@
 
 ## Kanonické soubory
 
-Repozitář `honzahealing/honzatattoo.cz`. **Verze 25 je na pracovní větvi vlákna z 10. až 14. 11.** Je to jediná vzdálená větev, která obsahuje commit `b05be62` (`git branch -r --contains b05be62`); název jí přidělilo prostředí. Větev `pribeh-na-scroll` zůstává na verzi 8 a `main` je beze změn. Pull request není. Velikosti v bajtech platí pro verzi 25.
+Repozitář `honzahealing/honzatattoo.cz`. **Verze 26 je na pracovní větvi vlákna z 10. až 14. 11.** Je to jediná vzdálená větev, která obsahuje commit `b05be62` (`git branch -r --contains b05be62`); název jí přidělilo prostředí. Větev `pribeh-na-scroll` zůstává na verzi 8 a `main` je beze změn. Pull request není. Velikosti v bajtech platí pro verzi 26.
 
 | Bajty | Soubor | K čemu |
 |---|---|---|
@@ -10,7 +10,7 @@ Repozitář `honzahealing/honzatattoo.cz`. **Verze 25 je na pracovní větvi vl�
 | 59303 | `preview.html` | Zdroj webu bez příběhu: horní lišta, film s andělem (`#hero`), kontakt (`#contact`), patička. Styl lišty a kontaktu je v bloku `<style>` s komentářem „v14“ na konci hlavičky. Sekce Portfolio, Proces a FAQ jsou smazané, jejich CSS a JS v souboru zůstaly nepoužité |
 | 7834 | `pribeh.html` | Samotný příběh (ladění a snímky). Bez kontaktu, proto na zdi místo rámu s kontaktem visí osvědčení |
 | 14064 | `pribeh/style.css` | Styly příběhu |
-| 55611 | `pribeh/core.js` | Jádro: kamera (`KEYS`, `ST.N = 14`), jeden vyhlazený scroll `ST.Ys`, galerie na zdi (`GAL`, `WI`, `WALLS`, `card`, `panel`), let mezi fotkami (`flyLUT`, `gc` v `updateCam`), nájezd do anděla (`ez`, `ZE`), detail ruky, popisek fólie (`ST.filmT`), bubliny (`BUB`), kroky (`STEPS`) |
+| 55571 | `pribeh/core.js` | Jádro: kamera (`KEYS`, `ST.N = 14`), jeden vyhlazený scroll `ST.Ys`, galerie na zdi (`GAL`, `WI`, `WALLS`, `card`, `panel`), let mezi fotkami (`flyLUT`, `gc` v `updateCam`), nájezd do anděla (`ez`, `ZE`), detail ruky, popisek fólie (`ST.filmT`), bubliny (`BUB`), kroky (`STEPS`) |
 | 131237 | `pribeh/street.js` | Ulice: obloha, letadlo s plachtou (`amb.banner`), Žižkovský vysílač (`buildTower`), tramvaj (`buildTram`, kola `g._wheels`), činžáky, příběhy v oknech, kolo, koše, lavička (`big`) |
 | 113638 | `pribeh/studio.js` | Budova a interiér studia, kalendář, poličky s tetovacími barvami (`bottles`), okno s vysílačem, easter eggy. Nic se při scrollu nedokresluje (`tt()` vrací `STAT`) |
 | 12741 | `pribeh/facade.js` | Uliční fasáda studia, která po vstupu klientky zmizí |
@@ -18,7 +18,7 @@ Repozitář `honzahealing/honzatattoo.cz`. **Verze 25 je na pracovní větvi vl�
 | 25224 | `pribeh/close.js` | Detail tetování: předloktí, ruka v rukavici, Pen strojek bez nápisu, kalíšky s barvami |
 | 51774 | `pribeh/chars.js` | Postavy Honza a klientka |
 | 30078 | `pribeh/audio.js` | Generativní hudba. Hlasy, šum vinylu, lupání, bzučení strojku a metličky jsou vypnuté |
-| 19238 | `scrolly.js` | Film s andělem. S příběhem před sebou ho krokuje příběh (`window.__film`), mezi záběry let po zdi (`XG`, `warp`, `warpEnd`), na konci let do rámu s kontaktem (`hasC`, `cRect`, `cBgSet`) |
+| 19346 | `scrolly.js` | Film s andělem. S příběhem před sebou ho krokuje příběh (`window.__film`), mezi záběry let po zdi (`XG`, `warp`, `warpEnd`), na konci let do rámu s kontaktem (`hasC`, `cRect`, `cBgSet`) |
 | 4639 | `scrolly.css` | Styly filmu |
 | 69050 | `index.html` | Živý web. **Nesahat**, příběh na něm není |
 | 3676 | `pribeh/dev/build_site.py` | Složí web: `python3 pribeh/dev/build_site.py preview-pribeh.html`; s `--artifact` jeden soubor pro náhled |
@@ -26,7 +26,7 @@ Repozitář `honzahealing/honzatattoo.cz`. **Verze 25 je na pracovní větvi vl�
 | 1156 | `pribeh/dev/siteshot.js` | Snímky složeného webu: `node pribeh/dev/siteshot.js $PWD/preview-pribeh.html <prefix> 1440 900 13.97 h0 h5.6` (hN = N obrazovek za koncem příběhu) |
 | 7584 | `pribeh/dev/CONTRACT.md` | Původní smlouva modulů (souřadnice, API). Časová osa a pravidlo „každý modul jen svůj soubor“ v ní už neplatí přesně |
 
-**Náhled pro Honziho:** artefakt https://claude.ai/artifact/3xqedLNY3xePQ9RkMdV38D (verze 25). Publikace:
+**Náhled pro Honziho:** artefakt https://claude.ai/artifact/3xqedLNY3xePQ9RkMdV38D (verze 26). Publikace:
 1. `python3 pribeh/dev/build_site.py <scratchpad>/site/index.html --artifact`
 2. v souboru nahradit `<title>` za „Honza Tattoo · Příběh“
 3. publikovat. Obrázky `img/*.jpg` a `img/*.webp` (mapa `img/x` → `img/x`) jsou u artefaktu už nahrané.
@@ -40,15 +40,16 @@ Repozitář `honzahealing/honzatattoo.cz`. **Verze 25 je na pracovní větvi vl�
 
 ## Kde jsme
 
-Hotová a publikovaná je verze 25 (14. 11.). Web je jeden souvislý scroll: příběh (ulice, fasáda, studio, detail tetování, odchod), nájezd do fotky anděla, film s lety po zdi studia mezi fotkami, let do rámu s kontaktním formulářem, patička. Poslední Honziho pokyny (zánik fasády začít dřív, okno s milenci vrátit dolů) jsou provedené; Honzi verzi 22 ještě neviděl. Zánik zkracováním linií zleva doprava Honzi pochválil.
+Hotová a publikovaná je verze 26 (14. 11.). Web je jeden souvislý scroll: příběh (ulice, fasáda, studio, detail tetování, odchod), nájezd do fotky anděla, film s lety po zdi studia mezi fotkami, let do rámu s kontaktním formulářem, patička. Poslední Honziho pokyny (zánik fasády začít dřív, okno s milenci vrátit dolů) jsou provedené; Honzi verzi 22 ještě neviděl. Zánik zkracováním linií zleva doprava Honzi pochválil.
 
 ## Technický stav
 
 - **Jeden vyhlazený scroll.** `frame()` v `core.js` počítá `ST.Ys` a z něj čas příběhu `T`; film se s příběhem neřídí vlastní smyčkou, krokuje ho `window.__film`. Bez toho se příběh a film na hraně rozcházely.
-- **Nájezd do anděla = jeden zoom (verze 23).** Dřív byly dva: příběh přiblížil do fotky (celá fotka na obrazovce) a pak ve filmu přibližoval další zoom do hlavy (pomalu rozjetý podle časové osy `LUT`), takže to „sekalo“; sladění rychlosti v jednom bodě (`__filmRate`) nestačilo. Teď: příběh přibližuje od `T = ZS = 12,6` konstantním ln-tempem `m = ln(sP/s0)/((N-ZS)*unit)` (`updateCam` v `core.js`, kubická křivka s koncovou rychlostí `zm = 1`, poloha hlavy smoothstepem, kotva je hlava anděla `.44, .29`), film (`filmSt` ve `scrolly.js`, jen s příběhem před sebou) v něm pokračuje stejným tempem (zoom do hlavy uvnitř fotky `b = r*s - r²s²/4`, doběhne na nulovou rychlost za `sz = 2/r` px, kde `r = m/ln Z`) a sjezd po těle se rozjede uprostřed dobíhajícího zoomu (`sd = sz/2`, ease-in `warpIn`, konec `warpEnd`). Konstanty obou stran musí zůstat shodné: konec dráhy kamery 1700×1050 a `ZS = 12,6` jsou v `core.js` (`KEYS`, `ZS`) i ve `scrolly.js` (`layout`). Bez příběhu (`gal` nepravda) zůstává stará časová osa filmu se zoomem (`zoomAt`, `descAt`, `LUT`). Změřeno vůči vyhlazenému scrollu `Ys`: d ln(šířka fotky) / d `Ys` roste na 3,6 ‰, na hraně klesá 2,74 → 2,48 ‰ a uvnitř fotky doběhne na 0 po asi 440 px (1440×900); stejný průběh na 390×844. Prolnutí scény s filmem je posledních 12 px, když scroll přeběhne konec dřív než `T`, scéna zůstane připnutá (`.stage.fix`), cestou zpět je připnutý film (`.sc-fix`). Texty u anděla nabíhají px-časově až po dozoomování (`tA = .75*sz`).
+- **Nájezd do anděla funguje jako vjezd do ostatních fotek (verze 26, Honzi: „nauč se, jak je to u vjezdu do jiných fotek, a aplikuj funkční postup“).** U ostatních fotek kamera doletí do KLIDU přesně na pozici, kterou má film na začátku záběru (`ST.gallery.fly` končí na `shotRect(sh,0)`), tam chvíli stojí, scéna se v klidu prolne s fotkou filmu pod ní (oba stojí, proto se nic nezmění) a film začne z klidu (`warp`). U anděla to bylo jinak: příběh i film se předávaly za pohybu a scéna se zastavila uprostřed zoomu, zatímco film jel dál, takže vždy zůstal skok. Teď: let kamery příběhu (`updateCam` v `core.js`, `sm5` = rozjezd z klidu a dojezd do klidu) od `ZS = 12,4` do `ZEND = 13,94` končí na `window.__filmStart` (hlava anděla zvětšená `Z`-krát, to je stav filmu `state(1,0,1)` ze `scrolly.js`); mezi `ZEND` a koncem scéna i film stojí a prolnou se (`eo`); film (`filmSt`) pak začíná jen sjezdem po těle z klidu (`warpIn` s `a = .05`), bez druhého zoomu. Jediný zoom je tedy ten let. Konstanty obou stran jsou odvozené z `__filmStart`, takže se nemohou rozejít. Bez příběhu (`gal` nepravda) zůstává stará časová osa filmu se zoomem (`zoomAt`, `descAt`, `LUT`). Texty u anděla nabíhají px-časově (`tA = .04*H`). Změřeno vůči vyhlazenému scrollu: rychlost přiblížení roste na 5,5 ‰, v klidu klesne na 0 těsně před hranou (1440×900 i 390×844), rozdíl sousedních snímků kolem hrany je do 0,3 z 255 (dřív 2,7).
+- **Co už nesmí být zpět (zkoušeno ve verzích 17 až 25):** předání za pohybu, dva zoomy s ručně sladěnou rychlostí v jednom bodě, prolnutí scény s filmem, když fotka ve scéně není přesně přes celou obrazovku, a jiné zrno ve scéně než ve filmu.
 - **Zoom do anděla se sekal i po sjednocení na jeden zoom (verze 24): příčina byla výkon, ne dráha kamery.** Při letech po zdi se obloha, domy, postavy a popředí nekreslí, při zoomu se kreslilo všechno a snímek ve středu zoomu trval 2 až 3× déle (bezhlavý prohlížeč: 119 ms oproti 32 ms u letů). Opraveno: od `zs > .55` se obloha, vzdálená města a domy nekreslí (`ins` v `updateCam`), postavy a popředí se plynule rozplynou mezi `zs .3 a .55` a pak mají `display:none` (`lf`), Mléčná dráha je rozdělená na 6 sekcí (`mC` ve `street.js`), které se mimo záběr vyřazují. Změřeno `zperf.js`: střed zoomu 119 → 47 ms, poslední třetina 62 → 34 ms, začátek zoomu 107 → 89 ms (vzdálená města a obloha tam jsou ještě vidět). Při dalším ladění plynulosti měřit čas snímků, ne jen dráhu kamery.
-- **Poskočení při předání scéna → film (verze 25), tři příčiny, všechny opravené:**
-  1. Prolnutí scény s filmem začínalo 12 px před koncem příběhu, kdy je fotka ve scéně ještě o 4 až 7 % menší než fotka filmu pod ní, takže se prolnuly dvě různě velké fotky a lišty rámu na zdi zmizely skokem. Teď je prolnutí až ZA hranou, `ysE` (vyhlazený scroll `Ys` minus konec příběhu) od 0 do 1,5 px (`eo`, `fwd`, `gone` v `core.js`); smyčka příběhu se přestane překreslovat až od `ysE >= 2` (`idle`).
+- **Tři příčiny poskočení, které se našly při ladění verze 25 a zůstávají opravené:**
+  1. (Platilo do verze 25, dnes je prolnutí v klidu před koncem, viz výše.) Prolnutí scény s filmem začínalo 12 px před koncem příběhu, kdy je fotka ve scéně ještě o 4 až 7 % menší než fotka filmu pod ní, takže se prolnuly dvě různě velké fotky a lišty rámu na zdi zmizely skokem. Teď je prolnutí až ZA hranou, `ysE` (vyhlazený scroll `Ys` minus konec příběhu) od 0 do 1,5 px (`eo`, `fwd`, `gone` v `core.js`); smyčka příběhu se přestane překreslovat až od `ysE >= 2` (`idle`).
   2. Zrno scény (`.grain`) bylo jiné než zrno filmu (`.sc-grain`) a navíc ležela pod tmavým stínem fotky, takže přidávalo jen 1,9 jasu proti 5,2 u filmu: při přepnutí skočil jas o 3 a změnila se textura. Teď má scéna stejný SVG šum (kopie `backgroundImage` z `.sc-grain` v `buildUI`) a `z-index:4` nad stínem (`style.css`). Bez zrna jsou scéna a film totožné (rozdíl 0,16).
   3. Lišta kroků dole (`#steps`) měla průhlednost zapsanou dvakrát za snímek (jednou `.25`, jednou `0`) s vynuceným layoutem mezi zápisy; CSS `transition: opacity .5s` se tím pořád restartoval a lišta uvízla na 25 % a při předání zmizela skokem. Teď se při příběhu před filmem zapíše jednou (`if(!ST.hasHero)`).
   Měření: `jump.js` ve scratchpadu (rozdíl obrazu mezi sousedními kroky scrollu po ustálení `Ys`) a `gr.js` (jas scény proti filmu s a bez zrna). Při ladění dalších skoků vždy porovnávat jas a překryvy scény a filmu ve stejné poloze, ne jen geometrii.
@@ -160,6 +161,7 @@ Jen Honziho slova z vláken 6. až 12. 11.
 ## Stav kontrol
 
 Bezhlavý prohlížeč, konzole bez chyb:
+- verze 26 (14. 11.): vjezd do anděla jako u ostatních fotek: rozdíl sousedních snímků přes hranu na 2000×919 a 1440×900 do 0,3 (předtím 2,7), profil rychlosti přiblížení na 1440×900 a 390×844 (klesá k nule těsně před hranou), hrany prvních čtyř letů, přistání v kontaktu
 - verze 25 (14. 11.): přechod scéna → film na 1440×900 a 2000×919: rozdíl sousedních snímků přes hranu 2,7 → 2,4 → 2,1 (dřív špička 4,9); jas scény 42,97 proti filmu 42,82; hrany prvních čtyř letů a přistání v kontaktu beze změny
 - verze 24 (14. 11.): čas snímků při zoomu do anděla před a po úpravě vrstev (viz Technický stav); tempo přiblížení přes hranu beze změny; hrany prvních čtyř letů (rozdíl do 4 z 255); přistání v kontaktu; úvod T 0 s rozdělenou Mléčnou dráhou
 - verze 23 (14. 11.): jeden zoom do anděla: tempo přiblížení vůči vyhlazenému scrollu na 1440×900 a 390×844 (plynulé, bez skoku na hraně), sekvence snímků od T 13.0 po 3,8 obrazovky filmu, hrany všech čtyř prvních letů (rozdíl sousedních snímků do 4 z 255), přistání v kontaktu

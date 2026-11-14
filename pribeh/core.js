@@ -146,7 +146,8 @@ ST.gallery={fly:function(a,b,k,ra,rb){var had=ST.galCam;ST.galCam=a==null?null:{
   if((had||ST.galCam)&&story){render(performance.now());ST._sync=1}}};
 function camFor(ph,r){var sc=r.W/ph.w;return {s:sc,x:ph.x+(vw/2-r.L)/sc,y:ph.y+(vh/2-r.T)/sc}}
 /* ZE = cas, kdy kamera dojede do fotky andela; od ZE do konce se scena prolne s filmem pod ni (obe stoji na stejnem miste) */
-var ZE=14,ZS=12.6,Ys=null;
+/* ZS..ZEND = let kamery k hlave andela (v klidu na konci), ZEND..N = scena v klidu, prolnuti s filmem, ktery taky stoji */
+var ZE=14,ZS=12.4,ZEND=13.94,Ys=null;
 function photoZoom(T){return ss(12.75,ZE,T)}
 /* plynuly rozjezd i dojezd (nulova rychlost i zrychleni na koncich) */
 function sm5(t){t=clamp(t);return t*t*t*(t*(t*6-15)+10)}
@@ -502,17 +503,17 @@ function updateCam(time){
   }
   /* zaver: najezd do fotky andela; na konci fotka sedi presne tam, kde ji ukazuje navazujici film */
   var pz=ST.hasHero?photoZoom(T):0;cam.pz=pz;
-  var zs=ST.hasHero?lin(ZS,ST.N,T):0;cam.zs=zs;
+  var zs=ST.hasHero?lin(ZS,ZEND,T):0;cam.zs=zs;
   if(zs>0){
-    var hs=Math.max(vw/PH.iw,vh/PH.ih),rw=PH.iw*hs,rh=PH.ih*hs,hox=(vw-rw)/2,hoy=Math.min(0,Math.max(vh-rh,vh*.28-.29*rh));
-    /* JEDEN ZOOM: od T 12,6 se kamera plynule priblizuje k hlave andela na fotce; film (scrolly.js) pokracuje stejnym
-       tempem dal (zoom uvnitr fotky je jeho pokracovani, ne druhy zoom). Meritko: konstantni ln-tempo m = ln(sP/s0)/((N-ZS)*unit)
-       s plynulym rozjezdem (kubicka, zm = 1 = konecna rychlost = m). Poloha hlavy na obrazovce: smoothstep (na konci stoji,
-       protoze film zacina zoomem kolem teze hlavy). */
-    var sP=rw/PH.w,Ax=PH.x+.44*PH.w,Ay=PH.y+.29*PH.h;
-    var b0x=(Ax-cam.x)*cam.s,b0y=(Ay-cam.y)*cam.s,b1x=hox+.44*rw-vw/2,b1y=hoy+.29*rh-vh/2;
-    var zm=1,ez=(zm-2)*zs*zs*zs+(3-zm)*zs*zs,ep=zs*zs*(3-2*zs),sZ=cam.s*Math.pow(sP/cam.s,ez);
-    cam.x=Ax-lerp(b0x,b1x,ep)/sZ;cam.y=Ay-lerp(b0y,b1y,ep)/sZ;cam.s=sZ;
+    /* Vjezd do andela jako u ostatnich fotek: jeden let (kubicky 'sm5' = rozjezd z klidu a dojezd do klidu) z kamery konce pribehu
+       na pozici, kterou ma film na zacatku (window.__filmStart, hlava zvetsena, jako ST.gallery.fly konci na shotRect(sh,0)).
+       Od ZEND do konce stoji scena i film, v tom klidu se prolnou (eo nize). Zadny druhy zoom ve filmu. */
+    var hs=Math.max(vw/PH.iw,vh/PH.ih),rw=PH.iw*hs,rh=PH.ih*hs,hoy=Math.min(0,Math.max(vh-rh,vh*.28-.29*rh)),
+        fs=window.__filmStart||{L:(vw-rw*(vw>vh?1.8:2.4))/2,T:hoy,W:rw*(vw>vh?1.8:2.4)},fh=fs.W*PH.ih/PH.iw;
+    var sP=fs.W/PH.w,Ax=PH.x+.44*PH.w,Ay=PH.y+.29*PH.h;
+    var b0x=(Ax-cam.x)*cam.s,b0y=(Ay-cam.y)*cam.s,b1x=fs.L+.44*fs.W-vw/2,b1y=fs.T+.29*fh-vh/2;
+    var ez=sm5(zs),sZ=cam.s*Math.pow(sP/cam.s,ez);
+    cam.x=Ax-lerp(b0x,b1x,ez)/sZ;cam.y=Ay-lerp(b0y,b1y,ez)/sZ;cam.s=sZ;
   }
   var gc=ST.galCam;
   if(gc){var A=GAL[gc.a],B=GAL[gc.b],ca=camFor(A,gc.ra),cb=camFor(B,gc.rb),F=flyLUT(ca,cb),t=clamp((gc.k-FH)/(1-2*FH)),
@@ -620,20 +621,18 @@ function render(time){
        stejne jako pri letech po zdi: bez toho trvala kazda snimka ve stredu najezdu 2 az 3x dyl a obraz sekal */
     var lf=ST.galCam?0:1-ss(.3,.55,cam.zs||0);['front','fore','fig','light'].forEach(function(n){var v=n==='light'&&ST.galCam?1:lf,e=$('L-'+n);if(e&&e._o!==v){e._o=v;e.style.opacity=v;e.style.display=v<=.002?'none':''}});
     var fl=!!ST.galCam;[['far',fl],['mid',fl],['fore',fl],['fig',fl],['front',fl],['sky',fl]].forEach(function(q){var e=$('L-'+q[0]);if(e&&e._h!==q[1]){e._h=q[1];e.style.visibility=q[1]?'hidden':''}});
-    var sh=$('stShade');if(sh&&!ST.galCam)sh.style.opacity=ss(13.22,ZE,T).toFixed(3);
+    var sh=$('stShade');if(sh&&!ST.galCam)sh.style.opacity=ss(13.2,ZEND,T).toFixed(3);
     /* konec pribehu: scena zmizi, az kdyz plynuly cas T dojede na konec (ne uz ve chvili, kdy tam dojel scroll).
        Do te doby je scena pripnuta na obrazovku (fix) a film pod ni ceka na zacatku; pak se probudi (udalost scroll). */
-    /* Prolnuti scena -> film je az ZA hranou (vyhlazeny scroll Ys o 0 az 1,5 px dal), kdy je fotka presne pres celou obrazovku
-       a film pod scenou stoji na stejnem miste. Drive (od 12 px pred koncem) se prolinaly dve ruzne velke fotky (scena byla
-       o 4 az 7 % mensi) a obraz poskocil (Honzi 14. 11.). */
-    var ysE=(ST.Ys==null?scrollY:ST.Ys)-(story.offsetTop+story.offsetHeight-vh),
-        past=Tt>=ST.N-.004,fwd=past&&ysE<1.5&&!ST.galCam,gone=past&&!fwd,sg=$('stage'),gm=!!ST.galCam&&gone;
+    /* Predani scena -> film jako u letu po zdi: scena (v klidu od ZEND) se prolne s filmem pod ni (stoji na pocatku), dokud T nedojede
+       na konec. Kdyz real scroll preskoci konec dřív než plynuly cas T, scena zustane pripnuta (fix), film ceka a pak se probudi. */
+    var past=Tt>=ST.N-.004,fwd=past&&T<ST.N-.0006&&!ST.galCam,gone=past&&!fwd,sg=$('stage'),gm=!!ST.galCam&&gone;
     if(fwd!==!!ST._fwd){if(ST._fwd&&!fwd)setTimeout(function(){dispatchEvent(new Event('scroll'))},0);ST._fwd=fwd;sg.classList.toggle('fix',fwd)}
     if(gm!==ST._gm){ST._gm=gm;sg.classList.toggle('gal',gm)}
     /* predani mezi filmem a letem: kamera stoji presne na fotce (FH) a scena se prolne s fotkou filmu pod ni;
        zrno zustava stejne silne jako ve filmu, aby se nezmenil jas */
     var gfo=gm?(GAL[ST.galCam.b].panel?ss(0,FH,ST.galCam.k):Math.min(ss(0,FH,ST.galCam.k),1-ss(1-FH,1,ST.galCam.k))):1;
-    var eo=gm?gfo:1-ss(0,1.5,ysE);
+    var eo=gm?gfo:1-ss(ZEND+.01,ST.N,T);
     sg.style.opacity=gone&&!gm?0:eo.toFixed(3);sg.style.visibility=gone&&!gm?'hidden':'';
     /* pred pristanim v ramu s kontaktem zrno zmizi (formular zadne nema), jinak drzi jas filmu */
     if(gm)ST._ov.grain.style.opacity=GAL[ST.galCam.b].panel?(.07*(1-ss(.7,.92,ST.galCam.k))).toFixed(3):.07;
@@ -688,7 +687,7 @@ function frame(ts){
     if(reduce||Ys==null){Ys=scrollY}else{var f=1-Math.exp(-dt/150);Ys+=(scrollY-Ys)*f;if(Math.abs(scrollY-Ys)<.3)Ys=scrollY}
     T=clamp((Ys-story.offsetTop)/(story.offsetHeight-vh))*ST.N;ST.Ys=Ys;
     if(window.__film&&Ys!==ST._ysF){ST._ysF=Ys;window.__film()}}
-  var idle=ST.debug.T==null&&!!ST.hasHero&&Tt>=ST.N-.004&&T>=ST.N-.0006&&!ST.galCam&&Ys!=null&&Ys-(story.offsetTop+story.offsetHeight-vh)>=2;
+  var idle=ST.debug.T==null&&!!ST.hasHero&&Tt>=ST.N-.004&&T>=ST.N-.0006&&!ST.galCam;
   if(ST._sync)ST._sync=0;else if(!(idle&&ST._idle))render(ts);
   ST._idle=idle;lastT=T;ST.T=T;
   requestAnimationFrame(frame);
