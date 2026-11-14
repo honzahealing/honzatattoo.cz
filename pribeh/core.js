@@ -146,8 +146,8 @@ ST.gallery={fly:function(a,b,k,ra,rb){var had=ST.galCam;ST.galCam=a==null?null:{
   if((had||ST.galCam)&&story){render(performance.now());ST._sync=1}}};
 function camFor(ph,r){var sc=r.W/ph.w;return {s:sc,x:ph.x+(vw/2-r.L)/sc,y:ph.y+(vh/2-r.T)/sc}}
 /* ZE = cas, kdy kamera dojede do fotky andela; od ZE do konce se scena prolne s filmem pod ni (obe stoji na stejnem miste) */
-var ZE=14,Ys=null;
-function photoZoom(T){return ss(13.15,ZE,T)}
+var ZE=14,ZS=12.6,Ys=null;
+function photoZoom(T){return ss(12.75,ZE,T)}
 /* plynuly rozjezd i dojezd (nulova rychlost i zrychleni na koncich) */
 function sm5(t){t=clamp(t);return t*t*t*(t*(t*6-15)+10)}
 /* let kamery mezi dvema zabery [stred x, stred y, sirka zaberu]: oddaleni, prelet a priblizeni v jednom plynulem
@@ -498,14 +498,17 @@ function updateCam(time){
   }
   /* zaver: najezd do fotky andela; na konci fotka sedi presne tam, kde ji ukazuje navazujici film */
   var pz=ST.hasHero?photoZoom(T):0;cam.pz=pz;
-  if(pz>0){
+  var zs=ST.hasHero?lin(ZS,ST.N,T):0;cam.zs=zs;
+  if(zs>0){
     var hs=Math.max(vw/PH.iw,vh/PH.ih),rw=PH.iw*hs,rh=PH.ih*hs,hox=(vw-rw)/2,hoy=Math.min(0,Math.max(vh-rh,vh*.28-.29*rh));
-    var sP=rw/PH.w,Ax=PH.x+PH.w/2,Ay=PH.y+PH.h/2;
-    var b0x=(Ax-cam.x)*cam.s,b0y=(Ay-cam.y)*cam.s,b1x=hox+rw/2-vw/2,b1y=hoy+rh/2-vh/2;
-    /* zoom do fotky nekonci zastavenim: na konci ma stejnou rychlost priblizovani, jakou film zacina (window.__filmRate),
-       takze pohyb pres hranu pribeh/film plynule pokracuje */
-    var zu=lin(13.12,ST.N,T),zL=Math.max(.2,Math.log(sP/cam.s)),zm=Math.max(0,Math.min(1.2,(window.__filmRate||0)*unit*(ST.N-13.12)/zL)),ez=(zm-2)*zu*zu*zu+(3-zm)*zu*zu,sZ=cam.s*Math.pow(sP/cam.s,ez);
-    cam.x=Ax-lerp(b0x,b1x,ez)/sZ;cam.y=Ay-lerp(b0y,b1y,ez)/sZ;cam.s=sZ;
+    /* JEDEN ZOOM: od T 12,6 se kamera plynule priblizuje k hlave andela na fotce; film (scrolly.js) pokracuje stejnym
+       tempem dal (zoom uvnitr fotky je jeho pokracovani, ne druhy zoom). Meritko: konstantni ln-tempo m = ln(sP/s0)/((N-ZS)*unit)
+       s plynulym rozjezdem (kubicka, zm = 1 = konecna rychlost = m). Poloha hlavy na obrazovce: smoothstep (na konci stoji,
+       protoze film zacina zoomem kolem teze hlavy). */
+    var sP=rw/PH.w,Ax=PH.x+.44*PH.w,Ay=PH.y+.29*PH.h;
+    var b0x=(Ax-cam.x)*cam.s,b0y=(Ay-cam.y)*cam.s,b1x=hox+.44*rw-vw/2,b1y=hoy+.29*rh-vh/2;
+    var zm=1,ez=(zm-2)*zs*zs*zs+(3-zm)*zs*zs,ep=zs*zs*(3-2*zs),sZ=cam.s*Math.pow(sP/cam.s,ez);
+    cam.x=Ax-lerp(b0x,b1x,ep)/sZ;cam.y=Ay-lerp(b0y,b1y,ep)/sZ;cam.s=sZ;
   }
   var gc=ST.galCam;
   if(gc){var A=GAL[gc.a],B=GAL[gc.b],ca=camFor(A,gc.ra),cb=camFor(B,gc.rb),F=flyLUT(ca,cb),t=clamp((gc.k-FH)/(1-2*FH)),
@@ -517,7 +520,7 @@ function updateCam(time){
   if(ST.debug.cam){var dc=ST.debug.cam;cam.x=dc[0];cam.y=dc[1];cam.s=Math.min(vw/dc[2],vh/dc[3])}
   /* jemne pohupovani kamery: na obrazovce vzdy jen par pixelu; pri letu po galerii a pri najezdu do fotky zadne,
      jinak by fotka na zdi nesedela na fotku z filmu a pri predani by poskocila */
-  else if(!reduce&&!gc){var ja=(1-(cam.pz||0))*Math.min(1,1.4/cam.s);cam.x+=Math.sin(time*.00031)*2.2*ja;cam.y+=Math.cos(time*.00027)*1.6*ja}
+  else if(!reduce&&!gc){var ja=(1-Math.min(1,3*(cam.zs||0)))*Math.min(1,1.4/cam.s);cam.x+=Math.sin(time*.00031)*2.2*ja;cam.y+=Math.cos(time*.00027)*1.6*ja}
   cam.vw=vw;cam.vh=vh;cam.T=T;
   var hw=vw/2/cam.s,hh=vh/2/cam.s;
   cam.x0=cam.x-hw;cam.x1=cam.x+hw;cam.y0=cam.y-hh;cam.y1=cam.y+hh;
@@ -605,11 +608,11 @@ function render(time){
   $('steps').style.opacity=1-ss(12.3,12.6,T)*.75;
   /* konec: scena se rozplyne do navazujici fotky andela */
   if(ST.hasHero){
-    var ov=1-ss(13.25,13.85,T);['grain','vig','ffade'].forEach(function(k){if(!ST._ov)ST._ov={grain:$('grain'),vig:story.querySelector('.vignette'),ffade:story.querySelector('.floorfade')};ST._ov[k].style.opacity=k==='grain'?.07:ov});
+    var ov=1-ss(12.85,13.75,T);['grain','vig','ffade'].forEach(function(k){if(!ST._ov)ST._ov={grain:$('grain'),vig:story.querySelector('.vignette'),ffade:story.querySelector('.floorfade')};ST._ov[k].style.opacity=k==='grain'?.07:ov});
     /* pri najezdu do fotky a pri letu po galerii postavy a popredi nezakryvaji obrazy */
     var lf=ST.galCam?0:1-ss(.55,.92,cam.pz||0);['front','fore','fig','light'].forEach(function(n){var v=n==='light'&&ST.galCam?1:lf,e=$('L-'+n);if(e&&e._o!==v){e._o=v;e.style.opacity=v}});
     var fl=!!ST.galCam;[['far',fl],['mid',fl],['fore',fl],['fig',fl],['front',fl],['sky',fl]].forEach(function(q){var e=$('L-'+q[0]);if(e&&e._h!==q[1]){e._h=q[1];e.style.visibility=q[1]?'hidden':''}});
-    var sh=$('stShade');if(sh&&!ST.galCam)sh.style.opacity=ss(13.5,ZE,T).toFixed(3);
+    var sh=$('stShade');if(sh&&!ST.galCam)sh.style.opacity=ss(13.22,ZE,T).toFixed(3);
     /* konec pribehu: scena zmizi, az kdyz plynuly cas T dojede na konec (ne uz ve chvili, kdy tam dojel scroll).
        Do te doby je scena pripnuta na obrazovku (fix) a film pod ni ceka na zacatku; pak se probudi (udalost scroll). */
     var past=Tt>=ST.N-.004,fwd=past&&T<ST.N-.0006&&!ST.galCam,gone=past&&!fwd,sg=$('stage'),gm=!!ST.galCam&&gone;

@@ -42,14 +42,15 @@ function ss(a,b,v){var t=clamp((v-a)/(b-a));return t*t*(3-2*t)}
 function lerp(a,b,t){return a+(b-a)*t}
 
 /* stav kamery: b = kolik je hotovo zoomu (0..1), d = kolik je hotovo sjezdu (0..1) */
-function state(b,d){
+function state(b,d,bp){
+  if(bp==null)bp=b;
   var wave=Math.sin(d*3*Math.PI)*ss(0,.12,d),
       fx=lerp(HEAD.x,FOOT.x,d)*rw,fy=lerp(HEAD.y,footY,d)*rh;
   return {
     v:d,wave:wave,fx:fx,fy:fy,
     z:Math.pow(Z,b),
-    sx:lerp(ox+fx,W*(.5+A*wave),b),
-    sy:lerp(oy+fy,H*anchorY,b),
+    sx:lerp(ox+fx,W*(.5+A*wave),bp),
+    sy:lerp(oy+fy,H*anchorY,bp),
     rot:-wave*1.4*b
   };
 }
@@ -121,7 +122,11 @@ var shots=[].slice.call(root.querySelectorAll('.sc-shot')).map(function(el,i){
 });
 
 /* casova osa v px scrollu: ANGEL = cela scena s andelem, X = prolnuti, L = odstup zaberu */
-var ANGEL=0,X=0,L=0,dist=0;
+var ANGEL=0,X=0,L=0,dist=0,FZ=null,LUT2=null;
+function dOf(p){p=clamp(p);var lo=0,hi=LUT2.length-1;while(hi-lo>1){var m=(lo+hi)>>1;if(LUT2[m]<p)lo=m;else hi=m}var dd=LUT2[hi]-LUT2[lo];return (lo+(dd>0?(p-LUT2[lo])/dd:0))/(LUT2.length-1)}
+function warpIn(x){var a=.12,h=x<a?x*x/(2*a):x-a/2;return h/(1-a/2)}
+/* stav filmu pri jednom zoomu: nejdriv doznivajici zoom do hlavy (b), uprostred jeho dobehu se pozvolna rozjede sjezd (d) */
+function filmSt(s){var Fz=FZ,b=s<Fz.sz?Fz.r*s-Fz.r*Fz.r*s*s/4:1,x=clamp((s-Fz.sd)/Fz.Ld);if(b<0)b=0;return state(b,dOf(warpEnd(warpIn(x))),b*b)}
 
 function layout(){
   W=stage.clientWidth;H=stage.clientHeight;
@@ -140,10 +145,17 @@ function layout(){
   footY=Math.min(FOOT.y,1-(H*(1-anchorY)+40)/(rh*Z));
   timeline();
   buildLUT();
-  /* rychlost priblizovani na zacatku filmu (zmena ln meritka na 1 px scrollu): pribeh na ni na konci navaze */
-  if(gal){var d0=40,p0=warpEnd(d0/((mobile?4.2:5)*H));window.__filmRate=Math.log(state(zoomAt(qAt(p0)),descAt(qAt(p0))).z)/d0}
+  /* JEDEN ZOOM (Honzi 14. 11.): pribeh priblizuje do fotky konstantnim tempem m (ln sirky fotky na 1 px scrollu, vzorec stejny
+     jako v core.js: konec dráhy kamery 1700x1050, zoom od T 12,6 do konce). Film v nem pokracuje stejnym tempem
+     (uvnitr fotky se prirusti 1,8x do hlavy, zoom doznivá s nulovou rychlosti), az potom zacne sjezd. Zadny druhy zoom. */
+  FZ=null;
+  if(gal){var s0=Math.min(W/1700,H/1050)*(W<H?1.5:1),m=Math.log((rw/100)/s0)/((14-12.6)*H*.85),Zl=Math.log(Z),r=m/Zl,sz=2/r;
+    FZ={r:r,sz:sz,sd:.5*sz,Ld:(1-P_D)*(mobile?4.2:5)*H};
+    /* sjezd: stejna rychlost po cele draze (zoom uz je hotovy, b = 1) */
+    var N2=300,F2=[0],pv=state(1,0,1),ii;for(ii=1;ii<=N2;ii++){var sx2=state(1,ii/N2,1);F2.push(F2[ii-1]+flow(pv,sx2));pv=sx2}
+    for(ii=0;ii<=N2;ii++)F2[ii]/=F2[N2]||1;LUT2=F2}
 
-  ANGEL=(mobile?4.2:5)*H;X=.8*H;L=(mobile?2.1:2.4)*H;XG=(mobile?1.6:2.1)*H;
+  ANGEL=gal&&FZ?FZ.sd+FZ.Ld:(mobile?4.2:5)*H;X=.8*H;L=(mobile?2.1:2.4)*H;XG=(mobile?1.6:2.1)*H;
   for(var i=0;i<shots.length;i++){
     var sh=shots[i];
     if(sh.img.naturalWidth){sh.iw=sh.img.naturalWidth;sh.ih=sh.img.naturalHeight}
@@ -155,6 +167,7 @@ function layout(){
   if(gal)dist=shots.length?shots[shots.length-1].b+XG+shots[shots.length-1].L:ANGEL;
   else dist=shots.length?shots[shots.length-1].b+shots[shots.length-1].L+X:ANGEL;
   C0=dist;
+  window.__filmDbg={ANGEL:ANGEL,XG:XG,H:H,shots:shots.map(function(q){return [q.b,q.L]})};
   cBg=false;
   if(hasC){dist+=XG;contact.style.marginTop=(-H)+'px';contact.style.minHeight=H+'px';contact.style.zIndex=3}
   root.style.height=(dist+H)+'px';
@@ -271,9 +284,9 @@ function outgoing(i,s){
 }
 
 function render(s){
-  var p=clamp(s/ANGEL);if(gal)p=warpEnd(p);
-  var q=qAt(p),st=state(zoomAt(q),descAt(q)),
-      cam=reduce?state(0,0):st;
+  var p=clamp(s/ANGEL),q,st;
+  if(gal&&FZ){st=filmSt(s)}else{if(gal)p=warpEnd(p);q=qAt(p);st=state(zoomAt(q),descAt(q))}
+  var cam=reduce?state(0,0):st;
 
   if(s<=ANGEL+2+(gal?XG*.5:0)){
     heroLayer.style.visibility='visible';
@@ -283,9 +296,10 @@ function render(s){
   }else heroLayer.style.visibility='hidden';
 
   /* s pribehem pred filmem: texty nabehnou az po najezdu do fotky a chvili zustanou */
-  var io=afterStory?ss(.003,.03,p)*(1-ss(.11,.17,p)):1-ss(.004,.055,p);
+  var tA=gal&&FZ?.75*FZ.sz:0,tIn=gal&&FZ?ss(tA,tA+.2*H,s):ss(.003,.03,p),tOut=gal&&FZ?ss(tA+.65*H,tA+.95*H,s):ss(.11,.17,p);
+  var io=afterStory?tIn*(1-tOut):1-ss(.004,.055,p);
   intro.style.opacity=io.toFixed(3);
-  intro.style.transform='translate3d(0,'+(afterStory?(24*(1-ss(.003,.03,p))-70*ss(.11,.17,p)):-70*ss(.004,.055,p)).toFixed(1)+'px,0)';
+  intro.style.transform='translate3d(0,'+(afterStory?(24*(1-tIn)-70*tOut):-70*ss(.004,.055,p)).toFixed(1)+'px,0)';
   intro.classList.toggle('on',io>.5);
   if(hint)hint.style.opacity=(1-ss(0,.03,p)).toFixed(3);
 

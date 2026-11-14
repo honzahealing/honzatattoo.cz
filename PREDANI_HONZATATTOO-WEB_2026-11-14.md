@@ -2,7 +2,7 @@
 
 ## Kanonické soubory
 
-Repozitář `honzahealing/honzatattoo.cz`. **Verze 22 je na pracovní větvi vlákna z 10. až 14. 11.** Je to jediná vzdálená větev, která obsahuje commit `b05be62` (`git branch -r --contains b05be62`); název jí přidělilo prostředí. Větev `pribeh-na-scroll` zůstává na verzi 8 a `main` je beze změn. Pull request není. Velikosti v bajtech platí pro verzi 22.
+Repozitář `honzahealing/honzatattoo.cz`. **Verze 23 je na pracovní větvi vlákna z 10. až 14. 11.** Je to jediná vzdálená větev, která obsahuje commit `b05be62` (`git branch -r --contains b05be62`); název jí přidělilo prostředí. Větev `pribeh-na-scroll` zůstává na verzi 8 a `main` je beze změn. Pull request není. Velikosti v bajtech platí pro verzi 23.
 
 | Bajty | Soubor | K čemu |
 |---|---|---|
@@ -10,7 +10,7 @@ Repozitář `honzahealing/honzatattoo.cz`. **Verze 22 je na pracovní větvi vl�
 | 59303 | `preview.html` | Zdroj webu bez příběhu: horní lišta, film s andělem (`#hero`), kontakt (`#contact`), patička. Styl lišty a kontaktu je v bloku `<style>` s komentářem „v14“ na konci hlavičky. Sekce Portfolio, Proces a FAQ jsou smazané, jejich CSS a JS v souboru zůstaly nepoužité |
 | 7834 | `pribeh.html` | Samotný příběh (ladění a snímky). Bez kontaktu, proto na zdi místo rámu s kontaktem visí osvědčení |
 | 14054 | `pribeh/style.css` | Styly příběhu |
-| 53897 | `pribeh/core.js` | Jádro: kamera (`KEYS`, `ST.N = 14`), jeden vyhlazený scroll `ST.Ys`, galerie na zdi (`GAL`, `WI`, `WALLS`, `card`, `panel`), let mezi fotkami (`flyLUT`, `gc` v `updateCam`), nájezd do anděla (`ez`, `ZE`), detail ruky, popisek fólie (`ST.filmT`), bubliny (`BUB`), kroky (`STEPS`) |
+| 54115 | `pribeh/core.js` | Jádro: kamera (`KEYS`, `ST.N = 14`), jeden vyhlazený scroll `ST.Ys`, galerie na zdi (`GAL`, `WI`, `WALLS`, `card`, `panel`), let mezi fotkami (`flyLUT`, `gc` v `updateCam`), nájezd do anděla (`ez`, `ZE`), detail ruky, popisek fólie (`ST.filmT`), bubliny (`BUB`), kroky (`STEPS`) |
 | 130847 | `pribeh/street.js` | Ulice: obloha, letadlo s plachtou (`amb.banner`), Žižkovský vysílač (`buildTower`), tramvaj (`buildTram`, kola `g._wheels`), činžáky, příběhy v oknech, kolo, koše, lavička (`big`) |
 | 113638 | `pribeh/studio.js` | Budova a interiér studia, kalendář, poličky s tetovacími barvami (`bottles`), okno s vysílačem, easter eggy. Nic se při scrollu nedokresluje (`tt()` vrací `STAT`) |
 | 12741 | `pribeh/facade.js` | Uliční fasáda studia, která po vstupu klientky zmizí |
@@ -18,7 +18,7 @@ Repozitář `honzahealing/honzatattoo.cz`. **Verze 22 je na pracovní větvi vl�
 | 25224 | `pribeh/close.js` | Detail tetování: předloktí, ruka v rukavici, Pen strojek bez nápisu, kalíšky s barvami |
 | 51774 | `pribeh/chars.js` | Postavy Honza a klientka |
 | 30078 | `pribeh/audio.js` | Generativní hudba. Hlasy, šum vinylu, lupání, bzučení strojku a metličky jsou vypnuté |
-| 17862 | `scrolly.js` | Film s andělem. S příběhem před sebou ho krokuje příběh (`window.__film`), mezi záběry let po zdi (`XG`, `warp`, `warpEnd`), na konci let do rámu s kontaktem (`hasC`, `cRect`, `cBgSet`) |
+| 19238 | `scrolly.js` | Film s andělem. S příběhem před sebou ho krokuje příběh (`window.__film`), mezi záběry let po zdi (`XG`, `warp`, `warpEnd`), na konci let do rámu s kontaktem (`hasC`, `cRect`, `cBgSet`) |
 | 4639 | `scrolly.css` | Styly filmu |
 | 69050 | `index.html` | Živý web. **Nesahat**, příběh na něm není |
 | 3676 | `pribeh/dev/build_site.py` | Složí web: `python3 pribeh/dev/build_site.py preview-pribeh.html`; s `--artifact` jeden soubor pro náhled |
@@ -26,7 +26,7 @@ Repozitář `honzahealing/honzatattoo.cz`. **Verze 22 je na pracovní větvi vl�
 | 1156 | `pribeh/dev/siteshot.js` | Snímky složeného webu: `node pribeh/dev/siteshot.js $PWD/preview-pribeh.html <prefix> 1440 900 13.97 h0 h5.6` (hN = N obrazovek za koncem příběhu) |
 | 7584 | `pribeh/dev/CONTRACT.md` | Původní smlouva modulů (souřadnice, API). Časová osa a pravidlo „každý modul jen svůj soubor“ v ní už neplatí přesně |
 
-**Náhled pro Honziho:** artefakt https://claude.ai/artifact/3xqedLNY3xePQ9RkMdV38D (verze 22). Publikace:
+**Náhled pro Honziho:** artefakt https://claude.ai/artifact/3xqedLNY3xePQ9RkMdV38D (verze 23). Publikace:
 1. `python3 pribeh/dev/build_site.py <scratchpad>/site/index.html --artifact`
 2. v souboru nahradit `<title>` za „Honza Tattoo · Příběh“
 3. publikovat. Obrázky `img/*.jpg` a `img/*.webp` (mapa `img/x` → `img/x`) jsou u artefaktu už nahrané.
@@ -40,12 +40,12 @@ Repozitář `honzahealing/honzatattoo.cz`. **Verze 22 je na pracovní větvi vl�
 
 ## Kde jsme
 
-Hotová a publikovaná je verze 22 (14. 11.). Web je jeden souvislý scroll: příběh (ulice, fasáda, studio, detail tetování, odchod), nájezd do fotky anděla, film s lety po zdi studia mezi fotkami, let do rámu s kontaktním formulářem, patička. Poslední Honziho pokyny (zánik fasády začít dřív, okno s milenci vrátit dolů) jsou provedené; Honzi verzi 22 ještě neviděl. Zánik zkracováním linií zleva doprava Honzi pochválil.
+Hotová a publikovaná je verze 23 (14. 11.). Web je jeden souvislý scroll: příběh (ulice, fasáda, studio, detail tetování, odchod), nájezd do fotky anděla, film s lety po zdi studia mezi fotkami, let do rámu s kontaktním formulářem, patička. Poslední Honziho pokyny (zánik fasády začít dřív, okno s milenci vrátit dolů) jsou provedené; Honzi verzi 22 ještě neviděl. Zánik zkracováním linií zleva doprava Honzi pochválil.
 
 ## Technický stav
 
 - **Jeden vyhlazený scroll.** `frame()` v `core.js` počítá `ST.Ys` a z něj čas příběhu `T`; film se s příběhem neřídí vlastní smyčkou, krokuje ho `window.__film`. Bez toho se příběh a film na hraně rozcházely.
-- **Nájezd do anděla.** Zoom končí rychlostí, kterou film začíná (`window.__filmRate`, kubická křivka `ez`), prolnutí scény je posledních 12 px. Když real scroll přeběhne konec dřív než `T`, scéna zůstane připnutá (`.stage.fix`), cestou zpět je připnutý film (`.sc-fix`).
+- **Nájezd do anděla = jeden zoom (verze 23).** Dřív byly dva: příběh přiblížil do fotky (celá fotka na obrazovce) a pak ve filmu přibližoval další zoom do hlavy (pomalu rozjetý podle časové osy `LUT`), takže to „sekalo“; sladění rychlosti v jednom bodě (`__filmRate`) nestačilo. Teď: příběh přibližuje od `T = ZS = 12,6` konstantním ln-tempem `m = ln(sP/s0)/((N-ZS)*unit)` (`updateCam` v `core.js`, kubická křivka s koncovou rychlostí `zm = 1`, poloha hlavy smoothstepem, kotva je hlava anděla `.44, .29`), film (`filmSt` ve `scrolly.js`, jen s příběhem před sebou) v něm pokračuje stejným tempem (zoom do hlavy uvnitř fotky `b = r*s - r²s²/4`, doběhne na nulovou rychlost za `sz = 2/r` px, kde `r = m/ln Z`) a sjezd po těle se rozjede uprostřed dobíhajícího zoomu (`sd = sz/2`, ease-in `warpIn`, konec `warpEnd`). Konstanty obou stran musí zůstat shodné: konec dráhy kamery 1700×1050 a `ZS = 12,6` jsou v `core.js` (`KEYS`, `ZS`) i ve `scrolly.js` (`layout`). Bez příběhu (`gal` nepravda) zůstává stará časová osa filmu se zoomem (`zoomAt`, `descAt`, `LUT`). Změřeno vůči vyhlazenému scrollu `Ys`: d ln(šířka fotky) / d `Ys` roste na 3,6 ‰, na hraně klesá 2,74 → 2,48 ‰ a uvnitř fotky doběhne na 0 po asi 440 px (1440×900); stejný průběh na 390×844. Prolnutí scény s filmem je posledních 12 px, když scroll přeběhne konec dřív než `T`, scéna zůstane připnutá (`.stage.fix`), cestou zpět je připnutý film (`.sc-fix`). Texty u anděla nabíhají px-časově až po dozoomování (`tA = .75*sz`).
 - **Let mezi fotkami.** Jedna křivka: šířka záběru je oblouk v logaritmu, posun úměrný šířce, tabulka `U` vyrovnává tempo. Na koncích letu krátké usazení (`FH = .03`), ve kterém se fotka na zdi prolne s fotkou filmu; film ve fotce měkce dojíždí (`warp`). Při letu se nekreslí obloha, domy, postavy a popředí. Pohupování kamery je při letu vypnuté (dřív dělalo u fotky posun o desítky pixelů).
 - **Kontakt.** Rám na zdi (`WI.kontakt`, `panel()`) má poměr stran rámu formuláře. Sekce `#contact` má `margin-top:-100vh`, při přistání je připnutá na rám a prolne se; její pozadí je kopie tapety studia v místě a měřítku přistání (`cBgSet`). Bez příběhu nebo při omezeném pohybu je kontakt obyčejná sekce.
 - **Fasáda.** `facade.js`, vrstva `front`, x 903 až 2016. Plochy jsou ve skupině `c.g`, linky zvlášť v `c.gl`. Zánik od `T0 = 1.98` (klientka právě otevírá dveře) běží zleva doprava (`tAt(x)`, `SPAN = .42`): plochy pole zprůhlední, když k němu vlna dorazí, a každá linka se zkrátí od svého konce k začátku (`strokeDashoffset` 0 až 1, `DUR = .14`), tedy obrácené rýsování. Hlavní linky jsou rozdělené na jednotlivé tahy, drobná kresba (`hair`) zůstává po skupinách. Hotovo kolem T 2,6. Linka na x je pryč asi o 0,07 T dřív, než tam klientka dojde (chodí 582 jednotek na 1 T od T 2,06 z x 812). Do T 1,97 se interiér (`ST.studioIn`) a obrazy (`ST.galL`) nekreslí.
@@ -99,7 +99,7 @@ Jen Honziho slova z vláken 6. až 12. 11.
 - Písmo v bublinách hezké, podobné vizuálu webu. Písmo všude dobře čitelné.
 
 **Film a lety**
-- Konec příběhu je nájezd do fotky anděla; texty u anděla zůstávají. Přechod do anděla musí být dokonale plynulý.
+- Konec příběhu je nájezd do fotky anděla; texty u anděla zůstávají. Přechod do anděla musí být dokonale plynulý. 14. 11.: skákání je tím, že jsou dva zoomy (z prostoru do fotky a pak ještě zoom uvnitř fotky); „musí to být jeden zoom, pak to bude plynulé“.
 - Mezi záběry oblouk nad studiem a vjezd do další fotky. Nájezdy do fotek „výborné“. Oblouky hodně vzdálené, ale plynulé; při vjezdu do fotky a výjezdu z ní nesmí nic probliknout ani poskočit.
 
 **Web kolem**
@@ -142,7 +142,7 @@ Jen Honziho slova z vláken 6. až 12. 11.
 - **Zlatý průhled do dveří; věž s kuličkami za oknem** (vypadala jako z jiného města).
 - **Postava za oběma sloupky dveří** (verze 12) i **postava před celým rámem** (dřív): obojí špatně.
 - **Let s prodlevou uprostřed** (oddálit, podržet, přiblížit): působil jako zastavení. **Krátké oddálení** (verze 9): studio jen probliklo. **Oddálení z verze 11:** „možná moc vzdálené“.
-- **Nájezd do anděla se zastavením před fotkou** a **dva oddělené dojezdy scrollu:** skákalo to (opravováno třikrát, viz Technický stav).
+- **Nájezd do anděla se zastavením před fotkou**, **dva oddělené dojezdy scrollu** a **dva zoomy (do fotky a pak uvnitř fotky)** i s ručně sladěnou rychlostí v jednom bodě: skákalo to (opravováno čtyřikrát, viz Technický stav).
 - **Kontakt jako obyčejná sekce pod filmem** a **kontakt s vlastním tečkovaným pozadím:** chtěl let do rámu a nezměněné pozadí.
 - **Fasáda s postupným rozplýváním zleva doprava a jednoduchou výzdobou** (verze 17): málo zdobná a pomalá. **Fasáda, která zmizí celá naráz** (verze 18): „až moc rychle“ a „úplně jednolitě“. **Linky rozpadlé na kousky, celá zeď najednou** (verze 20): linie se nemají rozpojovat a zánik má jít zleva doprava.
 - **Nápis na plachtě „Usměj se, Žižkove“; „Spojovací“ na tramvaji; devítka sama uprostřed tabule.**
@@ -154,6 +154,7 @@ Jen Honziho slova z vláken 6. až 12. 11.
 ## Stav kontrol
 
 Bezhlavý prohlížeč, konzole bez chyb:
+- verze 23 (14. 11.): jeden zoom do anděla: tempo přiblížení vůči vyhlazenému scrollu na 1440×900 a 390×844 (plynulé, bez skoku na hraně), sekvence snímků od T 13.0 po 3,8 obrazovky filmu, hrany všech čtyř prvních letů (rozdíl sousedních snímků do 4 z 255), přistání v kontaktu
 - verze 22 (14. 11.): zánik fasády na 1440×900, T 1.96, 2.02, 2.1, 2.18, 2.26, 2.4 (vlna je před dívkou, kde stojí, je čisto); červené okno dole ve výřezu úvodu
 - verze 21 (14. 11.): zánik fasády T 2.19 až 2.8 (zkracování linií zleva doprava)
 - verze 20 (14. 11.): úvod T 0 (plachta „AHOJ, VÍTEJ A SCROLLUJ“)
