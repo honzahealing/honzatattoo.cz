@@ -457,7 +457,11 @@ function buildUI(){
     b.addEventListener('click',function(){scrollToT(s[1]+.25)});
     nav.appendChild(b);s.btn=b;s.bar=b.querySelector('i');
   });
-  try{var c=document.createElement('canvas');c.width=c.height=180;var x=c.getContext('2d'),im=x.createImageData(180,180);
+  /* zrno scény = presne to samé zrno jako ve filmu (#hero .sc-grain, ten samý SVG šum, velikost a krytí): jinak se pri predani
+     scena -> film skokem zmeni jas (zrno filmu pridava vice svetla) a textura sumu */
+  var fg=document.querySelector('#hero .sc-grain');
+  if(fg){var gbg=getComputedStyle(fg).backgroundImage;if(gbg&&gbg!=='none')$('grain').style.backgroundImage=gbg}
+  else try{var c=document.createElement('canvas');c.width=c.height=180;var x=c.getContext('2d'),im=x.createImageData(180,180);
     for(var i=0;i<im.data.length;i+=4){var v=Math.random()*255;im.data[i]=im.data[i+1]=im.data[i+2]=v;im.data[i+3]=255}
     x.putImageData(im,0,0);$('grain').style.backgroundImage='url('+c.toDataURL()+')'}catch(e){}
 }
@@ -606,7 +610,8 @@ function render(time){
   var intro=$('intro'),io=1-ss(.3,1.0,T);intro.style.opacity=io;intro.style.transform='translateY('+(-50*(1-io)).toFixed(1)+'px)';intro.style.visibility=io<=0?'hidden':'visible';
   $('introfade').style.opacity=io;$('hint').style.opacity=1-ss(.05,.4,T);
   var cta=$('cta'),ct=ST.hasHero?0:ss(12.3,12.75,T);cta.style.opacity=ct;cta.style.transform='translate(-50%,'+(24*(1-ct)).toFixed(1)+'px)';cta.style.pointerEvents=ct>.5?'auto':'none';
-  $('steps').style.opacity=1-ss(12.3,12.6,T)*.75;
+  /* lista kroku: pri filmu za pribehem se pruhlednost pocita jen jednou (nize); dvojity zapis behem jednoho snimku s vynucenym layoutem mezi nimi restartoval CSS prechod a lista uvizla na 25 % a pri predani zmizela skokem */
+  if(!ST.hasHero)$('steps').style.opacity=1-ss(12.3,12.6,T)*.75;
   /* konec: scena se rozplyne do navazujici fotky andela */
   if(ST.hasHero){
     var ov=1-ss(12.85,13.75,T);['grain','vig','ffade'].forEach(function(k){if(!ST._ov)ST._ov={grain:$('grain'),vig:story.querySelector('.vignette'),ffade:story.querySelector('.floorfade')};ST._ov[k].style.opacity=k==='grain'?.07:ov});
@@ -618,13 +623,17 @@ function render(time){
     var sh=$('stShade');if(sh&&!ST.galCam)sh.style.opacity=ss(13.22,ZE,T).toFixed(3);
     /* konec pribehu: scena zmizi, az kdyz plynuly cas T dojede na konec (ne uz ve chvili, kdy tam dojel scroll).
        Do te doby je scena pripnuta na obrazovku (fix) a film pod ni ceka na zacatku; pak se probudi (udalost scroll). */
-    var past=Tt>=ST.N-.004,fwd=past&&T<ST.N-.0006&&!ST.galCam,gone=past&&!fwd,sg=$('stage'),gm=!!ST.galCam&&gone;
+    /* Prolnuti scena -> film je az ZA hranou (vyhlazeny scroll Ys o 0 az 1,5 px dal), kdy je fotka presne pres celou obrazovku
+       a film pod scenou stoji na stejnem miste. Drive (od 12 px pred koncem) se prolinaly dve ruzne velke fotky (scena byla
+       o 4 az 7 % mensi) a obraz poskocil (Honzi 14. 11.). */
+    var ysE=(ST.Ys==null?scrollY:ST.Ys)-(story.offsetTop+story.offsetHeight-vh),
+        past=Tt>=ST.N-.004,fwd=past&&ysE<1.5&&!ST.galCam,gone=past&&!fwd,sg=$('stage'),gm=!!ST.galCam&&gone;
     if(fwd!==!!ST._fwd){if(ST._fwd&&!fwd)setTimeout(function(){dispatchEvent(new Event('scroll'))},0);ST._fwd=fwd;sg.classList.toggle('fix',fwd)}
     if(gm!==ST._gm){ST._gm=gm;sg.classList.toggle('gal',gm)}
     /* predani mezi filmem a letem: kamera stoji presne na fotce (FH) a scena se prolne s fotkou filmu pod ni;
        zrno zustava stejne silne jako ve filmu, aby se nezmenil jas */
     var gfo=gm?(GAL[ST.galCam.b].panel?ss(0,FH,ST.galCam.k):Math.min(ss(0,FH,ST.galCam.k),1-ss(1-FH,1,ST.galCam.k))):1;
-    var eo=gm?gfo:1-ss(ST.N-12/unit,ST.N,T);
+    var eo=gm?gfo:1-ss(0,1.5,ysE);
     sg.style.opacity=gone&&!gm?0:eo.toFixed(3);sg.style.visibility=gone&&!gm?'hidden':'';
     /* pred pristanim v ramu s kontaktem zrno zmizi (formular zadne nema), jinak drzi jas filmu */
     if(gm)ST._ov.grain.style.opacity=GAL[ST.galCam.b].panel?(.07*(1-ss(.7,.92,ST.galCam.k))).toFixed(3):.07;
@@ -679,7 +688,7 @@ function frame(ts){
     if(reduce||Ys==null){Ys=scrollY}else{var f=1-Math.exp(-dt/150);Ys+=(scrollY-Ys)*f;if(Math.abs(scrollY-Ys)<.3)Ys=scrollY}
     T=clamp((Ys-story.offsetTop)/(story.offsetHeight-vh))*ST.N;ST.Ys=Ys;
     if(window.__film&&Ys!==ST._ysF){ST._ysF=Ys;window.__film()}}
-  var idle=ST.debug.T==null&&!!ST.hasHero&&Tt>=ST.N-.004&&T>=ST.N-.0006&&!ST.galCam;
+  var idle=ST.debug.T==null&&!!ST.hasHero&&Tt>=ST.N-.004&&T>=ST.N-.0006&&!ST.galCam&&Ys!=null&&Ys-(story.offsetTop+story.offsetHeight-vh)>=2;
   if(ST._sync)ST._sync=0;else if(!(idle&&ST._idle))render(ts);
   ST._idle=idle;lastT=T;ST.T=T;
   requestAnimationFrame(frame);
