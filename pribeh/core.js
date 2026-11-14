@@ -334,6 +334,7 @@ ST.cam=cam;
 ST.start=function(){
   story=$('story');cap=$('caption');capN=$('capN');capT=$('capT');capP=$('capP');
   buildCam();ST.hasHero=!!document.getElementById('hero');
+  ST.hud=function(h){if(h===ST._hud)return;ST._hud=h;['sticky-cta','btt','scroll-progress'].forEach(function(i){var e=document.getElementById(i);if(e)e.classList.toggle('nx',h)})};
   ST.mods.forEach(function(m){
     if(ST.debug.only&&ST.debug.only.split(',').indexOf(m.name)<0)return;
     if(ST.debug.nochars&&m.name==='chars')return;
@@ -537,7 +538,7 @@ function updateCam(time){
 }
 
 function render(time){
-  ST._keep=!!ST.hasHero&&Tt>=ST.N-.004;
+  ST._keep=false;
   updateCam(time);
   /* vykon: kdyz je cely zaber uvnitr studia, obloha a domy za zdi se nekresli (jsou zakryte) */
   /* pri najezdu do anděla (od zs .55) je videt uz jen zed studia s fotkou: obloha a vzdalena mesta se nekresli (jako pri letech po zdi) */
@@ -627,23 +628,32 @@ function render(time){
     /* Predani scena -> film jako u letu po zdi: scena (v klidu od ZEND) se prolne s filmem pod ni (stoji na pocatku), dokud T nedojede
        na konec. Kdyz real scroll preskoci konec dřív než plynuly cas T, scena zustane pripnuta (fix), film ceka a pak se probudi. */
     var past=Tt>=ST.N-.004,fwd=past&&T<ST.N-.0006&&!ST.galCam,gone=past&&!fwd,sg=$('stage'),gm=!!ST.galCam&&gone;
-    if(fwd!==!!ST._fwd){if(ST._fwd&&!fwd)setTimeout(function(){dispatchEvent(new Event('scroll'))},0);ST._fwd=fwd;sg.classList.toggle('fix',fwd)}
+    /* Scena drzi na miste, i kdyz real scroll preskoci konec pribehu drive nez vyhlazeny cas: posunem o prebytek scrollu (transform),
+       ne prepnutim sticky -> fixed. To prepnuti prekreslovalo celou scenu a zpusobilo zaseknuty snimek (69 ms) presne v klidu pred
+       startem filmu (Honzi 14. 11.). */
+    if(fwd!==!!ST._fwd){if(ST._fwd&&!fwd)setTimeout(function(){dispatchEvent(new Event('scroll'))},0);ST._fwd=fwd}
+    var ov0=fwd?Math.round(Math.max(0,scrollY-(story.offsetTop+story.offsetHeight-vh))):0;
+    /* po konci pribehu se scena odsune mimo obrazovku misto visibility/pointer-events: obe vlastnosti se dedi, takze jejich zmena
+       prepocitavala styl vsech prvku sceny (31 ms) presne pri predani filmu */
+    var tr0=ov0?'translateY('+ov0+'px)':(gone&&!gm?'translateY(-120%)':'');
+    if(tr0!==ST._tr0){ST._tr0=tr0;sg.style.transform=tr0}
     if(gm!==ST._gm){ST._gm=gm;sg.classList.toggle('gal',gm)}
     /* predani mezi filmem a letem: kamera stoji presne na fotce (FH) a scena se prolne s fotkou filmu pod ni;
        zrno zustava stejne silne jako ve filmu, aby se nezmenil jas */
     var gfo=gm?(GAL[ST.galCam.b].panel?ss(0,FH,ST.galCam.k):Math.min(ss(0,FH,ST.galCam.k),1-ss(1-FH,1,ST.galCam.k))):1;
     var eo=gm?gfo:1-ss(ZEND+.01,ST.N,T);
-    sg.style.opacity=gone&&!gm?0:eo.toFixed(3);sg.style.visibility=gone&&!gm?'hidden':'';
+    sg.style.opacity=gone&&!gm?0:eo.toFixed(3);
     /* pred pristanim v ramu s kontaktem zrno zmizi (formular zadne nema), jinak drzi jas filmu */
     if(gm)ST._ov.grain.style.opacity=GAL[ST.galCam.b].panel?(.07*(1-ss(.7,.92,ST.galCam.k))).toFixed(3):.07;
-    sg.style.pointerEvents=gone?'none':'';
+    
     var ve=$('stVeil');
     if(gm){var gk=ST.galCam,out=1-ss(0,.35,gk.k),inn=GAL[gk.b].panel?0:ss(.65,1,gk.k);
       /* stin na koncich letu odpovida filmu: andel ma .sc-shade (35 %), ostatni zabery .sc-veil */
       $('stShade').style.opacity=(gk.a===0?.35*out:0).toFixed(3);
       ve.style.opacity=Math.max(gk.a===0?0:out,inn).toFixed(3);
     }else if(ve&&ve.style.opacity!=='0')ve.style.opacity='0';
-    document.body.classList.toggle('in-story',!gone&&T<ZE);
+    /* tlacitka dole: v pribehu skryta; po predani je (po rozjezdu filmu) odkryva scrolly.js, aby v klidu pred jizdou nic nenaskakovalo */
+    ST._gone=gone;if(!gone)ST.hud(true)
     $('steps').style.opacity=(1-ss(12.3,12.6,T)*.75)*(1-ss(12.9,13.2,T));
   }
 

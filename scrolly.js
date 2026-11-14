@@ -325,8 +325,12 @@ function render(s){
   /* na konci filmu dotmava, at dalsi sekce navaze */
   if(fade)fade.style.opacity=hasC?0:ss(dist-.6*H,dist,s).toFixed(3);
   if(window.ST)ST.filmS=s;
+  /* tlacitka dole (Chci tetovani, nahoru, ukazatel) se po predani z pribehu odkryji az kousek po rozjezdu filmu */
+  if(window.ST&&ST.hud&&ST.hasHero&&ST._gone)ST.hud(s<.3*H);
   /* cestou zpet do pribehu: dokud se film plynule nevrati na zacatek, drzi se na obrazovce */
-  var rt0=root.getBoundingClientRect().top,pre=gal&&rt0>0&&(s>1||rt0<H*.3);if(pre!==preFix){preFix=pre;stage.classList.toggle('sc-fix',pre)}
+  var rt0=root.getBoundingClientRect().top,pre=gal&&rt0>0&&(s>1||rt0<H*.3);
+  /* misto prepinani sticky <-> fixed (vynutilo prepocet cele sceny a zasekl snimek presne pri predani pribeh -> film) se stage jen posune o rt0 */
+  var po=pre?-Math.round(rt0):0;if(po!==preFix){preFix=po;stage.style.transform='translate3d(0,'+po+'px,0)'}
   /* kontakt: pri pristani letu je pripnuty presne na ramu na zdi a prolne se pres nej; potom se uvolni a scrolluje normalne */
   if(hasC&&!cBg&&window.ST&&ST.gal&&ST.gal.length>shots.length+1)cBgSet();
   if(hasC){var ck=(s-C0)/XG,co=ss(.95,1,ck),ysm=(window.ST&&ST.Ys!=null)?ST.Ys:window.scrollY;

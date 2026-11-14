@@ -19,7 +19,7 @@ css += '''
 #story *{box-sizing:border-box}
 #hero{position:relative;z-index:1}
 #nb,.announce-bar{transition:opacity .5s}
-.in-story #sticky-cta,.in-story #btt,.in-story #scroll-progress{opacity:0!important;pointer-events:none!important}
+#sticky-cta.nx,#btt.nx,#scroll-progress.nx{opacity:0!important;pointer-events:none!important}
 #sticky-cta,#btt,#scroll-progress{transition:opacity .5s}
 #hero{background:#0C0F14}
 #hero::before{content:'';position:absolute;left:0;right:0;bottom:100%;height:40vh;background:#0C0F14;pointer-events:none}
@@ -42,7 +42,7 @@ js += '<script>ST.start();</script>\n'
 out = prev
 out = out.replace('</head>', fonts + '<style>\n' + css + '\n</style>\n</head>', 1)
 out = out.replace('<section class="scrolly" id="hero">', mark + '\n\n<section class="scrolly" id="hero">', 1)
-out = re.sub(r'<body([^>]*)>', lambda m: '<body' + (m.group(1) if 'class=' in m.group(1) else m.group(1) + ' class="in-story"') + '>', out, count=1)
+# (trida na <body> pro skryti tlacitek byla nahrazena tridou primo na tlacitkach v core.js: zmena tridy body prepocitavala styl cele stranky)
 out = out.replace('</body>', js + '</body>', 1)
 if inline:
     out = re.sub(r'<link rel="stylesheet" href="scrolly\.css[^"]*">', lambda m: '<style>\n' + (root / 'scrolly.css').read_text() + '\n</style>', out)
