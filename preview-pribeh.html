@@ -824,7 +824,7 @@ var heroContent=document.getElementById('hero-content');
 /* rozmery sekci a vyska stranky se meri jen pri zmene velikosti stranky, ne pri kazdem scrollu (cteni rozmeru za behu vynucovalo
    prepocet cele stranky a zasekavalo snimek presne pri predani pribeh -> film) */
 var secTops=[],dHc=0,curNav='',nls=document.querySelectorAll('.nk a'),secEls=document.querySelectorAll('section[id],.sc-anchor[id]');
-function measureNav(){dHc=document.documentElement.scrollHeight-innerHeight;secTops=[];secEls.forEach(function(e){secTops.push([e.id,e.getBoundingClientRect().top+scrollY])})}
+function measureNav(){dHc=document.documentElement.scrollHeight-innerHeight;secTops=[];secEls.forEach(function(e){var ty=window.__tailY&&__tailY(e);secTops.push([e.id,ty!=null?ty:e.getBoundingClientRect().top+scrollY])})}
 measureNav();addEventListener('load',measureNav);addEventListener('resize',measureNav);
 if(window.ResizeObserver)new ResizeObserver(measureNav).observe(document.body);
 window.addEventListener('scroll',function(){
@@ -850,7 +850,7 @@ var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isInte
 document.querySelectorAll('.rv,.rl,.rr,.rd').forEach(function(e){obs.observe(e)});
 
 /* SMOOTH SCROLL */
-document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();var t=document.querySelector(this.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'})})});
+document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();var t=document.querySelector(this.getAttribute('href'));if(t){var ty=window.__tailY&&__tailY(t);if(ty!=null)scrollTo({top:ty,behavior:'smooth'});else t.scrollIntoView({behavior:'smooth',block:'start'})}})});
 
 /* PROCESS TREE - timeline je strom: kmen uprostred, z kazdeho kroku vetev do prazdne strany */
 (function(){

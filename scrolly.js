@@ -15,6 +15,25 @@ function cBgSet(){var B=ST.gal[ST.gal.length-1],r=cRect(),u=r.W/B.w,t=11*u,X0=r.
   contact.style.backgroundSize=t.toFixed(3)+'px '+t.toFixed(3)+'px';
   contact.style.backgroundPosition=(((X0%t)+t)%t).toFixed(2)+'px '+(((Y0%t)+t)%t).toFixed(2)+'px';
   cgrid.style.boxShadow='8px 12px 0 rgba(0,0,0,.38)';contact.classList.add('c-pic');cBg=true}
+/* Kontakt a paticka v obalu, ktery prohlizec drzi pripnuty sam (sticky), s "hlavou" pred pristanim. Obsah uvnitr posouva jen
+   vyhlazeny scroll (ST.Ys), stejne jako film. Driv byl kontakt v beznem toku stranky a drzela ho korekce z JS (cOff), ktera vzdy
+   prisla o snimek pozde: pri kolecku formular na snimek ujel o krok scrollu a vratil se (Honzi 15. 11.: "kousane skace"). */
+var tail=null,cWin=null,cIn=null,TH=0,tH=0,Lnd=0;
+if(hasC){tail=document.createElement('div');tail.className='sc-tail';cWin=document.createElement('div');cWin.className='sc-tail-win';
+  cIn=document.createElement('div');cIn.className='sc-tail-in';tail.appendChild(cWin);cWin.appendChild(cIn);
+  contact.parentNode.insertBefore(tail,contact);cIn.appendChild(contact);
+  var foot=document.querySelector('body > footer');if(foot)cIn.appendChild(foot);
+  if(window.ResizeObserver)new ResizeObserver(function(){if(tH!==cIn.offsetHeight)refresh()}).observe(cIn);
+  /* odkazy a fokus: cil v obalu = misto, kde by byl v beznem toku (pristani + jeho poloha v obsahu) */
+  window.__tailY=function(el){if(!el||!cIn.contains(el))return null;var o=el.getBoundingClientRect().top-cIn.getBoundingClientRect().top;return Math.round(Lnd+o)};
+  /* fokus pole (Tab, upozorneni na nevyplnene pole): prohlizec posouva stranku podle polohy, ktera dojede az s vyhlazenym scrollem,
+     a nekdy posune dvakrat. Proto po fokusu stranku nastavime sami: pole doprostred obrazovky, nikdy nad misto pristani kontaktu. */
+  var cFix=function(el){requestAnimationFrame(function(){var y=__tailY(el);if(y==null)return;var vh=innerHeight,h=Math.min(el.offsetHeight,vh*.6),top=y-scrollY;
+    if(top>=70&&top+h<=vh-30)return;var mx=document.documentElement.scrollHeight-vh,t=Math.max(Lnd,Math.min(mx,Math.round(y-(vh-h)/2)));if(Math.abs(t-scrollY)>1)scrollTo(0,t)})};
+  cIn.addEventListener('focusin',function(e){cFix(e.target)});cIn.addEventListener('invalid',function(e){cFix(e.target)},true);
+  /* obal se nesmi scrollovat sam (overflow:hidden je jako zaloha za overflow:clip) */
+  cWin.addEventListener('scroll',function(){if(cWin.scrollTop)cWin.scrollTop=0});
+}
 function cRect(){var g=cgrid.getBoundingClientRect(),c=contact.getBoundingClientRect();return {L:g.left,T:g.top-c.top,W:g.width}}
 
 var stage=root.querySelector('.sc-stage'),
@@ -170,7 +189,7 @@ function layout(){
   C0=dist;
   window.__filmDbg={ANGEL:ANGEL,XG:XG,H:H,shots:shots.map(function(q){return [q.b,q.L]})};
   cBg=false;
-  if(hasC){dist+=XG;contact.style.marginTop=(-H)+'px';contact.style.minHeight=H+'px';contact.style.zIndex=3}
+  if(hasC){dist+=XG;contact.style.minHeight=H+'px';TH=Math.round(1.5*H);cWin.style.height=H+'px';tH=cIn.offsetHeight;tail.style.marginTop=(-H-TH)+'px';tail.style.height=(TH+tH)+'px'}
   root.style.height=(dist+H+HD())+'px';
   /* kotvy menu (O mne, Styl) = misto, kde je zaber uz cely prolnuty */
   for(var id in anchors){var a=document.getElementById(id),sh2=shots[anchors[id]];if(a&&sh2)a.style.top=(sh2.b+(gal?XG:X)+HD())+'px'}
@@ -337,9 +356,10 @@ function render(s){
   if(hasC&&!cBg&&window.ST&&ST.gal&&ST.gal.length>shots.length+1)cBgSet();
   if(hasC){var ck=(s-C0)/XG,co=ss(.95,1,ck),ysm=(window.ST&&ST.Ys!=null)?ST.Ys:window.scrollY;
     /* pred pristanim je kontakt pripnuty na ram na zdi, po pristani jede s vyhlazenym scrollem (zadny skok pri uvolneni) */
-    cOff=window.scrollY-Math.max(ysm,rt0+window.scrollY+HD()+dist);if(Math.abs(cOff)<.05)cOff=0;
-    contact.style.opacity=co.toFixed(3);contact.style.visibility=co>.001?'visible':'hidden';contact.style.pointerEvents=co>.99?'':'none';
-    contact.style.transform=co>.001&&cOff?'translate3d(0,'+cOff.toFixed(2)+'px,0)':''}
+    Lnd=rt0+window.scrollY+HD()+dist;
+    var wt=Math.max(0,rt0+HD()+dist-TH),Yc=-Math.min(Math.max(0,ysm-Lnd),Math.max(0,tH-H));
+    cOff=Math.round((Yc-wt)*100)/100;if(cOff!==cIn._o){cIn._o=cOff;cIn.style.transform='translate3d(0,'+cOff+'px,0)'}
+    contact.style.opacity=co.toFixed(3);contact.style.visibility=co>.001?'visible':'hidden';contact.style.pointerEvents=co>.99?'auto':'none'}
 
   if(bar)bar.style.width=(dist?s/dist*100:0).toFixed(2)+'%';
 }
@@ -364,6 +384,8 @@ function refresh(){layout();target=cur=progress();render(cur)}
 function init(){
   if(ready)return;ready=true;
   refresh();
+  /* odkaz s #kotvou v adrese mirici do kontaktu/paticky: dojet na misto pristani, ne do hlavy obalu */
+  if(window.__tailY&&location.hash){try{var ht=document.querySelector(location.hash),hy=__tailY(ht);if(hy!=null)setTimeout(function(){scrollTo(0,hy)},0)}catch(e){}}
   window.addEventListener('scroll',onScroll,{passive:true});
   window.addEventListener('resize',function(){refresh()});
   shots.forEach(function(sh){if(!sh.img.complete)sh.img.addEventListener('load',refresh)});

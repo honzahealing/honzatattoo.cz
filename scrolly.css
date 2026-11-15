@@ -52,3 +52,9 @@
 @media(prefers-reduced-motion:reduce){
 .sc-hint{display:none}
 }
+
+/* kontakt a paticka za filmem: obal drzi prohlizec (sticky), obsah posouva vyhlazeny scroll (scrolly.js) */
+.sc-tail{position:relative;z-index:3;pointer-events:none}
+.sc-tail-win{position:sticky;top:0;height:100vh;overflow:hidden;overflow:clip}
+.sc-tail-in{position:relative;will-change:transform;pointer-events:none}
+.sc-tail-in>footer{pointer-events:auto}
