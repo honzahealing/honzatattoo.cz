@@ -11,14 +11,16 @@ var contact=gal?document.getElementById('contact'):null,cgrid=contact?contact.qu
 var cBg=false;
 function cBgSet(){var B=ST.gal[ST.gal.length-1],r=cRect(),u=r.W/B.w,t=11*u,X0=r.L-B.x*u,Y0=r.T-B.y*u;
   function dot(cx,cy,rad,op){var c='rgba(231,221,199,';return 'radial-gradient(circle at '+(cx*u).toFixed(2)+'px '+(cy*u).toFixed(2)+'px,'+c+op+') 0,'+c+op+') '+(rad*u-.5).toFixed(2)+'px,'+c+'0) '+(rad*u+.5).toFixed(2)+'px)'}
-  contact.style.backgroundColor='#15161A';contact.style.backgroundImage=dot(2,3,.7,.3)+','+dot(7.5,8,.6,.25)+','+dot(9,1.5,.5,.2);
-  contact.style.backgroundSize=t.toFixed(3)+'px '+t.toFixed(3)+'px';
-  contact.style.backgroundPosition=(((X0%t)+t)%t).toFixed(2)+'px '+(((Y0%t)+t)%t).toFixed(2)+'px';
-  cgrid.style.boxShadow='8px 12px 0 rgba(0,0,0,.38)';contact.classList.add('c-pic');cBg=true}
+  /* (driv: kopie tapety zdi v CSS; nebyla presna a chybely v ni sousedni obrazy. Ted je za formularem skutecna zed pribehu,
+     kamera po pristani jede spolu s formularem, viz ST.gallery.fly s k = 1) */
+  /* vnejsi linka ramu 1,5 px vystredena na hrane (pul ven, pul dovnitr) jako v pribehu; stin jako stin ramu na zdi */
+  cgrid.style.boxShadow='0 0 0 .75px rgba(231,221,199,.8),8px 12px 0 rgba(0,0,0,.38),inset 0 0 0 .75px rgba(231,221,199,.8)';contact.classList.add('c-pic');cBg=true}
 /* Kontakt a paticka v obalu, ktery prohlizec drzi pripnuty sam (sticky), s "hlavou" pred pristanim. Obsah uvnitr posouva jen
    vyhlazeny scroll (ST.Ys), stejne jako film. Driv byl kontakt v beznem toku stranky a drzela ho korekce z JS (cOff), ktera vzdy
    prisla o snimek pozde: pri kolecku formular na snimek ujel o krok scrollu a vratil se (Honzi 15. 11.: "kousane skace"). */
-var tail=null,cWin=null,cIn=null,TH=0,tH=0,Lnd=0;
+var tail=null,cWin=null,cIn=null,TH=0,tH=0,Lnd=0,cRc=null;
+/* posun obsahu kontaktu po pristani (px, zaporny = nahoru): jen podle vyhlazeneho scrollu */
+function cYc(){var ys=(window.ST&&ST.Ys!=null)?ST.Ys:window.scrollY;return -Math.min(Math.max(0,ys-Lnd),Math.max(0,tH-H))}
 if(hasC){tail=document.createElement('div');tail.className='sc-tail';cWin=document.createElement('div');cWin.className='sc-tail-win';
   cIn=document.createElement('div');cIn.className='sc-tail-in';tail.appendChild(cWin);cWin.appendChild(cIn);
   contact.parentNode.insertBefore(tail,contact);cIn.appendChild(contact);
@@ -189,7 +191,7 @@ function layout(){
   C0=dist;
   window.__filmDbg={ANGEL:ANGEL,XG:XG,H:H,shots:shots.map(function(q){return [q.b,q.L]})};
   cBg=false;
-  if(hasC){dist+=XG;contact.style.minHeight=H+'px';TH=Math.round(1.5*H);cWin.style.height=H+'px';tH=cIn.offsetHeight;tail.style.marginTop=(-H-TH)+'px';tail.style.height=(TH+tH)+'px'}
+  if(hasC){dist+=XG;cRc=null;contact.style.minHeight=H+'px';TH=Math.round(1.5*H);cWin.style.height=H+'px';tH=cIn.offsetHeight;tail.style.marginTop=(-H-TH)+'px';tail.style.height=(TH+tH)+'px'}
   root.style.height=(dist+H+HD())+'px';
   /* kotvy menu (O mne, Styl) = misto, kde je zaber uz cely prolnuty */
   for(var id in anchors){var a=document.getElementById(id),sh2=shots[anchors[id]];if(a&&sh2)a.style.top=(sh2.b+(gal?XG:X)+HD())+'px'}
@@ -333,11 +335,14 @@ function render(s){
     if(noteStyle(notes[i],o))side.l=Math.max(side.l,o);else side.r=Math.max(side.r,o);
   }
   for(i=0;i<shots.length;i++){renderShot(shots[i],s,side);if(shots[i].vis&&!reduce&&!gal){var og=outgoing(i,s);if(og)slide(shots[i].el,og)}}
+  if(hasC)Lnd=root.getBoundingClientRect().top+window.scrollY+HD()+dist;
   /* let po zdi studia: z konce predchozi fotky na zacatek dalsi */
   if(gal&&window.ST&&ST.gallery){var fl=null;
     for(i=0;i<shots.length;i++){var b0=shots[i].b;if(s>b0&&s<b0+XG){fl=i;break}}
     if(fl!=null)ST.gallery.fly(fl,fl+1,(s-shots[fl].b)/XG,fl?shotRect(shots[fl-1],1):angelRect(),shotRect(shots[fl],0));
-    else if(hasC&&s>C0&&s<dist&&ST.gal&&ST.gal.length>shots.length+1)ST.gallery.fly(shots.length,shots.length+1,(s-C0)/XG,shotRect(shots[shots.length-1],1),cRect());
+    else if(hasC&&s>C0&&ST.gal&&ST.gal.length>shots.length+1){if(!cRc)cRc=cRect();
+      /* po pristani (s = dist) kamera stoji na ramu a jede s nim nahoru tak, jak ho posouva vyhlazeny scroll (cYc) */
+      var cy=s<dist?0:cYc();ST.gallery.fly(shots.length,shots.length+1,Math.min(1,(s-C0)/XG),shotRect(shots[shots.length-1],1),{L:cRc.L,T:cRc.T+cy,W:cRc.W})}
     else ST.gallery.fly(null);
   }
   sideL.style.opacity=side.l.toFixed(3);
@@ -356,10 +361,11 @@ function render(s){
   if(hasC&&!cBg&&window.ST&&ST.gal&&ST.gal.length>shots.length+1)cBgSet();
   if(hasC){var ck=(s-C0)/XG,co=ss(.95,1,ck),ysm=(window.ST&&ST.Ys!=null)?ST.Ys:window.scrollY;
     /* pred pristanim je kontakt pripnuty na ram na zdi, po pristani jede s vyhlazenym scrollem (zadny skok pri uvolneni) */
-    Lnd=rt0+window.scrollY+HD()+dist;
-    var wt=Math.max(0,rt0+HD()+dist-TH),Yc=-Math.min(Math.max(0,ysm-Lnd),Math.max(0,tH-H));
+    var wt=Math.max(0,rt0+HD()+dist-TH),Yc=cYc();
     cOff=Math.round((Yc-wt)*100)/100;if(cOff!==cIn._o){cIn._o=cOff;cIn.style.transform='translate3d(0,'+cOff+'px,0)'}
-    contact.style.opacity=co.toFixed(3);contact.style.visibility=co>.001?'visible':'hidden';contact.style.pointerEvents=co>.99?'auto':'none'}
+    contact.style.opacity=co.toFixed(3);contact.style.visibility=co>.001?'visible':'hidden';contact.style.pointerEvents=co>.99?'auto':'none';
+    /* text formulare vplyne pozvolna az po dosednuti ramu (CSS prechod), cestou zpet se zase rozplyne */
+    var con=contact.classList.contains('c-on');if(!con&&ck>=.97)contact.classList.add('c-on');else if(con&&ck<.94)contact.classList.remove('c-on')}
 
   if(bar)bar.style.width=(dist?s/dist*100:0).toFixed(2)+'%';
 }

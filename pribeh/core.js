@@ -420,12 +420,12 @@ ST.start=function(){
     var gl=P2(g,'M'+x+','+(y+h*.55)+' L'+(x+w*.45)+','+y+' L'+(x+w*.62)+','+y+' L'+x+','+(y+h*.75)+'Z',{fill:'#FFF6DF',opacity:.06});P.gl=gl;}
   /* ram s kontaktnim formularem: stejne cary a barvy jako .contact-grid v CSS (u = jednotek sveta na 1 px pri pristani) */
   function panel(g,P){var x=P.x,y=P.y,w=P.w,h=P.h,u=w/CTW,cx=x+w/2,NS2='non-scaling-stroke';
-    P2(g,ST.rect(x+8*u,y+12*u,w,h,0),{fill:'#000',opacity:.38});
+    P.sh=P2(g,ST.rect(x+8*u,y+12*u,w,h,0),{fill:'#000',opacity:.38});
     P2(g,'M'+(cx-63*u)+','+y+' L'+cx+','+(y-34*u)+' L'+(cx+63*u)+','+y,{fill:'none',stroke:'rgba(231,221,199,.45)','stroke-width':1,'vector-effect':NS2});
     P2(g,ST.circ(cx,y-35*u,3.2*u),{fill:'#15161A',stroke:'#C8A45C','stroke-width':1.2,'vector-effect':NS2});
-    P2(g,ST.rect(x,y,w,h,0),{fill:'#131418',stroke:'rgba(231,221,199,.8)','stroke-width':1.5,'vector-effect':NS2});
-    P2(g,ST.rect(x+6*u,y+6*u,w-12*u,h-12*u,0),{fill:'none',stroke:'rgba(200,164,92,.7)','stroke-width':1,'vector-effect':NS2});
-    P2(g,ST.rect(x+13*u,y+13*u,w-26*u,h-26*u,0),{fill:'none',stroke:'rgba(232,213,163,.28)','stroke-width':1,'vector-effect':NS2});
+    P.fr=[P2(g,ST.rect(x,y,w,h,0),{fill:'#131418',stroke:'rgba(231,221,199,.8)','stroke-width':1.5,'vector-effect':NS2}),
+    P2(g,ST.rect(x+6*u,y+6*u,w-12*u,h-12*u,0),{fill:'none',stroke:'rgba(200,164,92,.7)','stroke-width':1,'vector-effect':NS2}),
+    P2(g,ST.rect(x+13*u,y+13*u,w-26*u,h-26*u,0),{fill:'none',stroke:'rgba(232,213,163,.28)','stroke-width':1,'vector-effect':NS2})];
     /* z dalky je videt, ze je to obraz s napisem; pri najezdu naznak zmizi a objevi se skutecny formular */
     var hg=el('g',{},g),ty=y+(h-w*.82)/2+w*.06;P.hint=hg;
     txt(hg,cx+.25,ty,w*.05,'KONTAKT',{f:FB,c:'#E8D5A3',ls:.5,w:500});txt(hg,cx,ty+w*.17,w*.14,'Napište *mi*');
@@ -654,6 +654,10 @@ function render(time){
     if(gm)ST._ov.grain.style.opacity=GAL[ST.galCam.b].panel?(.07*(1-ss(.7,.92,ST.galCam.k))).toFixed(3):.07;
     
     var ve=$('stVeil');
+    /* stin ramu kontaktu na zdi se pri dosednuti prolne se stinem skutecneho formulare (jinak by byl stin pod formularem dvojity) */
+    var KP=WI.kontakt;if(KP&&KP.sh){var kf=gm&&GAL[ST.galCam.b].panel?1-ss(.95,1,ST.galCam.k):1,so=(.38*kf).toFixed(3);
+      /* i linky ramu se prolnou do linek formulare (vypln zustava, je pod formularem), at pod nim nezustane nic dvojite */
+      if(KP._so!==so){KP._so=so;KP.sh.setAttribute('opacity',so);KP.fr.forEach(function(e){e.setAttribute('stroke-opacity',kf.toFixed(3))})}}
     if(gm){var gk=ST.galCam,out=1-ss(0,.35,gk.k),inn=GAL[gk.b].panel?0:ss(.65,1,gk.k);
       /* stin na koncich letu odpovida filmu: andel ma .sc-shade (35 %), ostatni zabery .sc-veil */
       $('stShade').style.opacity=(gk.a===0?.35*out:0).toFixed(3);
@@ -704,7 +708,9 @@ function frame(ts){
     if(reduce||Ys==null){Ys=scrollY}else{var f=1-Math.exp(-dt/150);Ys+=(scrollY-Ys)*f;if(Math.abs(scrollY-Ys)<.3)Ys=scrollY}
     T=clamp((Ys-story.offsetTop)/(story.offsetHeight-vh-(ST.tail||0)))*ST.N;ST.Ys=Ys;
     if(window.__film&&Ys!==ST._ysF){ST._ysF=Ys;window.__film()}}
-  var idle=ST.debug.T==null&&!!ST.hasHero&&Tt>=ST.N-.004&&T>=ST.N-.0006&&!ST.galCam;
+  /* klid: konec pribehu bez letu, nebo kamera stoji na pristanem kontaktu a scroll se nehybe (nekresli se zbytecne kazdy snimek) */
+  var still=Ys===ST._ysPrev;ST._ysPrev=Ys;
+  var idle=ST.debug.T==null&&!!ST.hasHero&&Tt>=ST.N-.004&&T>=ST.N-.0006&&(!ST.galCam||(ST.galCam.k>=1&&still));
   if(ST._sync)ST._sync=0;else if(!(idle&&ST._idle))render(ts);
   ST._idle=idle;lastT=T;ST.T=T;
   requestAnimationFrame(frame);
