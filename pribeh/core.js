@@ -484,7 +484,10 @@ function size(){
      s filmem nedokonci. Prohlizec ji drzi sam (sticky se vyhodnocuje hned s posunem), zadna oprava z JS, ktera by o snimek zpozdila
      a obraz by pri prolnuti poskocil nahoru a dolu (Honzi 14. 11.). Film zacina na stejnem miste jako driv (margin -vh - ocas). */
   var tl=(hero&&(story.compareDocumentPosition(hero)&4))?vh:0;ST.tail=tl;story.style.height=tl?'calc(1200vh + '+tl+'px)':'';
-  if(tl)hero.style.marginTop=(-vh-tl)+'px';
+  /* Totez pro cestu zpet: film ma pred svym zacatkem "hlavu" jedne obrazovky (ST.filmHead), takze kdyz real scroll vyjede nad zacatek
+     filmu drive nez vyhlazeny cas, film zustane pripnuty sam (sticky) a neposkoci. Casova osa filmu zacina az za hlavou (scrolly.js). */
+  ST.filmHead=tl&&!reduce?vh:0;
+  if(tl)hero.style.marginTop=(-vh-tl-ST.filmHead)+'px';
 }
 function targetT(){var span=story.offsetHeight-vh-(ST.tail||0);return clamp((scrollY-story.offsetTop)/span)*ST.N}
 function scrollToT(t){var span=story.offsetHeight-vh-(ST.tail||0);scrollTo({top:story.offsetTop+t/ST.N*span,behavior:reduce?'auto':'smooth'})}

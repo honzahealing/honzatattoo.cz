@@ -171,17 +171,19 @@ function layout(){
   window.__filmDbg={ANGEL:ANGEL,XG:XG,H:H,shots:shots.map(function(q){return [q.b,q.L]})};
   cBg=false;
   if(hasC){dist+=XG;contact.style.marginTop=(-H)+'px';contact.style.minHeight=H+'px';contact.style.zIndex=3}
-  root.style.height=(dist+H)+'px';
+  root.style.height=(dist+H+HD())+'px';
   /* kotvy menu (O mne, Styl) = misto, kde je zaber uz cely prolnuty */
-  for(var id in anchors){var a=document.getElementById(id),sh2=shots[anchors[id]];if(a&&sh2)a.style.top=(sh2.b+(gal?XG:X))+'px'}
+  for(var id in anchors){var a=document.getElementById(id),sh2=shots[anchors[id]];if(a&&sh2)a.style.top=(sh2.b+(gal?XG:X)+HD())+'px'}
 }
 
 var target=0,cur=0,raf=0;
 
+/* hlava filmu pred jeho casovou osou (nastavuje core.js; bez pribehu 0) */
+function HD(){return gal?innerHeight:0}
 function progress(){
   var r=root.getBoundingClientRect();
   /* s pribehem pred filmem ridi film stejny vyhlazeny scroll jako pribeh (ST.Ys) */
-  if(gal&&window.ST&&ST.Ys!=null)return Math.min(dist,Math.max(0,ST.Ys-(r.top+window.scrollY)));
+  if(gal&&window.ST&&ST.Ys!=null)return Math.min(dist,Math.max(0,ST.Ys-(r.top+window.scrollY+HD())));
   return Math.min(dist,Math.max(0,-r.top));
 }
 
@@ -335,7 +337,7 @@ function render(s){
   if(hasC&&!cBg&&window.ST&&ST.gal&&ST.gal.length>shots.length+1)cBgSet();
   if(hasC){var ck=(s-C0)/XG,co=ss(.95,1,ck),ysm=(window.ST&&ST.Ys!=null)?ST.Ys:window.scrollY;
     /* pred pristanim je kontakt pripnuty na ram na zdi, po pristani jede s vyhlazenym scrollem (zadny skok pri uvolneni) */
-    cOff=window.scrollY-Math.max(ysm,rt0+window.scrollY+dist);if(Math.abs(cOff)<.05)cOff=0;
+    cOff=window.scrollY-Math.max(ysm,rt0+window.scrollY+HD()+dist);if(Math.abs(cOff)<.05)cOff=0;
     contact.style.opacity=co.toFixed(3);contact.style.visibility=co>.001?'visible':'hidden';contact.style.pointerEvents=co>.99?'':'none';
     contact.style.transform=co>.001&&cOff?'translate3d(0,'+cOff.toFixed(2)+'px,0)':''}
 
