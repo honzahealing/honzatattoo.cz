@@ -1,0 +1,18 @@
+const {chromium}=require('playwright');const w=+process.argv[2]||1440,h=+process.argv[3]||900;
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:w,height:h}});const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file://'+require('path').resolve(__dirname,'../../../preview-pribeh.html'));await p.waitForTimeout(1500);
+const ev=(s,a)=>p.evaluate(s,a);
+await ev(()=>{document.documentElement.style.scrollBehavior='auto';scrollTo(0,document.documentElement.scrollHeight)});await p.waitForTimeout(2500);
+console.log('dno:',await ev(()=>{const f=document.querySelector('footer'),r=f.getBoundingClientRect(),a=f.querySelector('a'),ar=a.getBoundingClientRect();const hit=document.elementFromPoint(ar.left+3,ar.top+3);return 'footer top='+r.top.toFixed(0)+' bottom='+r.bottom.toFixed(0)+' vh='+innerHeight+' klik na odkaz='+(hit===a)+' scrollY='+scrollY+' max='+(document.documentElement.scrollHeight-innerHeight)}));
+const L=await ev(()=>__tailY(document.getElementById('contact')));
+await ev(L=>scrollTo(0,L+40),L);await p.waitForTimeout(2500);
+console.log('po pristani:',await ev(()=>{const i=document.getElementById('name'),r=i.getBoundingClientRect();const hit=document.elementFromPoint(r.left+5,r.top+5);return 'pole Jmeno top='+r.top.toFixed(0)+' klik='+(hit===i)+' trefa='+(hit&&(hit.id||hit.className||hit.tagName))}));
+await ev(()=>scrollTo(0,0));await p.waitForTimeout(2500);
+await ev(()=>{const a=[...document.querySelectorAll('a[href="#contact"]')][0];a.click()});await p.waitForTimeout(6000);
+console.log('odkaz #contact:',await ev(L=>'scrollY-L='+(scrollY-L)+' Ys-L='+Math.round(ST.Ys-L)+' ram top='+document.querySelector('.contact-grid').getBoundingClientRect().top.toFixed(0)+' op='+document.getElementById('contact').style.opacity,L));
+await ev(L=>scrollTo(0,L),L);await p.waitForTimeout(2500);
+await p.focus('#email');await p.waitForTimeout(500);await p.keyboard.press('Tab');await p.keyboard.press('Tab');await p.keyboard.press('Tab');await p.waitForTimeout(3000);
+console.log('fokus zpravy po pristani:',await ev(L=>{const r=document.activeElement.getBoundingClientRect();return 'aktivni='+document.activeElement.id+' scrollY-L='+(scrollY-L)+' pole top='+r.top.toFixed(0)+' bottom='+r.bottom.toFixed(0)+' op='+document.getElementById('contact').style.opacity},L));
+await ev(L=>scrollTo(0,L+500),L);await p.waitForTimeout(2500);await ev(()=>document.getElementById('submit-btn').click());await p.waitForTimeout(2500);
+console.log('odeslat prazdne:',await ev(L=>{const r=document.getElementById('name').getBoundingClientRect();return 'scrollY-L='+(scrollY-L)+' jmeno top='+r.top.toFixed(0)+' aktivni='+document.activeElement.id},L));
+console.log('chyby',errs);await b.close()})();
